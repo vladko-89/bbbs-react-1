@@ -7,7 +7,7 @@ function MainVideoPreview(props){
 <article className="card card_content_video card-pagination_page_main">
 <div className="video">
   <a href={props.link} className="card__link-wrap">
-    <img src={props.imgUrl} alt="Превью видео" className="video__img" />
+    <img src={props.imageUrl} alt="Превью видео" className="video__img" />
     <ul className="video__rubric-list">
       <li>
         <p className="rubric video__rubric">{props.rubric}</p>
@@ -31,14 +31,14 @@ function MainVideoPreview(props){
 MainVideoPreview.propTypes = {
   link: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  imgUrl: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   caption: PropTypes.string.isRequired,
   rubric: PropTypes.string.isRequired,
 }
 MainVideoPreview.defaultProps = {
   link: "#",
   title: 'Название видео',
-  imgUrl: "https://learn.getgrav.org/system/images/media/thumb-jpg.png",
+  imageUrl: "https://learn.getgrav.org/system/images/media/thumb-jpg.png",
   caption: "имярек 2021",
   rubric: "Рубрика"
 };
