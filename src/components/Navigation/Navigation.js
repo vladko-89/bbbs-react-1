@@ -1,4 +1,4 @@
-import './Navigation.scss';
+
 import {
   Link, NavLink
 } from "react-router-dom";
@@ -59,18 +59,18 @@ function Navigation(props) {
                   target="_blank" onClick={props.handleClicMobMenu}>facebook</a>
           </li>
           <li className="menu__list-item">
-            <a href="https://vk.com/big.brothers.big.sisters" className="menu__link" target="_blank" onClick={props.handleClicMobMenu}>vkontakte</a>
+            <a href="https://vk.com/big.brothers.big.sisters" className="menu__link" target="_blank" rel="noreferrer" onClick={props.handleClicMobMenu}>vkontakte</a>
           </li>
           <li className="menu__list-item">
-            <a href="https://www.instagram.com/nastavniki_org/" className="menu__link" target="_blank" onClick={props.handleClicMobMenu}>instagram</a>
+            <a href="https://www.instagram.com/nastavniki_org/" className="menu__link" target="_blank" rel="noreferrer" onClick={props.handleClicMobMenu}>instagram</a>
           </li>
           <li className="menu__list-item">
-            <a href="https://www.youtube.com/user/Nastavniki/" className="menu__link" target="_blank" onClick={props.handleClicMobMenu}>youtube</a>
+            <a href="https://www.youtube.com/user/Nastavniki/" className="menu__link" target="_blank" rel="noreferrer" onClick={props.handleClicMobMenu}>youtube</a>
           </li>
         </ul>
       </div>
 
-      <button className={`menu__burger ${props.mobMenu? "menu__burger_active":""}`} type="button" onClick={props.handleClicMobMenu}>
+      <button className={`menu__burger ${props.mobMenu? "menu__burger_active":""}`} type="button" rel="noreferrer" onClick={props.handleClicMobMenu}>
         <span className="menu__burger-line"></span>
         <span className="menu__burger-line"></span>
         <span className="menu__burger-line"></span>
