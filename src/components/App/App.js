@@ -7,6 +7,7 @@ import Footer from '../Footer/Footer';
 import AboutUs from '../AboutUs/AboutUs';
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
   return (
     <HelmetProvider>
@@ -15,8 +16,10 @@ function App() {
           <title>Старшие братья и сестры</title>
         </Helmet>
         <Header loggedIn={loggedIn} />
-        <Main />
-        <Route path="/about">
+        <Route exact path="/">
+          <Main />
+        </Route>
+        <Route exact path="/about">
           <AboutUs />
         </Route>
         <Footer />
