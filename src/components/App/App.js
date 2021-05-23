@@ -1,11 +1,13 @@
-import logo from './logo.svg';
+
 import './App.scss';
 import Header from '../Header/Header';
+import React from "react";
 
 function App() {
+const [loggedIn, setLoggedIn] = React.useState(false)
   return (
     <div className="App">
-      <Header loggedIn={'true'}/>
+      <Header loggedIn={loggedIn}/>
     </div>
   );
 }

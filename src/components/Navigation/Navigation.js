@@ -56,7 +56,7 @@ function Navigation(props) {
         <ul className={`menu__list menu__list_type_social ${props.mobMenu? "": "menu__list_hidden"}`}>
           <li className="menu__list-item">
             <a href="https://www.facebook.com/BigBrothers.BigSisters.Russia/" className="menu__link"
-                  target="_blank" onClick={props.handleClicMobMenu}>facebook</a>
+                  target="_blank" rel="noreferrer" onClick={props.handleClicMobMenu}>facebook</a>
           </li>
           <li className="menu__list-item">
             <a href="https://vk.com/big.brothers.big.sisters" className="menu__link" target="_blank" rel="noreferrer" onClick={props.handleClicMobMenu}>vkontakte</a>
