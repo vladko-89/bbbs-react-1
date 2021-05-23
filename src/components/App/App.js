@@ -1,6 +1,5 @@
 import { Route } from 'react-router-dom';
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import './App.css';
 import AboutUs from '../AboutUs/AboutUs';
 import Footer from '../Footer/Footer';
 import Main from '../Main/Main'
