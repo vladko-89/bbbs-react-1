@@ -1,19 +1,24 @@
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import './App.css';
 import AboutUs from '../AboutUs/AboutUs';
 import Footer from '../Footer/Footer';
-
+import Main from '../Main/Main'
 function App() {
   return (
-
-    <div className="app page">
-      <Route path="/about">
-        <AboutUs />
-      </Route>
-      <Footer />
-
-    </div>
-  );
-}
+    <HelmetProvider>
+      <div className="app page">
+        <Helmet>
+          <title>Старшие братья и сестры</title>
+        </Helmet>
+        <Main />
+        <Route path="/about">
+          <AboutUs />
+        </Route>
+        <Footer />
+      </div>
+    </HelmetProvider>
+  )
+};
 
 export default App;
