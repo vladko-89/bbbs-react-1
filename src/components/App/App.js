@@ -1,15 +1,21 @@
+import './App.scss';
+import React from "react";
 import { Route } from 'react-router-dom';
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import AboutUs from '../AboutUs/AboutUs';
-import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import Main from '../Main/Main'
+import Footer from '../Footer/Footer';
+import AboutUs from '../AboutUs/AboutUs';
+
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState(false)
   return (
     <HelmetProvider>
       <div className="app page">
         <Helmet>
           <title>Старшие братья и сестры</title>
         </Helmet>
+        <Header loggedIn={loggedIn} />
         <Main />
         <Route path="/about">
           <AboutUs />
