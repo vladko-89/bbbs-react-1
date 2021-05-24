@@ -1,11 +1,11 @@
 import React from 'react';
 import './Preloader.css';
+import preloaderImg from '../../images/preloader/loading.png';
 
 function Preloader() {
   return (
     <section className="preloader">
-      <i className="preloader__circle" />
-      <p className="preloader__caption">Загрузка данных...</p>
+      <img className="preloader__circle" src={preloaderImg} alt="Preloader" />
     </section>
   );
 }

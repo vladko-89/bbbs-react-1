@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 function MainVideo({
-  title, info, link, imageUrl,
+  title, info, link, imageUrl, duration,
 }) {
+  function parseDuration(dur) {
+    const hours = Math.floor((dur / 3600));
+    const minutes = Math.floor((dur - hours * 3600) / 60);
+    const seconds = dur - hours * 3600 - minutes * 60;
+    if (hours > 0) { return `${hours}:${minutes}:${seconds}`; }
+    return `${minutes}:${seconds}`;
+  }
   return (
     <article className="card-container card-container_type_main-video">
       <div className="card card_color_yellow card_content_video-preview">
@@ -19,6 +26,7 @@ function MainVideo({
       <div className="card card_color_yellow card_content_video video">
         <Link to="/video" className="card__link-wrap">
           <img src={imageUrl} alt="Превью видео" className="video__img video__img_position_main-video" />
+          <p className="video__duration video__duration_position_main-video paragraph">{parseDuration(duration)}</p>
         </Link>
       </div>
     </article>
@@ -30,6 +38,7 @@ MainVideo.propTypes = {
   info: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
+  duration: PropTypes.number.isRequired,
 };
 
 export default MainVideo;

@@ -65,7 +65,8 @@ function Main() {
               title={movie.title}
               imageUrl={movie.imageUrl}
               caption={movie.caption}
-              rubric={movie.rubric}
+              info={movie.info}
+              tags={movie.tags}
             />
           ))}
         </section>
@@ -76,6 +77,7 @@ function Main() {
             info={mainState.video.info}
             link={mainState.video.link}
             imageUrl={mainState.video.imageUrl}
+            duration={mainState.video.duration}
           />
         </section>
 

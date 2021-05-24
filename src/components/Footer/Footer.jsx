@@ -5,7 +5,7 @@ import logo from '../../images/svg/footer-logo.svg';
 function Footer() {
   return (
     <footer className="footer">
-      <Link to="/" class="footer__logo">
+      <Link to="/" className="footer__logo">
         <img className="footer__logo-image" src={logo} alt="Логотип Старшие Братья Старшие Сестры России" />
       </Link>
       <a href="https://www.nastavniki.org/campaign/pomoch-dengami" className="button footer__button" rel="noreferrer" target="_blank">Помочь деньгами</a>
@@ -25,25 +25,25 @@ function Footer() {
       <div className="footer__column footer__column_content_info">
         <ul className="footer__column-list">
           <li className="footer__column-links">
-            <Link to="/about" class="footer__column-link">О проекте</Link>
+            <Link to="/about" className="footer__column-link">О проекте</Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/calendar" class="footer__column-link">Календарь</Link>
+            <Link to="/calendar" className="footer__column-link">Календарь</Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/place" class="footer__column-link">куда пойти</Link>
+            <Link to="/place" className="footer__column-link">куда пойти</Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/questions" class="footer__column-link">вопросы</Link>
+            <Link to="/questions" className="footer__column-link">вопросы</Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/read-watch-main" class="footer__column-link">читать и смотреть</Link>
+            <Link to="/read-watch-main" className="footer__column-link">читать и смотреть</Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/rights" class="footer__column-link">права детей</Link>
+            <Link to="/rights" className="footer__column-link">права детей</Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/stories" class="footer__column-link">истории</Link>
+            <Link to="/stories" className="footer__column-link">истории</Link>
           </li>
         </ul>
       </div>
