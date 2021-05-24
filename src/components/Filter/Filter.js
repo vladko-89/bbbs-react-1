@@ -7,8 +7,8 @@ function Filter({
   array,
 }) {
   return (
-    <div class="tags">
-      <ul class="tags__list">
+    <div className="tags">
+      <ul className="tags__list">
         {
           array.map((item) => (
             <FilterItem value={item} />
@@ -20,7 +20,7 @@ function Filter({
 }
 
 Filter.propTypes = {
-  array: PropTypes.array.isRequired,
-}
+  array: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default Filter;

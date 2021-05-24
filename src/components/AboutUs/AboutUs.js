@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import logo from '../../images/svg/calendar_logo.svg';
 import CardAboutUs from '../CardAboutUs/CardAboutUs';
@@ -8,7 +9,7 @@ function AboutUs() {
       <h3 className="chapter-title about__title">
         Наставники.про – цифоровая информационная платформа огрганизации «Старшие
         Братья Старшие Сестры». Созданная для поддержки наставников программы.
-        </h3>
+      </h3>
       <img src={logo} alt="Логотип наставники.про" className="about__logo" />
 
       <div className="about__us">
@@ -52,7 +53,8 @@ function AboutUs() {
         <CardAboutUs
           title="Пожертвования"
           linkText="сделать пожертвование"
-          color="blue">
+          color="blue"
+        >
           <div className="card__content about__card-content">
             <div className="card__annotation">
               <p className="paragraph card__paragraph">
@@ -67,7 +69,8 @@ function AboutUs() {
         <CardAboutUs
           title="Наставничество"
           linkText="подробнее"
-          color="pink">
+          color="pink"
+        >
           <div className="card__content about__card-content">
             <div className="card__annotation">
               <p className="paragraph card__paragraph">
@@ -83,7 +86,8 @@ function AboutUs() {
         <CardAboutUs
           title="Партнерство"
           linkText="подробнее"
-          color="green">
+          color="green"
+        >
           <div className="card__content about__card-content">
             <div className="card__annotation">
               <p className="paragraph card__paragraph">
