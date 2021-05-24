@@ -31,8 +31,6 @@ function CardAboutUs(
   );
 }
 
-
-
 CardAboutUs.propTypes = {
   color: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
