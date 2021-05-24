@@ -27,16 +27,12 @@ class Api {
       .catch((error) => console.log(error));
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getEvents() {
     mock.onGet('/afisha/events/').reply(200, mockEvents);
     return axios
       .get('/afisha/events/')
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
+      .then((res) => res.data)
 
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error));

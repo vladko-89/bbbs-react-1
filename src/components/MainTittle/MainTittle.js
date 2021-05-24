@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function MainTittle({
-  title
+  title,
 }) {
   return (
-    <h1 class="main-title">
+    <h1 className="main-title">
       {title}
     </h1>
   );
@@ -13,6 +13,6 @@ function MainTittle({
 
 MainTittle.propTypes = {
   title: PropTypes.string.isRequired,
-}
+};
 
 export default MainTittle;
