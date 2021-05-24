@@ -1,8 +1,9 @@
+
 import axios from 'axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import MockAdapter from 'axios-mock-adapter';
 import {
-  baseUrl, token, delayResponse,
+  baseUrl, token, delayResponse, mockCalendar,
 } from './Constants';
 import mockMain from './main.json';
 
@@ -24,6 +25,15 @@ class Api {
       .then((res) => res.data)
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error));
+  }
+    getCalendar() {
+    mock.onGet("/calendar").reply(200,  {
+      calendar: mockCalendar,
+    });
+    return axios
+      .get("/calendar")
+      .then((res) => res.data)
+      .catch(error => console.log(error));
   }
 }
 const api = new Api(baseUrl, token);
