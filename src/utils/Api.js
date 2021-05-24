@@ -2,8 +2,9 @@ import axios from 'axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import MockAdapter from 'axios-mock-adapter';
 import {
-  baseUrl, token, mockMain, delayResponse,
+  baseUrl, token, delayResponse,
 } from './Constants';
+import mockMain from './main.json';
 
 const mock = new MockAdapter(axios, { delayResponse });
 
