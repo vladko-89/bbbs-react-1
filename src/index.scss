@@ -1,19 +1,26 @@
-
+@import "./scss/_page.scss";
 /*// Общие настройки и стили*/
 @import './vendor/normalize.css';
 @import './vendor/fonts/fonts.css';
 @import './sass/base/variables.scss';
 @import './sass/base/mixins.scss';
-@import './sass/page'; 
+@import './sass/page';
 /*Стили для Header */
 @import './components/Header/Header';
 @import './components/Navigation/Navigation';
 @import "./scss/_button.scss";
 @import "./scss/_paragraph.scss";
+@import "./scss/_card-container.scss";
 @import "./scss/_section-title.scss";
 @import "./scss/_chapter-title.scss";
 @import "./scss/_link.scss";
+@import "./components/CardCaption/CardCaption.scss";
+@import "./components/MentorChoice/MentorChoice.scss";
 @import "./scss/_card.scss";
+
+@import "./components/Filter/Filter.scss";
+@import "./components/MainTittle/MainTittle.scss";
+@import "./components/FilterItem/FilterItem.scss";
 @import "./components/AboutUs/AboutUs.scss";
 @import "./components/Footer/Footer.scss";
 @import './components/App/App.scss';
