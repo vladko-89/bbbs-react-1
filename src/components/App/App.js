@@ -27,9 +27,9 @@ function App() {
         <Route exact path="/about">
           <AboutUs />
         </Route>
-<Route exact path="/calendar">
-   <Calendar/>
-  </Route>
+        <Route exact path="/calendar">
+          <Calendar />
+        </Route>
         <Footer />
       </div>
     </HelmetProvider>
