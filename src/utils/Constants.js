@@ -1,5 +1,6 @@
 const token = '';
 const baseUrl = 'http://localhost:3000';
+const delayResponse = 500;
 const mockCalendar = [
   {
     id: 1,
@@ -18,4 +19,6 @@ const mockCalendar = [
 
 ];
 
-export { baseUrl, token, mockCalendar };
+export {
+  baseUrl, token, delayResponse, mockCalendar,
+};
