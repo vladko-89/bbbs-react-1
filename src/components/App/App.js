@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import AboutUs from '../AboutUs/AboutUs';
+import Places from '../Places/Places';
 import Calendar from '../Calendar/Calendar';
 
 function App() {
@@ -19,6 +20,9 @@ function App() {
         <Header loggedIn={loggedIn} />
         <Route exact path="/">
           <Main />
+        </Route>
+        <Route path="/place">
+          <Places />
         </Route>
         <Route exact path="/about">
           <AboutUs />
