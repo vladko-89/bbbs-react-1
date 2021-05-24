@@ -25,7 +25,9 @@ function PlacesCard(
             {subtitle}
           </p>
         </div>
-        <a href="#" class="link card__link">перейти на сайт</a>
+        <a href="#" class="link card__link">
+          перейти на сайт
+        </a>
       </div>
 
       <div class="card card_content_annotation">
