@@ -1,12 +1,12 @@
+/* eslint-disable max-len */
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function CalendarDescription(props) {
-
-
+function CalendarDescription({ isOpen, onClose, handleDescriptionClick }) {
   return (
-      <div className={`popup popup_type_description ${props.isOpen ? 'popup_opened' : ''}`}>
+    <div className={`popup popup_type_description ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_calendar">
-        <button className="popup__close popup__cancel" type="button" onClick={props.onClose}></button>
+        <button aria-label="close" className="popup__close popup__cancel" type="button" onClick={onClose} />
         <div className="calendar__caption">
           <div className="calendar__info">
             <p className="calendar__type">Волонтёры + дети</p>
@@ -22,13 +22,14 @@ function CalendarDescription(props) {
           <p className="calendar__place">Садовническая наб., д. 77 стр. 1 (офис компании Ernst&Young)</p>
           <p className="calendar__contact">Александра, +7 926 356-78-90</p>
           <div className="calendar__description">
-            <p className="paragraph calendar__desc-paragraph">Наконец-то наступила весна и мы пережили эту долгую зиму! И возможно, что внутренних сил и ресурса сейчас не
-              так много, а до окончания учебного года ещё целых несколько месяцев. Поэтому приглашаем вас на встречу нашего ресурсного клуба "Наставник PRO", которую мы
+            <p className="paragraph calendar__desc-paragraph">
+              Наконец-то наступила весна и мы пережили эту долгую зиму! И возможно, что внутренних сил и ресурса сейчас не
+              так много, а до окончания учебного года ещё целых несколько месяцев. Поэтому приглашаем вас на встречу нашего ресурсного клуба &laquo;Наставник PRO&raquo;, которую мы
               хотим посвятить теме поиска моральных сил, смыслов и внутреннего ресурса для общения и взаимодействия с нашими подопечными.
             </p>
           </div>
           <div className="calendar__submit">
-            <button className="button button_theme_light button_action_confirm" type="button" onClick={props.handleDescriptionClick}>Записаться</button>
+            <button className="button button_theme_light button_action_confirm" type="button" onClick={handleDescriptionClick}>Записаться</button>
             <p className="calendar__place-left">Осталось 5 мест</p>
           </div>
         </div>
@@ -37,5 +38,9 @@ function CalendarDescription(props) {
 
   );
 }
-
+CalendarDescription.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  handleDescriptionClick: PropTypes.func.isRequired,
+};
 export default CalendarDescription;

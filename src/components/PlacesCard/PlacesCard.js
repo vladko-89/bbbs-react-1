@@ -26,7 +26,7 @@ function PlacesCard(
             {subtitle}
           </p>
         </div>
-        <a href="#" className="link card__link">
+        <a href="/" className="link card__link">
           перейти на сайт
         </a>
       </div>
@@ -35,8 +35,8 @@ function PlacesCard(
         <div className="card__content">
           {caption && <CardCaption textCaption={textCaption} />}
           <div className="card__annotation">
-            <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-            <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
+            <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
+            <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
           </div>
         </div>
       </div>
@@ -46,11 +46,11 @@ function PlacesCard(
 
 PlacesCard.propTypes = {
   color: PropTypes.string.isRequired,
-  choice: PropTypes.bool,
+  choice: PropTypes.bool.isRequired,
   tittle: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
-  caption: PropTypes.bool,
-  textCaption: PropTypes.string,
+  caption: PropTypes.bool.isRequired,
+  textCaption: PropTypes.string.isRequired,
 };
 
 export default PlacesCard;

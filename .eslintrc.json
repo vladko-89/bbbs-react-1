@@ -19,6 +19,6 @@
     ],
     "rules": {
       "react/jsx-filename-extension": "off",
-      "linebreak-style": ["error", "unix"]
+      "linebreak-style": "off"
     }
 }

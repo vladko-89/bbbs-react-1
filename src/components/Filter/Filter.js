@@ -20,7 +20,7 @@ function Filter({
 }
 
 Filter.propTypes = {
-  array: PropTypes.array.isRequired,
+  array: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Filter;
