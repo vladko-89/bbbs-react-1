@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
 function CardAboutUs(
-  { color,
+  {
+    color,
     title,
     children,
     linkText,
-  }) {
-
+  },
+) {
   return (
     <article className="card-container about__card-container">
       <div className={`card card_color_${color} about__card`}>
@@ -22,8 +22,8 @@ function CardAboutUs(
           href="https://yandex.ru"
           rel="noreferrer"
           target="_blank"
-
-          className="link card__link about__card-link">
+          className="link card__link about__card-link"
+        >
 
           {linkText}
         </a>
@@ -37,13 +37,5 @@ CardAboutUs.propTypes = {
   children: PropTypes.node.isRequired,
   linkText: PropTypes.string.isRequired,
 };
-
-
-CardAboutUs.propTypes = {
-  color: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  linkText: PropTypes.string.isRequired,
-}
 
 export default CardAboutUs;

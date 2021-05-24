@@ -5,12 +5,20 @@ import FilterItem from '../FilterItem/FilterItem';
 
 function Filter({
   array,
+  arraySecond,
 }) {
   return (
-    <div class="tags">
-      <ul class="tags__list">
+    <div className="tags">
+      <ul className="tags__list">
         {
           array.map((item) => (
+            <FilterItem value={item} />
+          ))
+        }
+      </ul>
+      <ul className="tags__list">
+        {
+          arraySecond.map((item) => (
             <FilterItem value={item} />
           ))
         }
@@ -20,7 +28,8 @@ function Filter({
 }
 
 Filter.propTypes = {
-  array: PropTypes.array.isRequired,
-}
+  array: PropTypes.arrayOf.isRequired,
+  arraySecond: PropTypes.arrayOf.isRequired,
+};
 
 export default Filter;

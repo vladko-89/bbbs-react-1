@@ -3,10 +3,14 @@
 @import './vendor/fonts/fonts.css';
 @import './sass/base/variables.scss';
 @import './sass/base/mixins.scss';
-@import './sass/page'; 
+@import './sass/page';
 /*Стили для Header */
 @import './components/Header/Header';
 @import './components/Navigation/Navigation';
+
+@import "./scss/_lead.scss";
+@import "./scss/_main.scss";
+@import "./scss/_main-card.scss";
 @import "./scss/_button.scss";
 @import "./scss/_paragraph.scss";
 @import "./scss/_card-container.scss";
@@ -18,7 +22,7 @@
 @import "./scss/_card.scss";
 
 @import "./components/Filter/Filter.scss";
-@import "./components/MainTittle/MainTittle.scss";
+@import "./components/MainTitle/MainTitle.scss";
 @import "./components/FilterItem/FilterItem.scss";
 @import "./components/AboutUs/AboutUs.scss";
 @import "./components/Footer/Footer.scss";

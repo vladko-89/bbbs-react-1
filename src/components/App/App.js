@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -6,6 +5,7 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import AboutUs from '../AboutUs/AboutUs';
+import Places from '../Places/Places';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -19,6 +19,9 @@ function App() {
         <Header loggedIn={loggedIn} />
         <Route exact path="/">
           <Main />
+        </Route>
+        <Route path="/place">
+          <Places />
         </Route>
         <Route exact path="/about">
           <AboutUs />
