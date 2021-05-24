@@ -9,6 +9,7 @@ function Footer() {
         <img className="footer__logo-image" src={logo} alt="Логотип Старшие Братья Старшие Сестры России" />
       </Link>
 
+
       <a href="https://www.nastavniki.org/campaign/pomoch-dengami" className="button footer__button" rel="noreferrer" target="_blank">
         Помочь деньгами
       </a>
@@ -28,12 +29,14 @@ function Footer() {
             <a href="https://krkr.design/" className="footer__production" rel="noreferrer" target="_blank">
               krkr.design
             </a>
+
           </p>
         </div>
       </div>
       <div className="footer__column footer__column_content_info">
         <ul className="footer__column-list">
           <li className="footer__column-links">
+
             <Link to="/about" className="footer__column-link">
               О проекте
             </Link>
@@ -68,6 +71,7 @@ function Footer() {
               истории
             </Link>
 
+
           </li>
         </ul>
       </div>
@@ -80,6 +84,7 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
+
 
               facebook
             </a>
@@ -108,6 +113,7 @@ function Footer() {
             >
               youtube
             </a>
+
 
           </li>
         </ul>

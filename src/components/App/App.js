@@ -6,6 +6,7 @@ import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import AboutUs from '../AboutUs/AboutUs';
 import Places from '../Places/Places';
+import Calendar from '../Calendar/Calendar';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -26,6 +27,9 @@ function App() {
         <Route exact path="/about">
           <AboutUs />
         </Route>
+<Route exact path="/calendar">
+   <Calendar/>
+  </Route>
         <Footer />
       </div>
     </HelmetProvider>

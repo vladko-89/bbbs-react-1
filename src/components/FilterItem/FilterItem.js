@@ -21,7 +21,9 @@ function FilterItem({
 
 FilterItem.propTypes = {
   value: PropTypes.string.isRequired,
+
   key: PropTypes.number.isRequired,
+
 };
 
 export default FilterItem;

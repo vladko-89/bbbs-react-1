@@ -24,13 +24,15 @@ function CardAboutUs(
           target="_blank"
           className="link card__link about__card-link"
         >
-
           {linkText}
         </a>
       </div>
     </article>
   );
 }
+
+
+
 CardAboutUs.propTypes = {
   color: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

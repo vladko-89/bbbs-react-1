@@ -2,6 +2,7 @@
 import React from 'react';
 import logo from '../../images/svg/calendar_logo.svg';
 import CardAboutUs from '../CardAboutUs/CardAboutUs';
+
 import './AboutUs.scss';
 
 function AboutUs() {

@@ -7,6 +7,7 @@ function CardCaption({
   return (
     <p className="caption card__annotation-caption">
       {info}
+
     </p>
   );
 }
