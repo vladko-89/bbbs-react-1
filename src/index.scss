@@ -1,7 +1,13 @@
-@import "./scss/_variables.scss";
-@import "./scss/_mixins.scss";
-
 @import "./scss/_page.scss";
+/*// Общие настройки и стили*/
+@import './vendor/normalize.css';
+@import './vendor/fonts/fonts.css';
+@import './sass/base/variables.scss';
+@import './sass/base/mixins.scss';
+@import './sass/page';
+/*Стили для Header */
+@import './components/Header/Header';
+@import './components/Navigation/Navigation';
 @import "./scss/_button.scss";
 @import "./scss/_paragraph.scss";
 @import "./scss/_card-container.scss";
@@ -17,3 +23,27 @@
 @import "./components/FilterItem/FilterItem.scss";
 @import "./components/AboutUs/AboutUs.scss";
 @import "./components/Footer/Footer.scss";
+@import './components/App/App.scss';
+@import './components/Main/Main.scss';
+@import './components/MainLead/MainLead.scss';
+@import './components/MainStory/MainStory.scss';
+@import './components/MainMentor/MainMentor.scss';
+@import './components/MainAnnotation/MainAnnotation.scss';
+@import './components/MainArticle/MainArticle.scss';
+@import './components/MainVideoPreview/MainVideoPreview.scss';
+@import './components/MainVideo/MainVideo.scss';
+@import './components/MainQuestion/MainQuestion.scss';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
