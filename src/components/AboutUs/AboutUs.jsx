@@ -9,12 +9,15 @@ function AboutUs() {
       <h3 className="chapter-title about__title">
         Наставники.про – цифоровая информационная платформа огрганизации «Старшие
         Братья Старшие Сестры». Созданная для поддержки наставников программы.
+
       </h3>
       <img src={logo} alt="Логотип наставники.про" className="about__logo" />
 
       <div className="about__us">
         <div className="card card_color_yellow about__circle">
-          <h2 className="section-title">Об организации</h2>
+          <h2 className="section-title">
+            Об организации
+          </h2>
         </div>
         <article className="card card_content_annotation about__caption">
           <div className="card__content">
