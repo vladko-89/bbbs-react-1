@@ -2,15 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../images/svg/footer-logo.svg';
 
-
-
-
 function Footer() {
   return (
     <footer className="footer">
-      <Link to="/" class="footer__logo">
-        <img class="footer__logo-image" src={logo} alt="Логотип Старшие Братья Старшие Сестры России" />
+      <Link to="/" className="footer__logo">
+        <img className="footer__logo-image" src={logo} alt="Логотип Старшие Братья Старшие Сестры России" />
       </Link>
+
       <a href="https://www.nastavniki.org/campaign/pomoch-dengami" class="button footer__button" rel="noreferrer" target="_blank">
         Помочь деньгами
       </a>
@@ -69,22 +67,29 @@ function Footer() {
             <Link to="/stories" class="footer__column-link" >
               истории
             </Link>
+
           </li>
         </ul>
       </div>
-      <div class="footer__column footer__column_content_social">
-        <ul class="footer__column-list">
-          <li class="footer__column-links">
-            <a href="https://www.facebook.com/BigBrothers.BigSisters.Russia/" class="footer__column-link"
+      <div className="footer__column footer__column_content_social">
+        <ul className="footer__column-list">
+          <li className="footer__column-links">
+            <a
+              href="https://www.facebook.com/BigBrothers.BigSisters.Russia/"
+              className="footer__column-link"
               target="_blank"
+
               rel="noreferrer">
+
               facebook
             </a>
           </li>
-          <li class="footer__column-links">
-            <a href="https://vk.com/big.brothers.big.sisters"
-              class="footer__column-link"
+          <li className="footer__column-links">
+            <a
+              href="https://vk.com/big.brothers.big.sisters"
+              className="footer__column-link"
               target="_blank"
+
               rel="noreferrer">
               vkontakte
             </a>
@@ -101,6 +106,7 @@ function Footer() {
               rel="noreferrer">
               youtube
             </a>
+
           </li>
         </ul>
       </div>
