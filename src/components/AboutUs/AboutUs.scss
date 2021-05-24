@@ -1,7 +1,7 @@
 .about {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 }
 
 //блог заголовка
@@ -58,8 +58,8 @@
   padding: 60px 0;
   width: 100%;
   text-align: center;
-  border-top: 1px solid $lightGray;
-  border-bottom: 1px solid $lightGray;
+  border-top: 1px solid #a7a6a6;
+  border-bottom: 1px solid #a7a6a6;
 }
 
 .about__quote-text {
@@ -97,7 +97,7 @@
 
 //адаптив
 
-@include atDesktop1440 {
+@media screen and (max-width: 1400px) {
   .about__title {
     max-width: 1030px;
   }
@@ -107,7 +107,7 @@
   }
 }
 
-@include atDesktop1380 {
+@media screen and (max-width: 1380px) {
   .about__us {
     grid-template-columns: 570px;
     grid-template-rows: 358px 373px;
@@ -123,7 +123,7 @@
   }
 }
 
-@include atDesktop1024 {
+@media screen and (max-width: 1100px) {
   .about__logo {
     width: 252px;
   }
@@ -159,14 +159,14 @@
   }
 }
 
-@include atTablet {
+@media screen and (max-width: 767px) {
   .about__us {
     padding-top: 30px;
     grid-template-columns: 1fr;
   }
 }
 
-@include atMobile {
+@media screen and (max-width: 575px) {
   .about__us {
     grid-template-rows: 280px 1fr;
   }
