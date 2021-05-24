@@ -5,6 +5,7 @@ import {
   baseUrl, token, delayResponse,
 } from './Constants';
 import mockMain from './main.json';
+import mockEvents from './mockEvents.json';
 
 const mock = new MockAdapter(axios, { delayResponse });
 
@@ -22,6 +23,21 @@ class Api {
     return axios
       .get('/main')
       .then((res) => res.data)
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(error));
+  }
+
+  getEvents() {
+    mock.onGet('/afisha/events/').reply(200, mockEvents);
+    return axios
+      .get('/afisha/events/')
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error));
   }
