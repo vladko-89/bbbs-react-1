@@ -7,6 +7,10 @@
 /*Стили для Header */
 @import './components/Header/Header';
 @import './components/Navigation/Navigation';
+
+@import "./scss/_lead.scss";
+@import "./scss/_main.scss";
+@import "./scss/_main-card.scss";
 @import "./scss/_button.scss";
 @import "./scss/_paragraph.scss";
 @import "./scss/_card-container.scss";
@@ -16,9 +20,19 @@
 @import "./components/CardCaption/CardCaption.scss";
 @import "./components/MentorChoice/MentorChoice.scss";
 @import "./scss/_card.scss";
+@import './scss/_page.scss';
+@import './scss/_button.scss';
+@import './scss/_calendar-container.scss';
+@import './scss/_calendar.scss';
+@import './scss/popup';
+@import './scss/main-title.scss';
+@import './scss/_main.scss';
+@import './scss/_main-section.scss';
+@import './scss/_tags.scss';
+@import './scss/section-title';
 
 @import "./components/Filter/Filter.scss";
-@import "./components/MainTittle/MainTittle.scss";
+@import "./components/MainTitle/MainTitle.scss";
 @import "./components/FilterItem/FilterItem.scss";
 @import "./components/AboutUs/AboutUs.scss";
 @import "./components/Footer/Footer.scss";
@@ -33,6 +47,7 @@
 @import './components/MainVideo/MainVideo.scss';
 @import './components/MainQuestion/MainQuestion.scss';
 @import './components/Profile/Profile';
+@import './components/MeetingDeletePopup/MeetingDeletePopup.scss';
 
 body {
   margin: 0;

@@ -1,7 +1,4 @@
-const token = '';
-const baseUrl = 'http://localhost:3000';
-const delayResponse = 500;
-const mockCalendar = [
+const mockData = [
   {
     id: 1,
     booked: true,
@@ -16,9 +13,6 @@ const mockCalendar = [
     takenSeats: 0,
     city: 1,
   },
-
 ];
 
-export {
-  baseUrl, token, delayResponse, mockCalendar,
-};
+export default mockData;
