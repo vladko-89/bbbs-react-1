@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 function FilterItem({
-  value
+  value,
 }) {
   return (
-    <li class="tags__list-item">
-      <button class="button tags__button tags__button_active" type="button">
+    <li className="tags__list-item">
+      <button className="button tags__button tags__button_active" type="button">
         {value}
       </button>
     </li>
@@ -15,6 +15,6 @@ function FilterItem({
 
 FilterItem.propTypes = {
   value: PropTypes.string.isRequired,
-}
+};
 
 export default FilterItem;
