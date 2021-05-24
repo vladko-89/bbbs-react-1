@@ -1,11 +1,19 @@
 @import "./scss/_variables.scss";
 @import "./scss/_mixins.scss";
+
 @import "./scss/_page.scss";
 @import "./scss/_button.scss";
 @import "./scss/_paragraph.scss";
+@import "./scss/_card-container.scss";
 @import "./scss/_section-title.scss";
 @import "./scss/_chapter-title.scss";
 @import "./scss/_link.scss";
+@import "./components/CardCaption/CardCaption.scss";
+@import "./components/MentorChoice/MentorChoice.scss";
 @import "./scss/_card.scss";
+
+@import "./components/Filter/Filter.scss";
+@import "./components/MainTittle/MainTittle.scss";
+@import "./components/FilterItem/FilterItem.scss";
 @import "./components/AboutUs/AboutUs.scss";
 @import "./components/Footer/Footer.scss";
