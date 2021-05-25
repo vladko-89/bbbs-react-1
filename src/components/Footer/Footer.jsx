@@ -9,7 +9,6 @@ function Footer() {
         <img className="footer__logo-image" src={logo} alt="Логотип Старшие Братья Старшие Сестры России" />
       </Link>
 
-
       <a href="https://www.nastavniki.org/campaign/pomoch-dengami" className="button footer__button" rel="noreferrer" target="_blank">
         Помочь деньгами
       </a>
@@ -71,7 +70,6 @@ function Footer() {
               истории
             </Link>
 
-
           </li>
         </ul>
       </div>
@@ -84,7 +82,6 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-
 
               facebook
             </a>
@@ -113,7 +110,6 @@ function Footer() {
             >
               youtube
             </a>
-
 
           </li>
         </ul>
