@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import PropTypes from 'prop-types';
 
-// TODO declension of numbers
+// TODO declension of numbers, slug integraiton (example: main data)
 function CalendarEvent({
   booked, title, address, contact, startAt, endAt, seats, takenSeats, onCancel, onDescription,
 }) {
