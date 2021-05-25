@@ -17,8 +17,8 @@ function Profile(props) {
   const [meetTime, setMeetTime] = React.useState('');
 
   const handleDeleteMeetClick = (event) => {
-    setMeetTitle(event.target.closest('.personal-area__card-title').content);
-    setMeetTime(event.target.closest('.personal-area__card-weekday').content);
+    setMeetTitle(event.target.closest('.card-container_type_personal-area').querySelector('.personal-area__card-title').textContent);
+    setMeetTime(event.target.closest('.card-container_type_personal-area').querySelector('.personal-area__card-weekday').textContent);
     setIsOpenPopapDeleteMeet(true);
   };
 
@@ -26,6 +26,7 @@ function Profile(props) {
     if (event.key === 'Escape' || event.target.classList.contains('popup_opened')) {
       setIsOpenPopapDeleteMeet(false);
     }
+    setIsOpenPopapDeleteMeet(false);
   };
 
   const handleDeleteMeet = () => {
