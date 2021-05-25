@@ -129,6 +129,7 @@ function Profile(props) {
                       className="button personal-area__delete"
                       type="button"
                       onClick={handleDeleteMeetClick}
+                      disabled
                     >
                       Удалить
                     </button>
