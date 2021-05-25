@@ -8,10 +8,12 @@ import AboutUs from '../AboutUs/AboutUs';
 import Places from '../Places/Places';
 import Calendar from '../Calendar/Calendar';
 import Profile from '../Profile/Profile';
+import Questions from '../Questions/Questions';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
+
   return (
     <HelmetProvider>
       <div className="app page">
@@ -31,6 +33,9 @@ function App() {
           </Route>
           <Route exact path="/calendar">
             <Calendar />
+          </Route>
+          <Route exact path="/questions">
+            <Questions />
           </Route>
           <Route exact path="/profile">
             <Profile />
