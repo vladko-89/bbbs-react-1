@@ -31,7 +31,9 @@ class Api {
     mock.onGet('/afisha/events/').reply(200, mockEvents);
     return axios
       .get('/afisha/events/')
-      .then((res) => res.data);
+      .then((res) => res.data)
+    // eslint-disable-next-line no-console
+      .catch((error) => console.log(error));
   }
 
   getCalendar() {

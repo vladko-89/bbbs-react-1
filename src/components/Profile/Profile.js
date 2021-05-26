@@ -1,40 +1,51 @@
-// import {
-//   Link, NavLink,
-// } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import img from '../../images/personal-area/lk.png';
 import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
+import PopapCities from '../PopapCities/PopapCities';
 
 // eslint-disable-next-line no-unused-vars
-function Profile(props) {
+function Profile({ onOutClick }) {
   // eslint-disable-next-line no-unused-vars
   const [userEvents, setUserEvents] = React.useState([]);
-  const [isOpenPopapDeleteMeet, setIsOpenPopapDeleteMeet] = React.useState(false);
+  const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(false);
+  const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [meetTitle, setMeetTitle] = React.useState('');// тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
   const handleDeleteMeetClick = (event) => {
-    setMeetTitle(event.target.closest('.card-container_type_personal-area').querySelector('.personal-area__card-title').textContent);
-    setMeetTime(event.target.closest('.card-container_type_personal-area').querySelector('.personal-area__card-weekday').textContent);
-    setIsOpenPopapDeleteMeet(true);
+    setMeetTitle(event.target.closest('.card-container_type_personal-area')
+      .querySelector('.personal-area__card-title').textContent);
+    setMeetTime(event.target.closest('.card-container_type_personal-area')
+      .querySelector('.personal-area__card-weekday').textContent);
+    setIsOpenPopupDeleteMeet(true);
   };
 
   const handleClose = (event) => {
     if (event.key === 'Escape' || event.target.classList.contains('popup_opened')) {
-      setIsOpenPopapDeleteMeet(false);
+      setIsOpenPopupDeleteMeet(false);
+      setIsOpenPopupCities(false);
     }
-    setIsOpenPopapDeleteMeet(false);
+    setIsOpenPopupDeleteMeet(false);
+    setIsOpenPopupCities(false);
   };
 
   const handleDeleteMeet = () => {
     // eslint-disable-next-line no-console
     console.log('Meet wil be deleted');
   };
+  const handleChangeCityClick = () => {
+    setIsOpenPopupCities(true);
+  };
+
+  const handleChangeCity = (city) => {
+    // eslint-disable-next-line no-console
+    console.log(`city changed on ${city}`);
+  };
   api.getEvents()
-    .then((res) => setUserEvents(res))
+    .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
     // eslint-disable-next-line no-console
     .catch((err) => console.log(err));
 
@@ -47,6 +58,7 @@ function Profile(props) {
             <button
               type="button"
               className="paragraph personal-area__user-link personal-area__user-link_type_city "
+              onClick={handleChangeCityClick}
             >
               Изменить
               город
@@ -54,6 +66,7 @@ function Profile(props) {
             <Link
               to="/"
               className="paragraph personal-area__user-link personal-area__user-link_type_exit"
+              onClick={onOutClick}
             >
               Выйти
             </Link>
@@ -208,19 +221,30 @@ function Profile(props) {
         </section>
       </main>
       {
-        isOpenPopapDeleteMeet
+        isOpenPopupDeleteMeet
       }
       &&
       <MeetingDeletePopup
         onDeleteClick={handleDeleteMeet}
         onCloseClick={handleClose}
-        isOpen={isOpenPopapDeleteMeet}
+        isOpen={isOpenPopupDeleteMeet}
         title={`${meetTitle} ${meetTime}`}
       />
-
+      {{ isOpenPopupCities }
+      && (
+      <PopapCities
+        onChangeCities={handleChangeCity}
+        onCloseClick={handleClose}
+        isOpen={isOpenPopupCities}
+      />
+      )}
       )
     </>
   );
 }
+
+Profile.propTypes = {
+  onOutClick: PropTypes.func.isRequired,
+};
 
 export default Profile;
