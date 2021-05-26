@@ -15,12 +15,10 @@ function Calendar() {
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
   const [isSuccessRegistrationPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
   const [calendarData, setCalendarData] = React.useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [filtredData, setFiltredData] = React.useState(null);
+  const [filtredData, setFiltredData] = React.useState();
 
   const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLL', { locale: ruLocale })))];
 
-  console.log(FilterArrayFirst);
   React.useEffect(() => {
     api.getCalendar()
       .then((res) => {
@@ -55,63 +53,33 @@ function Calendar() {
     setIsDescriptionPopupOpen(false);
     setIsSuccessRegPopupOpen(false);
   }
-  function filterOn(value) {
+  function handleFilter(value) {
     setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value));
   }
-
-  if (filtredData) {
-    return (
-      <>
-        <main className="main">
-          <section className="lead page__section">
-            <MainTitle title="Календарь" />
-            <Filter onActive={filterOn} array={FilterArrayFirst} />
-          </section>
-          <section className="calendar-container page__section">
-            {filtredData.map((calendar) => (
-              <CalendarEvent
-                key={calendar.id}
-                booked={calendar.booked}
-                title={calendar.title}
-                address={calendar.address}
-                contact={calendar.contact}
-                startAt={calendar.startAt}
-                endAt={calendar.endAt}
-                seats={calendar.seats}
-                takenSeats={calendar.takenSeats}
-                onCancel={handleCancelClick}
-                onDescription={handleOnDescriptionClick}
-              />
-            ))}
-          </section>
-        </main>
-        <CalendarConfirmation
-          isOpen={isConfirmationPopupOpen}
-          onClose={closeAllPopups}
-          handleSuccessRegClick={handleSuccessRegistrationPopup}
-        />
-        <CalendarDescription
-          isOpen={isDescriptionPopupOpen}
-          onClose={closeAllPopups}
-          handleDescriptionClick={handleRegFromSecondVariant}
-        />
-        <CalendarSuccessRegistrationPopup
-          isOpen={isSuccessRegistrationPopupOpen}
-          handleCloseSuccessRegPopup={closeAllPopups}
-        />
-      </>
-    );
-  }
-
   return (
     <>
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Календарь" />
-          <Filter onActive={filterOn} array={FilterArrayFirst} />
+          <Filter onActive={handleFilter} array={FilterArrayFirst} />
         </section>
         <section className="calendar-container page__section">
-          {calendarData.map((calendar) => (
+          { filtredData && filtredData.map((calendar) => (
+            <CalendarEvent
+              key={calendar.id}
+              booked={calendar.booked}
+              title={calendar.title}
+              address={calendar.address}
+              contact={calendar.contact}
+              startAt={calendar.startAt}
+              endAt={calendar.endAt}
+              seats={calendar.seats}
+              takenSeats={calendar.takenSeats}
+              onCancel={handleCancelClick}
+              onDescription={handleOnDescriptionClick}
+            />
+          ))}
+          {!filtredData && calendarData.map((calendar) => (
             <CalendarEvent
               key={calendar.id}
               booked={calendar.booked}
