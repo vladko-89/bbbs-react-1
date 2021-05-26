@@ -21,7 +21,7 @@ function App() {
         <Header loggedIn={loggedIn} />
         <Switch>
           <Route exact path="/">
-            <Main />
+            <Main loggedIn={loggedIn} />
           </Route>
           <Route exact path="/place">
             <Places />
