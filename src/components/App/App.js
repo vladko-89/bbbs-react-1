@@ -8,6 +8,7 @@ import AboutUs from '../AboutUs/AboutUs';
 import Places from '../Places/Places';
 import Calendar from '../Calendar/Calendar';
 import Profile from '../Profile/Profile';
+import Video from '../Video/Video';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route exact path="/profile">
             <Profile />
+          </Route>
+          <Route exact path="/video">
+            <Video />
           </Route>
         </Switch>
         <Footer />

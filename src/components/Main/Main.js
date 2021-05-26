@@ -9,6 +9,7 @@ import MainVideo from '../MainVideo/MainVideo';
 import MainQuestion from '../MainQuestion/MainQuestion';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
+// import MainContext from '../../contexts/MainContext';
 
 // TODO create wrapper component
 function Main() {
