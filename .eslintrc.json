@@ -19,7 +19,10 @@
     ],
     "rules": {
       "jsx-a11y/label-has-associated-control": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "import/no-named-as-default": 0,
       "react/jsx-filename-extension": "off",
       "linebreak-style": "off"
     }
 }
+

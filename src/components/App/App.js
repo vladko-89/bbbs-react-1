@@ -11,7 +11,13 @@ import Profile from '../Profile/Profile';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
+
+  const handleOutClick = () => {
+    setLoggedIn(false);
+    // eslint-disable-next-line no-console
+    console.log('удалить токен из хранилища');
+  };
   return (
     <HelmetProvider>
       <div className="app page">
@@ -33,7 +39,7 @@ function App() {
             <Calendar />
           </Route>
           <Route exact path="/profile">
-            <Profile />
+            <Profile onOutClick={handleOutClick} />
           </Route>
         </Switch>
         <Footer />
