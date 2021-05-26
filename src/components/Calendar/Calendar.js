@@ -16,7 +16,7 @@ function Calendar() {
   const [isSuccessRegistrationPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
   const [calendarData, setCalendarData] = React.useState([]);
   const [filtredData, setFiltredData] = React.useState();
-  const [currentEvent, setCurrentEvent] = React.useState([]);
+  const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
 
   const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLL', { locale: ruLocale })))];
 
@@ -24,8 +24,6 @@ function Calendar() {
     api.getCalendar()
       .then((res) => {
         setCalendarData(res.calendar);
-        // eslint-disable-next-line no-console
-        console.log('res.calendar', res.calendar);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -37,7 +35,8 @@ function Calendar() {
     setIsConfirmationPopupOpen(!isConfirmationPopupOpen);
   }
 
-  function handleOnDescriptionClick() {
+  function handleOnDescriptionClick(calendar) {
+    setCurrentEvent(calendar);
     setIsDescriptionPopupOpen(!isDescriptionPopupOpen);
   }
   function handleSuccessRegistrationPopup() {
@@ -83,7 +82,7 @@ function Calendar() {
               endAt={calendar.endAt}
               seats={calendar.seats}
               takenSeats={calendar.takenSeats}
-              onCancel={handleActionClick}
+              onCalendarClick={handleConfirmationClick}
               onDescription={handleOnDescriptionClick}
             />
           ))}

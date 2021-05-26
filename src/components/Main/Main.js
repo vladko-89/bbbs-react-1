@@ -55,6 +55,7 @@ function Main({ loggedIn }) {
           <article className="card-container card-container_type_identical">
             {loggedIn ? (
               <CalendarEvent
+                calendar={mainState.event}
                 key={mainState.event.id}
                 booked={mainState.event.booked}
                 title={mainState.event.title}
@@ -64,7 +65,7 @@ function Main({ loggedIn }) {
                 endAt={mainState.event.endAt}
                 seats={mainState.event.seats}
                 takenSeats={mainState.event.takenSeats}
-                onCancel={handleActionClick}
+                onCalendarClick={handleActionClick}
                 onDescription={handleDescriptionClick}
               />
             ) : <MainLead />}
@@ -148,14 +149,18 @@ function Main({ loggedIn }) {
           isOpen={isConfirmationPopupOpen}
           handleSuccessRegClick={handleSuccessRegClick}
           onClose={closeAllPopups}
+          currentEvent={mainState.event}
         />
         <CalendarDescription
           isOpen={isDescriptionPopupOpen}
           onClose={closeAllPopups}
+          currentEvent={mainState.event}
+          handleDescriptionClick={handleDescriptionClick}
         />
         <CalendarSuccessRegistrationPopup
+          currentEvent={mainState.event}
           isOpen={isSuccessRegPopupOpen}
-          handleCloseSuccessRegPopup={closeAllPopups} // fix after correction Calendar popups
+          handleCloseSuccessRegPopup={closeAllPopups}
           onClose={closeAllPopups}
         />
       </main>
