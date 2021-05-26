@@ -1,8 +1,14 @@
 /* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { format } from 'date-fns';
+// import ruLocale from 'date-fns/locale/ru';
 
-function CalendarDescription({ isOpen, onClose, handleDescriptionClick }) {
+function CalendarDescription({
+  isOpen, onClose, handleDescriptionClick, currentEvent,
+}) {
+  const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
+
   return (
     <div className={`popup popup_type_description ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_calendar">
@@ -10,27 +16,38 @@ function CalendarDescription({ isOpen, onClose, handleDescriptionClick }) {
         <div className="calendar__caption">
           <div className="calendar__info">
             <p className="calendar__type">Волонтёры + дети</p>
-            <p className="calendar__weekday">Декабрь / понедельник</p>
+            <p className="calendar__weekday">
+              {/* {format(new Date(currentEvent.startAt), 'MMMM', { locale: ruLocale })}
+              {' '} */}
+              / понедельник
+            </p>
           </div>
           <div className="calendar__about">
-            <h2 className="section-title calendar__title calendar__title_type_popup">Занятие с выпускниками: как составить резюме</h2>
-            <p className="calendar__date">20</p>
+            <h2 className="section-title calendar__title calendar__title_type_popup">{currentEvent.title}</h2>
+            <p className="calendar__date">
+              {/* {format(new Date(), currentEvent.startAt, { locale: ruLocale })} */}
+            </p>
           </div>
         </div>
         <div className="calendar__meetup">
-          <p className="calendar__time">12:00–14:00</p>
-          <p className="calendar__place">Садовническая наб., д. 77 стр. 1 (офис компании Ernst&Young)</p>
-          <p className="calendar__contact">Александра, +7 926 356-78-90</p>
+          <p className="calendar__time">
+            {/* {' '}
+            {`${format(new Date(currentEvent.startAt), 'H:mm')}–${format(new Date(currentEvent.endAt), 'H:mm')}
+              `} */}
+          </p>
+          <p className="calendar__place">{currentEvent.address}</p>
+          <p className="calendar__contact">{currentEvent.contact}</p>
           <div className="calendar__description">
             <p className="paragraph calendar__desc-paragraph">
-              Наконец-то наступила весна и мы пережили эту долгую зиму! И возможно, что внутренних сил и ресурса сейчас не
-              так много, а до окончания учебного года ещё целых несколько месяцев. Поэтому приглашаем вас на встречу нашего ресурсного клуба &laquo;Наставник PRO&raquo;, которую мы
-              хотим посвятить теме поиска моральных сил, смыслов и внутреннего ресурса для общения и взаимодействия с нашими подопечными.
+              {currentEvent.description}
             </p>
           </div>
           <div className="calendar__submit">
             <button className="button button_theme_light button_action_confirm" type="button" onClick={handleDescriptionClick}>Записаться</button>
-            <p className="calendar__place-left">Осталось 5 мест</p>
+            <p className="calendar__place-left">
+              {' '}
+              {availablePlaces ? `Осталось ${availablePlaces} мест` : 'Запись закрыта'}
+            </p>
           </div>
         </div>
       </form>
@@ -42,5 +59,6 @@ CalendarDescription.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   handleDescriptionClick: PropTypes.func.isRequired,
+  currentEvent: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default CalendarDescription;
