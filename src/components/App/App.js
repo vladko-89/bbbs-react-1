@@ -40,7 +40,7 @@ function App() {
             <Calendar />
           </Route>
           <Route exact path="/questions">
-            <Questions />
+            <Questions loggedIn={loggedIn} />
           </Route>
           <Route exact path="/profile">
             <Profile onOutClick={handleOutClick} />
