@@ -36,7 +36,16 @@ function CalendarSuccessRegistrationPopup({ isOpen, handleCloseSuccessRegPopup, 
 CalendarSuccessRegistrationPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleCloseSuccessRegPopup: PropTypes.func.isRequired,
-  currentEvent: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentEvent: PropTypes.shape({
+    startAt: PropTypes.string,
+    endAt: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    seats: PropTypes.number,
+    takenSeats: PropTypes.number,
+    address: PropTypes.string,
+    contact: PropTypes.string,
+  }).isRequired,
 };
 
 export default CalendarSuccessRegistrationPopup;

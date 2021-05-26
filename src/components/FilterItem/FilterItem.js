@@ -3,17 +3,16 @@ import React from 'react';
 
 function FilterItem({
   value,
-  key,
   onActive,
 }) {
   const [active, setActive] = React.useState(false);
 
   function handleClick() {
+    if (active) { onActive(null); } else { onActive(value); }
     setActive(!active);
-    onActive(value);
   }
   return (
-    <li className="tags__list-item" key={key}>
+    <li className="tags__list-item">
       <button className={`button tags__button ${active ? 'tags__button_active' : ''}`} type="button" onClick={handleClick}>
         {value}
       </button>
@@ -23,7 +22,6 @@ function FilterItem({
 
 FilterItem.propTypes = {
   value: PropTypes.string.isRequired,
-  key: PropTypes.number.isRequired,
   onActive: PropTypes.func.isRequired,
 };
 
