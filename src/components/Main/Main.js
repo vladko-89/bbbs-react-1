@@ -14,6 +14,7 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistrationPopup from '../CalendarSuccessRegistrationPopup/CalendarSuccessRegistrationPopup';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
+// import MainContext from '../../contexts/MainContext';
 
 // TODO create wrapper component
 function Main({ loggedIn }) {
