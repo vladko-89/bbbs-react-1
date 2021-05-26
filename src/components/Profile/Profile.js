@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import img from '../../images/personal-area/lk.png';
 import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
-import PopapCities from '../PopapCities/PopapCities';
+import PopupCities from '../PopupCities/PopupCities';
+
 
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
@@ -232,7 +233,7 @@ function Profile({ onOutClick }) {
       />
       {{ isOpenPopupCities }
       && (
-      <PopapCities
+      <PopupCities
         onChangeCities={handleChangeCity}
         onCloseClick={handleClose}
         isOpen={isOpenPopupCities}
