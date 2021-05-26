@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './QuestionForm.scss';
+
 export default function QuestionForm() {
   return (
     <section className="add-question page__section">
