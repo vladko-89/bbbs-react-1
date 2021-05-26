@@ -16,6 +16,7 @@ function Calendar() {
   const [isSuccessRegistrationPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
   const [calendarData, setCalendarData] = React.useState([]);
   const [filtredData, setFiltredData] = React.useState();
+  const [currentEvent, setCurrentEvent] = React.useState([]);
 
   const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLL', { locale: ruLocale })))];
 
@@ -32,15 +33,16 @@ function Calendar() {
       });
   }, []);
 
-  function handleCancelClick() {
+  function handleActionClick() {
     setIsConfirmationPopupOpen(!isConfirmationPopupOpen);
   }
+
   function handleOnDescriptionClick() {
     setIsDescriptionPopupOpen(!isDescriptionPopupOpen);
   }
   function handleSuccessRegistrationPopup() {
     setIsSuccessRegPopupOpen(!isSuccessRegistrationPopupOpen);
-    handleCancelClick();
+    handleActionClick();
   }
 
   function handleRegFromSecondVariant() {
@@ -56,6 +58,11 @@ function Calendar() {
   function handleFilter(value) {
     setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value));
   }
+
+  function handleConfirmationClick(calendar) {
+    setCurrentEvent(calendar);
+    handleActionClick();
+  }
   return (
     <>
       <main className="main">
@@ -66,6 +73,7 @@ function Calendar() {
         <section className="calendar-container page__section">
           { filtredData && filtredData.map((calendar) => (
             <CalendarEvent
+              calendar={calendar}
               key={calendar.id}
               booked={calendar.booked}
               title={calendar.title}
@@ -75,12 +83,13 @@ function Calendar() {
               endAt={calendar.endAt}
               seats={calendar.seats}
               takenSeats={calendar.takenSeats}
-              onCancel={handleCancelClick}
+              onCancel={handleActionClick}
               onDescription={handleOnDescriptionClick}
             />
           ))}
           {!filtredData && calendarData.map((calendar) => (
             <CalendarEvent
+              calendar={calendar}
               key={calendar.id}
               booked={calendar.booked}
               title={calendar.title}
@@ -90,7 +99,7 @@ function Calendar() {
               endAt={calendar.endAt}
               seats={calendar.seats}
               takenSeats={calendar.takenSeats}
-              onCancel={handleCancelClick}
+              onCalendarClick={handleConfirmationClick}
               onDescription={handleOnDescriptionClick}
             />
           ))}
@@ -100,15 +109,18 @@ function Calendar() {
         isOpen={isConfirmationPopupOpen}
         onClose={closeAllPopups}
         handleSuccessRegClick={handleSuccessRegistrationPopup}
+        currentEvent={currentEvent}
       />
       <CalendarDescription
         isOpen={isDescriptionPopupOpen}
         onClose={closeAllPopups}
         handleDescriptionClick={handleRegFromSecondVariant}
+        currentEvent={currentEvent}
       />
       <CalendarSuccessRegistrationPopup
         isOpen={isSuccessRegistrationPopupOpen}
         handleCloseSuccessRegPopup={closeAllPopups}
+        currentEvent={currentEvent}
       />
     </>
   );

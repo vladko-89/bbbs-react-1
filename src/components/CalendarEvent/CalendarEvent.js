@@ -5,9 +5,16 @@ import PropTypes from 'prop-types';
 
 // TODO declension of numbers, slug integraiton (example: main data)
 function CalendarEvent({
-  booked, title, address, contact, startAt, endAt, seats, takenSeats, onCancel, onDescription,
+  calendar,
+  booked, title, address, contact, startAt, endAt, seats,
+  takenSeats, onCalendarClick, onDescription,
 }) {
-  const avaiblePlaces = seats - takenSeats;
+  const availablePlaces = seats - takenSeats;
+
+  function handleClick() {
+    onCalendarClick(calendar);
+  }
+
   return (
     <article className="calendar calendar_selected">
       <div className="calendar__caption">
@@ -50,7 +57,7 @@ function CalendarEvent({
           <button
             className="button button_theme_light calendar__button calendar__button_selected calendar__button_action_sign-up"
             type="button"
-            onClick={onCancel}
+            onClick={handleClick}
           >
             Отменить запись
           </button>
@@ -60,14 +67,14 @@ function CalendarEvent({
           <button
             className="button button_theme_light calendar__button calendar__button_action_sign-up"
             type="button"
-            onClick={onCancel}
-            disabled={!avaiblePlaces}
+            onClick={onCalendarClick}
+            disabled={!availablePlaces}
           >
             Записаться
           </button>
           )}
           <p className="calendar__place-left">
-            {avaiblePlaces ? `Осталось ${avaiblePlaces} мест` : 'Запись закрыта'}
+            {availablePlaces ? `Осталось ${availablePlaces} мест` : 'Запись закрыта'}
           </p>
           <button
             className="button calendar__button-dots button_theme_light"
@@ -90,8 +97,9 @@ CalendarEvent.propTypes = {
   endAt: PropTypes.string.isRequired,
   seats: PropTypes.number.isRequired,
   takenSeats: PropTypes.number.isRequired,
-  onCancel: PropTypes.func.isRequired,
+  onCalendarClick: PropTypes.func.isRequired,
   onDescription: PropTypes.func.isRequired,
+  calendar: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default CalendarEvent;
