@@ -8,8 +8,8 @@ function FilterItem({
   const [active, setActive] = React.useState(false);
 
   function handleClick() {
+    if (active) { onActive(null); } else { onActive(value); }
     setActive(!active);
-    onActive(value);
   }
   return (
     <li className="tags__list-item">

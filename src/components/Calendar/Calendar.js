@@ -9,7 +9,7 @@ import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import api from '../../utils/Api';
 // import { CalendarContext } from "../../contexts/CalendarContext";
-
+// TODO reset other filter state
 function Calendar() {
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
@@ -55,7 +55,7 @@ function Calendar() {
     setIsSuccessRegPopupOpen(false);
   }
   function handleFilter(value) {
-    setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value));
+    if (value) { setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value)); } else { setFiltredData(null); }
   }
 
   function handleConfirmationClick(calendar) {
