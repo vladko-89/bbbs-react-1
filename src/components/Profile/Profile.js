@@ -6,7 +6,6 @@ import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
 import PopupCities from '../PopupCities/PopupCities';
 
-
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
   // eslint-disable-next-line no-unused-vars
