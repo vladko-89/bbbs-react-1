@@ -4,11 +4,13 @@ import React from 'react';
 function FilterItem({
   value,
   key,
+  onActive,
 }) {
   const [active, setActive] = React.useState(false);
 
   function handleClick() {
     setActive(!active);
+    onActive(value);
   }
   return (
     <li className="tags__list-item" key={key}>
@@ -21,9 +23,8 @@ function FilterItem({
 
 FilterItem.propTypes = {
   value: PropTypes.string.isRequired,
-
   key: PropTypes.number.isRequired,
-
+  onActive: PropTypes.func.isRequired,
 };
 
 export default FilterItem;
