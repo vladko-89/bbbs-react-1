@@ -27,7 +27,11 @@ function Places() {
     <div className="main">
       <section className="lead page__section">
         <MainTitle title="Куда пойти" />
-        <Filter array={FilterArrayFirst} arraySecond={FilterArraySecond} />
+        <Filter
+          array={FilterArrayFirst}
+          arraySecond={FilterArraySecond}
+          onActive={() => console.log('push')}// Временная заглушка
+        />
       </section>
       <section className="main-card page__section">
         <article className="card-container card-container_type_main-article">

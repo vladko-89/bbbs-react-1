@@ -8,11 +8,18 @@ import AboutUs from '../AboutUs/AboutUs';
 import Places from '../Places/Places';
 import Calendar from '../Calendar/Calendar';
 import Profile from '../Profile/Profile';
+import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
+
+  const handleOutClick = () => {
+    setLoggedIn(false);
+    // eslint-disable-next-line no-console
+    console.log('удалить токен из хранилища');
+  };
   return (
     <HelmetProvider>
       <div className="app page">
@@ -22,7 +29,7 @@ function App() {
         <Header loggedIn={loggedIn} />
         <Switch>
           <Route exact path="/">
-            <Main />
+            <Main loggedIn={loggedIn} />
           </Route>
           <Route exact path="/place">
             <Places />
@@ -33,8 +40,11 @@ function App() {
           <Route exact path="/calendar">
             <Calendar />
           </Route>
+          <Route exact path="/questions">
+            <Questions />
+          </Route>
           <Route exact path="/profile">
-            <Profile />
+            <Profile onOutClick={handleOutClick} />
           </Route>
           <Route exact path="/video">
             <Video />
