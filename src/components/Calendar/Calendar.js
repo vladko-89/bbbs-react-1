@@ -18,7 +18,7 @@ function Calendar() {
   const [filtredData, setFiltredData] = React.useState();
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
 
-  const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLL', { locale: ruLocale })))];
+  const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLLL', { locale: ruLocale })))];
 
   React.useEffect(() => {
     api.getCalendar()
@@ -55,7 +55,7 @@ function Calendar() {
     setIsSuccessRegPopupOpen(false);
   }
   function handleFilter(value) {
-    if (value) { setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value)); } else { setFiltredData(null); }
+    if (value) { setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLLL', { locale: ruLocale }) === value)); } else { setFiltredData(null); }
   }
 
   function handleConfirmationClick(calendar) {
@@ -67,7 +67,7 @@ function Calendar() {
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Календарь" />
-          <Filter onActive={handleFilter} array={FilterArrayFirst} />
+          { FilterArrayFirst.length > 1 ? <Filter onActive={handleFilter} array={FilterArrayFirst} /> : ''}
         </section>
         <section className="calendar-container page__section">
           { filtredData && filtredData.map((calendar) => (

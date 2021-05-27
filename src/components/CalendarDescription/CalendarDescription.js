@@ -17,7 +17,7 @@ function CalendarDescription({
           <div className="calendar__info">
             <p className="calendar__type">Волонтёры + дети</p>
             <p className="calendar__weekday">
-              {`${format(new Date(currentEvent.startAt), 'LLL', { locale: ruLocale })}
+              {`${format(new Date(currentEvent.startAt), 'LLLL', { locale: ruLocale })}
             / ${format(new Date(currentEvent.startAt), 'iiii', { locale: ruLocale })}
             `}
             </p>

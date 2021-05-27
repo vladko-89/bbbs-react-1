@@ -8,19 +8,36 @@ function Filter({
   arraySecond,
   onActive,
 }) {
+  const [activeFilter, setActiveFilter] = React.useState('');
+
+  function onFilterChange(filter) {
+    setActiveFilter(filter);
+  }
   return (
     <div className="tags">
       <ul className="tags__list">
         {
           array.map((item, i) => (
-            <FilterItem value={item} onActive={onActive} key={((n) => n + 1)(i)} />
+            <FilterItem
+              value={item}
+              activeFilter={activeFilter}
+              onFilterChange={onFilterChange}
+              onActive={onActive}
+              key={((n) => n + 1)(i)}
+            />
           ))
         }
       </ul>
       <ul className="tags__list">
         {
           arraySecond?.map((item, i) => (
-            <FilterItem value={item} onActive={onActive} key={((n) => n + 1)(i)} />
+            <FilterItem
+              value={item}
+              activeFilter={activeFilter}
+              onFilterChange={onFilterChange}
+              onActive={onActive}
+              key={((n) => n + 1)(i)}
+            />
           ))
         }
       </ul>
