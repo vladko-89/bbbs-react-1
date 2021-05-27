@@ -9,13 +9,14 @@ import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import api from '../../utils/Api';
 // import { CalendarContext } from "../../contexts/CalendarContext";
-
+// TODO reset other filter state
 function Calendar() {
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
   const [isSuccessRegistrationPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
   const [calendarData, setCalendarData] = React.useState([]);
   const [filtredData, setFiltredData] = React.useState();
+  const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
 
   const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLL', { locale: ruLocale })))];
 
@@ -23,8 +24,6 @@ function Calendar() {
     api.getCalendar()
       .then((res) => {
         setCalendarData(res.calendar);
-        // eslint-disable-next-line no-console
-        console.log('res.calendar', res.calendar);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -32,15 +31,17 @@ function Calendar() {
       });
   }, []);
 
-  function handleCancelClick() {
+  function handleActionClick() {
     setIsConfirmationPopupOpen(!isConfirmationPopupOpen);
   }
-  function handleOnDescriptionClick() {
+
+  function handleOnDescriptionClick(calendar) {
+    setCurrentEvent(calendar);
     setIsDescriptionPopupOpen(!isDescriptionPopupOpen);
   }
   function handleSuccessRegistrationPopup() {
     setIsSuccessRegPopupOpen(!isSuccessRegistrationPopupOpen);
-    handleCancelClick();
+    handleActionClick();
   }
 
   function handleRegFromSecondVariant() {
@@ -54,7 +55,12 @@ function Calendar() {
     setIsSuccessRegPopupOpen(false);
   }
   function handleFilter(value) {
-    setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value));
+    if (value) { setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLL', { locale: ruLocale }) === value)); } else { setFiltredData(null); }
+  }
+
+  function handleConfirmationClick(calendar) {
+    setCurrentEvent(calendar);
+    handleActionClick();
   }
   return (
     <>
@@ -66,6 +72,7 @@ function Calendar() {
         <section className="calendar-container page__section">
           { filtredData && filtredData.map((calendar) => (
             <CalendarEvent
+              calendar={calendar}
               key={calendar.id}
               booked={calendar.booked}
               title={calendar.title}
@@ -75,12 +82,13 @@ function Calendar() {
               endAt={calendar.endAt}
               seats={calendar.seats}
               takenSeats={calendar.takenSeats}
-              onCancel={handleCancelClick}
+              onCalendarClick={handleConfirmationClick}
               onDescription={handleOnDescriptionClick}
             />
           ))}
           {!filtredData && calendarData.map((calendar) => (
             <CalendarEvent
+              calendar={calendar}
               key={calendar.id}
               booked={calendar.booked}
               title={calendar.title}
@@ -90,7 +98,7 @@ function Calendar() {
               endAt={calendar.endAt}
               seats={calendar.seats}
               takenSeats={calendar.takenSeats}
-              onCancel={handleCancelClick}
+              onCalendarClick={handleConfirmationClick}
               onDescription={handleOnDescriptionClick}
             />
           ))}
@@ -100,15 +108,18 @@ function Calendar() {
         isOpen={isConfirmationPopupOpen}
         onClose={closeAllPopups}
         handleSuccessRegClick={handleSuccessRegistrationPopup}
+        currentEvent={currentEvent}
       />
       <CalendarDescription
         isOpen={isDescriptionPopupOpen}
         onClose={closeAllPopups}
         handleDescriptionClick={handleRegFromSecondVariant}
+        currentEvent={currentEvent}
       />
       <CalendarSuccessRegistrationPopup
         isOpen={isSuccessRegistrationPopupOpen}
         handleCloseSuccessRegPopup={closeAllPopups}
+        currentEvent={currentEvent}
       />
     </>
   );

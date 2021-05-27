@@ -12,15 +12,15 @@ function Filter({
     <div className="tags">
       <ul className="tags__list">
         {
-          array.map((item) => (
-            <FilterItem value={item} onActive={onActive} />
+          array.map((item, i) => (
+            <FilterItem value={item} onActive={onActive} key={((n) => n + 1)(i)} />
           ))
         }
       </ul>
       <ul className="tags__list">
         {
-          arraySecond?.map((item) => (
-            <FilterItem value={item} />
+          arraySecond?.map((item, i) => (
+            <FilterItem value={item} onActive={onActive} key={((n) => n + 1)(i)} />
           ))
         }
       </ul>
