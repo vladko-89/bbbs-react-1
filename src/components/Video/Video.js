@@ -6,6 +6,7 @@ import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import Pagination from '../Pagination/Pagination';
 import Preloader from '../Preloader/Preloader';
 import { cardsPerPage } from '../../utils/Constants';
+
 import api from '../../utils/Api';
 // Work in progress
 function Video() {
@@ -23,6 +24,14 @@ function Video() {
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }, [setMainState]);
+  function onPageChange(page) {
+    if (page !== 1) {
+      currentIndex.current = page * cardsPerPage - cardsPerPage;
+    } else {
+      currentIndex.current = 0;
+    }
+    setMoviesToShow(mainState.movies.slice(currentIndex.current, page * cardsPerPage));
+  }
   if (isDataReady) {
     return (
       <main className="main">
@@ -52,7 +61,7 @@ function Video() {
             />
           ))}
         </section>
-        <Pagination cards={mainState.movies} />
+        <Pagination cards={mainState.movies} onPageChange={onPageChange} />
       </main>
 
     );
