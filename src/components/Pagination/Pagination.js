@@ -1,9 +1,8 @@
-/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import { cardsPerPage } from '../../utils/Constants';
-// work in progress not functional
+
 function Pagination({ cards, onPageChange }) {
   const totalPages = Math.ceil(cards.length / cardsPerPage);
   return (
