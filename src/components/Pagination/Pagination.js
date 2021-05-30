@@ -1,24 +1,35 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactPaginate from 'react-paginate';
 import { cardsPerPage } from '../../utils/Constants';
 // work in progress not functional
-function Pagination({ cards }) {
+function Pagination({ cards, onPageChange }) {
   const totalPages = Math.ceil(cards.length / cardsPerPage);
-  // eslint-disable-next-line no-console
-  console.log('totalPages', totalPages);
   return (
     <section className="pagination page__section">
       <nav className="pagination__nav" aria-label="Навигация по страницам">
-        <ul className="pagination__list">
-          <li className="pagination__list-item section-title"><button type="button" className="pagination__link pagination__link_active">1</button></li>
-          <li className="pagination__list-item section-title"><button type="button" className="pagination__link">2</button></li>
-          <li className="pagination__list-item section-title"><button type="button" className="pagination__link">3</button></li>
-          <li className="pagination__list-item section-title"><button type="button" className="pagination__link">4</button></li>
-          <li className="pagination__list-item section-title"><button type="button" className="pagination__link">5</button></li>
-          <li className="pagination__list-item section-title">...</li>
-          <li className="pagination__list-item section-title"><button type="button" className="pagination__link">18</button></li>
-        </ul>
-        <button aria-label="next-page" type="button" className="pagination__arrow" />
+        <ReactPaginate
+          previousLabel=""
+          nextLabel=""
+          breakLabel="..."
+          breakClassName="pagination__list-item section-title"
+          breakLinkClassName="pagination__link"
+          pageCount={totalPages}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={4}
+          onPageChange={(data) => onPageChange(data.selected + 1)}
+          containerClassName="pagination__list"
+          activeClassName="pagination__link_active"
+          pageClassName="pagination__list-item section-title"
+          pageLinkClassName="pagination__link"
+          initialPage={0}
+          previousClassName="pagination__list-item"
+          previousLinkClassName="pagination__arrow-left"
+          nextClassName="pagination__list-item"
+          nextLinkClassName="pagination__arrow-right"
+          disabledClassName="pagination__arrow_disabled"
+        />
       </nav>
     </section>
   );
@@ -26,5 +37,6 @@ function Pagination({ cards }) {
 
 Pagination.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onPageChange: PropTypes.func.isRequired,
 };
 export default Pagination;

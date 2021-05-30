@@ -39,18 +39,38 @@
 .pagination__link:hover{
   cursor: pointer;
 }
-.pagination__arrow {
+.pagination__arrow-right {
+  display: block;
   width: 30px;
   height: 30px;
   margin-left: 55px;
   cursor: pointer;
-  background-image: url('../../images/svg/arrow-right-grey.svg');
+  background-image: url('../../images/svg/arrow-right-black.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: cover;
   border: none;
   outline: none;
+}
+
+.pagination__arrow-left {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin-left: 55px;
+  cursor: pointer;
+  background-image: url('../../images/svg/arrow-left-black.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: cover;
+  border: none;
+  outline: none;
+}
+
+.pagination__arrow_disabled{
+  display: none;
 }
 
 @include atDesktop1024 {
