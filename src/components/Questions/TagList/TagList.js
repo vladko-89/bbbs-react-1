@@ -8,7 +8,7 @@ export default function TagList() {
     <div className="tags tags_content_long-list">
       <ul className="tags__list tags__list_type_long">
         {
-          tags.map((tag, i) => <Tag key={((n) => n + 1)(i)} isActive={i === 0} name={tag} />)
+          tags.map((tag, i) => <Tag key={i.toString()} isActive={i === 0} name={tag} />)
         }
       </ul>
     </div>
