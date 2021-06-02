@@ -26,13 +26,6 @@
   gap: 80px 30px;
 }
 
-.rights__card {
-  flex-direction: row;
-  align-items: unset;
-  padding: 0;
-  overflow: hidden;
-}
-
 .rights__rubric {
   margin-top: 17px;
   align-self: center;
@@ -53,16 +46,6 @@
   &_stage_third {
     grid-row-start: third-line;
   }
-}
-
-.rights__link {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: auto;
-  text-align: center;
-  flex: 1;
-  text-decoration: none;
 }
 
 @include atDesktop1440 {
@@ -90,11 +73,6 @@
     grid-template-rows: 1fr [third-line] 1px 1fr;
     gap: 30px;
   }
-
-  .rights__card {
-    margin: 0 auto;
-    max-width: 290px;
-  }
 }
 
 @include atTablet {
@@ -115,15 +93,4 @@
   .rights {
     padding-top: 30px;
   }
-}
-
-.catalog-card__image {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
-
-.catalog-card__title {
-  text-align: center;
-  margin-top: 20px;
 }

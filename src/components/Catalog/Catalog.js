@@ -1,7 +1,10 @@
 import React from 'react';
 import MainTitle from '../MainTitle/MainTitle';
+import CatalogCard, { shapes } from './CatalogCard/CatalogCard';
 
 import './Catalog.scss';
+
+import cards from '../../utils/catalogData';
 
 export default function Catalog() {
   return (
@@ -12,154 +15,21 @@ export default function Catalog() {
       </section>
 
       <section className="rights page__section">
-
         <div className="rights__line rights__line_stage_first" />
         <div className="rights__line rights__line_stage_second" />
         <div className="rights__line rights__line_stage_third" />
 
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_form_square rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-hulk-boys.jpg" alt="Психологические особенности детей-сирот" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Психологические особенности детей-сирот</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_green card_form_circle rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-coffee.jpg" alt="Привязанность" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Привязанность</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_yellow card_form_arch rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-beach.jpg" alt="Особенности социально дезадаптивных детей" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Особенности социально дезадаптивных детей</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_pink card_form_circle rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-coffee.jpg" alt="Социальная адаптация" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Социальная адаптация</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_blue card_form_arch rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-blue-hand.jpg" alt="Социально дезадаптивные дети" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Социально дезадаптивные дети</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_pink card_form_square rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-spear.jpg" alt="Проявление агрессии у детей-сирот" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Проявление агрессии у детей-сирот</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_green card_form_arch rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-beach.jpg" alt="Психологические особенности детей-сирот" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Психологические особенности детей-сирот</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_yellow card_form_square rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-hulk-boys.jpg" alt="Социальная адаптация" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Социальная адаптация</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_green card_form_circle rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-hulk-boys.jpg" alt="Психологические особенности детей-сирот" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Психологические особенности детей-сирот</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_blue card_form_square rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-coffee.jpg" alt="Привязанность" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Привязанность</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_pink card_form_circle rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-beach.jpg" alt="Особенности социально дезадаптивных детей" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Особенности социально дезадаптивных детей</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_blue card_form_arch rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-coffee.jpg" alt="Социальная адаптация" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Социальная адаптация</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_yellow card_form_circle rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-blue-hand.jpg" alt="Социально дезадаптивные дети" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Социально дезадаптивные дети</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_green card_form_arch rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-spear.jpg" alt="Проявление агрессии у детей-сирот" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Проявление агрессии у детей-сирот</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_yellow card_form_square rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-coffee.jpg" alt="Привязанность" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Привязанность</h2>
-        </div>
-
-        <div className="catalog-card card-pagination card-pagination_type_shapes">
-          <div className="card card_color_pink card_form_arch rights__card">
-            <a href="./article.html" className="rights__link">
-              <img src="./images/catalog/catalog-coffee.jpg" alt="Социальная адаптация" className="catalog-card__image" />
-            </a>
-          </div>
-          <h2 className="section-title catalog-card__title">Социальная адаптация</h2>
-        </div>
+        {
+          cards.map((card, i) => (
+            <CatalogCard
+              key={i.toString()}
+              shape={shapes[Math.floor(Math.random() * 3)]}
+              title={card.title}
+              image={card.image}
+              path={card.path}
+            />
+          ))
+        }
       </section>
 
       <section className="pagination page__section">
