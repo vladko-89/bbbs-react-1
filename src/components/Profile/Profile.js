@@ -5,7 +5,9 @@ import img from '../../images/personal-area/lk.png';
 import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
 import PopupCities from '../PopupCities/PopupCities';
-
+import EventInProfile from '../EventInProfile/EventInProfile';
+import mockMeetingStories from '../../utils/mockMeetigsStories.json';
+import MeetingStoryForm from '../MeetingStoryForm/MeetingStoryForm';
 
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
@@ -13,19 +15,27 @@ function Profile({ onOutClick }) {
   const [userEvents, setUserEvents] = React.useState([]);
   const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
-  const [meetTitle, setMeetTitle] = React.useState('');// тут переделать на выбор встречи и получать данные встречи из выбранного компонента
+  const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
   const handleDeleteMeetClick = (event) => {
-    setMeetTitle(event.target.closest('.card-container_type_personal-area')
-      .querySelector('.personal-area__card-title').textContent);
-    setMeetTime(event.target.closest('.card-container_type_personal-area')
-      .querySelector('.personal-area__card-weekday').textContent);
+    setMeetTitle(
+      event.target
+        .closest('.card-container_type_personal-area')
+        .querySelector('.personal-area__card-title').textContent,
+    );
+    setMeetTime(
+      event.target
+        .closest('.card-container_type_personal-area')
+        .querySelector('.personal-area__card-weekday').textContent,
+    );
     setIsOpenPopupDeleteMeet(true);
   };
 
   const handleClose = (event) => {
-    if (event.key === 'Escape' || event.target.classList.contains('popup_opened')) {
+    if (
+      event.key === 'Escape' || event.target.classList.contains('popup_opened')
+    ) {
       setIsOpenPopupDeleteMeet(false);
       setIsOpenPopupCities(false);
     }
@@ -45,24 +55,29 @@ function Profile({ onOutClick }) {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${city}`);
   };
-  api.getEvents()
-    .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+  const handleSubmitStory = (data) => {
+    console.log(`saving story ${data}`);
+  };
+
+  React.useEffect(() => {
+    api
+      .getEvents()
+      .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
       <main className="main">
         <section className="personal-area page__section">
           <div className="personal-area__user-info">
-
             <button
               type="button"
               className="paragraph personal-area__user-link personal-area__user-link_type_city "
               onClick={handleChangeCityClick}
             >
-              Изменить
-              город
+              Изменить город
             </button>
             <Link
               to="/"
@@ -75,108 +90,55 @@ function Profile({ onOutClick }) {
 
           <div className="personal-area__sign-up">
             <h2 className="section-title personal-area__title personal-area__title_type_sign-up">
-              У вас
-              нет записи на
-              мероприятия
+              {userEvents.length > 0
+                ? 'Вы записаны на мероприятия:'
+                : 'У вас нет записи на мероприятия'}
             </h2>
+            {userEvents.length > 0 && <EventInProfile events={userEvents} />}
           </div>
 
           <div className="personal-area__story">
-            <h2 className="section-title personal-area__title">
-              Составьте историю вашей дружбы с
-              младшим. Эта страница
-              доступна только вам.
-            </h2>
-
-            <article className="card-container card-container_type_personal-area">
-              <div className="card personal-area__card personal-area__card_type_add-photo">
-
-                <button className="personal-area__add-photo-button" type="button">v</button>
-                <p className="caption personal-area__bottom-caption">Загрузить фото</p>
-              </div>
-              <div className="card personal-area__card personal-area__card_type_content">
-                <form name="add-story-form" className="personal-area__form">
-                  <input
-                    type="text"
-                    name="place"
-                    placeholder="Место встречи"
-                    required
-                    className="personal-area__form-input"
-                  />
-                  <input
-                    type="date"
-                    name="date"
-                    placeholder="Дата&emsp;"
-                    required
-                    className="personal-area__form-input"
-                    onChange="this.className=(this.value!=''?'has-value':'')"
-                  />
-                  <textarea
-                    type="text"
-                    name="story"
-                    className="personal-area__form-input personal-area__form-input_type_textarea"
-                    placeholder="Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось"
-                    required
-                  />
-
-                  <div className="personal-area__rating">
-                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                    <button
-                      className="personal-area__rate personal-area__rate_type_good"
-                      type="button"
-                      aria-label="good"
-                    />
-                    <button
-                      className="personal-area__rate personal-area__rate_type_neutral"
-                      type="button"
-                      aria-label="neutral"
-                    />
-                    <button
-                      className="personal-area__rate personal-area__rate_type_bad"
-                      type="button"
-                      aria-label="neutral"
-                    />
-                    <p className="caption personal-area__rating-label">Оцените проведенное время</p>
-                  </div>
-
-                  <div className="personal-area__buttons">
-                    <button
-                      className="button personal-area__delete"
-                      type="button"
-                      onClick={handleDeleteMeetClick}
-                      disabled
-                    >
-                      Удалить
-                    </button>
-                    <button className="button" type="submit" disabled>Добавить</button>
-                  </div>
-                </form>
-              </div>
-            </article>
-
+            {mockMeetingStories.length < 2 && (
+              <h2 className="section-title personal-area__title">
+                Составьте историю вашей дружбы с младшим. Эта страница
+                доступна только вам.
+              </h2>
+            ) && (
+              <MeetingStoryForm
+                onSubmit={handleSubmitStory}
+                onDelete={handleDeleteMeet}
+                isExample={false}
+              />
+            )}
+            <section className="stories-container">
+              {userEvents.length > 0 && (
+              <MeetingStoryForm
+                onSubmit={handleSubmitStory}
+                onDelete={handleDeleteMeet}
+                isExample
+              />
+              )}
+            </section>
             <article className="card-container card-container_type_personal-area">
               <div className="card card_content_media">
                 <img src={img} alt="Катя" className="personal-area__photo" />
               </div>
               <div className="card personal-area__card personal-area__date-container">
                 <div className="personal-area__text-wrap">
-                  <h2 className="section-title personal-area__card-title">Парк Горького</h2>
+                  <h2 className="section-title personal-area__card-title">
+                    Парк Горького
+                  </h2>
                   <p className="paragraph">
-                    Описание в несколько срок. Подробное описание. Опишите вашу встречу, какие
-                    чувства
-                    вы испытывали, что
-                    понравилось не понравилось. Описание в несколько срок. Подробное описание.
-                    Подробное описание.
-                    Опишите вашу встречу, какие чувства вы испытывали, что понравилось не
-                    понравилось.
-                    Описание в
-                    несколько срок. Подробное описание. Опишите вашу встречу, какие чувства вы
-                    испытывали, что понравилось
-                    не понравилось. Описание в несколько срок. Подробное описание. Подробное
-                    описание.
-                    Опишите вашу
-                    встречу, какие чувства вы испытывали, что понравилось не понравилось. чувства вы
-                    испытывали, что
+                    Описание в несколько срок. Подробное описание. Опишите вашу
+                    встречу, какие чувства вы испытывали, что понравилось не
+                    понравилось. Описание в несколько срок. Подробное описание.
+                    Подробное описание. Опишите вашу встречу, какие чувства вы
+                    испытывали, что понравилось не понравилось. Описание в
+                    несколько срок. Подробное описание. Опишите вашу встречу,
+                    какие чувства вы испытывали, что понравилось не понравилось.
+                    Описание в несколько срок. Подробное описание. Подробное
+                    описание. Опишите вашу встречу, какие чувства вы испытывали,
+                    что понравилось не понравилось. чувства вы испытывали, что
                     понравилось не понравилось.
                   </p>
                 </div>
@@ -191,16 +153,15 @@ function Profile({ onOutClick }) {
                       type="button"
                       aria-label="active-good"
                     />
-                    <p
-                      className="caption personal-area__rating-label personal-area__rating-label_type_good"
-                    >
-                      Было
-                      классно
+                    <p className="caption personal-area__rating-label personal-area__rating-label_type_good">
+                      Было классно
                     </p>
                   </div>
 
                   <div className="personal-area__action-elements">
-                    <p className="caption personal-area__opened-info">Открыто Александре К.</p>
+                    <p className="caption personal-area__opened-info">
+                      Открыто Александре К.
+                    </p>
                     <button
                       type="button"
                       className="caption personal-area__button personal-area__button_action_edit-card"
@@ -221,9 +182,7 @@ function Profile({ onOutClick }) {
           </div>
         </section>
       </main>
-      {
-        isOpenPopupDeleteMeet
-      }
+      {isOpenPopupDeleteMeet}
       &&
       <MeetingDeletePopup
         onDeleteClick={handleDeleteMeet}
@@ -231,13 +190,12 @@ function Profile({ onOutClick }) {
         isOpen={isOpenPopupDeleteMeet}
         title={`${meetTitle} ${meetTime}`}
       />
-      {{ isOpenPopupCities }
-      && (
-      <PopupCities
-        onChangeCities={handleChangeCity}
-        onCloseClick={handleClose}
-        isOpen={isOpenPopupCities}
-      />
+      {{ isOpenPopupCities } && (
+        <PopupCities
+          onChangeCities={handleChangeCity}
+          onCloseClick={handleClose}
+          isOpen={isOpenPopupCities}
+        />
       )}
       )
     </>
