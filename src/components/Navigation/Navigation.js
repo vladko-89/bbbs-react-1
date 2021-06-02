@@ -1,9 +1,9 @@
+import React from 'react';
 import {
   Link, NavLink,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-import React from 'react';
+import Search from '../Search/Search';
 
 function Navigation({ mobMenu, handleClickMobMenu, loggedIn }) {
   return (
@@ -79,7 +79,7 @@ function Navigation({ mobMenu, handleClickMobMenu, loggedIn }) {
       </button>
       <ul className="menu__button-list">
         <li className="menu__button-item">
-          {/* здесь компонент поиска */}
+          <Search />
         </li>
         <li className="menu__button-item">
           <Link
