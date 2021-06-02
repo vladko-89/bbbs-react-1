@@ -2,22 +2,16 @@ import React from 'react';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import PropTypes from 'prop-types';
+import { placesTextForms } from '../../utils/Constants';
+import declOfNum from '../../utils/utils';
 
-// TODO declension of numbers, slug integraiton (example: main data)
 function CalendarEvent({
   calendar,
   booked, title, address, contact, startAt, endAt, seats,
-  takenSeats, onCalendarClick, onDescription,
+  takenSeats, onBooking, onDescription, onCancel,
 }) {
   const availablePlaces = seats - takenSeats;
-
-  function handleActionClick() {
-    onCalendarClick(calendar);
-  }
-
-  function handleDescriptionClick() {
-    onDescription(calendar);
-  }
+  const declPlaces = declOfNum(availablePlaces, placesTextForms);
 
   return (
     <article className="calendar calendar_selected">
@@ -61,7 +55,7 @@ function CalendarEvent({
           <button
             className="button button_theme_light calendar__button calendar__button_selected calendar__button_action_sign-up"
             type="button"
-            onClick={handleActionClick}
+            onClick={() => onCancel(calendar)}
           >
             Отменить запись
           </button>
@@ -71,19 +65,19 @@ function CalendarEvent({
           <button
             className="button button_theme_light calendar__button calendar__button_action_sign-up"
             type="button"
-            onClick={handleActionClick}
+            onClick={() => onBooking(calendar)}
             disabled={!availablePlaces}
           >
             Записаться
           </button>
           )}
           <p className="calendar__place-left">
-            {availablePlaces ? `Осталось ${availablePlaces} мест` : 'Запись закрыта'}
+            {availablePlaces ? `Осталось ${availablePlaces} ${declPlaces}` : 'Запись закрыта'}
           </p>
           <button
             className="button calendar__button-dots button_theme_light"
             type="button"
-            onClick={handleDescriptionClick}
+            onClick={() => onDescription(calendar)}
           >
             &#8226;&#8226;&#8226;
           </button>
@@ -101,7 +95,8 @@ CalendarEvent.propTypes = {
   endAt: PropTypes.string.isRequired,
   seats: PropTypes.number.isRequired,
   takenSeats: PropTypes.number.isRequired,
-  onCalendarClick: PropTypes.func.isRequired,
+  onBooking: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
   onDescription: PropTypes.func.isRequired,
   calendar: PropTypes.shape({
     startAt: PropTypes.string,
