@@ -3,11 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
+import { placesTextForms } from '../../utils/Constants';
+import declOfNum from '../../utils/utils';
 
 function CalendarDescription({
-  isOpen, onClose, handleDescriptionClick, currentEvent,
+  isOpen, onClose, onActionClick, currentEvent,
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
+  const declPlaces = declOfNum(availablePlaces, placesTextForms);
 
   return (
     <div className={`popup popup_type_description ${isOpen ? 'popup_opened' : ''}`}>
@@ -50,10 +53,17 @@ function CalendarDescription({
             </p>
           </div>
           <div className="calendar__submit">
-            <button className="button button_theme_light button_action_confirm" type="button" onClick={handleDescriptionClick}>Записаться</button>
+            <button
+              className="button button_theme_light button_action_confirm"
+              disabled={!availablePlaces}
+              type="button"
+              onClick={() => onActionClick(currentEvent)}
+            >
+              Записаться
+            </button>
             <p className="calendar__place-left">
               {' '}
-              {availablePlaces ? `Осталось ${availablePlaces} мест` : 'Запись закрыта'}
+              {availablePlaces ? `Осталось ${availablePlaces} ${declPlaces}` : 'Запись закрыта'}
             </p>
           </div>
         </div>
@@ -65,7 +75,7 @@ function CalendarDescription({
 CalendarDescription.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  handleDescriptionClick: PropTypes.func.isRequired,
+  onActionClick: PropTypes.func.isRequired,
   currentEvent: PropTypes.shape({
     startAt: PropTypes.string,
     endAt: PropTypes.string,
