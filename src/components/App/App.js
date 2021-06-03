@@ -15,11 +15,11 @@ import Video from '../Video/Video';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
-  const [isFixed, setIsFixed] = React.useState(false); // useMemo
+  const [isFixed, setIsFixed] = React.useState(false);
   React.useEffect(() => {
     let current = 0;
     const checkScroll = () => {
-      if (window.pageYOffset < current && window.pageYOffset > 70) {
+      if (window.pageYOffset < current && window.pageYOffset > 30) {
         setIsFixed(true);
       } else {
         setIsFixed(false);
