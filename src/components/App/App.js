@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -14,6 +15,21 @@ import Video from '../Video/Video';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
+  const [isFixed, setIsFixed] = React.useState(false); // useMemo
+  React.useEffect(() => {
+    let current = 0;
+    const checkScroll = () => {
+      if (window.pageYOffset < current && window.pageYOffset > 70) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+      current = window.pageYOffset;
+    };
+    document.addEventListener('scroll', checkScroll);
+
+    return (() => document.removeEventListener('scroll', checkScroll));
+  }, []);
 
   const handleOutClick = () => {
     setLoggedIn(false);
@@ -26,7 +42,10 @@ function App() {
         <Helmet>
           <title>Старшие братья и сестры</title>
         </Helmet>
-        <Header loggedIn={loggedIn} />
+        <Header
+          loggedIn={loggedIn}
+          isFixed={isFixed}
+        />
         <Switch>
           <Route exact path="/">
             <Main loggedIn={loggedIn} />

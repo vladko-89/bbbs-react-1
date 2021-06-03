@@ -4,9 +4,6 @@
 @import './scss/variables.scss';
 @import './scss/mixins.scss';
 /*Стили для Header */
-@import './components/Header/Header';
-@import './components/Navigation/Navigation';
-@import './components/Search/Search';
 @import "./scss/_lead.scss";
 @import "./scss/_main.scss";
 @import "./scss/_main-card.scss";
@@ -37,6 +34,9 @@
 @import "./components/Footer/Footer.scss";
 @import './components/App/App.scss';
 @import './components/Main/Main.scss';
+@import './components/Header/Header';
+@import './components/Navigation/Navigation';
+@import './components/Search/Search';
 @import './components/MainLead/MainLead.scss';
 @import './components/MainStory/MainStory.scss';
 @import './components/MainMentor/MainMentor.scss';
