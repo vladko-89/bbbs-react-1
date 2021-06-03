@@ -11,8 +11,165 @@ export default [
     path: '/article',
   },
   {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+
+  {
     title: 'Привязанность',
     image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+  {
+    title: 'Привязанность',
+    image: coffee,
+    path: '/article',
+  },
+
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
     path: '/article',
   },
   {
@@ -21,13 +178,109 @@ export default [
     path: '/article',
   },
   {
-    title: 'Социальная адаптация',
-    image: coffee,
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+  {
+    title: 'Особенности социально дезадаптивных детей',
+    image: beach,
+    path: '/article',
+  },
+
+  {
+    title: 'Социально дезадаптивные дети',
+    image: blueHand,
     path: '/article',
   },
   {
     title: 'Социально дезадаптивные дети',
     image: blueHand,
+    path: '/article',
+  },
+  {
+    title: 'Социально дезадаптивные дети',
+    image: blueHand,
+    path: '/article',
+  },
+  {
+    title: 'Социально дезадаптивные дети',
+    image: blueHand,
+    path: '/article',
+  },
+  {
+    title: 'Проявление агрессии у детей-сирот',
+    image: spear,
+    path: '/article',
+  },
+  {
+    title: 'Проявление агрессии у детей-сирот',
+    image: spear,
+    path: '/article',
+  },
+  {
+    title: 'Проявление агрессии у детей-сирот',
+    image: spear,
     path: '/article',
   },
   {
@@ -41,48 +294,38 @@ export default [
     path: '/article',
   },
   {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
+    title: 'Психологические особенности детей-сирот',
+    image: hulk,
+    path: '/article',
+  },
+  {
     title: 'Привязанность',
     image: coffee,
     path: '/article',
   },
   {
-    title: 'Особенности социально дезадаптивных детей',
-    image: beach,
-    path: '/article',
-  },
-  {
-    title: 'Социальная адаптация',
+    title: 'Привязанность',
     image: coffee,
     path: '/article',
   },
   {
-    title: 'Социально дезадаптивные дети',
-    image: blueHand,
-    path: '/article',
-  },
-  {
-    title: 'Проявление агрессии у детей-сирот',
-    image: spear,
-    path: '/article',
-  },
-  {
-    title: 'Особенности социально дезадаптивных детей',
-    image: beach,
-    path: '/article',
-  },
-  {
-    title: 'Социальная адаптация',
+    title: 'Привязанность',
     image: coffee,
     path: '/article',
   },
   {
-    title: 'Социально дезадаптивные дети',
-    image: blueHand,
-    path: '/article',
-  },
-  {
-    title: 'Проявление агрессии у детей-сирот',
-    image: spear,
+    title: 'Привязанность',
+    image: coffee,
     path: '/article',
   },
 ];
