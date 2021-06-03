@@ -1,11 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../images/svg/footer-logo.svg';
+import { scrollDelay } from '../../utils/Constants';
 
 function Footer() {
+  function onLinkNav() {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }, scrollDelay);
+  }
   return (
     <footer className="footer">
-      <Link to="/" className="footer__logo">
+      <Link to="/" onClick={onLinkNav} className="footer__logo">
         <img className="footer__logo-image" src={logo} alt="Логотип Старшие Братья Старшие Сестры России" />
       </Link>
 
@@ -36,22 +45,22 @@ function Footer() {
         <ul className="footer__column-list">
           <li className="footer__column-links">
 
-            <Link to="/about" className="footer__column-link">
+            <Link to="/about" onClick={onLinkNav} className="footer__column-link">
               О проекте
             </Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/calendar" className="footer__column-link">
+            <Link to="/calendar" onClick={onLinkNav} className="footer__column-link">
               Календарь
             </Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/place" className="footer__column-link">
+            <Link to="/place" onClick={onLinkNav} className="footer__column-link">
               куда пойти
             </Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/questions" className="footer__column-link">
+            <Link to="/questions" onClick={onLinkNav} className="footer__column-link">
               вопросы
             </Link>
           </li>
@@ -61,12 +70,12 @@ function Footer() {
             </Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/rights" className="footer__column-link">
+            <Link to="/rights" onClick={onLinkNav} className="footer__column-link">
               права детей
             </Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/stories" className="footer__column-link">
+            <Link to="/stories" onClick={onLinkNav} className="footer__column-link">
               истории
             </Link>
 
