@@ -11,6 +11,7 @@ import Calendar from '../Calendar/Calendar';
 import Profile from '../Profile/Profile';
 import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
+import Catalog from '../Catalog/Catalog';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -67,6 +68,9 @@ function App() {
           </Route>
           <Route exact path="/video">
             <Video />
+          </Route>
+          <Route exact path="/catalog">
+            <Catalog />
           </Route>
         </Switch>
         <Footer />

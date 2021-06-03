@@ -23,7 +23,7 @@ function Filter({
               activeFilter={activeFilter}
               onFilterChange={onFilterChange}
               onActive={onActive}
-              key={((n) => n + 1)(i)}
+              key={i.toString()}
             />
           ))
         }
@@ -36,7 +36,7 @@ function Filter({
               activeFilter={activeFilter}
               onFilterChange={onFilterChange}
               onActive={onActive}
-              key={((n) => n + 1)(i)}
+              key={i.toString()}
             />
           ))
         }

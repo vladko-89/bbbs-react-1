@@ -30,6 +30,7 @@ function Places() {
         <Filter
           array={FilterArrayFirst}
           arraySecond={FilterArraySecond}
+          // eslint-disable-next-line no-console
           onActive={() => console.log('push')}// Временная заглушка
         />
       </section>
