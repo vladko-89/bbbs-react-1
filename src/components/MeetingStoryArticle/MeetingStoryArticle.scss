@@ -4,6 +4,9 @@
   display: none;
 }
 //заполненная карточка
+.paragraph_article {
+  overflow-y: scroll;
+}
 .personal-area__photo {
   width: 100%;
   height: 100%;

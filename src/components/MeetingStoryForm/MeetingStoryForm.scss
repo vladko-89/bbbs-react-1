@@ -61,7 +61,11 @@
   display: flex;
   align-items: center;
 }
-
+.personal-area__radioBtn-mood{
+  width: 0.1px;
+  height: 0.1px;
+  visibility: hidden;
+}
 .personal-area__rate {
   width: 26px;
   height: 26px;

@@ -13,9 +13,9 @@ function MeetingStoryArticle({
     setIsEdit(true);
     e.target.closest('article').classList.add('hidden');
   };
-  const handleCanselEdit = () => {
+  const handleCancelEdit = () => {
 
-  }
+  };
 
   const date = new Date(story.date);
   const month = date.toLocaleString('default', { month: 'long' });
@@ -30,7 +30,7 @@ function MeetingStoryArticle({
         <div className="card personal-area__card personal-area__date-container">
           <div className="personal-area__text-wrap">
             <h2 className="section-title personal-area__card-title">{story.title}</h2>
-            <p className="paragraph">
+            <p className="paragraph paragraph_article">
               {story.description}
             </p>
           </div>
