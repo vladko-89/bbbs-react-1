@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -10,15 +11,35 @@ import Calendar from '../Calendar/Calendar';
 import Profile from '../Profile/Profile';
 import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
+import Catalog from '../Catalog/Catalog';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
+
   const [activeRubric, setActiveRubric] = React.useState('');
+  
+  const [isFixed, setIsFixed] = React.useState(false);
 
   function changeActiveRubric(rubric) {
     setActiveRubric(rubric);
   }
+
+  
+  React.useEffect(() => {
+    let current = 0;
+    const checkScroll = () => {
+      if (window.pageYOffset < current && window.pageYOffset > 30) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+      current = window.pageYOffset;
+    };
+    document.addEventListener('scroll', checkScroll);
+
+    return (() => document.removeEventListener('scroll', checkScroll));
+  }, []);
 
   const handleOutClick = () => {
     setLoggedIn(false);
@@ -31,7 +52,10 @@ function App() {
         <Helmet>
           <title>Старшие братья и сестры</title>
         </Helmet>
-        <Header loggedIn={loggedIn} />
+        <Header
+          loggedIn={loggedIn}
+          isFixed={isFixed}
+        />
         <Switch>
           <Route exact path="/">
             <Main loggedIn={loggedIn} />
@@ -56,6 +80,9 @@ function App() {
           </Route>
           <Route exact path="/video">
             <Video />
+          </Route>
+          <Route exact path="/catalog">
+            <Catalog />
           </Route>
         </Switch>
         <Footer />

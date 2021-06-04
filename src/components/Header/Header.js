@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ loggedIn }) {
+function Header({ loggedIn, isFixed }) {
   const [mobMenu, setMobMenu] = React.useState(false);
   const handleClicMobMenu = (e) => {
     if (e.target.closest('.menu__burger')) {
@@ -10,7 +10,7 @@ function Header({ loggedIn }) {
     }
   };
   return (
-    <header className={`header page__section ${mobMenu ? 'header_displayed ' : ''}`}>
+    <header className={`header ${isFixed ? 'header_fixed' : ''} page__section ${mobMenu ? 'header_displayed ' : ''}`}>
       <Navigation
         mobMenu={mobMenu}
         handleClickMobMenu={handleClicMobMenu}
@@ -21,6 +21,7 @@ function Header({ loggedIn }) {
 }
 Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
+  isFixed: PropTypes.bool.isRequired,
 };
 
 export default Header;

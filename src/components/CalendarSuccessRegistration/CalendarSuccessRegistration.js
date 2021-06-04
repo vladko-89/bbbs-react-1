@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // import { format } from 'date-fns';
 // import ruLocale from 'date-fns/locale/ru';
 
-function CalendarSuccessRegistrationPopup({ isOpen, handleCloseSuccessRegPopup, currentEvent }) {
+function CalendarSuccessRegistration({ isOpen, handleCloseSuccessRegPopup, currentEvent }) {
   return (
     <div className={`popup popup_type_done ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_done">
@@ -14,15 +14,6 @@ function CalendarSuccessRegistrationPopup({ isOpen, handleCloseSuccessRegPopup, 
           Вы записаны на мероприятие «
           {currentEvent.title }
           »
-          {/* {' '}
-          {format(new Date(currentEvent.startAt), 'dd', { locale: ruLocale })}
-          {' '}
-          декабря с
-          {' '}
-          {' '}
-          {`${format(new Date(currentEvent.startAt), 'H:mm')}–${format(new Date(currentEvent.endAt), 'H:mm')}
-              `}
-          {' '} */}
           .
         </h2>
         <h2 className="section-title calendar__title_type_popup calendar__title_type_popup-done">
@@ -33,7 +24,7 @@ function CalendarSuccessRegistrationPopup({ isOpen, handleCloseSuccessRegPopup, 
     </div>
   );
 }
-CalendarSuccessRegistrationPopup.propTypes = {
+CalendarSuccessRegistration.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleCloseSuccessRegPopup: PropTypes.func.isRequired,
   currentEvent: PropTypes.shape({
@@ -48,4 +39,4 @@ CalendarSuccessRegistrationPopup.propTypes = {
   }).isRequired,
 };
 
-export default CalendarSuccessRegistrationPopup;
+export default CalendarSuccessRegistration;

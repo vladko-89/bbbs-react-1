@@ -19,6 +19,7 @@ function Filter({
         {
           array.map((item, i) => (
             <FilterItem
+
               value={item.name}
               tag={item.slug}
               activeFilter={activeFilter}
@@ -26,6 +27,7 @@ function Filter({
               onActive={onActive}
               selectRubric={selectRubric}
               key={((n) => n + 1)(i)}
+
             />
           ))
         }

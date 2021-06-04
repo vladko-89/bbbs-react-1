@@ -1,8 +1,7 @@
 import React from 'react';
 //  import PropTypes from 'prop-types';
 
-function EventInProfile({}) {
-
+function EventInProfile() {
   return (
     <div>
       <article className="calendar calendar_selected">

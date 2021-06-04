@@ -66,6 +66,7 @@ function Places({
         <MainTitle title="Куда пойти" />
         <Filter
           array={FilterArrayFirst}
+
           onActive={() => console.log('push')}// Временная заглушка
           selectRubric={selectRubric}
         />

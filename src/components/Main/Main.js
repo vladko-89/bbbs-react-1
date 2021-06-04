@@ -11,7 +11,7 @@ import MainQuestion from '../MainQuestion/MainQuestion';
 import CalendarEvent from '../CalendarEvent/CalendarEvent';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
-import CalendarSuccessRegistrationPopup from '../CalendarSuccessRegistrationPopup/CalendarSuccessRegistrationPopup';
+import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
 // import MainContext from '../../contexts/MainContext';
@@ -33,16 +33,31 @@ function Main({ loggedIn }) {
       .catch((err) => console.log(err));
   }, [setMainState]);
 
-  function handleActionClick() {
+  function openConfirmationPopup() {
     setIsConfirmationPopupOpen(true);
   }
-  function handleDescriptionClick() {
+  function handleSuccessRegPopup() {
+    setIsSuccessRegPopupOpen(true);
+    openConfirmationPopup();
+  }
+  function handleDescription() {
     setIsDescriptionPopupOpen(true);
   }
-  function handleSuccessRegClick() {
-    setIsSuccessRegPopupOpen(true);
+  function handleBooking() {
+    openConfirmationPopup();
   }
 
+  function handleCancelBooking(calendar) {
+    // some handle code for backend
+    // eslint-disable-next-line no-console
+    console.log(calendar);
+  }
+
+  function handleImmidiateBooking(calendar) {
+    // eslint-disable-next-line no-console
+    console.log(calendar);
+    setIsSuccessRegPopupOpen(true);
+  }
   function closeAllPopups() {
     setIsConfirmationPopupOpen(false);
     setIsDescriptionPopupOpen(false);
@@ -65,8 +80,9 @@ function Main({ loggedIn }) {
                 endAt={mainState.event.endAt}
                 seats={mainState.event.seats}
                 takenSeats={mainState.event.takenSeats}
-                onCalendarClick={handleActionClick}
-                onDescription={handleDescriptionClick}
+                onBooking={handleBooking}
+                onDescription={handleDescription}
+                onCancel={handleCancelBooking}
               />
             ) : <MainLead />}
             <MainStory
@@ -148,7 +164,7 @@ function Main({ loggedIn }) {
         </section>
         <CalendarConfirmation
           isOpen={isConfirmationPopupOpen}
-          handleSuccessRegClick={handleSuccessRegClick}
+          handleSuccessRegClick={handleSuccessRegPopup}
           onClose={closeAllPopups}
           currentEvent={mainState.event}
         />
@@ -156,9 +172,9 @@ function Main({ loggedIn }) {
           isOpen={isDescriptionPopupOpen}
           onClose={closeAllPopups}
           currentEvent={mainState.event}
-          handleDescriptionClick={handleDescriptionClick}
+          onActionClick={handleImmidiateBooking}
         />
-        <CalendarSuccessRegistrationPopup
+        <CalendarSuccessRegistration
           currentEvent={mainState.event}
           isOpen={isSuccessRegPopupOpen}
           handleCloseSuccessRegPopup={closeAllPopups}
