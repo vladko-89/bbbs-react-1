@@ -5,25 +5,27 @@ import CardCaption from '../CardCaption/CardCaption';
 
 function PlacesCard(
   {
-    key,
     color,
     chosen,
-    tittle,
+    title,
     name,
     caption,
-
     info,
     link,
+    activeRubric,
+    tags,
   },
 ) {
   return (
-    <article className="card-container card-container_type_article" key={key}>
+    <article
+      className={`card-container card-container_type_article ${activeRubric && tags.indexOf(activeRubric) === -1 && activeRubric !== 'All' ? 'card-container_hidden' : ''}`}
+    >
       <div className={`card card_color_${color}`}>
         {chosen && <MentorChoice />}
 
         <div className="card__title-wrap">
           <h2 className="section-title card__title">
-            {tittle}
+            {title}
           </h2>
           <p className="caption card__title-caption">
 
@@ -49,15 +51,20 @@ function PlacesCard(
   );
 }
 
+PlacesCard.defaultProps = {
+  info: '',
+};
+
 PlacesCard.propTypes = {
-  key: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   chosen: PropTypes.bool.isRequired,
-  tittle: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   caption: PropTypes.bool.isRequired,
-  info: PropTypes.string.isRequired,
+  info: PropTypes.string,
   link: PropTypes.string.isRequired,
+  activeRubric: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default PlacesCard;

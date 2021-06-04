@@ -5,8 +5,8 @@ import FilterItem from '../FilterItem/FilterItem';
 
 function Filter({
   array,
-  arraySecond,
   onActive,
+  selectRubric,
 }) {
   const [activeFilter, setActiveFilter] = React.useState('');
 
@@ -19,24 +19,15 @@ function Filter({
         {
           array.map((item, i) => (
             <FilterItem
-              value={item}
+
+              value={item.name}
+              tag={item.slug}
               activeFilter={activeFilter}
               onFilterChange={onFilterChange}
               onActive={onActive}
-              key={i.toString()}
-            />
-          ))
-        }
-      </ul>
-      <ul className="tags__list">
-        {
-          arraySecond?.map((item, i) => (
-            <FilterItem
-              value={item}
-              activeFilter={activeFilter}
-              onFilterChange={onFilterChange}
-              onActive={onActive}
-              key={i.toString()}
+              selectRubric={selectRubric}
+              key={((n) => n + 1)(i)}
+
             />
           ))
         }
@@ -46,11 +37,8 @@ function Filter({
 }
 
 Filter.propTypes = {
-  array: PropTypes.arrayOf(PropTypes.string).isRequired,
-  arraySecond: PropTypes.arrayOf(PropTypes.string, PropTypes.null),
+  array: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectRubric: PropTypes.func.isRequired,
   onActive: PropTypes.func.isRequired,
-};
-Filter.defaultProps = {
-  arraySecond: [],
 };
 export default Filter;

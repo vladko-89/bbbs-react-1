@@ -16,7 +16,16 @@ import Catalog from '../Catalog/Catalog';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
+
+  const [activeRubric, setActiveRubric] = React.useState('');
+  
   const [isFixed, setIsFixed] = React.useState(false);
+
+  function changeActiveRubric(rubric) {
+    setActiveRubric(rubric);
+  }
+
+  
   React.useEffect(() => {
     let current = 0;
     const checkScroll = () => {
@@ -52,7 +61,10 @@ function App() {
             <Main loggedIn={loggedIn} />
           </Route>
           <Route exact path="/place">
-            <Places />
+            <Places
+              activeRubric={activeRubric}
+              selectRubric={changeActiveRubric}
+            />
           </Route>
           <Route exact path="/about">
             <AboutUs />

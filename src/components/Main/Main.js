@@ -99,6 +99,7 @@ function Main({ loggedIn }) {
               name={mainState.place.name}
               link={mainState.place.link}
               imageUrl={mainState.place.imageUrl}
+              rubrics={['sport', '8-10', 'chosen']}
             />
             <MainAnnotation
               info={mainState.place.info}
