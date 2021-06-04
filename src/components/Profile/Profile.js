@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import img from '../../images/personal-area/lk.png';
+
 import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
 import PopupCities from '../PopupCities/PopupCities';
 import EventInProfile from '../EventInProfile/EventInProfile';
 import mockMeetingStories from '../../utils/mockMeetigsStories.json';
 import MeetingStoryForm from '../MeetingStoryForm/MeetingStoryForm';
+import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
@@ -34,7 +35,8 @@ function Profile({ onOutClick }) {
 
   const handleClose = (event) => {
     if (
-      event.key === 'Escape' || event.target.classList.contains('popup_opened')
+      event.key === 'Escape'
+      || event.target.classList.contains('popup_opened')
     ) {
       setIsOpenPopupDeleteMeet(false);
       setIsOpenPopupCities(false);
@@ -56,6 +58,7 @@ function Profile({ onOutClick }) {
     console.log(`city changed on ${city}`);
   };
   const handleSubmitStory = (data) => {
+    // eslint-disable-next-line no-console
     console.log(`saving story ${data}`);
   };
 
@@ -98,87 +101,36 @@ function Profile({ onOutClick }) {
           </div>
 
           <div className="personal-area__story">
-            {mockMeetingStories.length < 2 && (
-              <h2 className="section-title personal-area__title">
-                Составьте историю вашей дружбы с младшим. Эта страница
-                доступна только вам.
-              </h2>
+            {mockMeetingStories.length === 0 && (
+            <h2 className="section-title personal-area__title">
+              Составьте историю вашей дружбы с младшим. Эта страница
+              доступна только вам.
+            </h2>
             ) && (
-              <MeetingStoryForm
-                onSubmit={handleSubmitStory}
-                onDelete={handleDeleteMeet}
-                isExample={false}
-              />
+            <MeetingStoryForm
+              onSubmit={handleSubmitStory}
+              onDelete={handleDeleteMeet}
+              isExample={false}
+            />
             )}
             <section className="stories-container">
-              {userEvents.length > 0 && (
-              <MeetingStoryForm
-                onSubmit={handleSubmitStory}
-                onDelete={handleDeleteMeet}
-                isExample
-              />
+              {mockMeetingStories.length === 0 ? (
+                <MeetingStoryForm
+                  onSubmit={handleSubmitStory}
+                  onDelete={handleDeleteMeet}
+                  isExample
+                />
+              ) : (
+                mockMeetingStories.map((item) => (
+                  <MeetingStoryArticle
+                    key={item.id}
+                    onSubmit={handleSubmitStory}
+                    onDelete={handleDeleteMeetClick}
+                    story={item}
+                  />
+                ))
               )}
             </section>
-            <article className="card-container card-container_type_personal-area">
-              <div className="card card_content_media">
-                <img src={img} alt="Катя" className="personal-area__photo" />
-              </div>
-              <div className="card personal-area__card personal-area__date-container">
-                <div className="personal-area__text-wrap">
-                  <h2 className="section-title personal-area__card-title">
-                    Парк Горького
-                  </h2>
-                  <p className="paragraph">
-                    Описание в несколько срок. Подробное описание. Опишите вашу
-                    встречу, какие чувства вы испытывали, что понравилось не
-                    понравилось. Описание в несколько срок. Подробное описание.
-                    Подробное описание. Опишите вашу встречу, какие чувства вы
-                    испытывали, что понравилось не понравилось. Описание в
-                    несколько срок. Подробное описание. Опишите вашу встречу,
-                    какие чувства вы испытывали, что понравилось не понравилось.
-                    Описание в несколько срок. Подробное описание. Подробное
-                    описание. Опишите вашу встречу, какие чувства вы испытывали,
-                    что понравилось не понравилось. чувства вы испытывали, что
-                    понравилось не понравилось.
-                  </p>
-                </div>
-                <div className="personal-area__card-date">
-                  <p className="personal-area__card-weekday">декабрь, 2020</p>
-                  <p className="personal-area__card-day">05</p>
-                </div>
-                <div className="personal-area__actions">
-                  <div className="personal-area__rating">
-                    <button
-                      className="personal-area__rate personal-area__rate_type_active-good"
-                      type="button"
-                      aria-label="active-good"
-                    />
-                    <p className="caption personal-area__rating-label personal-area__rating-label_type_good">
-                      Было классно
-                    </p>
-                  </div>
-
-                  <div className="personal-area__action-elements">
-                    <p className="caption personal-area__opened-info">
-                      Открыто Александре К.
-                    </p>
-                    <button
-                      type="button"
-                      className="caption personal-area__button personal-area__button_action_edit-card"
-                    >
-                      Редактировать
-                    </button>
-                    <button
-                      className="caption personal-area__button personal-area__button_action_delete-card"
-                      type="button"
-                      onClick={handleDeleteMeetClick}
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </article>
           </div>
         </section>
       </main>

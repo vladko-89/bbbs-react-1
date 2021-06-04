@@ -9,7 +9,7 @@ function EventInProfile({ events }) {
         const month = date.toLocaleString('default', { month: 'long' });
         const day = date.getDate();
         return (
-          <li className="coming-events__event">
+          <li className="coming-events__event" key={event.id}>
             <p className="coming-events__date">
               <span className="coming-events__number">{day}</span>
               {month}

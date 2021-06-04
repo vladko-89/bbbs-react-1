@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
-function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
+function MeetingStoryForm({ onSubmit, onDelete, values }) {
   const { register, handleSubmit } = useForm();
 
   const onSubmitForm = (e, data) => {
@@ -42,7 +42,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
             id="place"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('place')}
-            value={isExample ? 'Парк горького' : ''}
+            value={values ? values.title : ''}
           />
           <input
             type="date"
@@ -53,7 +53,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
             id="date"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('date')}
-            value={isExample ? '05-05-2021' : ''}
+            value={values ? values.data : ''}
           />
           <textarea
             className="personal-area__form-input personal-area__form-input_type_textarea"
@@ -62,7 +62,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
             id="story"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('story')}
-            value={isExample ? 'Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось' : ''}
+            value={values ? values.description : ''}
           />
 
           <div className="personal-area__rating">
@@ -73,7 +73,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
               id="good"
               value="good"
               className="personal-area__radioBtn-mood"
-              checked={!!isExample}
+              checked={!!(values && values.mood === 'good')}
             />
             <label
               htmlFor="good"
@@ -86,6 +86,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
               id="neutral"
               value="neutral"
               className="personal-area__radioBtn-mood"
+              checked={!!(values && values.mood === 'neutral')}
             />
             <label
               htmlFor="neutral"
@@ -98,6 +99,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
               id="bad"
               value="bad"
               className="personal-area__radioBtn-mood"
+              checked={!!(values && values.mood === 'bad')}
             />
             <label
               className="personal-area__rate personal-area__rate_type_bad"
@@ -115,7 +117,7 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
               type="button"
               onClick={onDelete}
             >
-              Удалить
+              Отменить
             </button>
             <button className="button" type="submit">
               Добавить
@@ -127,10 +129,23 @@ function MeetingStoryForm({ onSubmit, onDelete, isExample }) {
   );
 }
 
+MeetingStoryForm.defaultProps = {
+  values: {
+    id: '',
+    title: '',
+    description: '',
+    date: '',
+    mood: '',
+    shared: '',
+    image: '',
+  },
+};
+
 MeetingStoryForm.propTypes = {
-  isExample: PropTypes.bool.isRequired,
+
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  values: PropTypes.objectOf(PropTypes.string, PropTypes.number, PropTypes.bool),
 };
 
 export default MeetingStoryForm;
