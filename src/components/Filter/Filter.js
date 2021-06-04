@@ -19,7 +19,6 @@ function Filter({
         {
           array.map((item, i) => (
             <FilterItem
-
               value={item.name}
               tag={item.slug}
               activeFilter={activeFilter}
