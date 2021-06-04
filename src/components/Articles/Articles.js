@@ -1,7 +1,14 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
+import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
+import MainArticle from './MainArticle/MainArticle';
 
-export default function Articles() {
+import { mainArticle as leadArticle } from '../../utils/articlesData';
+
+import './Articles.scss';
+
+export default function Articles({ mainArticle }) {
   return (
     <main className="main">
       <section className="lead page__section">
@@ -9,24 +16,7 @@ export default function Articles() {
       </section>
 
       <section className="main-card page__section">
-        <article className="card-container card-container_type_main-article">
-          <div className="card card_type_main card_color_yellow">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Симбиоз со знаком «плюс» и симбиоз со знаком «минус» – для чего нужен переходный возраст</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <img src="./images/where-to-go/img-xl.jpg" alt="переходный возраст" className="card__img card__img_position_main-article" />
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation card_type_main">
-            <div className="card__content">
-              <div className="card__annotation card__annotation_position_main-card card__annotation_type_main-article">
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга,  потом понимать чуть лучше и, Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга,  потом понимать чуть лучше и,</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не по Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-              </div>
-            </div>
-          </div>
-        </article>
+        <MainArticle {...mainArticle} />
       </section>
 
       <section className="cards-grid page__section">
@@ -264,3 +254,16 @@ export default function Articles() {
     </main>
   );
 }
+
+Articles.defaultProps = {
+  mainArticle: leadArticle,
+};
+
+Articles.propTypes = {
+  mainArticle: PropTypes.objectOf({
+    title: PropTypes.string,
+    image: PropTypes.string,
+    link: PropTypes.string,
+    annotation: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
