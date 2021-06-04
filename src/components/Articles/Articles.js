@@ -4,12 +4,22 @@ import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
 import MainArticle from './MainArticle/MainArticle';
 import ArticleCard from './ArticleCard/ArticleCard';
+import Pagination from '../Pagination/Pagination';
 
 import { mainArticle as leadArticle, articleCards as cards } from '../../utils/articlesData';
+import { cardsPerPage } from '../../utils/Constants';
 
 import './Articles.scss';
 
 export default function Articles({ mainArticle, articleCards }) {
+  const [shownCards, setShownCards] = React.useState([]);
+
+  function onPageChange(currPage) {
+    const begin = currPage * cardsPerPage - cardsPerPage;
+    const end = begin + cardsPerPage;
+    setShownCards(cards.slice(begin, end < cards.length ? end : cards.length));
+  }
+
   return (
     <main className="main">
       <section className="lead page__section">
@@ -22,24 +32,11 @@ export default function Articles({ mainArticle, articleCards }) {
 
       <section className="cards-grid page__section">
         {
-          articleCards.map((card, i) => <ArticleCard key={i.toString()} {...card} />)
+          shownCards.map((card, i) => <ArticleCard key={i.toString()} {...card} />)
         }
       </section>
 
-      <section className="pagination page__section">
-        <nav className="pagination__nav" aria-label="Навигация по страницам">
-          <ul className="pagination__list">
-            <li className="pagination__list-item section-title"><a href="#" className="pagination__link pagination__link_active">1</a></li>
-            <li className="pagination__list-item section-title"><a href="#" className="pagination__link">2</a></li>
-            <li className="pagination__list-item section-title"><a href="#" className="pagination__link">3</a></li>
-            <li className="pagination__list-item section-title"><a href="#" className="pagination__link">4</a></li>
-            <li className="pagination__list-item section-title"><a href="#" className="pagination__link">5</a></li>
-            <li className="pagination__list-item section-title">...</li>
-            <li className="pagination__list-item section-title"><a href="#" className="pagination__link">18</a></li>
-          </ul>
-          <img src="./images/svg/arrow-right-grey.svg" alt="стрелка вправо" className="pagination__arrow" />
-        </nav>
-      </section>
+      <Pagination cards={articleCards} onPageChange={onPageChange} />
     </main>
   );
 }
