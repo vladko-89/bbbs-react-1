@@ -3,12 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
 import MainArticle from './MainArticle/MainArticle';
+import ArticleCard from './ArticleCard/ArticleCard';
 
-import { mainArticle as leadArticle } from '../../utils/articlesData';
+import { mainArticle as leadArticle, articleCards as cards } from '../../utils/articlesData';
 
 import './Articles.scss';
 
-export default function Articles({ mainArticle }) {
+export default function Articles({ mainArticle, articleCards }) {
   return (
     <main className="main">
       <section className="lead page__section">
@@ -20,221 +21,9 @@ export default function Articles({ mainArticle }) {
       </section>
 
       <section className="cards-grid page__section">
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_green">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Причины подростковой агрессии</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_yellow">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Самоубийство в подростковом возрасте. Интервью с психологом</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_pink">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Причины подростковой агрессии</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_blue">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Девиантное повидение детей-сирот</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_pink">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Симбиоз со знаком «плюс» и симбиоз со знаком «минус» – для чего нужен переходный</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_green">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Самоубийство в подростковом возрасте. Интервью с психологом</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_yellow">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Причины подростковой агрессии</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_green">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Самоубийство в подростковом возрасте. Интервью с психологом</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_blue">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Причины подростковой агрессии</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_pink">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Девиантное повидение детей-сирот</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_blue">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Симбиоз со знаком «плюс» и симбиоз со знаком «минус» – для чего нужен переходный</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги, статьи, фильма в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article className="card-container card-container_type_article">
-          <div className="card card_color_yellow">
-            <div className="card__title-wrap">
-              <h2 className="section-title card__title">Самоубийство в подростковом возрасте. Интервью с психологом</h2>
-              <p className="caption card__title-caption">Ирина Стасенко, педагог-психолог</p>
-            </div>
-            <a href="./article.html" className="link card__link">читать на сайте</a>
-          </div>
-          <div className="card card_content_annotation">
-            <div className="card__content">
-              <div className="card__annotation">
-                <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-                <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
-              </div>
-            </div>
-          </div>
-        </article>
+        {
+          articleCards.map((card, i) => <ArticleCard key={i.toString()} {...card} />)
+        }
       </section>
 
       <section className="pagination page__section">
@@ -257,13 +46,23 @@ export default function Articles({ mainArticle }) {
 
 Articles.defaultProps = {
   mainArticle: leadArticle,
+  articleCards: cards,
 };
 
 Articles.propTypes = {
-  mainArticle: PropTypes.objectOf({
+  mainArticle: PropTypes.shape({
     title: PropTypes.string,
+    author: PropTypes.string,
     image: PropTypes.string,
     link: PropTypes.string,
     annotation: PropTypes.arrayOf(PropTypes.string),
   }),
+
+  articleCards: PropTypes.arrayOf(PropTypes.shape({
+    color: PropTypes.string,
+    title: PropTypes.string,
+    author: PropTypes.string,
+    link: PropTypes.string,
+    annotation: PropTypes.arrayOf(PropTypes.string),
+  })),
 };
