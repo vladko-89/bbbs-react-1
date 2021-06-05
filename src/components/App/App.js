@@ -18,14 +18,13 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(true);
 
   const [activeRubric, setActiveRubric] = React.useState('');
-  
+
   const [isFixed, setIsFixed] = React.useState(false);
 
   function changeActiveRubric(rubric) {
     setActiveRubric(rubric);
   }
 
-  
   React.useEffect(() => {
     let current = 0;
     const checkScroll = () => {
