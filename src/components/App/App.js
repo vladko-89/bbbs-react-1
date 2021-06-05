@@ -1,7 +1,7 @@
-/* eslint-disable max-len */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { compareAsc, parseISO } from 'date-fns';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -36,12 +36,21 @@ function App() {
     return (() => document.removeEventListener('scroll', checkScroll));
   }, []);
 
-  // Here will be another logic. We need a expiration of access and refresh token from backend.
+  // Probally we need a check token on a backend side before manipulation.
   React.useEffect(() => {
-    const savedAccessToken = localStorage.getItem('bbbs-access');
-    if (savedAccessToken) {
-      api.checkToken(savedAccessToken)
-        .then((res) => { if (res.access === savedAccessToken) { setLoggedIn(true); } });
+    if (localStorage.getItem('bbbs-token')) {
+      const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
+      if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
+        api.getCurrentUser(tokenData.access)
+          .then((res) => { setCurrentUser(res.name); setLoggedIn(true); })
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
+      } else if (compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1) {
+        api.updateToken(tokenData.refresh)
+          .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
+      }
     }
   }, []);
 
@@ -61,8 +70,7 @@ function App() {
   };
 
   const handleOutClick = () => {
-    localStorage.removeItem('bbbs-access');
-    localStorage.removeItem('bbbs-refresh');
+    localStorage.removeItem('bbbs-token');
     setLoggedIn(false);
   };
   return (

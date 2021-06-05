@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormWithValidation } from '../Validation/Validation';
@@ -30,8 +31,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
       )
       .then((res) => {
         if (res) {
-          localStorage.setItem('bbbs-access', res.access);
-          localStorage.setItem('bbbs-refresh', res.refresh);
+          localStorage.setItem('bbbs-token', JSON.stringify(res));
           onSubmit(e, loginFormValidation.values.login);
           closePopup(e);
         } else {
