@@ -18,13 +18,13 @@ export default function Question({ question }) {
       <h2 onClick={showAnswer} className="section-title question__title">{question.title}</h2>
       <div className="question__wrap">
         {
-          question.tags.map((tag, i) => <p key={((n) => n + 1)(i)} className="rubric question__rubric">{tag.name}</p>)
+          question.tags.map((tag, i) => <p key={i.toString()} className="rubric question__rubric">{tag.name}</p>)
         }
         <button onClick={showAnswer} className="question__show-button" type="button" aria-label="Показать ответ" title="Показать ответ" />
       </div>
       <div className="question__answer">
         {
-          question.answer.map((paragraph, i) => <p key={((n) => n + 1)(i)} className="paragraph question__paragraph">{paragraph}</p>)
+          question.answer.map((paragraph, i) => <p key={i.toString()} className="paragraph question__paragraph">{paragraph}</p>)
         }
       </div>
     </article>

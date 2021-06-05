@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
@@ -17,8 +18,9 @@ function Calendar() {
   const [calendarData, setCalendarData] = React.useState([]);
   const [filtredData, setFiltredData] = React.useState();
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
-
-  const FilterArrayFirst = [...new Set(calendarData.map((el) => format(new Date(el.startAt), 'LLLL', { locale: ruLocale })))];
+  const filterArray = [];
+  const parsedCalendarData = calendarData.map((el) => ({ name: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }), slug: '' }));
+  parsedCalendarData.forEach((el) => { if (!filterArray.some((item) => item.name === el.name)) { filterArray.push(el); } });
 
   React.useEffect(() => {
     api.getCalendar()
@@ -74,7 +76,7 @@ function Calendar() {
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Календарь" />
-          { FilterArrayFirst.length > 1 ? <Filter onActive={handleFilter} array={FilterArrayFirst} /> : ''}
+          { filterArray.length > 1 ? <Filter onActive={handleFilter} array={filterArray} selectRubric={() => {}} /> : ''}
         </section>
         <section className="calendar-container page__section">
           { filtredData && filtredData.map((calendar) => (

@@ -8,13 +8,38 @@ import Preloader from '../Preloader/Preloader';
 import { cardsPerPage } from '../../utils/Constants';
 
 import api from '../../utils/Api';
-// Work in progress
+
 function Video() {
   const [mainState, setMainState] = React.useState({});
   const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);
   const currentIndex = React.useRef(0);
-  const filterArray = ['Все', 'Ресурсная группа', 'Эксперт', 'Пары', 'События', 'Медиа о нас'];
+  const filterArray = [
+    {
+      name: 'Все',
+      slug: 'All',
+    },
+    {
+      name: 'Ресурсная группа',
+      slug: 'Ресурсная группа',
+    },
+    {
+      name: 'Эксперт',
+      slug: 'Эксперт',
+    },
+    {
+      name: 'Пары',
+      slug: 'Пары',
+    },
+    {
+      name: 'События',
+      slug: 'События',
+    },
+    {
+      name: 'Медиа о нас',
+      slug: 'Медиа о нас',
+    },
+  ];
   React.useEffect(() => {
     api.getMain().then((res) => {
       setMainState(res);
@@ -61,7 +86,11 @@ function Video() {
             />
           ))}
         </section>
-        <Pagination cards={mainState.movies} onPageChange={onPageChange} />
+        <Pagination
+          cardsLength={mainState.movies.length}
+          onPageChange={onPageChange}
+          cardsPerPage={cardsPerPage}
+        />
       </main>
 
     );

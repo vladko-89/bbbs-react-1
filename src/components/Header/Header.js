@@ -2,8 +2,23 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ loggedIn, isFixed, onLoginPopup }) {
+function Header({ loggedIn, onLoginPopup }) {
   const [mobMenu, setMobMenu] = React.useState(false);
+  const [isFixed, setIsFixed] = React.useState(false);
+  React.useEffect(() => {
+    let current = 0;
+    const checkScroll = () => {
+      if (window.pageYOffset < current && window.pageYOffset > 30) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+      current = window.pageYOffset;
+    };
+    document.addEventListener('scroll', checkScroll);
+
+    return (() => document.removeEventListener('scroll', checkScroll));
+  }, []);
   const handleClickMobMenu = (e) => {
     if (e.target.closest('.menu__burger')) {
       setMobMenu(!mobMenu);
@@ -22,7 +37,6 @@ function Header({ loggedIn, isFixed, onLoginPopup }) {
 }
 Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
-  isFixed: PropTypes.bool.isRequired,
   onLoginPopup: PropTypes.func.isRequired,
 };
 

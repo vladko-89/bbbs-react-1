@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
-import { cardsPerPage } from '../../utils/Constants';
 
-function Pagination({ cards, onPageChange }) {
-  const totalPages = Math.ceil(cards.length / cardsPerPage);
+function Pagination({ cardsLength, onPageChange, cardsPerPage }) {
+  const totalPages = Math.ceil(cardsLength / cardsPerPage);
   return (
     <section className="pagination page__section">
       <nav className="pagination__nav" aria-label="Навигация по страницам">
@@ -17,7 +16,7 @@ function Pagination({ cards, onPageChange }) {
           pageCount={totalPages}
           marginPagesDisplayed={1}
           pageRangeDisplayed={4}
-          onPageChange={(data) => onPageChange(data.selected + 1)}
+          onPageChange={(page) => onPageChange(page.selected + 1)}
           containerClassName="pagination__list"
           activeClassName="pagination__link_active"
           pageClassName="pagination__list-item section-title"
@@ -35,7 +34,8 @@ function Pagination({ cards, onPageChange }) {
 }
 
 Pagination.propTypes = {
-  cards: PropTypes.arrayOf(PropTypes.object).isRequired,
+  cardsLength: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
+  cardsPerPage: PropTypes.number.isRequired,
 };
 export default Pagination;
