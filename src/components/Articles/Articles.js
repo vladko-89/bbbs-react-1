@@ -7,11 +7,11 @@ import ArticleCard from './ArticleCard/ArticleCard';
 import Pagination from '../Pagination/Pagination';
 
 import { mainArticle as leadArticle, articleCards as cards } from '../../utils/articlesData';
-import { cardsPerPage } from '../../utils/Constants';
 
 import './Articles.scss';
 
 export default function Articles({ mainArticle, articleCards }) {
+  const cardsPerPage = 12;
   const [shownCards, setShownCards] = React.useState([]);
 
   function onPageChange(currPage) {
@@ -36,7 +36,11 @@ export default function Articles({ mainArticle, articleCards }) {
         }
       </section>
 
-      <Pagination cards={articleCards} onPageChange={onPageChange} />
+      <Pagination
+        cardsLength={articleCards.length}
+        onPageChange={onPageChange}
+        cardsPerPage={cardsPerPage}
+      />
     </main>
   );
 }
