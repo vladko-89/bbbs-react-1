@@ -1,7 +1,7 @@
-/* eslint-disable max-len */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { compareAsc, parseISO } from 'date-fns';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -13,11 +13,19 @@ import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
 import Catalog from '../Catalog/Catalog';
 import Articles from '../Articles/Articles';
+import PopupLogin from '../PopupLogin/PopupLogin';
+import CurrentUserContext from '../../contexts/CurrentUser';
+import api from '../../utils/Api';
+
+
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
+  const [currentUser, setCurrentUser] = React.useState('');
+  const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
+
 
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All') {
@@ -29,12 +37,46 @@ function App() {
     }
   }
 
+  // Probally we need a check token on a backend side before manipulation.
+  React.useEffect(() => {
+    if (localStorage.getItem('bbbs-token')) {
+      const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
+      if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
+        api.getCurrentUser(tokenData.access)
+          .then((res) => { setCurrentUser(res.name); setLoggedIn(true); })
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
+      } else if (compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1) {
+        api.updateToken(tokenData.refresh)
+          .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
+      }
+    }
+  }, []);
+
+  const handleLoginOpen = () => {
+    setIsPoupLoginOpened(true);
+  };
+  const handleLoginClose = (evt) => {
+    if (evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')) {
+      setIsPoupLoginOpened(false);
+    }
+  };
+
+  const handleLoginSubmit = (evt, userName) => {
+    evt.preventDefault();
+    setLoggedIn(true);
+    setCurrentUser(userName);
+  };
+
   const handleOutClick = () => {
+    localStorage.removeItem('bbbs-token');
     setLoggedIn(false);
-    // eslint-disable-next-line no-console
-    console.log('удалить токен из хранилища');
   };
   return (
+
+    <CurrentUserContext.Provider value={currentUser}>
     <HelmetProvider>
       <div className="app page">
         <Helmet>
@@ -42,6 +84,7 @@ function App() {
         </Helmet>
         <Header
           loggedIn={loggedIn}
+          onLoginPopup={handleLoginOpen}
         />
         <Switch>
           <Route exact path="/">
@@ -76,8 +119,10 @@ function App() {
           </Route>
         </Switch>
         <Footer />
+        { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
       </div>
     </HelmetProvider>
+    </CurrentUserContext.Provider>
   );
 }
 
