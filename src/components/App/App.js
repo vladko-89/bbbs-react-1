@@ -17,11 +17,20 @@ import Articles from '../Articles/Articles';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
-  const [activeRubric, setActiveRubric] = React.useState('');
+
+
+  const [activeRubrics, setActiveRubrics] = React.useState([]);
+
   const [isFixed, setIsFixed] = React.useState(false);
 
-  function changeActiveRubric(rubric) {
-    setActiveRubric(rubric);
+  function changeActiveRubric(rubric, active) {
+    if (rubric === 'All') {
+      setActiveRubrics([]);
+    } else if (!active) {
+      setActiveRubrics([...activeRubrics, rubric]);
+    } else {
+      setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
+    }
   }
 
   React.useEffect(() => {
@@ -60,7 +69,7 @@ function App() {
           </Route>
           <Route exact path="/place">
             <Places
-              activeRubric={activeRubric}
+              activeRubrics={activeRubrics}
               selectRubric={changeActiveRubric}
             />
           </Route>
