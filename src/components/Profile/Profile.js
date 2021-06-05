@@ -85,10 +85,12 @@ function Profile({ onOutClick }) {
     console.log(`city changed on ${city}`);
   };
   const handleSubmitStory = (data) => {
+    // eslint-disable-next-line no-param-reassign
+    data.id = Math.random() * 10; // Временная заглушка для id, иначе проблема с выводом элементов
     setUserMeetings([data, ...userMeetings]);
     setIsHidden(true);
     // eslint-disable-next-line no-console
-    console.log(data);
+    console.log('handle submite in profile', data);
   };
   const handleAddMeetClick = () => {
     setIsHidden(false);
