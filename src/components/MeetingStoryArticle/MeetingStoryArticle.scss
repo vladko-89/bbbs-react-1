@@ -5,7 +5,8 @@
 }
 //заполненная карточка
 .paragraph_article {
-  overflow-y: scroll;
+overflow: auto;
+  max-height: 300px;
 }
 .personal-area__photo {
   width: 100%;
@@ -15,8 +16,8 @@
 
 .personal-area__date-container {
   display: grid;
-  grid-template-columns: 1fr 94px;
-  grid-template-rows: auto;
+  grid-template-columns: minmax(260px, 540px) 94px;
+  grid-template-rows: minmax(210px, 286px);
   align-items: start;
 }
 

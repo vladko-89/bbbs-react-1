@@ -7,30 +7,51 @@ function MeetingStoryArticle({
   story,
   onEdit,
   onDelete,
-  onEditSubmit,
+  // onEditSubmit,
 }) {
   const [isEdit, setIsEdit] = React.useState(false);
-
+  const [dataStory, setDataStory] = React.useState({ ...story });
   const handleEditClick = (e) => {
+    onEdit(dataStory);
     setIsEdit(true);
-    onEdit(story);
     e.target.closest('article').classList.add('hidden');
   };
   const handleCancelForm = () => {
     setIsEdit(false);
   };
   const handleSubmitEditStory = (data) => {
-    onDelete();
-    onEditSubmit(data);
+    // onEditSubmit(data);
+    setDataStory({ ...data });
     setIsEdit(false);
   };
-  const date = new Date(story.date);
+  const date = new Date(dataStory.date);
   const month = date.toLocaleString('default', { month: 'long' });
   const day = date.getDate();
   const year = date.getFullYear();
+  const reaction = document.querySelector('.personal-area__rate');
+  const labelReaction = document.querySelector('.personal-area__rating-label');
+  const setReaction = () => {
+    switch (dataStory.mood) {
+      case 'bad':
+        labelReaction.textContent = 'Бывает и лучше';
+        break;
+      case 'neutral':
+        reaction.nextSibling.textContent = 'Хорошо';
+        break;
+      case 'good':
+        reaction.nextSibling.textContent = 'Было классно';
+        break;
+      default: break;
+    }
+  };
+  React.useEffect(() => {
+    setReaction();
+  }, [dataStory]);
+  setReaction();
+
   const handleDelete = () => {
     const time = `${month}, ${year}`;
-    onDelete(time, story);
+    onDelete(time, dataStory);
   };
 
   return (
@@ -43,9 +64,9 @@ function MeetingStoryArticle({
           <div className="card personal-area__card personal-area__date-container">
             <div className="personal-area__text-wrap">
               <h2 className="section-title personal-area__card-title">
-                {story.title}
+                {dataStory.title}
               </h2>
-              <p className="paragraph paragraph_article">{story.description}</p>
+              <p className="paragraph paragraph_article">{dataStory.description}</p>
             </div>
             <div className="personal-area__card-date">
               <p className="personal-area__card-weekday">{`${month}, ${year}`}</p>
@@ -54,11 +75,11 @@ function MeetingStoryArticle({
             <div className="personal-area__actions">
               <div className="personal-area__rating">
                 <button
-                  className="personal-area__rate personal-area__rate_type_active-good"
+                  className={`personal-area__rate personal-area__rate_type_active-${dataStory.mood}`}
                   type="button"
                   aria-label="rate"
                 />
-                <p className="caption personal-area__rating-label personal-area__rating-label_type_good">
+                <p className={`caption personal-area__rating-label personal-area__rating-label_type_${dataStory.mood}`}>
                   Было классно
                 </p>
               </div>
@@ -90,7 +111,7 @@ function MeetingStoryArticle({
         <MeetingStoryForm
           onSubmit={handleSubmitEditStory}
           onDelete={handleCancelForm}
-          values={story}
+          values={dataStory}
         />
       )}
     </>
@@ -102,6 +123,7 @@ MeetingStoryArticle.propTypes = {
     .isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onEditSubmit: PropTypes.func.isRequired,
+  // onEditSubmit: PropTypes.func.isRequired,
+
 };
 export default MeetingStoryArticle;

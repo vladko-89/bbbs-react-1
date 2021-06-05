@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { format, parseISO } from 'date-fns';
 
-function MeetingStoryForm({ onSubmit, onDelete, values }) {
+function MeetingStoryForm({
+  onSubmit, onDelete, values, isExample,
+}) {
   const { register, handleSubmit } = useForm();
-  const [place, setPlace] = React.useState(values.title);
-  const [description, setDescription] = React.useState(values.description);
-  const [time, setTime] = React.useState(() => format(parseISO(values.data), 'yyyy-MM-dd'));
-  const [mood, setMood] = React.useState(values.mood);
+  const [place, setPlace] = React.useState(
+    isExample ? 'Парк горького' : values.title,
+  );
+  const [description, setDescription] = React.useState(
+    isExample ? 'Опишите встречу' : values.description,
+  );
+  const [time, setTime] = React.useState(() => values.date.slice(0, 10) || '2021-05-06');
+  const [mood, setMood] = React.useState(isExample ? 'good' : values.mood);
 
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
@@ -18,27 +23,25 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
   };
   const handleTimeChange = (e) => {
     setTime(e.target.value);
+    // eslint-disable-next-line no-console
+    console.log(mood);
   };
   const handleMoodChange = (e) => {
     setMood(e.target.value);
   };
   const onSubmitForm = (data) => {
     onSubmit(data);
-    // eslint-disable-next-line no-console
-    console.log(time);
-    // eslint-disable-next-line no-console
-    console.log(mood);
   };
-  // const handleChangeReaction = (e) => {
-  //    // e.target.nextSibling.classList.toggle(`personal-area__rate_type_active-${e.target.id}`);
-  //   if (e.target.checked === true) { // если включаем чекбокс
-  //     const btnRate = document.querySelectorAll('.personal-area__radioBtn-mood');
-  //     for (let i = 0; i < btnRate.length; i += 1) { // проходим по всем чекбоксам
-  //       btnRate[i].checked = false; // выключаем их
-  //     }
-  //     e.target.checked = true; // и включаем текущий (потому что до этого выключили все)
-  //   }
-  // };
+  const handleLoadImage = (e) => {
+    const container = document.querySelector('.personal-area__card_type_add-photo');
+    const img = document.createElement('img');
+    img.src = window.URL.createObjectURL(e.target.files[0]);
+    img.width = 400;
+    img.onload = function () {
+      window.URL.revokeObjectURL(img.src);
+    };
+    container.appendChild(img);
+  };
   return (
     <form
       className="card-container card-container_type_personal-area"
@@ -53,7 +56,7 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
           id="userImage"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('image')}
-
+          onChange={handleLoadImage}
         />
 
         <label
@@ -76,7 +79,7 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
           />
           <input
             type="date"
-            placeholder="Дата&emsp;"
+            placeholder=""
             required
             className="personal-area__form-input"
             onChange={handleTimeChange}
@@ -84,15 +87,14 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('date')}
             value={time}
-
           />
           <textarea
             className="personal-area__form-input personal-area__form-input_type_textarea"
             placeholder="Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось"
             required
-            id="story"
+            id="description"
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('story')}
+            {...register('description')}
             value={description}
             onChange={handleDescriptionChange}
           />
@@ -169,6 +171,7 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
 }
 
 MeetingStoryForm.defaultProps = {
+  isExample: false,
   values: {
     id: '',
     title: '',
@@ -181,10 +184,14 @@ MeetingStoryForm.defaultProps = {
 };
 
 MeetingStoryForm.propTypes = {
-
+  isExample: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  values: PropTypes.objectOf(PropTypes.string, PropTypes.number, PropTypes.bool),
+  values: PropTypes.objectOf(
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.bool,
+  ),
 };
 
 export default MeetingStoryForm;

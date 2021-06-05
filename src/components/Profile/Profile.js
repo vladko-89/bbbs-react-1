@@ -16,8 +16,11 @@ function Profile({ onOutClick }) {
   const [userEvents, setUserEvents] = React.useState([]);
   const [userMeetings, setUserMeetings] = React.useState([]);
   const [selectedMeetings, setSelectedMeetings] = React.useState({});
-  const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(false);
+  const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(
+    () => !!userMeetings.length > 0,
+  );
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
+  const [isHidden, setIsHidden] = React.useState(false);
   const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
@@ -25,7 +28,12 @@ function Profile({ onOutClick }) {
     api
       .getEvents()
       .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
-      .then(() => setUserMeetings(mockMeetingStories))
+      .then(() => {
+        setUserMeetings(mockMeetingStories);
+        if (mockMeetingStories.length > 0) {
+          setIsHidden(true);
+        }
+      })
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }, []);
@@ -67,11 +75,12 @@ function Profile({ onOutClick }) {
   };
 
   const handleDeleteMeet = () => {
-    setUserMeetings(
+    setUserMeetings(// пока по названию, будет бэк-возьмем id
       userMeetings.filter((meet) => meet.title !== selectedMeetings.title),
     );
-    setMeetTitle('');
-    setMeetTime('');
+    // setMeetTitle('');
+    // setMeetTime('');
+    setIsHidden(true);
     // eslint-disable-next-line no-console
     console.log('Meet wil be deleted');
   };
@@ -85,10 +94,13 @@ function Profile({ onOutClick }) {
   };
   const handleSubmitStory = (data) => {
     setUserMeetings([...userMeetings, data]);
+    setIsHidden(true);
     // eslint-disable-next-line no-console
-    console.log(`saving story ${data}`);
+    console.log(data);
   };
-
+  const handleAddMeetClick = () => {
+    setIsHidden(false);
+  };
   return (
     <>
       <main className="main">
@@ -120,18 +132,29 @@ function Profile({ onOutClick }) {
           </div>
 
           <div className="personal-area__story">
-            {mockMeetingStories.length === 0 && (
+            {userMeetings.length === 0 && (
               <h2 className="section-title personal-area__title">
-                Составьте историю вашей дружбы с младшим. Эта страница
-                доступна только вам.
+                Составьте историю вашей дружбы с младшим. Эта страница доступна
+                только вам.
               </h2>
-            ) && (
+            )}
+            {userMeetings.length > 0 && (
+              <button
+                type="button"
+                className="meeting__add opacity-transition"
+                onClick={handleAddMeetClick}
+              >
+                Добавить встречу
+              </button>
+            )}
+            {!isHidden && (
               <MeetingStoryForm
                 onSubmit={handleSubmitStory}
                 onDelete={handleDeleteMeet}
                 isExample={false}
               />
             )}
+
             <section className="stories-container">
               {userMeetings.length === 0 ? (
                 <MeetingStoryForm
@@ -146,6 +169,7 @@ function Profile({ onOutClick }) {
                     onEdit={handleEditClick}
                     onEditSubmit={handleSubmitStory}
                     onDelete={handleDeleteMeetClick}
+                    onDeleteForSubmit={handleDeleteMeet}
                     story={item}
                   />
                 ))
