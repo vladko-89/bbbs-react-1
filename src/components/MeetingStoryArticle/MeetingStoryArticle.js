@@ -24,30 +24,27 @@ function MeetingStoryArticle({
     setDataStory({ ...data });
     setIsEdit(false);
   };
+  // даты
   const date = new Date(dataStory.date);
   const month = date.toLocaleString('default', { month: 'long' });
   const day = date.getDate();
   const year = date.getFullYear();
-  const reaction = document.querySelector('.personal-area__rate');
-  const labelReaction = document.querySelector('.personal-area__rating-label');
+  // реакции
+  // const labelReaction = document.querySelector('.personal-area__rating-label');
+  // установка реакций
   const setReaction = () => {
     switch (dataStory.mood) {
       case 'bad':
-        labelReaction.textContent = 'Бывает и лучше';
-        break;
+        return 'Бывает и лучше';
       case 'neutral':
-        reaction.nextSibling.textContent = 'Хорошо';
-        break;
+        return 'Хорошо';
       case 'good':
-        reaction.nextSibling.textContent = 'Было классно';
-        break;
-      default: break;
+        return 'Было классно';
+      default:
+        return '';
     }
   };
-  React.useEffect(() => {
-    setReaction();
-  }, [dataStory]);
-  setReaction();
+  const reaction = setReaction();
 
   const handleDelete = () => {
     const time = `${month}, ${year}`;
@@ -59,14 +56,17 @@ function MeetingStoryArticle({
       {!isEdit && (
         <article className="card-container card-container_type_personal-area">
           <div className="card card_content_media">
+            {/* пока так, будут ссылки от бэка, будем брать их */}
             <img src={img} alt="Катя" className="personal-area__photo" />
           </div>
-          <div className="card personal-area__card personal-area__date-container">
+          <div className="personal-area__card personal-area__date-container">
             <div className="personal-area__text-wrap">
               <h2 className="section-title personal-area__card-title">
                 {dataStory.title}
               </h2>
-              <p className="paragraph paragraph_article">{dataStory.description}</p>
+              <p className="paragraph paragraph_article">
+                {dataStory.description}
+              </p>
             </div>
             <div className="personal-area__card-date">
               <p className="personal-area__card-weekday">{`${month}, ${year}`}</p>
@@ -79,8 +79,10 @@ function MeetingStoryArticle({
                   type="button"
                   aria-label="rate"
                 />
-                <p className={`caption personal-area__rating-label personal-area__rating-label_type_${dataStory.mood}`}>
-                  Было классно
+                <p
+                  className={`caption personal-area__rating-label personal-area__rating-label_type_${dataStory.mood}`}
+                >
+                  {reaction}
                 </p>
               </div>
 
@@ -107,6 +109,7 @@ function MeetingStoryArticle({
           </div>
         </article>
       )}
+      {/* карточка встречи скрывается, форма с данными карточки отображается */}
       {isEdit && (
         <MeetingStoryForm
           onSubmit={handleSubmitEditStory}
@@ -124,6 +127,5 @@ MeetingStoryArticle.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   // onEditSubmit: PropTypes.func.isRequired,
-
 };
 export default MeetingStoryArticle;

@@ -13,7 +13,7 @@ import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
   // eslint-disable-next-line no-unused-vars
-  const [userEvents, setUserEvents] = React.useState([]);
+  const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
   const [selectedMeetings, setSelectedMeetings] = React.useState({});
   const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(
@@ -48,17 +48,11 @@ function Profile({ onOutClick }) {
     setSelectedMeetings(meeting);
     setMeetTitle(
       meeting.title,
-      // event.target
-      //   .closest('.card-container_type_personal-area')
-      //   .querySelector('.personal-area__card-title').textContent,
     );
     // eslint-disable-next-line no-console
     console.log(selectedMeetings);
     setMeetTime(
       time,
-      // event.target
-      //   .closest('.card-container_type_personal-area')
-      //   .querySelector('.personal-area__card-weekday').textContent,
     );
     setIsOpenPopupDeleteMeet(true);
   };
@@ -78,8 +72,6 @@ function Profile({ onOutClick }) {
     setUserMeetings(// пока по названию, будет бэк-возьмем id
       userMeetings.filter((meet) => meet.title !== selectedMeetings.title),
     );
-    // setMeetTitle('');
-    // setMeetTime('');
     setIsHidden(true);
     // eslint-disable-next-line no-console
     console.log('Meet wil be deleted');
@@ -93,7 +85,7 @@ function Profile({ onOutClick }) {
     console.log(`city changed on ${city}`);
   };
   const handleSubmitStory = (data) => {
-    setUserMeetings([...userMeetings, data]);
+    setUserMeetings([data, ...userMeetings]);
     setIsHidden(true);
     // eslint-disable-next-line no-console
     console.log(data);

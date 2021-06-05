@@ -7,7 +7,7 @@ function MeetingStoryForm({
 }) {
   const { register, handleSubmit } = useForm();
   const [place, setPlace] = React.useState(
-    isExample ? 'Парк горького' : values.title,
+    isExample ? 'Парк горького' : values.title, // пример или данные из пропса
   );
   const [description, setDescription] = React.useState(
     isExample ? 'Опишите встречу' : values.description,
@@ -21,10 +21,13 @@ function MeetingStoryForm({
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
+  // Время
   const handleTimeChange = (e) => {
     setTime(e.target.value);
     // eslint-disable-next-line no-console
     console.log(mood);
+    // eslint-disable-next-line no-console
+    console.log(time);
   };
   const handleMoodChange = (e) => {
     setMood(e.target.value);
@@ -37,6 +40,7 @@ function MeetingStoryForm({
     const img = document.createElement('img');
     img.src = window.URL.createObjectURL(e.target.files[0]);
     img.width = 400;
+    // eslint-disable-next-line
     img.onload = function () {
       window.URL.revokeObjectURL(img.src);
     };
@@ -78,7 +82,7 @@ function MeetingStoryForm({
             onChange={handlePlaceChange}
           />
           <input
-            type="date"
+            type="date" // здесь выбор даты
             placeholder=""
             required
             className="personal-area__form-input"
@@ -139,7 +143,6 @@ function MeetingStoryForm({
               id="bad"
               value="bad"
               className="personal-area__radioBtn-mood"
-              // onChange={handleChangeReaction}
               onChange={handleMoodChange}
             />
             <label

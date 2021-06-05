@@ -1,9 +1,10 @@
-@import '../../sass/base/variables.scss';
-@import '../../sass/base/mixins.scss';
+@import '../../scss/variables.scss';
+@import '../../scss/mixins.scss';
 .personal-area__add-photo-button {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
+  position: absolute;
 }
 .personal-area__bottom-caption{
   padding: 0;

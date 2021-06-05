@@ -1,5 +1,5 @@
-@import '../../sass/base/variables.scss';
-@import '../../sass/base/mixins.scss';
+@import '../../scss/variables.scss';
+@import '../../scss/mixins.scss';
 .hidden {
   display: none;
 }
@@ -19,6 +19,13 @@ overflow: auto;
   grid-template-columns: minmax(260px, 540px) 94px;
   grid-template-rows: minmax(210px, 286px);
   align-items: start;
+  position: relative;
+  padding: 37px 30px 15px;
+  border-radius: 30px;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  justify-content: space-between;
 }
 
 .personal-area__text-wrap {
