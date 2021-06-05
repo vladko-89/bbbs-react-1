@@ -12,13 +12,13 @@ function PlacesCard(
     caption,
     info,
     link,
-    activeRubric,
+    activeRubrics,
     tags,
   },
 ) {
   return (
     <article
-      className={`card-container card-container_type_article ${activeRubric && tags.indexOf(activeRubric) === -1 && activeRubric !== 'All' ? 'card-container_hidden' : ''}`}
+      className={`card-container card-container_type_article ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag) === -1) ? 'card-container_hidden' : ''}`}
     >
       <div className={`card card_color_${color}`}>
         {chosen && <MentorChoice />}
@@ -53,6 +53,7 @@ function PlacesCard(
 
 PlacesCard.defaultProps = {
   info: '',
+  activeRubrics: [],
 };
 
 PlacesCard.propTypes = {
@@ -63,7 +64,7 @@ PlacesCard.propTypes = {
   caption: PropTypes.bool.isRequired,
   info: PropTypes.string,
   link: PropTypes.string.isRequired,
-  activeRubric: PropTypes.string.isRequired,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string),
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

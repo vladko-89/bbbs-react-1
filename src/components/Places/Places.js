@@ -6,7 +6,7 @@ import MainMentor from '../MainMentor/MainMentor';
 import PlacesCards from '../PlacesCards/PlacesCards';
 
 function Places({
-  activeRubric,
+  activeRubrics,
   selectRubric,
 }) {
   const FilterArrayFirst = [
@@ -79,7 +79,7 @@ function Places({
             imageUrl="https://picsum.photos/1125/394"
             link="https://www.moscowzoo.ru/"
             tags={['sport', '8-10', 'chosen']}
-            activeRubric={activeRubric}
+            activeRubrics={activeRubrics}
           />
           <div className="card card_content_annotation card_type_main">
             <div className="card__content">
@@ -92,13 +92,13 @@ function Places({
           </div>
         </article>
       </section>
-      <PlacesCards activeRubric={activeRubric} />
+      <PlacesCards activeRubrics={activeRubrics} />
     </div>
   );
 }
 
 Places.propTypes = {
-  activeRubric: PropTypes.string.isRequired,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
 };
 
