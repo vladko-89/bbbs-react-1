@@ -5,80 +5,93 @@ import img from '../../images/personal-area/lk.png';
 
 function MeetingStoryArticle({
   story,
+  onEdit,
   onDelete,
-  onSubmit,
+  onEditSubmit,
 }) {
   const [isEdit, setIsEdit] = React.useState(false);
+
   const handleEditClick = (e) => {
     setIsEdit(true);
+    onEdit(story);
     e.target.closest('article').classList.add('hidden');
   };
-  const handleCancelEdit = () => {
-
+  const handleCancelForm = () => {
+    setIsEdit(false);
   };
-
+  const handleSubmitEditStory = (data) => {
+    onDelete();
+    onEditSubmit(data);
+    setIsEdit(false);
+  };
   const date = new Date(story.date);
   const month = date.toLocaleString('default', { month: 'long' });
   const day = date.getDate();
   const year = date.getFullYear();
+  const handleDelete = () => {
+    const time = `${month}, ${year}`;
+    onDelete(time, story);
+  };
+
   return (
     <>
-      <article className="card-container card-container_type_personal-area">
-        <div className="card card_content_media">
-          <img src={img} alt="Катя" className="personal-area__photo" />
-        </div>
-        <div className="card personal-area__card personal-area__date-container">
-          <div className="personal-area__text-wrap">
-            <h2 className="section-title personal-area__card-title">{story.title}</h2>
-            <p className="paragraph paragraph_article">
-              {story.description}
-            </p>
+      {!isEdit && (
+        <article className="card-container card-container_type_personal-area">
+          <div className="card card_content_media">
+            <img src={img} alt="Катя" className="personal-area__photo" />
           </div>
-          <div className="personal-area__card-date">
-            <p className="personal-area__card-weekday">{`${month}, ${year}`}</p>
-            <p className="personal-area__card-day">{day}</p>
-          </div>
-          <div className="personal-area__actions">
-            <div className="personal-area__rating">
-              <button
-                className="personal-area__rate personal-area__rate_type_active-good"
-                type="button"
-                aria-label="rate"
-              />
-              <p
-                className="caption personal-area__rating-label personal-area__rating-label_type_good"
-              >
-                Было
-                классно
-              </p>
+          <div className="card personal-area__card personal-area__date-container">
+            <div className="personal-area__text-wrap">
+              <h2 className="section-title personal-area__card-title">
+                {story.title}
+              </h2>
+              <p className="paragraph paragraph_article">{story.description}</p>
             </div>
+            <div className="personal-area__card-date">
+              <p className="personal-area__card-weekday">{`${month}, ${year}`}</p>
+              <p className="personal-area__card-day">{day}</p>
+            </div>
+            <div className="personal-area__actions">
+              <div className="personal-area__rating">
+                <button
+                  className="personal-area__rate personal-area__rate_type_active-good"
+                  type="button"
+                  aria-label="rate"
+                />
+                <p className="caption personal-area__rating-label personal-area__rating-label_type_good">
+                  Было классно
+                </p>
+              </div>
 
-            <div className="personal-area__action-elements">
-              <p className="caption personal-area__opened-info">Открыто Александре К.</p>
-              <button
-                className="caption personal-area__button personal-area__button_action_edit-card"
-                onClick={handleEditClick}
-                type="button"
-              >
-                Редактировать
-              </button>
-              <button
-                className="caption personal-area__button personal-area__button_action_delete-card"
-                type="button"
-                onClick={onDelete}
-              >
-                Удалить
-              </button>
+              <div className="personal-area__action-elements">
+                <p className="caption personal-area__opened-info">
+                  Открыто Александре К.
+                </p>
+                <button
+                  className="caption personal-area__button personal-area__button_action_edit-card"
+                  onClick={handleEditClick}
+                  type="button"
+                >
+                  Редактировать
+                </button>
+                <button
+                  className="caption personal-area__button personal-area__button_action_delete-card"
+                  type="button"
+                  onClick={handleDelete}
+                >
+                  Удалить
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </article>
+        </article>
+      )}
       {isEdit && (
-      <MeetingStoryForm
-        onSubmit={onSubmit}
-        onDelete={onDelete}
-        values={story}
-      />
+        <MeetingStoryForm
+          onSubmit={handleSubmitEditStory}
+          onDelete={handleCancelForm}
+          values={story}
+        />
       )}
     </>
   );
@@ -87,8 +100,8 @@ function MeetingStoryArticle({
 MeetingStoryArticle.propTypes = {
   story: PropTypes.objectOf(PropTypes.string, PropTypes.number, PropTypes.bool)
     .isRequired,
-
+  onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onEditSubmit: PropTypes.func.isRequired,
 };
 export default MeetingStoryArticle;

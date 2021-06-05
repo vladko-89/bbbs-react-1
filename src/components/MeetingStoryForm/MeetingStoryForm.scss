@@ -1,6 +1,11 @@
 @import '../../sass/base/variables.scss';
 @import '../../sass/base/mixins.scss';
 .personal-area__add-photo-button {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+}
+.personal-area__bottom-caption{
   padding: 0;
   height: 100px;
   width: 100px;
@@ -12,11 +17,15 @@
   border-radius: 100%;
   outline: none;
   cursor: pointer;
+  position: relative;
 }
-
-.personal-area__bottom-caption {
+.personal-area__bottom-caption::after {
+  content: "Загрузить фото";
   padding-top: 5px;
+  text-align: center;
   color: $lightGray;
+  position: absolute;
+  top: 105%
 }
 
 .personal-area__form {
@@ -64,8 +73,9 @@
 .personal-area__radioBtn-mood{
   width: 0.1px;
   height: 0.1px;
-  visibility: hidden;
+  opacity: 0;
 }
+
 .personal-area__rate {
   width: 26px;
   height: 26px;
@@ -124,7 +134,13 @@
   justify-content: flex-end;
 }
 
+.personal-area__delete {
+  border: none;
+}
 
+.personal-area__radioBtn-mood:checked .personal-area__rate_type_neutral {
+  color: $lightGray;
+}
 @include atDesktop1024 {
     .personal-area__story {
     padding-top: 20px;

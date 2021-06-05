@@ -14,29 +14,50 @@ import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 function Profile({ onOutClick }) {
   // eslint-disable-next-line no-unused-vars
   const [userEvents, setUserEvents] = React.useState([]);
+  const [userMeetings, setUserMeetings] = React.useState([]);
+  const [selectedMeetings, setSelectedMeetings] = React.useState({});
   const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
-  const handleDeleteMeetClick = (event) => {
+  React.useEffect(() => {
+    api
+      .getEvents()
+      .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
+      .then(() => setUserMeetings(mockMeetingStories))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  }, []);
+  // eslint-disable-next-line no-console
+  console.log(userMeetings);
+  // eslint-disable-next-line no-console
+  console.log(selectedMeetings);
+  const handleEditClick = (meeting) => {
+    setSelectedMeetings(meeting);
+  };
+  const handleDeleteMeetClick = (time, meeting) => {
+    setSelectedMeetings(meeting);
     setMeetTitle(
-      event.target
-        .closest('.card-container_type_personal-area')
-        .querySelector('.personal-area__card-title').textContent,
+      meeting.title,
+      // event.target
+      //   .closest('.card-container_type_personal-area')
+      //   .querySelector('.personal-area__card-title').textContent,
     );
+    // eslint-disable-next-line no-console
+    console.log(selectedMeetings);
     setMeetTime(
-      event.target
-        .closest('.card-container_type_personal-area')
-        .querySelector('.personal-area__card-weekday').textContent,
+      time,
+      // event.target
+      //   .closest('.card-container_type_personal-area')
+      //   .querySelector('.personal-area__card-weekday').textContent,
     );
     setIsOpenPopupDeleteMeet(true);
   };
 
   const handleClose = (event) => {
     if (
-      event.key === 'Escape'
-      || event.target.classList.contains('popup_opened')
+      event.key === 'Escape' || event.target.classList.contains('popup_opened')
     ) {
       setIsOpenPopupDeleteMeet(false);
       setIsOpenPopupCities(false);
@@ -46,6 +67,11 @@ function Profile({ onOutClick }) {
   };
 
   const handleDeleteMeet = () => {
+    setUserMeetings(
+      userMeetings.filter((meet) => meet.title !== selectedMeetings.title),
+    );
+    setMeetTitle('');
+    setMeetTime('');
     // eslint-disable-next-line no-console
     console.log('Meet wil be deleted');
   };
@@ -58,17 +84,10 @@ function Profile({ onOutClick }) {
     console.log(`city changed on ${city}`);
   };
   const handleSubmitStory = (data) => {
+    setUserMeetings([...userMeetings, data]);
     // eslint-disable-next-line no-console
     console.log(`saving story ${data}`);
   };
-
-  React.useEffect(() => {
-    api
-      .getEvents()
-      .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <>
@@ -102,29 +121,30 @@ function Profile({ onOutClick }) {
 
           <div className="personal-area__story">
             {mockMeetingStories.length === 0 && (
-            <h2 className="section-title personal-area__title">
-              Составьте историю вашей дружбы с младшим. Эта страница
-              доступна только вам.
-            </h2>
+              <h2 className="section-title personal-area__title">
+                Составьте историю вашей дружбы с младшим. Эта страница
+                доступна только вам.
+              </h2>
             ) && (
-            <MeetingStoryForm
-              onSubmit={handleSubmitStory}
-              onDelete={handleDeleteMeet}
-              isExample={false}
-            />
+              <MeetingStoryForm
+                onSubmit={handleSubmitStory}
+                onDelete={handleDeleteMeet}
+                isExample={false}
+              />
             )}
             <section className="stories-container">
-              {mockMeetingStories.length === 0 ? (
+              {userMeetings.length === 0 ? (
                 <MeetingStoryForm
                   onSubmit={handleSubmitStory}
                   onDelete={handleDeleteMeet}
                   isExample
                 />
               ) : (
-                mockMeetingStories.map((item) => (
+                userMeetings.map((item) => (
                   <MeetingStoryArticle
                     key={item.id}
-                    onSubmit={handleSubmitStory}
+                    onEdit={handleEditClick}
+                    onEditSubmit={handleSubmitStory}
                     onDelete={handleDeleteMeetClick}
                     story={item}
                   />
@@ -139,6 +159,7 @@ function Profile({ onOutClick }) {
       <MeetingDeletePopup
         onDeleteClick={handleDeleteMeet}
         onCloseClick={handleClose}
+        story={selectedMeetings}
         isOpen={isOpenPopupDeleteMeet}
         title={`${meetTitle} ${meetTime}`}
       />

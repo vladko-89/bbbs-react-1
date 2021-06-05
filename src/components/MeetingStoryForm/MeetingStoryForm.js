@@ -1,14 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { format, parseISO } from 'date-fns';
 
 function MeetingStoryForm({ onSubmit, onDelete, values }) {
   const { register, handleSubmit } = useForm();
+  const [place, setPlace] = React.useState(values.title);
+  const [description, setDescription] = React.useState(values.description);
+  const [time, setTime] = React.useState(() => format(parseISO(values.data), 'yyyy-MM-dd'));
+  const [mood, setMood] = React.useState(values.mood);
 
-  const onSubmitForm = (e, data) => {
-    e.preventDefault();
-    onSubmit(data);
+  const handlePlaceChange = (e) => {
+    setPlace(e.target.value);
   };
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+  const handleTimeChange = (e) => {
+    setTime(e.target.value);
+  };
+  const handleMoodChange = (e) => {
+    setMood(e.target.value);
+  };
+  const onSubmitForm = (data) => {
+    onSubmit(data);
+    // eslint-disable-next-line no-console
+    console.log(time);
+    // eslint-disable-next-line no-console
+    console.log(mood);
+  };
+  // const handleChangeReaction = (e) => {
+  //    // e.target.nextSibling.classList.toggle(`personal-area__rate_type_active-${e.target.id}`);
+  //   if (e.target.checked === true) { // если включаем чекбокс
+  //     const btnRate = document.querySelectorAll('.personal-area__radioBtn-mood');
+  //     for (let i = 0; i < btnRate.length; i += 1) { // проходим по всем чекбоксам
+  //       btnRate[i].checked = false; // выключаем их
+  //     }
+  //     e.target.checked = true; // и включаем текущий (потому что до этого выключили все)
+  //   }
+  // };
   return (
     <form
       className="card-container card-container_type_personal-area"
@@ -22,15 +52,14 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
           accept="image/jpeg, image/png, image/gif"
           id="userImage"
           // eslint-disable-next-line react/jsx-props-no-spreading
-          {...register('userImage')}
+          {...register('image')}
+
         />
 
         <label
           htmlFor="userImage"
           className="caption personal-area__bottom-caption"
-        >
-          Загрузить фото
-        </label>
+        />
       </div>
       <div className="card personal-area__card personal-area__card_type_content">
         <div className="personal-area__form">
@@ -41,19 +70,21 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
             className="personal-area__form-input"
             id="place"
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('place')}
-            value={values ? values.title : ''}
+            {...register('title')}
+            value={place}
+            onChange={handlePlaceChange}
           />
           <input
             type="date"
             placeholder="Дата&emsp;"
             required
             className="personal-area__form-input"
-            onChange="this.className=(this.value!=''?'has-value':'')"
+            onChange={handleTimeChange}
             id="date"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('date')}
-            value={values ? values.data : ''}
+            value={time}
+
           />
           <textarea
             className="personal-area__form-input personal-area__form-input_type_textarea"
@@ -62,18 +93,20 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
             id="story"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('story')}
-            value={values ? values.description : ''}
+            value={description}
+            onChange={handleDescriptionChange}
           />
 
           <div className="personal-area__rating">
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <input
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...register('mood')}
               type="radio"
-              name="mood"
               id="good"
               value="good"
               className="personal-area__radioBtn-mood"
-              checked={!!(values && values.mood === 'good')}
+              onChange={handleMoodChange}
             />
             <label
               htmlFor="good"
@@ -81,12 +114,15 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
               aria-label="good"
             />
             <input
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...register('mood')}
               type="radio"
               name="mood"
               id="neutral"
               value="neutral"
               className="personal-area__radioBtn-mood"
-              checked={!!(values && values.mood === 'neutral')}
+              // onChange={handleChangeReaction}
+              onChange={handleMoodChange}
             />
             <label
               htmlFor="neutral"
@@ -94,12 +130,15 @@ function MeetingStoryForm({ onSubmit, onDelete, values }) {
               aria-label="neutral"
             />
             <input
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...register('mood')}
               type="radio"
               name="mood"
               id="bad"
               value="bad"
               className="personal-area__radioBtn-mood"
-              checked={!!(values && values.mood === 'bad')}
+              // onChange={handleChangeReaction}
+              onChange={handleMoodChange}
             />
             <label
               className="personal-area__rate personal-area__rate_type_bad"
