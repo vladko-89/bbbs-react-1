@@ -17,10 +17,7 @@ import Articles from '../Articles/Articles';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
-
-
   const [activeRubrics, setActiveRubrics] = React.useState([]);
-
   const [isFixed, setIsFixed] = React.useState(false);
 
   function changeActiveRubric(rubric, active) {

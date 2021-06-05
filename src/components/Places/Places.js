@@ -66,7 +66,6 @@ function Places({
         <MainTitle title="Куда пойти" />
         <Filter
           array={FilterArrayFirst}
-
           // eslint-disable-next-line no-console
           onActive={() => console.log('push')}// Временная заглушка
           selectRubric={selectRubric}
