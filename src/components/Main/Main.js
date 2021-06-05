@@ -14,7 +14,6 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
-// import MainContext from '../../contexts/MainContext';
 
 // TODO create wrapper component
 function Main({ loggedIn }) {
@@ -25,7 +24,7 @@ function Main({ loggedIn }) {
   const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
-    api.getMain().then((res) => {
+    api.getMain(localStorage.getItem('bbbs-access')).then((res) => {
       setMainState(res);
     })
       .then(() => setIsDataReady(true))

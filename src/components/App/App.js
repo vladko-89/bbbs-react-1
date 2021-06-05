@@ -16,7 +16,6 @@ import CurrentUserContext from '../../contexts/CurrentUser';
 import api from '../../utils/Api';
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
@@ -37,30 +36,34 @@ function App() {
     return (() => document.removeEventListener('scroll', checkScroll));
   }, []);
 
+  // Here will be another logic. We need a expiration of access and refresh token from backend.
   React.useEffect(() => {
-    api.signIn('admin', 'admin')
-      .then((res) => { console.log(res); });
-    setCurrentUser('');
+    const savedAccessToken = localStorage.getItem('bbbs-access');
+    if (savedAccessToken) {
+      api.checkToken(savedAccessToken)
+        .then((res) => { if (res.access === savedAccessToken) { setLoggedIn(true); } });
+    }
   }, []);
 
   const handleLoginOpen = () => {
     setIsPoupLoginOpened(true);
   };
   const handleLoginClose = (evt) => {
-    if (evt.key === 'Escape' || evt.target.classList.contains('popup__close')) {
+    if (evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')) {
       setIsPoupLoginOpened(false);
     }
   };
 
-  const handleLoginSubmit = (evt) => {
+  const handleLoginSubmit = (evt, userName) => {
     evt.preventDefault();
-    console.log('form submited');
+    setLoggedIn(true);
+    setCurrentUser(userName);
   };
 
   const handleOutClick = () => {
+    localStorage.removeItem('bbbs-access');
+    localStorage.removeItem('bbbs-refresh');
     setLoggedIn(false);
-    // eslint-disable-next-line no-console
-    console.log('удалить токен из хранилища');
   };
   return (
     <CurrentUserContext.Provider value={currentUser}>

@@ -25,28 +25,21 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
     e.preventDefault();
     api
       .signIn(
-        loginFormValidation.values.name,
+        loginFormValidation.values.login,
         loginFormValidation.values.password,
       )
       .then((res) => {
-        console.log(res);
         if (res) {
-          if (res.token) {
-            localStorage.setItem('jwt', res.token);
-            api
-              .checkToken(res.token)
-              .then(() => {
-                loginFormValidation.resetForm();
-                e.target.closest('form').reset();
-              })
-              .catch((err) => console.log(err));
-          } else setActionError(res.message);
+          localStorage.setItem('bbbs-access', res.access);
+          localStorage.setItem('bbbs-refresh', res.refresh);
+          onSubmit(e, loginFormValidation.values.login);
+          closePopup(e);
         } else {
           setActionError('Произошла ошибка. Попробуйте еще раз.');
         }
       })
+      // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-    onSubmit(e);
   }
 
   return (
