@@ -17,15 +17,12 @@ import PopupLogin from '../PopupLogin/PopupLogin';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import api from '../../utils/Api';
 
-
-
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
-
 
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All') {
@@ -77,51 +74,51 @@ function App() {
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
-    <HelmetProvider>
-      <div className="app page">
-        <Helmet>
-          <title>Старшие братья и сестры</title>
-        </Helmet>
-        <Header
-          loggedIn={loggedIn}
-          onLoginPopup={handleLoginOpen}
-        />
-        <Switch>
-          <Route exact path="/">
-            <Main loggedIn={loggedIn} />
-          </Route>
-          <Route exact path="/place">
-            <Places
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-            />
-          </Route>
-          <Route exact path="/about">
-            <AboutUs />
-          </Route>
-          <Route exact path="/calendar">
-            <Calendar />
-          </Route>
-          <Route exact path="/questions">
-            <Questions loggedIn={loggedIn} />
-          </Route>
-          <Route exact path="/profile">
-            <Profile onOutClick={handleOutClick} />
-          </Route>
-          <Route exact path="/video">
-            <Video />
-          </Route>
-          <Route exact path="/catalog">
-            <Catalog />
-          </Route>
-          <Route exact path="/articles">
-            <Articles />
-          </Route>
-        </Switch>
-        <Footer />
-        { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
-      </div>
-    </HelmetProvider>
+      <HelmetProvider>
+        <div className="app page">
+          <Helmet>
+            <title>Старшие братья и сестры</title>
+          </Helmet>
+          <Header
+            loggedIn={loggedIn}
+            onLoginPopup={handleLoginOpen}
+          />
+          <Switch>
+            <Route exact path="/">
+              <Main loggedIn={loggedIn} />
+            </Route>
+            <Route exact path="/place">
+              <Places
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
+            </Route>
+            <Route exact path="/about">
+              <AboutUs />
+            </Route>
+            <Route exact path="/calendar">
+              <Calendar />
+            </Route>
+            <Route exact path="/questions">
+              <Questions loggedIn={loggedIn} />
+            </Route>
+            <Route exact path="/profile">
+              <Profile onOutClick={handleOutClick} />
+            </Route>
+            <Route exact path="/video">
+              <Video />
+            </Route>
+            <Route exact path="/catalog">
+              <Catalog />
+            </Route>
+            <Route exact path="/articles">
+              <Articles />
+            </Route>
+          </Switch>
+          <Footer />
+          { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
+        </div>
+      </HelmetProvider>
     </CurrentUserContext.Provider>
   );
 }
