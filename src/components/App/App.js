@@ -18,7 +18,6 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
-  const [isFixed, setIsFixed] = React.useState(false);
 
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All') {
@@ -29,21 +28,6 @@ function App() {
       setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
     }
   }
-
-  React.useEffect(() => {
-    let current = 0;
-    const checkScroll = () => {
-      if (window.pageYOffset < current && window.pageYOffset > 30) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-      current = window.pageYOffset;
-    };
-    document.addEventListener('scroll', checkScroll);
-
-    return (() => document.removeEventListener('scroll', checkScroll));
-  }, []);
 
   const handleOutClick = () => {
     setLoggedIn(false);
@@ -58,7 +42,6 @@ function App() {
         </Helmet>
         <Header
           loggedIn={loggedIn}
-          isFixed={isFixed}
         />
         <Switch>
           <Route exact path="/">
