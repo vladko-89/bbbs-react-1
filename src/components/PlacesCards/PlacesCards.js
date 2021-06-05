@@ -4,7 +4,7 @@ import PlacesCard from '../PlacesCard/PlacesCard';
 
 function PlacesCards(
   {
-    activeRubric,
+    activeRubrics,
   },
 ) {
   const cards = [
@@ -54,15 +54,19 @@ function PlacesCards(
           info={card.info}
           link={card.link}
           caption={card.caption}
-          activeRubric={activeRubric}
+          activeRubrics={activeRubrics}
         />
       ))}
     </section>
   );
 }
 
+PlacesCards.defaultProps = {
+  activeRubrics: [],
+};
+
 PlacesCards.propTypes = {
-  activeRubric: PropTypes.string.isRequired,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default PlacesCards;
