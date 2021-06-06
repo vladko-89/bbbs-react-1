@@ -18,7 +18,8 @@
   border-radius: 100%;
   outline: none;
   cursor: pointer;
-  position: relative;
+  position: absolute;
+  background-color: rgba(243, 242, 242, 0.65);
 }
 .personal-area__bottom-caption::after {
   content: "Загрузить фото";
@@ -92,15 +93,30 @@
   &_type_good {
     background-image: url('../../images/personal-area/good.svg');
   }
-
+  &_type_good:hover {
+    background-image: url('../../images/personal-area/good-active.svg');
+  }
+  &_type_good:checked {
+    background-image: url('../../images/personal-area/good-active.svg');
+  }
   &_type_neutral {
     background-image: url('../../images/personal-area/neutral.svg');
   }
-
+  &_type_neutral:hover {
+    background-image: url('../../images/personal-area/neutral-active.svg');
+  }
+  &_type_neutral:checked {
+    background-image: url('../../images/personal-area/neutral-active.svg');
+  }
   &_type_bad {
     background-image: url('../../images/personal-area/bad.svg');
   }
-
+  &_type_bad:hover {
+    background-image: url('../../images/personal-area/bad-active.svg');
+  }
+  &_type_bad:checked {
+    background-image: url('../../images/personal-area/bad-active.svg');
+  }
   &_type_active-good {
     background-image: url('../../images/personal-area/good-active.svg');
   }
@@ -113,7 +129,15 @@
     background-image: url('../../images/personal-area/bad-active.svg');
   }
 }
-
+.personal-area__radioBtn-mood:checked+.personal-area__rate_type_bad {
+  background-image: url('../../images/personal-area/bad-active.svg');
+}
+.personal-area__radioBtn-mood:checked+.personal-area__rate_type_neutral {
+  background-image: url('../../images/personal-area/neutral-active.svg');
+}
+.personal-area__radioBtn-mood:checked+.personal-area__rate_type_good {
+  background-image: url('../../images/personal-area/good-active.svg');
+}
 .personal-area__rating-label {
   color: $lightGray;
 
