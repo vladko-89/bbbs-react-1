@@ -9,11 +9,13 @@ import Preloader from '../Preloader/Preloader';
 import { cardsPerPage } from '../../utils/Constants';
 
 import api from '../../utils/Api';
+
 // Work in progress
 function Video({
   activeRubrics,
   selectRubric,
 }) {
+
   const [mainState, setMainState] = React.useState({});
   const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);
@@ -100,7 +102,11 @@ function Video({
             />
           ))}
         </section>
-        <Pagination cards={mainState.movies} onPageChange={onPageChange} />
+        <Pagination
+          cardsLength={mainState.movies.length}
+          onPageChange={onPageChange}
+          cardsPerPage={cardsPerPage}
+        />
       </main>
 
     );

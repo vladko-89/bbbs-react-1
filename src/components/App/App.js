@@ -1,7 +1,7 @@
-/* eslint-disable max-len */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { compareAsc, parseISO } from 'date-fns';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -12,12 +12,22 @@ import Profile from '../Profile/Profile';
 import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
 import Catalog from '../Catalog/Catalog';
+import Articles from '../Articles/Articles';
+import PopupLogin from '../PopupLogin/PopupLogin';
+import CurrentUserContext from '../../contexts/CurrentUser';
+import api from '../../utils/Api';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
 
+
   const [isFixed, setIsFixed] = React.useState(false);
+
+  const [activeRubrics, setActiveRubrics] = React.useState([]);
+  const [currentUser, setCurrentUser] = React.useState('');
+  const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
+
 
   // Отслеживаем активные фильтры в компонентах
   const [activeRubrics, setActiveRubrics] = React.useState([]);
@@ -31,79 +41,91 @@ function App() {
     }
   }
 
+  // Probally we need a check token on a backend side before manipulation.
   React.useEffect(() => {
-    let current = 0;
-    const checkScroll = () => {
-      if (window.pageYOffset < current && window.pageYOffset > 30) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
+    if (localStorage.getItem('bbbs-token')) {
+      const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
+      if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
+        api.getCurrentUser(tokenData.access)
+          .then((res) => { setCurrentUser(res.name); setLoggedIn(true); })
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
+      } else if (compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1) {
+        api.updateToken(tokenData.refresh)
+          .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
+          // eslint-disable-next-line no-console
+          .catch((err) => console.log(err));
       }
-      current = window.pageYOffset;
-    };
-    document.addEventListener('scroll', checkScroll);
-
-    return (() => document.removeEventListener('scroll', checkScroll));
+    }
   }, []);
 
+  const handleLoginOpen = () => {
+    setIsPoupLoginOpened(true);
+  };
+  const handleLoginClose = (evt) => {
+    if (evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')) {
+      setIsPoupLoginOpened(false);
+    }
+  };
+
+  const handleLoginSubmit = (evt, userName) => {
+    evt.preventDefault();
+    setLoggedIn(true);
+    setCurrentUser(userName);
+  };
+
   const handleOutClick = () => {
+    localStorage.removeItem('bbbs-token');
     setLoggedIn(false);
-    // eslint-disable-next-line no-console
-    console.log('удалить токен из хранилища');
   };
   return (
-    <HelmetProvider>
-      <div className="app page">
-        <Helmet>
-          <title>Старшие братья и сестры</title>
-        </Helmet>
-        <Header
-          loggedIn={loggedIn}
-          isFixed={isFixed}
-        />
-        <Switch>
-          <Route exact path="/">
-            <Main
-              loggedIn={loggedIn}
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-            />
-          </Route>
-          <Route exact path="/place">
-            <Places
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-            />
-          </Route>
-          <Route exact path="/about">
-            <AboutUs />
-          </Route>
-          <Route exact path="/calendar">
-            <Calendar />
-          </Route>
-          <Route exact path="/questions">
-            <Questions
-              loggedIn={loggedIn}
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-            />
-          </Route>
-          <Route exact path="/profile">
-            <Profile onOutClick={handleOutClick} />
-          </Route>
-          <Route exact path="/video">
-            <Video
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-            />
-          </Route>
-          <Route exact path="/catalog">
-            <Catalog />
-          </Route>
-        </Switch>
-        <Footer />
-      </div>
-    </HelmetProvider>
+    <CurrentUserContext.Provider value={currentUser}>
+      <HelmetProvider>
+        <div className="app page">
+          <Helmet>
+            <title>Старшие братья и сестры</title>
+          </Helmet>
+          <Header
+            loggedIn={loggedIn}
+            onLoginPopup={handleLoginOpen}
+          />
+          <Switch>
+            <Route exact path="/">
+              <Main loggedIn={loggedIn} />
+            </Route>
+            <Route exact path="/place">
+              <Places
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
+            </Route>
+            <Route exact path="/about">
+              <AboutUs />
+            </Route>
+            <Route exact path="/calendar">
+              <Calendar />
+            </Route>
+            <Route exact path="/questions">
+              <Questions loggedIn={loggedIn} />
+            </Route>
+            <Route exact path="/profile">
+              <Profile onOutClick={handleOutClick} />
+            </Route>
+            <Route exact path="/video">
+              <Video />
+            </Route>
+            <Route exact path="/catalog">
+              <Catalog />
+            </Route>
+            <Route exact path="/articles">
+              <Articles />
+            </Route>
+          </Switch>
+          <Footer />
+          { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
+        </div>
+      </HelmetProvider>
+    </CurrentUserContext.Provider>
   );
 }
 
