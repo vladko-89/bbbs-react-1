@@ -120,7 +120,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
         </section>
 
         <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {mainState.movies.map((movie) => (
+          {mainState.movies.slice(0, 4).map((movie) => (
             <MainVideoPreview
               link={movie.link}
               key={movie.id}
