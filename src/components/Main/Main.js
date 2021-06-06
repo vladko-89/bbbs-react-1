@@ -14,10 +14,9 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
-// import MainContext from '../../contexts/MainContext';
 
 // TODO create wrapper component
-function Main({ loggedIn }) {
+function Main({ loggedIn, activeRubrics, selectRubric }) {
   const [mainState, setMainState] = React.useState({});
   const [isDataReady, setIsDataReady] = React.useState(false);
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
@@ -25,13 +24,18 @@ function Main({ loggedIn }) {
   const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
-    api.getMain().then((res) => {
+    api.getMain(localStorage.getItem('bbbs-access')).then((res) => {
       setMainState(res);
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }, [setMainState]);
+
+  // Обнуляем выставленные фильтры при монтировании компонента
+  React.useEffect(() => {
+    selectRubric('All', true);
+  }, []);
 
   function openConfirmationPopup() {
     setIsConfirmationPopupOpen(true);
@@ -125,6 +129,7 @@ function Main({ loggedIn }) {
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
+              activeRubrics={activeRubrics}
             />
           ))}
         </section>
@@ -136,6 +141,8 @@ function Main({ loggedIn }) {
             link={mainState.video.link}
             imageUrl={mainState.video.imageUrl}
             duration={mainState.video.duration}
+            tags={mainState.video.tags}
+            activeRubrics={activeRubrics}
           />
         </section>
 
@@ -189,6 +196,8 @@ function Main({ loggedIn }) {
 }
 Main.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectRubric: PropTypes.func.isRequired,
 };
 
 export default Main;

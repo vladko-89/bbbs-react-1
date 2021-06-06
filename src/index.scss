@@ -49,7 +49,15 @@
 @import './components/MeetingDeletePopup/MeetingDeletePopup.scss';
 @import 'components/PopupCities/PopupCities.scss';
 @import './components/Pagination/Pagination.scss';
+@import './components/PopupLogin/PopupLogin.scss';
 @import './components/PlacesCard/PlacesCard.scss';
+
+@import './scss/_display_none';
+// =======
+@import './components/PopupCities/PopupCities.scss';
+@import './components/EventInProfile/EventsInProfile.scss';
+@import "./components/MeetingStoryArticle/MeetingStoryArticle.scss";
+@import "./components/MeetingStoryForm/MeetingStoryForm.scss";
 
 body {
   margin: 0;

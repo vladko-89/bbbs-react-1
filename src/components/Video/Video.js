@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import MainVideo from '../MainVideo/MainVideo';
@@ -9,7 +10,11 @@ import { cardsPerPage } from '../../utils/Constants';
 
 import api from '../../utils/Api';
 
-function Video() {
+// Work in progress
+function Video({
+  activeRubrics,
+  selectRubric,
+}) {
   const [mainState, setMainState] = React.useState({});
   const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);
@@ -40,6 +45,11 @@ function Video() {
       slug: 'Медиа о нас',
     },
   ];
+
+  React.useEffect(() => {
+    selectRubric('All', true);
+  }, []);
+
   React.useEffect(() => {
     api.getMain().then((res) => {
       setMainState(res);
@@ -49,6 +59,7 @@ function Video() {
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }, [setMainState]);
+
   function onPageChange(page) {
     if (page !== 1) {
       currentIndex.current = page * cardsPerPage - cardsPerPage;
@@ -57,12 +68,13 @@ function Video() {
     }
     setMoviesToShow(mainState.movies.slice(currentIndex.current, page * cardsPerPage));
   }
+
   if (isDataReady) {
     return (
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Видео" />
-          <Filter array={filterArray} onActive={() => 0} />
+          <Filter array={filterArray} onActive={() => 0} selectRubric={selectRubric} />
         </section>
         <section className="main-card page__section">
           <MainVideo
@@ -71,6 +83,8 @@ function Video() {
             link={mainState.video.link}
             imageUrl={mainState.video.imageUrl}
             duration={mainState.video.duration}
+            tags={mainState.video.tags}
+            activeRubrics={activeRubrics}
           />
         </section>
         <section className="main-section page__section cards-grid cards-grid_content_small-cards">
@@ -83,6 +97,7 @@ function Video() {
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
+              activeRubrics={activeRubrics}
             />
           ))}
         </section>
@@ -99,5 +114,10 @@ function Video() {
     <Preloader />
   );
 }
+
+Video.propTypes = {
+  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectRubric: PropTypes.func.isRequired,
+};
 
 export default Video;

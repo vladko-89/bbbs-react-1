@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Question({ question }) {
+export default function Question({ question, activeRubrics }) {
   function showAnswer(event) {
     const questionElement = event.target.closest('.question');
     const questionShowButton = questionElement.querySelector('.question__show-button');
@@ -14,7 +14,7 @@ export default function Question({ question }) {
   }
 
   return (
-    <article className="question">
+    <article className={`question ${activeRubrics.length > 0 && question.tags.every((tag) => activeRubrics.indexOf(tag.name) === -1) ? 'display_none' : ''}`}>
       <h2 onClick={showAnswer} className="section-title question__title">{question.title}</h2>
       <div className="question__wrap">
         {
@@ -31,7 +31,12 @@ export default function Question({ question }) {
   );
 }
 
+Question.defaultProps = {
+  activeRubrics: [],
+};
+
 Question.propTypes = {
+  activeRubrics: PropTypes.arrayOf(PropTypes.string),
   question: PropTypes.shape({
     id: PropTypes.number,
     tags: PropTypes.arrayOf(PropTypes.shape({

@@ -2,9 +2,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ loggedIn, isFixed }) {
+function Header({ loggedIn, onLoginPopup }) {
   const [mobMenu, setMobMenu] = React.useState(false);
-  const handleClicMobMenu = (e) => {
+  const [isFixed, setIsFixed] = React.useState(false);
+  React.useEffect(() => {
+    let current = 0;
+    const checkScroll = () => {
+      if (window.pageYOffset < current && window.pageYOffset > 30) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+      current = window.pageYOffset;
+    };
+    document.addEventListener('scroll', checkScroll);
+
+    return (() => document.removeEventListener('scroll', checkScroll));
+  }, []);
+  const handleClickMobMenu = (e) => {
     if (e.target.closest('.menu__burger')) {
       setMobMenu(!mobMenu);
     }
@@ -13,15 +28,16 @@ function Header({ loggedIn, isFixed }) {
     <header className={`header ${isFixed ? 'header_fixed' : ''} page__section ${mobMenu ? 'header_displayed ' : ''}`}>
       <Navigation
         mobMenu={mobMenu}
-        handleClickMobMenu={handleClicMobMenu}
+        handleClickMobMenu={handleClickMobMenu}
         loggedIn={loggedIn}
+        onLoginPopup={onLoginPopup}
       />
     </header>
   );
 }
 Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
-  isFixed: PropTypes.bool.isRequired,
+  onLoginPopup: PropTypes.func.isRequired,
 };
 
 export default Header;

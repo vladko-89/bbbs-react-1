@@ -5,7 +5,9 @@ import {
 import PropTypes from 'prop-types';
 import Search from '../Search/Search';
 
-function Navigation({ mobMenu, handleClickMobMenu, loggedIn }) {
+function Navigation({
+  mobMenu, handleClickMobMenu, loggedIn, onLoginPopup,
+}) {
   return (
     <nav className="menu">
       <Link to="./" target="_self" className="menu__logo">наставники.про</Link>
@@ -82,14 +84,25 @@ function Navigation({ mobMenu, handleClickMobMenu, loggedIn }) {
           <Search />
         </li>
         <li className="menu__button-item">
-          <Link
-            to="/profile"
-            className={`menu__button ${loggedIn ? 'menu__button_type_active-user' : 'menu__button_type_user'}`}
-            type="button"
-            aria-label="Личный кабинет"
-            title="Личный кабинет"
-            onClick={handleClickMobMenu}
-          />
+
+          {loggedIn ? (
+            <Link
+              to="/profile"
+              className="menu__button menu__button_type_active-user"
+              type="button"
+              aria-label="Личный кабинет"
+              title="Личный кабинет"
+              onClick={handleClickMobMenu}
+            />
+          ) : (
+            <button
+              type="button"
+              aria-label="Войти"
+              className="menu__button menu__button_type_user"
+              onClick={onLoginPopup}
+            />
+          ) }
+
         </li>
       </ul>
     </nav>
@@ -100,6 +113,7 @@ Navigation.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   mobMenu: PropTypes.bool.isRequired,
   handleClickMobMenu: PropTypes.func.isRequired,
+  onLoginPopup: PropTypes.func.isRequired,
 };
 
 export default Navigation;
