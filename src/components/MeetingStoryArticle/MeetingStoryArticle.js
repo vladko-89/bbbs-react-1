@@ -122,8 +122,16 @@ function MeetingStoryArticle({
 }
 
 MeetingStoryArticle.propTypes = {
-  story: PropTypes.objectOf(PropTypes.string, PropTypes.number, PropTypes.bool)
-    .isRequired,
+
+  story: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    mood: PropTypes.string,
+    shared: PropTypes.bool,
+    image: PropTypes.string,
+  }).isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   // onEditSubmit: PropTypes.func.isRequired,
