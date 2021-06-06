@@ -18,7 +18,7 @@ function PlacesCard(
 ) {
   return (
     <article
-      className={`card-container card-container_type_article ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag) === -1) ? 'card-container_hidden' : ''}`}
+      className={`card-container card-container_type_article ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag.slug) === -1) ? 'card-container_hidden' : ''}`}
     >
       <div className={`card card_color_${color}`}>
         {chosen && <MentorChoice />}
