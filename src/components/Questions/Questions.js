@@ -7,16 +7,22 @@ import QuestionForm from './QuestionForm/QuestionForm';
 
 import { questions } from '../../utils/questionsData';
 
-export default function Questions({ loggedIn }) {
+export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
   return (
     <main className="main">
       <section className="lead page__section">
         <MainTitle title="Ответы на вопросы" />
-        <TagList />
+        <TagList selectRubric={selectRubric} />
       </section>
       <section className="questions page__section">
         {
-          questions.map((question) => <Question key={question.id} question={question} />)
+          questions.map((question) => (
+            <Question
+              key={question.id}
+              question={question}
+              activeRubrics={activeRubrics}
+            />
+          ))
         }
       </section>
       {
@@ -32,4 +38,6 @@ Questions.defaultProps = {
 
 Questions.propTypes = {
   loggedIn: PropTypes.bool,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectRubric: PropTypes.func.isRequired,
 };

@@ -68,6 +68,7 @@
   }
   .tags__list {
     justify-content: flex-start;
+    flex-wrap: nowrap;
     overflow-x: scroll;
     scrollbar-width: none;
     &::-webkit-scrollbar {

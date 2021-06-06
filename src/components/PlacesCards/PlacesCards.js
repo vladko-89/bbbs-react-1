@@ -17,7 +17,7 @@ function PlacesCards(
       caption: true,
       info: 'Девочка, 10 лет. Активный отдых',
       link: 'https://www.moscowzoo.ru/',
-      tags: ['sport', 'chosen', '8-10'],
+      tags: [{ slug: 'sport' }, { slug: 'chosen' }, { slug: '8-10' }],
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ function PlacesCards(
       name: 'Длинный адрес места в несколько строк, длинный адрес места.',
       caption: false,
       link: 'https://www.moscowzoo.ru/',
-      tags: ['excursions'],
+      tags: [{ slug: 'excursions' }],
     },
     {
       id: 3,
@@ -38,7 +38,7 @@ function PlacesCards(
       caption: true,
       info: 'Девочка, 10 лет. Активный отдых',
       link: 'https://www.moscowzoo.ru/',
-      tags: ['parks', 'chosen', '8-10'],
+      tags: [{ slug: 'parks' }, { slug: 'chosen' }, { slug: '8-10' }],
     },
   ];
   return (
