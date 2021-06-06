@@ -13,6 +13,7 @@ import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
 import Catalog from '../Catalog/Catalog';
 import Articles from '../Articles/Articles';
+import Films from '../Films/Films';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -90,6 +91,9 @@ function App() {
           </Route>
           <Route exact path="/articles">
             <Articles />
+          </Route>
+          <Route exact path="/films">
+            <Films />
           </Route>
         </Switch>
         <Footer />
