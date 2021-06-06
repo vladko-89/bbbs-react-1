@@ -1,9 +1,19 @@
 import React from 'react';
 import FilmCard from './FilmCard/FilmCard';
+import Pagination from '../Pagination/Pagination';
 
 import { films } from '../../utils/filmsData';
 
 export default function Films() {
+  const cardsPerPage = 16;
+  const [shownCards, setShownCards] = React.useState([]);
+
+  function onPageChange(currPage) {
+    const begin = currPage * cardsPerPage - cardsPerPage;
+    const end = begin + cardsPerPage;
+    setShownCards(films.slice(begin, end < films.length ? end : films.length));
+  }
+
   return (
     <main className="main">
       <section className="lead page__section">
@@ -31,40 +41,15 @@ export default function Films() {
 
       <section className="cards-grid cards-grid_content_small-cards page__section">
         {
-          films.map((film) => <FilmCard key={film.id} film={film} />)
+          shownCards.map((film) => <FilmCard key={film.id} film={film} />)
         }
       </section>
 
-      <section className="pagination page__section">
-        <nav className="pagination__nav" aria-label="Навигация по страницам">
-          <ul className="pagination__list">
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link pagination__link_active">1</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">2</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">3</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">4</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">5</a>
-            </li>
-            <li className="pagination__list-item section-title">...</li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">18</a>
-            </li>
-          </ul>
-          <img
-            src="../images/svg/arrow-right-grey.svg"
-            alt="стрелка вправо"
-            className="pagination__arrow"
-          />
-        </nav>
-      </section>
+      <Pagination
+        cardsLength={films.length}
+        onPageChange={onPageChange}
+        cardsPerPage={cardsPerPage}
+      />
     </main>
   );
 }
