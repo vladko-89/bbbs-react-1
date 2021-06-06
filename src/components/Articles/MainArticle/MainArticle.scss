@@ -1,61 +1,61 @@
 @import '../../scss/variables.scss';
 @import '../../scss/mixins.scss';
 
-.card-container {
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 222px;
-  justify-content: center;
+// .card-container {
+//   margin: 0 auto;
+//   display: grid;
+//   grid-template-columns: 1fr;
+//   grid-template-rows: 1fr 222px;
+//   justify-content: center;
 
-  &_type_main-article {
-    grid-template-columns: 66% 34%;
-    grid-template-rows: 630px;
-  }
-}
-
-
-@include atDesktop1440 {
-  .card-container {
-    &_type_main-article {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-}
+//   &_type_main-article {
+//     grid-template-columns: 66% 34%;
+//     grid-template-rows: 630px;
+//   }
+// }
 
 
-@include atDesktop1024 {
-  .card-container {
-    &_type_main-article {
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr 188px;
-    }
-  }
-}
+// @include atDesktop1440 {
+//   .card-container {
+//     &_type_main-article {
+//       grid-template-columns: 1fr 1fr;
+//     }
+//   }
+// }
 
-@include atMobile {
-  .card-container {
-    grid-template-columns: minmax(290px, 450px);
-  }
-}
 
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 37px 30px 15px;
-  border-radius: 30px;
-  background-color: #fff;
-  box-sizing: border-box;
-  overflow: hidden;
+// @include atDesktop1024 {
+//   .card-container {
+//     &_type_main-article {
+//       grid-template-columns: 1fr;
+//       grid-template-rows: 1fr 188px;
+//     }
+//   }
+// }
 
-  &_color_yellow {
-    background-color: $yellow;
-  }
+// @include atMobile {
+//   .card-container {
+//     grid-template-columns: minmax(290px, 450px);
+//   }
+// }
 
-  &_type_main {
-    padding-top: 47px;
-    padding-bottom: 30px;
-  }
-}
+// .card {
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   padding: 37px 30px 15px;
+//   border-radius: 30px;
+//   background-color: #fff;
+//   box-sizing: border-box;
+//   overflow: hidden;
+
+//   &_color_yellow {
+//     background-color: $yellow;
+//   }
+
+//   &_type_main {
+//     padding-top: 47px;
+//     padding-bottom: 30px;
+//   }
+// }
