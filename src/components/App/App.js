@@ -14,6 +14,7 @@ import Video from '../Video/Video';
 import Catalog from '../Catalog/Catalog';
 import Articles from '../Articles/Articles';
 import PopupLogin from '../PopupLogin/PopupLogin';
+import Rights from '../Rights/Rights';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import api from '../../utils/Api';
 
@@ -126,6 +127,12 @@ function App() {
             </Route>
             <Route exact path="/catalog">
               <Catalog />
+            </Route>
+            <Route exact path="/rights">
+              <Rights
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/articles">
               <Articles />
