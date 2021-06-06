@@ -6,9 +6,9 @@ import Pagination from '../Pagination/Pagination';
 import './Catalog.scss';
 
 import cards from '../../utils/catalogData';
-import { cardsPerPage } from '../../utils/Constants';
 
 export default function Catalog() {
+  const cardsPerPage = 16;
   const [shownCards, setShownCards] = React.useState([]);
   function onPageChange(currPage) {
     const begin = currPage * cardsPerPage - cardsPerPage;
