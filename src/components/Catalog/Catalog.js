@@ -10,7 +10,6 @@ import { cardsPerPage } from '../../utils/Constants';
 
 export default function Catalog() {
   const [shownCards, setShownCards] = React.useState([]);
-
   function onPageChange(currPage) {
     const begin = currPage * cardsPerPage - cardsPerPage;
     const end = begin + cardsPerPage;
@@ -42,7 +41,11 @@ export default function Catalog() {
         }
       </section>
 
-      <Pagination cards={cards} onPageChange={onPageChange} />
+      <Pagination
+        cardsLength={cards.length}
+        onPageChange={onPageChange}
+        cardsPerPage={cardsPerPage}
+      />
     </main>
   );
 }

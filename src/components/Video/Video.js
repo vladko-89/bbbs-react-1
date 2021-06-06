@@ -10,7 +10,6 @@ import { cardsPerPage } from '../../utils/Constants';
 
 import api from '../../utils/Api';
 
-// Work in progress
 function Video({
   activeRubrics,
   selectRubric,
