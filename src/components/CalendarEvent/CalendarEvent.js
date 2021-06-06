@@ -8,13 +8,12 @@ import declOfNum from '../../utils/utils';
 function CalendarEvent({
   calendar,
   booked, title, address, contact, startAt, endAt, seats,
-  takenSeats, onBooking, onDescription, onCancel,
+  takenSeats, onBooking, onDescription, onCancel, activeRubrics, tags,
 }) {
   const availablePlaces = seats - takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
-
   return (
-    <article className="calendar calendar_selected">
+    <article className={`calendar calendar_selected ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag.slug) === -1) ? 'card-container_hidden display_none' : ''}`}>
       <div className="calendar__caption">
         <div className="calendar__info">
           <p className="calendar__type">Волонтёры + дети</p>
@@ -102,6 +101,8 @@ CalendarEvent.propTypes = {
     startAt: PropTypes.string,
     endAt: PropTypes.string,
   }).isRequired,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default CalendarEvent;

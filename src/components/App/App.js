@@ -25,7 +25,6 @@ function App() {
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
 
   // Отслеживаем активные фильтры в компонентах
-  // const [activeRubrics, setActiveRubrics] = React.useState([]);
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
       setActiveRubrics([]);
@@ -102,7 +101,10 @@ function App() {
               <AboutUs />
             </Route>
             <Route exact path="/calendar">
-              <Calendar />
+              <Calendar
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/questions">
               <Questions

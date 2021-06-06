@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { format } from 'date-fns';
+import ruLocale from 'date-fns/locale/ru';
 import MainLead from '../MainLead/MainLead';
 import MainStory from '../MainStory/MainStory';
 import MainMentor from '../MainMentor/MainMentor';
@@ -87,6 +89,11 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 onBooking={handleBooking}
                 onDescription={handleDescription}
                 onCancel={handleCancelBooking}
+                activeRubrics={activeRubrics}
+                tags={[{
+                  name: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
+                  slug: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
+                }]}
               />
             ) : <MainLead />}
             <MainStory

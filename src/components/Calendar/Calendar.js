@@ -2,6 +2,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
+import PropTypes from 'prop-types';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
@@ -11,15 +12,20 @@ import Filter from '../Filter/Filter';
 import api from '../../utils/Api';
 // import { CalendarContext } from "../../contexts/CalendarContext";
 
-function Calendar() {
+function Calendar({
+  activeRubrics,
+  selectRubric,
+}) {
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
   const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
   const [calendarData, setCalendarData] = React.useState([]);
-  const [filtredData, setFiltredData] = React.useState();
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
   const filterArray = [];
-  const parsedCalendarData = calendarData.map((el) => ({ name: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }), slug: '' }));
+  const parsedCalendarData = calendarData.map((el) => ({
+    name: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }),
+    slug: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }),
+  }));
   parsedCalendarData.forEach((el) => { if (!filterArray.some((item) => item.name === el.name)) { filterArray.push(el); } });
 
   React.useEffect(() => {
@@ -31,6 +37,9 @@ function Calendar() {
         // eslint-disable-next-line no-console
         console.log(error);
       });
+  }, []);
+  React.useEffect(() => {
+    selectRubric('All', true);
   }, []);
 
   function openConfirmationPopup() {
@@ -46,9 +55,6 @@ function Calendar() {
     setIsConfirmationPopupOpen(false);
     setIsDescriptionPopupOpen(false);
     setIsSuccessRegPopupOpen(false);
-  }
-  function handleFilter(value) {
-    if (value) { setFiltredData(calendarData.filter((item) => format(new Date(item.startAt), 'LLLL', { locale: ruLocale }) === value)); } else { setFiltredData(null); }
   }
 
   function handleDescription(calendar) {
@@ -76,10 +82,10 @@ function Calendar() {
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Календарь" />
-          { filterArray.length > 1 ? <Filter onActive={handleFilter} array={filterArray} selectRubric={() => {}} /> : ''}
+          { filterArray.length > 1 ? <Filter array={filterArray} selectRubric={selectRubric} /> : ''}
         </section>
         <section className="calendar-container page__section">
-          { filtredData && filtredData.map((calendar) => (
+          {calendarData.map((calendar) => (
             <CalendarEvent
               calendar={calendar}
               key={calendar.id}
@@ -94,23 +100,11 @@ function Calendar() {
               onBooking={handleBooking}
               onDescription={handleDescription}
               onCancel={handleCancelBooking}
-            />
-          ))}
-          {!filtredData && calendarData.map((calendar) => (
-            <CalendarEvent
-              calendar={calendar}
-              key={calendar.id}
-              booked={calendar.booked}
-              title={calendar.title}
-              address={calendar.address}
-              contact={calendar.contact}
-              startAt={calendar.startAt}
-              endAt={calendar.endAt}
-              seats={calendar.seats}
-              takenSeats={calendar.takenSeats}
-              onBooking={handleBooking}
-              onDescription={handleDescription}
-              onCancel={handleCancelBooking}
+              activeRubrics={activeRubrics}
+              tags={[{
+                name: format(new Date(calendar.startAt), 'LLLL', { locale: ruLocale }),
+                slug: format(new Date(calendar.startAt), 'LLLL', { locale: ruLocale }),
+              }]}
             />
           ))}
         </section>
@@ -135,5 +129,8 @@ function Calendar() {
     </>
   );
 }
-
+Calendar.propTypes = {
+  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectRubric: PropTypes.func.isRequired,
+};
 export default Calendar;
