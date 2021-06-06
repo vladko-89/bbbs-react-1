@@ -15,7 +15,6 @@ function Video({
   activeRubrics,
   selectRubric,
 }) {
-
   const [mainState, setMainState] = React.useState({});
   const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);

@@ -21,16 +21,15 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
 
-
+  // eslint-disable-next-line no-unused-vars
   const [isFixed, setIsFixed] = React.useState(false);
 
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
 
-
   // Отслеживаем активные фильтры в компонентах
-  const [activeRubrics, setActiveRubrics] = React.useState([]);
+  // const [activeRubrics, setActiveRubrics] = React.useState([]);
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
       setActiveRubrics([]);
@@ -91,7 +90,11 @@ function App() {
           />
           <Switch>
             <Route exact path="/">
-              <Main loggedIn={loggedIn} />
+              <Main
+                loggedIn={loggedIn}
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/place">
               <Places
@@ -106,13 +109,20 @@ function App() {
               <Calendar />
             </Route>
             <Route exact path="/questions">
-              <Questions loggedIn={loggedIn} />
+              <Questions
+                loggedIn={loggedIn}
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/profile">
               <Profile onOutClick={handleOutClick} />
             </Route>
             <Route exact path="/video">
-              <Video />
+              <Video
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/catalog">
               <Catalog />
