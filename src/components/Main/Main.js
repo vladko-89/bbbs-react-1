@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import MainLead from '../MainLead/MainLead';
 import MainStory from '../MainStory/MainStory';
 import MainMentor from '../MainMentor/MainMentor';
-import MainAnnotation from '../MainAnnotation/MainAnnotation';
 import MainArticle from '../MainArticle/MainArticle';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import MainVideo from '../MainVideo/MainVideo';
@@ -14,7 +13,7 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
-
+import './Main.scss';
 // TODO create wrapper component
 function Main({ loggedIn, activeRubrics, selectRubric }) {
   const [mainState, setMainState] = React.useState({});
@@ -96,21 +95,15 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
           </article>
         </section>
 
-        <section className="main-section page__section">
-          <article className="card-container card-container_type_main-article">
-            <MainMentor
-              title={mainState.place.title}
-              name={mainState.place.name}
-              link={mainState.place.link}
-              imageUrl={mainState.place.imageUrl}
-              rubrics={['sport', '8-10', 'chosen']}
-            />
-            <MainAnnotation
-              info={mainState.place.info}
-              description={mainState.place.description}
-            />
-          </article>
-        </section>
+        <MainMentor
+          title={mainState.place.title}
+          name={mainState.place.name}
+          link={mainState.place.link}
+          imageUrl={mainState.place.imageUrl}
+          rubrics={['sport', '8-10', 'chosen']}
+          info={mainState.place.info}
+          description={mainState.place.description}
+        />
 
         <section className="main-section page__section">
           <MainArticle
