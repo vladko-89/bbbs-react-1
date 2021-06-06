@@ -10,7 +10,6 @@ import { cardsPerPage } from '../../utils/Constants';
 
 import api from '../../utils/Api';
 
-// Work in progress
 function Video({
   activeRubrics,
   selectRubric,
@@ -74,7 +73,7 @@ function Video({
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Видео" />
-          <Filter array={filterArray} onActive={() => 0} selectRubric={selectRubric} />
+          <Filter array={filterArray} selectRubric={selectRubric} />
         </section>
         <section className="main-card page__section">
           <MainVideo

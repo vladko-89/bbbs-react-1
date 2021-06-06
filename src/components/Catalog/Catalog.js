@@ -10,7 +10,6 @@ import cards from '../../utils/catalogData';
 export default function Catalog() {
   const cardsPerPage = 16;
   const [shownCards, setShownCards] = React.useState([]);
-
   function onPageChange(currPage) {
     const begin = currPage * cardsPerPage - cardsPerPage;
     const end = begin + cardsPerPage;

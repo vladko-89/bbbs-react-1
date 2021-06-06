@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './MainArticle.scss';
 
 function MainArticle({ color, title }) {
   const cardStype = {

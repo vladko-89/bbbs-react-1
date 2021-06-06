@@ -5,7 +5,6 @@ import FilterItem from '../FilterItem/FilterItem';
 
 function Filter({
   array,
-  onActive,
   selectRubric,
 }) {
   const [activeFilter, setActiveFilter] = React.useState('');
@@ -23,7 +22,6 @@ function Filter({
               tag={item.slug}
               activeFilter={activeFilter}
               onFilterChange={onFilterChange}
-              onActive={onActive}
               selectRubric={selectRubric}
               key={((n) => n + 1)(i)}
 
@@ -38,6 +36,5 @@ function Filter({
 Filter.propTypes = {
   array: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectRubric: PropTypes.func.isRequired,
-  onActive: PropTypes.func.isRequired,
 };
 export default Filter;

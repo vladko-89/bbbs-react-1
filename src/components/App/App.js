@@ -15,21 +15,29 @@ import Catalog from '../Catalog/Catalog';
 import Articles from '../Articles/Articles';
 import Films from '../Films/Films';
 import PopupLogin from '../PopupLogin/PopupLogin';
+import Rights from '../Rights/Rights';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import api from '../../utils/Api';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
+<<<<<<< HEAD
 
   // eslint-disable-next-line no-unused-vars
   const [isFixed, setIsFixed] = React.useState(false);
 
+=======
+  const [activeRubrics, setActiveRubrics] = React.useState([]);
+>>>>>>> dev
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
 
   // Отслеживаем активные фильтры в компонентах
+<<<<<<< HEAD
   const [activeRubrics, setActiveRubrics] = React.useState([]);
+=======
+>>>>>>> dev
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
       setActiveRubrics([]);
@@ -106,7 +114,10 @@ function App() {
               <AboutUs />
             </Route>
             <Route exact path="/calendar">
-              <Calendar />
+              <Calendar
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/questions">
               <Questions
@@ -126,6 +137,12 @@ function App() {
             </Route>
             <Route exact path="/catalog">
               <Catalog />
+            </Route>
+            <Route exact path="/rights">
+              <Rights
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/articles">
               <Articles />
