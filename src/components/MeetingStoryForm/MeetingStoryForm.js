@@ -12,7 +12,7 @@ function MeetingStoryForm({
   const [description, setDescription] = React.useState(
     isExample ? 'Опишите встречу' : values.description,
   );
-  const [time, setTime] = React.useState(() => values.date.slice(0, 10) || '2021-05-06');
+  const [time, setTime] = React.useState(values.date.slice(0, 10));
   const [mood, setMood] = React.useState(isExample ? 'good' : values.mood);
 
   const handlePlaceChange = (e) => {
@@ -86,11 +86,10 @@ function MeetingStoryForm({
             placeholder=""
             required
             className="personal-area__form-input"
-            onChange={handleTimeChange}
+            onInput={handleTimeChange}
             id="date"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('date')}
-            value={time}
           />
           <textarea
             className="personal-area__form-input personal-area__form-input_type_textarea"
