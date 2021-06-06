@@ -36,7 +36,9 @@ function MeetingStoryForm({
     onSubmit(data);
   };
   const handleLoadImage = (e) => {
-    const container = document.querySelector('.personal-area__card_type_add-photo');
+    const container = document.querySelector(
+      '.personal-area__card_type_add-photo',
+    );
     const img = document.createElement('img');
     img.src = window.URL.createObjectURL(e.target.files[0]);
     img.width = 400;
@@ -46,6 +48,19 @@ function MeetingStoryForm({
     };
     container.appendChild(img);
   };
+  // установка реакции при редактировании
+  React.useEffect(() => {
+    if (values.mood !== '') {
+      const reactionLists = Array.from(
+        document.querySelectorAll('.personal-area__radioBtn-mood'),
+      );
+      reactionLists.forEach((input) => {
+        /* eslint no-param-reassign:
+      ["error", { "props": true, "ignorePropertyModificationsForRegex": ["^input"] }] */
+        if (input.id === values.mood) input.checked = true;
+      });
+    }
+  }, []);
   return (
     <form
       className="card-container card-container_type_personal-area"
@@ -90,6 +105,7 @@ function MeetingStoryForm({
             id="date"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('date')}
+            value={time}
           />
           <textarea
             className="personal-area__form-input personal-area__form-input_type_textarea"
@@ -112,11 +128,13 @@ function MeetingStoryForm({
               value="good"
               className="personal-area__radioBtn-mood"
               onChange={handleMoodChange}
+              required
             />
             <label
               htmlFor="good"
               className="personal-area__rate personal-area__rate_type_good"
               aria-label="good"
+              title="Было классно"
             />
             <input
               // eslint-disable-next-line react/jsx-props-no-spreading
@@ -128,11 +146,13 @@ function MeetingStoryForm({
               className="personal-area__radioBtn-mood"
               // onChange={handleChangeReaction}
               onChange={handleMoodChange}
+              required
             />
             <label
               htmlFor="neutral"
               className="personal-area__rate personal-area__rate_type_neutral"
               aria-label="neutral"
+              title="Хорошо"
             />
             <input
               // eslint-disable-next-line react/jsx-props-no-spreading
@@ -143,11 +163,13 @@ function MeetingStoryForm({
               value="bad"
               className="personal-area__radioBtn-mood"
               onChange={handleMoodChange}
+              required
             />
             <label
               className="personal-area__rate personal-area__rate_type_bad"
               htmlFor="bad"
-              aria-label="neutral"
+              aria-label="bad"
+              title="Бывает и лучше"
             />
             <p className="caption personal-area__rating-label">
               Оцените проведенное время
@@ -175,12 +197,12 @@ function MeetingStoryForm({
 MeetingStoryForm.defaultProps = {
   isExample: false,
   values: {
-    id: '',
+    id: 0,
     title: '',
     description: '',
     date: '',
     mood: '',
-    shared: '',
+    shared: false,
     image: '',
   },
 };
@@ -189,11 +211,15 @@ MeetingStoryForm.propTypes = {
   isExample: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  values: PropTypes.objectOf(
-    PropTypes.number,
-    PropTypes.string,
-    PropTypes.bool,
-  ),
+  values: PropTypes.PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    mood: PropTypes.string,
+    shared: PropTypes.bool,
+    image: PropTypes.string,
+  }),
 };
 
 export default MeetingStoryForm;
