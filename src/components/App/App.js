@@ -22,22 +22,11 @@ import api from '../../utils/Api';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
-<<<<<<< HEAD
-
-  // eslint-disable-next-line no-unused-vars
-  const [isFixed, setIsFixed] = React.useState(false);
-
-=======
   const [activeRubrics, setActiveRubrics] = React.useState([]);
->>>>>>> dev
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
 
   // Отслеживаем активные фильтры в компонентах
-<<<<<<< HEAD
-  const [activeRubrics, setActiveRubrics] = React.useState([]);
-=======
->>>>>>> dev
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
       setActiveRubrics([]);
