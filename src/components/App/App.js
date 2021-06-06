@@ -20,16 +20,11 @@ import api from '../../utils/Api';
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(true);
-
-  // eslint-disable-next-line no-unused-vars
-  const [isFixed, setIsFixed] = React.useState(false);
-
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
 
   // Отслеживаем активные фильтры в компонентах
-  // const [activeRubrics, setActiveRubrics] = React.useState([]);
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
       setActiveRubrics([]);
@@ -106,7 +101,10 @@ function App() {
               <AboutUs />
             </Route>
             <Route exact path="/calendar">
-              <Calendar />
+              <Calendar
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+              />
             </Route>
             <Route exact path="/questions">
               <Questions

@@ -74,7 +74,7 @@ function Video({
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Видео" />
-          <Filter array={filterArray} onActive={() => 0} selectRubric={selectRubric} />
+          <Filter array={filterArray} selectRubric={selectRubric} />
         </section>
         <section className="main-card page__section">
           <MainVideo
