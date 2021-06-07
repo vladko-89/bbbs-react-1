@@ -27,32 +27,34 @@ function Rights({
   }
 
   return (
-    <section className="lead page__section">
-      <MainTitle title="Права детей" />
-      <Filter
-        array={FilterArrayFirst}
+    <main className="main">
+      <section className="lead page__section">
+        <MainTitle title="Права детей" />
+        <Filter
+          array={FilterArrayFirst}
         // eslint-disable-next-line no-console
-        onActive={() => console.log('push')}// Временная заглушка
-        selectRubric={selectRubric}
-      />
-      <section className="rights page__section">
-        <div className="rights__line rights__line_stage_first" />
-        <div className="rights__line rights__line_stage_second" />
-        <div className="rights__line rights__line_stage_third" />
-        {cardsToShow.map((card) => (
-          <RightsCard
-            key={card.id}
-            activeRubrics={activeRubrics}
-            card={card}
-          />
-        ))}
+          onActive={() => console.log('push')}// Временная заглушка
+          selectRubric={selectRubric}
+        />
+        <section className="rights page__section">
+          <div className="rights__line rights__line_stage_first" />
+          <div className="rights__line rights__line_stage_second" />
+          <div className="rights__line rights__line_stage_third" />
+          {cardsToShow.map((card) => (
+            <RightsCard
+              key={card.id}
+              activeRubrics={activeRubrics}
+              card={card}
+            />
+          ))}
+        </section>
+        <Pagination
+          cardsLength={cards.length}
+          onPageChange={onPageChange}
+          cardsPerPage={cardsPerPage}
+        />
       </section>
-      <Pagination
-        cardsLength={cards.length}
-        onPageChange={onPageChange}
-        cardsPerPage={cardsPerPage}
-      />
-    </section>
+    </main>
   );
 }
 

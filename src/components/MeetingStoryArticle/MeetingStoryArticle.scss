@@ -16,8 +16,8 @@ overflow: auto;
 
 .personal-area__date-container {
   display: grid;
-  grid-template-columns: minmax(260px, 540px) 94px;
-  grid-template-rows: minmax(210px, 286px);
+  grid-template-columns: 1fr 94px;
+  // grid-template-rows: minmax(210px, 286px);
   align-items: start;
   position: relative;
   padding: 37px 30px 15px;
@@ -32,17 +32,17 @@ overflow: auto;
   grid-column: 1;
 }
 
-.personal-area__card-date {
+.personal-area__card-date-wrap {
   grid-column: 2;
 }
 
 .personal-area__card-weekday {
   margin: 0;
-  width: 100px;
+  // width: 100px;
   font-family: $ptRootUI;
   font-size: 14px;
   line-height: 1.4;
-  text-align: center;
+  text-align: end;
 }
 
 .personal-area__card-day {
@@ -83,4 +83,98 @@ overflow: auto;
   background-color: transparent;
   cursor: pointer;
   color: $lightGray;
+}
+.personal-area__button_action_delete-card {
+  margin-left: 30px;
+}
+
+.personal-area__curator-select {
+  margin-left: auto;
+  appearance: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: $lightGray;
+
+}
+.personal-area__curator-option:disabled {
+  color: $lightGray;
+}
+.personal-area__curator-option {
+  font-family: Proto Grotesk Web Light;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  color: #000000;
+  padding-left: 5px;
+}
+
+
+@include atDesktop1380 {
+  .personal-area__story-form {
+    margin-top: 30px;
+  }
+
+  .personal-area__card {
+    padding: 30px 15px;
+  }
+
+  .personal-area__date-container {
+    gap: 15px;
+  }
+
+  .personal-area__card-title {
+
+  }
+
+  .personal-area__card-date {
+    grid-row: 1;
+  }
+
+  .personal-area__text {
+    grid-column: 1 / 3;
+    max-height: 210px;
+  }
+
+  .personal-area__actions {
+    margin-top: 40px;
+    margin-bottom: 0;
+  }
+}
+
+@include atDesktop1024 {
+
+  .personal-area__actions {
+    margin-top: 5px;
+    flex-wrap: wrap;
+  }
+
+  .personal-area__curator-select {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    min-width: 173px;
+    min-height: 17px;
+    background-image: url('../../images/svg/input-select-arrow.svg');
+    background-size: 10px 5px;
+    background-position: right 10px top 50%;
+    background-repeat: no-repeat;
+  }
+
+  .personal-area__buttons {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .personal-area__button {
+    margin-left: 0;
+  }
+  .personal-area__card-date-wrap {
+    position: absolute;
+    top: 30px;
+    right: 15px;
+  }
 }

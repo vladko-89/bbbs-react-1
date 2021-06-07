@@ -9,9 +9,14 @@ import EventInProfile from '../EventInProfile/EventInProfile';
 import mockMeetingStories from '../../utils/mockMeetigsStories.json';
 import MeetingStoryForm from '../MeetingStoryForm/MeetingStoryForm';
 import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
+import { citiesList } from '../../utils/Constants';
+// import { CurrentUser } from "../../contexts/CurrentUser";
 
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
+  // const user = React.useContext(CurrentUser);
+  // eslint-disable-next-line no-console
+  // console.log(user);
   // eslint-disable-next-line no-unused-vars
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
@@ -20,11 +25,20 @@ function Profile({ onOutClick }) {
     () => !!userMeetings.length > 0,
   );
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
+  const [city, setCity] = React.useState('');
   const [isHidden, setIsHidden] = React.useState(false);
   const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
   React.useEffect(() => {
+    api.getUserInfo()
+      .then((res) => {
+        setCity(citiesList[res[0].city]);
+        // eslint-disable-next-line no-console
+        console.log(res);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
     api
       .getEvents()
       .then((res) => setUserEvents(res.filter((el) => el.booked === true)))
@@ -80,9 +94,16 @@ function Profile({ onOutClick }) {
     setIsOpenPopupCities(true);
   };
 
-  const handleChangeCity = (city) => {
+  const handleChangeCity = (place) => {
+    setCity(place);
     // eslint-disable-next-line no-console
-    console.log(`city changed on ${city}`);
+    console.log(`city changed on ${place}`);
+    // дописать обновление юзер инфо
+    // const num = citiesList.indexOf(place);
+    // api.updateUserInfo({ user: 0, city: num })
+    //   .then((res) => { setCity(citiesList[res[0].city]); })
+    //   // eslint-disable-next-line no-console
+    //   .catch((err) => console.log(err));
   };
   const handleSubmitStory = (data) => {
     // eslint-disable-next-line no-param-reassign
@@ -102,14 +123,14 @@ function Profile({ onOutClick }) {
           <div className="personal-area__user-info">
             <button
               type="button"
-              className="paragraph personal-area__user-link personal-area__user-link_type_city "
+              className="personal-area__user-link personal-area__user-link_type_city "
               onClick={handleChangeCityClick}
             >
-              Изменить город
+              {`${city}. Изменить город`}
             </button>
             <Link
               to="/"
-              className="paragraph personal-area__user-link personal-area__user-link_type_exit"
+              className="personal-area__user-link personal-area__user-link_type_exit"
               onClick={onOutClick}
             >
               Выйти
@@ -127,7 +148,7 @@ function Profile({ onOutClick }) {
 
           <div className="personal-area__story">
             {userMeetings.length === 0 && (
-              <h2 className="section-title personal-area__title">
+              <h2 className="personal-area__title">
                 Составьте историю вашей дружбы с младшим. Эта страница доступна
                 только вам.
               </h2>
@@ -172,8 +193,7 @@ function Profile({ onOutClick }) {
           </div>
         </section>
       </main>
-      {isOpenPopupDeleteMeet}
-      &&
+      {{ isOpenPopupDeleteMeet } && (
       <MeetingDeletePopup
         onDeleteClick={handleDeleteMeet}
         onCloseClick={handleClose}
@@ -181,14 +201,16 @@ function Profile({ onOutClick }) {
         isOpen={isOpenPopupDeleteMeet}
         title={`${meetTitle} ${meetTime}`}
       />
+      )}
       {{ isOpenPopupCities } && (
         <PopupCities
           onChangeCities={handleChangeCity}
           onCloseClick={handleClose}
           isOpen={isOpenPopupCities}
+          isCity={city}
         />
       )}
-      )
+
     </>
   );
 }

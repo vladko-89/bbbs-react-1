@@ -27,6 +27,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
   React.useEffect(() => {
     api.getMain(localStorage.getItem('bbbs-access')).then((res) => {
       setMainState(res);
+      localStorage.setItem('mainState', JSON.stringify(res));
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
