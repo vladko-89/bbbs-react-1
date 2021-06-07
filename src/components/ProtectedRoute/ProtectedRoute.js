@@ -11,6 +11,6 @@ const ProtectedRoute = ({ component: Component, ...props }) => (
 
 ProtectedRoute.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
-  component: PropTypes.node.isRequired,
+  component: PropTypes.func.isRequired,
 };
 export default ProtectedRoute;
