@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
+import './Pagination.scss';
 
 function Pagination({ cardsLength, onPageChange, cardsPerPage }) {
   const totalPages = Math.ceil(cardsLength / cardsPerPage);
