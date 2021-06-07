@@ -1,67 +1,61 @@
 import React from 'react';
-import BookCard, { colors } from './BookCard/BookCard';
+import Tag from './Tag/Tag';
+import BookCard from './BookCard/BookCard';
+import Pagination from '../Pagination/Pagination';
 
-import { books } from '../../utils/booksData';
+import { books, tags } from '../../utils/booksData';
+import { filterByTags, toggleTagId } from '../../utils/utils';
 
 export default function Books() {
+  const cardsPerPage = 12;
+  const [tagIdArray, setTagIdArray] = React.useState([]);
+  const [filteredBooks, setFilteredBooks] = React.useState(books);
+  const [shownBooks, setShownBooks] = React.useState([]);
+
+  function onPageChange(currPage) {
+    const begin = currPage * cardsPerPage - cardsPerPage;
+    const end = begin + cardsPerPage;
+    setShownBooks(
+      filteredBooks.slice(begin, end < filteredBooks.length ? end : filteredBooks.length),
+    );
+  }
+
+  function handleTagClick(tagId) {
+    setTagIdArray(toggleTagId(tagId, tagIdArray));
+  }
+
+  React.useEffect(() => {
+    setFilteredBooks(filterByTags(tagIdArray, books));
+  }, [tagIdArray]);
+
+  React.useEffect(() => {
+    onPageChange(1);
+  }, [filteredBooks]);
+
   return (
     <main className="main">
       <section className="lead page__section">
         <h1 className="main-title">Книги</h1>
         <div className="tags">
           <ul className="tags__list">
-            <li className="tags__list-item">
-              <button className="button tags__button tags__button_active" type="button">Все</button>
-            </li>
-            <li className="tags__list-item">
-              <button className="button tags__button" type="button">Научные</button>
-            </li>
-            <li className="tags__list-item">
-              <button className="button tags__button" type="button">Художественные</button>
-            </li>
+            {
+              tags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />)
+            }
           </ul>
         </div>
       </section>
 
       <section className="cards-grid cards-grid_content_small-cards page__section">
         {
-          books.map(
-            // eslint-disable-next-line max-len
-            (book) => <BookCard key={book.id} book={book} color={colors[Math.floor(Math.random() * colors.length)]} />,
-          )
+          shownBooks.map((book) => <BookCard key={book.id} book={book} />)
         }
       </section>
 
-      <section className="pagination page__section">
-        <nav className="pagination__nav" aria-label="Навигация по страницам">
-          <ul className="pagination__list">
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link pagination__link_active">1</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">2</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">3</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">4</a>
-            </li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">5</a>
-            </li>
-            <li className="pagination__list-item section-title">...</li>
-            <li className="pagination__list-item section-title">
-              <a href="#" className="pagination__link">18</a>
-            </li>
-          </ul>
-          <img
-            src="../images/svg/arrow-right-grey.svg"
-            alt="стрелка вправо"
-            className="pagination__arrow"
-          />
-        </nav>
-      </section>
+      <Pagination
+        cardsLength={filteredBooks.length}
+        onPageChange={onPageChange}
+        cardsPerPage={cardsPerPage}
+      />
     </main>
   );
 }

@@ -3,15 +3,11 @@ import PropTypes from 'prop-types';
 
 import './BookCard.scss';
 
-export const colors = [
-  'blue', 'pink',
-];
-
-export default function BookCard({ book, color }) {
+export default function BookCard({ book }) {
   return (
     <article className="card-container card-pagination">
       <div className="card card_content_book">
-        <div className={`book book_color_${color}`}>
+        <div className={`book book_color_${book.color}`}>
           <h2 className="section-title book__title">{book.title}</h2>
           <div className="book__info">
             <p className="caption book__author">{book.author}</p>
@@ -44,6 +40,6 @@ BookCard.propTypes = {
     author: PropTypes.string,
     year: PropTypes.number,
     annotation: PropTypes.arrayOf(PropTypes.string),
+    color: PropTypes.string,
   }).isRequired,
-  color: PropTypes.string.isRequired,
 };
