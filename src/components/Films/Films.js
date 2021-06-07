@@ -4,6 +4,7 @@ import FilmCard from './FilmCard/FilmCard';
 import Pagination from '../Pagination/Pagination';
 
 import { films, filmTags } from '../../utils/filmsData';
+import { filterByTags, toggleTagId } from '../../utils/utils';
 
 export default function Films() {
   const cardsPerPage = 16;
@@ -19,25 +20,8 @@ export default function Films() {
     );
   }
 
-  function filterByTags(tags, data) {
-    return (!tags.length)
-      ? data
-      : data.filter(
-        (item) => item.tags.some((itemTag) => tags.some((tagId) => tagId === itemTag.id)),
-      );
-  }
-
-  function toggleTagId(tagId) {
-    if (tagId === 0) {
-      setTagIdArray([]);
-    } else {
-      const index = tagIdArray.findIndex((tag) => tag === tagId);
-      if (index >= 0) {
-        setTagIdArray(tagIdArray.filter((tag) => tag !== tagId));
-      } else {
-        setTagIdArray([...tagIdArray, tagId]);
-      }
-    }
+  function handleTagClick(tagId) {
+    setTagIdArray(toggleTagId(tagId, tagIdArray));
   }
 
   React.useEffect(() => {
@@ -55,7 +39,7 @@ export default function Films() {
         <div className="tags">
           <ul className="tags__list">
             {
-              filmTags.map((tag) => <Tag key={tag.id} tag={tag} toggleTag={toggleTagId} />)
+              filmTags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />)
             }
           </ul>
         </div>
