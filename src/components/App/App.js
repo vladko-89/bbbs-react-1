@@ -21,7 +21,7 @@ import api from '../../utils/Api';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
