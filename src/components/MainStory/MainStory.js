@@ -7,7 +7,7 @@ function MainStory({ imageUrl, title }) {
   return (
     <article className={`${styles.card} ${styles.card_content_media}`}>
       <img src={imageUrl} alt={title} className="card__media-img" />
-      <Link to="/stories" className={`${styles['card__media-link']} ${styles['section-title']}`}>{title}</Link>
+      <Link to="/stories" className={`${styles['card__media-link']} ${styles['section-title']}`}><p className={styles['card__media_link-text']}>{title}</p></Link>
     </article>
   );
 }
