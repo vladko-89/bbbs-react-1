@@ -1,0 +1,347 @@
+@import '../../scss/variables.scss';
+@import '../../scss/mixins.scss';
+
+.card-container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 222px;
+    justify-content: center;
+  
+    &_type_main-article {
+      grid-template-columns: 66% 34%;
+      grid-template-rows: 630px;
+    }
+  
+    &_type_main-video {
+      grid-template-columns: 32% 68%;
+      grid-template-rows: 1fr;
+    }
+  
+    &_type_article {
+      grid-template-rows: 224px 222px;
+    }
+  
+    &_type_identical {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 520px;
+      gap: 30px;
+    }
+  
+    &_type_iframe {
+      grid-template-columns: 420px 1fr;
+      grid-template-rows: 627px;
+      gap: 30px;
+    }
+  
+    &_type_personal-area {
+      max-width: 1170px;
+      padding-top: 80px;
+      grid-template-columns: 40% 60%;
+      grid-template-rows: 470px;
+  
+      &:first-of-type {
+        padding-top: 50px;
+      }
+    }
+    &_hidden {
+      display: none;
+    }
+  }
+  
+  @include atDesktop1440 {
+    .card-container {
+  
+      &_type_main-article {
+        grid-template-columns: 1fr 1fr;
+      }
+  
+      &_type_identical {
+        grid-template-rows: 414px;
+      }
+  
+      &_type_iframe {
+        grid-template-columns: 370px 1fr;
+      }
+    }
+  }
+  
+  @include atDesktop1380 {
+    .card-container_type_personal-area {
+      grid-template-columns: 1fr;
+      grid-template-rows: 450px 1fr;
+      padding-top: 30px;
+  
+      &:first-of-type {
+        padding-top: 30px;
+      }
+    }
+  
+  }
+  
+  @include atDesktop1024 {
+    .card-container {
+  
+      &_type_main-article {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 188px;
+      }
+  
+      &_type_main-video {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 147px;
+      }
+  
+      &_type_article {
+        grid-template-rows: 176px 188px;
+      }
+  
+      &_type_identical {
+        grid-template-rows: 382px;
+      }
+  
+      &_type_iframe {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 552px;
+      }
+    }
+  }
+  
+  @include atTabletL {
+    .card-container {
+      &_type_identical {
+        grid-template-columns: 1fr;
+        grid-template-rows: 382px 290px;
+      }
+  
+      &_type_iframe {
+        grid-template-columns: 1fr;
+        grid-template-rows: 433px 1fr;
+      }
+    }
+  }
+  
+  @include atMobile {
+    .card-container {
+      grid-template-columns: minmax(290px, 450px);
+  
+      &_type_identical {
+        grid-template-columns: minmax(290px, 450px);
+      }
+  
+      &_type_iframe {
+        grid-template-columns: minmax(290px, 450px);
+      }
+  
+      &_type_personal-area {
+        grid-template-rows: 290px 1fr;
+      }
+    }
+  }
+
+  .about__card-container {
+    grid-template-rows: 120px minmax(265px, 1fr);
+  }
+  
+  .section-title {
+    margin: 0;
+    font-family: $protoGrotesk;
+    font-weight: 300;
+    font-size: 23px;
+    line-height: 1.3;
+    color: $black;
+  
+    &_clickable {
+      display: inline-block;
+      text-decoration: none;
+      transition: .2s linear;
+  
+      &:hover {
+        color: $blue;
+      }
+    }
+  }
+  
+  .section-title_type_test {
+    margin-top: 40px;
+  }
+  
+  @include atDesktop1024 {
+    .section-title {
+      font-size: 19px;
+      line-height: 1.2;
+    }
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 37px 30px 15px;
+    border-radius: 30px;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  
+    // цвета карточек
+    &_color_yellow {
+      background-color: $yellow;
+    }
+  
+    &_color_green {
+      background-color: $green;
+    }
+  
+    &_color_pink {
+      background-color: $pink;
+    }
+  
+    &_color_blue {
+      background-color: $lightBlue;
+    }
+  
+    // разделение по наполнению
+    &_content_annotation {
+      align-items: flex-start;
+      padding: 30px;
+    }
+  
+    &_content_book {
+      padding: 30px;
+    }
+  
+    &_content_video {
+      padding: 0;
+    }
+  
+    &_content_media {
+      padding: 0;
+      justify-content: center;
+    }
+  
+    &_content_video-preview {
+      padding: 30px;
+    }
+  
+    &_content_quote {
+      padding-top: 120px;
+      padding-bottom: 30px;
+      height: 490px;
+    }
+  
+    // главная карточка на страницах Куда пойти и Статьи
+    &_type_main {
+      padding-top: 47px;
+      padding-bottom: 30px;
+    }
+  
+    &_form_square {
+      border-radius: 3px;
+      &::before {
+        content: '';
+        padding-bottom: 100%;
+      }
+    }
+  
+    // разделение по формам
+    &_form_circle {
+      border-radius: 100%;
+      &::before {
+        content: '';
+        padding-bottom: 100%;
+      }
+    }
+  
+    &_form_arch {
+      border-radius: 300px 300px 3px 3px;
+      &::before {
+        content: '';
+        padding-bottom: 100%;
+      }
+    }
+  }
+  .card__content {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #e8e6e6 transparent;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      height: 30px;
+      background-color: #e8e6e6;
+      border-radius: 5px;
+    }
+  }
+  .about__card {
+    padding: 0;
+    justify-content: center;
+    border-radius: 70px;
+  }
+  
+  .about__card-content {
+    margin-bottom: 30px;
+  }
+  @media screen and (max-width: 1100px) {
+    .about__logo {
+      width: 252px;
+    }
+  
+    .about__title {
+      padding-bottom: 30px;
+    }
+  
+    .about__us {
+      padding: 50px 0;
+    }
+  
+    .about__quote {
+      padding: 30px 0;
+    }
+  
+    .about__quote-text {
+      max-width: 770px;
+    }
+  
+    .about__cards {
+      grid-template-columns: 1fr;
+      padding-top: 50px;
+    }
+  
+    .about__card-container {
+      max-width: 570px;
+      grid-template-rows: 70px 1fr;
+    }
+  
+    .about__card-content {
+      margin-bottom: 15px;
+    }
+  }
+
+  .link {
+    display: inline-block;
+    font-family: $protoGrotesk;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.3;
+    text-decoration: none;
+    letter-spacing: 0.2px;
+    color: $blue;
+  }
+  
+  .link_type_test {
+    margin-top: 40px;
+  }
+  
+  @include atDesktop1024 {
+    .link {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+  }
+  .card__link {
+    margin-top: auto;
+  } 
+  .about__card-link {
+    align-self: center;
+  }

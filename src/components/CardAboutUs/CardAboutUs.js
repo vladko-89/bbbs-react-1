@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './CardAboutUs.module.scss';
 
 function CardAboutUs(
   {
@@ -10,19 +11,19 @@ function CardAboutUs(
   },
 ) {
   return (
-    <article className="card-container about__card-container">
-      <div className={`card card_color_${color} about__card`}>
-        <h2 className="section-title">{title}</h2>
+    <article className={`${styles['card-container']} ${styles['about__card-container']}`}>
+      <div className={`${styles.card} ${styles[`card_color_${color}`]} ${styles.about__card}`}>
+        <h2 className={styles['section-title']}>{title}</h2>
       </div>
-      <div className="card card_content_annotation">
-        <div className="card__content about__card-content">
+      <div className={`${styles.card} ${styles.card_content_annotation}`}>
+        <div className={`${styles.card__content} ${styles['about__card-content']}`}>
           {children}
         </div>
         <a
           href="https://yandex.ru"
           rel="noreferrer"
           target="_blank"
-          className="link card__link about__card-link"
+          className={`${styles.link} ${styles.card__link} ${styles['about__card-link']}`}
         >
           {linkText}
         </a>

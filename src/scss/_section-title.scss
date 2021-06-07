@@ -27,3 +27,6 @@
     line-height: 1.2;
   }
 }
+.about__card-container {
+  grid-template-rows: 120px minmax(265px, 1fr);
+}
