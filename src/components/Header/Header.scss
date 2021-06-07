@@ -31,4 +31,11 @@
   }
 }
 
-
+@include atMobile {
+  .header {
+    padding-top: 15px;
+  }
+  .header_fixed {
+    width: calc(100% - 45px);
+  }
+}

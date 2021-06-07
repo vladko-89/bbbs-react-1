@@ -11,6 +11,7 @@ import mockEvents from './mockEvents.json';
 import mockCalendar from './mockCalendar.json';
 import mockToken from './mockToken.json';
 import mockUser from './mockUser.json';
+import mockUserInfo from './mockUserInfo.json';
 
 const mock = new MockAdapter(axios, { delayResponse });
 
@@ -73,6 +74,29 @@ class Api {
     mock.onPost(`${this._baseUrl}/token`).reply(200, mockToken);
     return axios
       .post(`${this._baseUrl}/token`, { refreshToken })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getUserInfo(accessToken) {
+    mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
+    return axios
+      .post(`${this._baseUrl}/profile`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  updateUserInfo(data) {
+    mock.onPatch(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
+    return axios
+      .patch(`${this._baseUrl}/profile`,
+        {
+          body: {
+            user: data.user,
+            city: data.city,
+          },
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }

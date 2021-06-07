@@ -68,7 +68,7 @@ function MeetingStoryArticle({
                 {dataStory.description}
               </p>
             </div>
-            <div className="personal-area__card-date">
+            <div className="personal-area__card-date-wrap">
               <p className="personal-area__card-weekday">{`${month}, ${year}`}</p>
               <p className="personal-area__card-day">{day}</p>
             </div>
@@ -80,25 +80,30 @@ function MeetingStoryArticle({
                   aria-label="rate"
                 />
                 <p
-                  className={`caption personal-area__rating-label personal-area__rating-label_type_${dataStory.mood}`}
+                  className={`personal-area__rating-label personal-area__rating-label_type_${dataStory.mood}`}
                 >
                   {reaction}
                 </p>
               </div>
-
+              <select defaultValue="title" name="curator" className="personal-area__curator-select">
+                <option value="title" disabled hidden className="personal-area__curator-option">Поделиться с куратором</option>
+                <option value="Alexandra" className="personal-area__curator-option">Открыто Александре К.</option>
+                <option value="Olga" className="personal-area__curator-option">Открыто Ольге К.</option>
+                <option value="Ekaterina" className="personal-area__curator-option">Открыто Екатерине К.</option>
+              </select>
               <div className="personal-area__action-elements">
-                <p className="caption personal-area__opened-info">
-                  Открыто Александре К.
-                </p>
+                {/* <p className="personal-area__opened-info"> */}
+                {/*  Открыто Александре К. */}
+                {/* </p> */}
                 <button
-                  className="caption personal-area__button personal-area__button_action_edit-card"
+                  className="personal-area__button personal-area__button_action_edit-card"
                   onClick={handleEditClick}
                   type="button"
                 >
                   Редактировать
                 </button>
                 <button
-                  className="caption personal-area__button personal-area__button_action_delete-card"
+                  className="personal-area__button personal-area__button_action_delete-card"
                   type="button"
                   onClick={handleDelete}
                 >
