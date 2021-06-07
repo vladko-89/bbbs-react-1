@@ -5,6 +5,8 @@
   grid-template-rows: 1fr 222px;
   justify-content: center;
 
+
+
   &_type_main-article {
     grid-template-columns: 66% 34%;
     grid-template-rows: 630px;
@@ -40,6 +42,10 @@
     &:first-of-type {
       padding-top: 50px;
     }
+  }
+
+  &_hidden {
+    display: none;
   }
 }
 

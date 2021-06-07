@@ -1,12 +1,12 @@
-/*// Общие настройки и стили*/
+/*Общие настройки и стили*/
 @import './vendor/normalize.css';
 @import './vendor/fonts/fonts.css';
-@import './sass/base/variables.scss';
-@import './sass/base/mixins.scss';
-@import './sass/page';
+@import './scss/variables.scss';
+@import './scss/mixins.scss';
 /*Стили для Header */
-@import './components/Header/Header';
-@import './components/Navigation/Navigation';
+@import "./scss/_lead.scss";
+@import "./scss/_main.scss";
+@import "./scss/_main-card.scss";
 @import "./scss/_button.scss";
 @import "./scss/_paragraph.scss";
 @import "./scss/_card-container.scss";
@@ -16,24 +16,41 @@
 @import "./components/CardCaption/CardCaption.scss";
 @import "./components/MentorChoice/MentorChoice.scss";
 @import "./scss/_card.scss";
-
+@import './scss/_page.scss';
+@import './scss/_button.scss';
+@import './scss/_calendar-container.scss';
+@import './scss/_calendar.scss';
+@import './scss/popup';
+@import './scss/main-title.scss';
+@import './scss/_main.scss';
+@import './scss/_main-section.scss';
+@import './scss/_tags.scss';
+@import './scss/section-title';
 @import "./components/Filter/Filter.scss";
-@import "./components/MainTittle/MainTittle.scss";
+@import "./components/MainTitle/MainTitle.scss";
 @import "./components/FilterItem/FilterItem.scss";
 @import "./components/AboutUs/AboutUs.scss";
 @import "./components/Footer/Footer.scss";
 @import './components/App/App.scss';
-@import './components/Main/Main.scss';
+@import './components/Header/Header';
+@import './components/Navigation/Navigation';
+@import './components/Search/Search';
 @import './components/MainLead/MainLead.scss';
-@import './components/MainStory/MainStory.scss';
-@import './components/MainMentor/MainMentor.scss';
-@import './components/MainAnnotation/MainAnnotation.scss';
-@import './components/MainArticle/MainArticle.scss';
 @import './components/MainVideoPreview/MainVideoPreview.scss';
 @import './components/MainVideo/MainVideo.scss';
 @import './components/MainQuestion/MainQuestion.scss';
+@import './components/Profile/Profile';
 @import './components/MeetingDeletePopup/MeetingDeletePopup.scss';
+@import 'components/PopupCities/PopupCities.scss';
+@import './components/PopupLogin/PopupLogin.scss';
+@import './components/PlacesCard/PlacesCard.scss';
 
+@import './scss/_display_none';
+// =======
+@import './components/PopupCities/PopupCities.scss';
+@import './components/EventInProfile/EventsInProfile.scss';
+@import "./components/MeetingStoryArticle/MeetingStoryArticle.scss";
+@import "./components/MeetingStoryForm/MeetingStoryForm.scss";
 
 body {
   margin: 0;

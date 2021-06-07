@@ -2,17 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function CardCaption({
-  captionText,
+  textCaption,
 }) {
   return (
     <p className="caption card__annotation-caption">
-      {captionText}
+      {textCaption}
+
     </p>
   );
 }
 
+CardCaption.defaultProps = {
+  textCaption: '',
+};
+
 CardCaption.propTypes = {
-  captionText: PropTypes.string.isRequired,
+  textCaption: PropTypes.string,
 };
 
 export default CardCaption;

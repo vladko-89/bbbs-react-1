@@ -1,0 +1,271 @@
+@import '../../../scss/variables.scss';
+@import '../../../scss/mixins.scss';
+
+.card {
+  // position: relative;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // padding: 37px 30px 15px;
+  // border-radius: 30px;
+  // background-color: #fff;
+  // box-sizing: border-box;
+  // overflow: hidden;
+
+  // цвета карточек
+  &_color_yellow {
+    background-color: $yellow;
+  }
+
+  &_color_green {
+    background-color: $green;
+  }
+
+  &_color_pink {
+    background-color: $pink;
+  }
+
+  &_color_blue {
+    background-color: $lightBlue;
+  }
+
+  &_form_square {
+    border-radius: 3px;
+    &::before {
+      content: '';
+      padding-bottom: 100%;
+    }
+  }
+
+  &_form_circle {
+    border-radius: 100%;
+    &::before {
+      content: '';
+      padding-bottom: 100%;
+    }
+  }
+
+  &_form_arch {
+    border-radius: 300px 300px 3px 3px;
+    &::before {
+      content: '';
+      padding-bottom: 100%;
+    }
+  }
+}
+
+.about__card {
+  padding: 0;
+  justify-content: center;
+  border-radius: 70px;
+}
+
+.about__circle {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+}
+
+.catalog-card__image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.catalog-card__title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+// @include atDesktop1639 {
+//   .card-pagination {
+//     &_type_shapes {
+//       &:nth-last-of-type(-n+4) {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+// @include atDesktop1440 {
+//   .card-pagination {
+//     &:nth-last-of-type(-n+4) {
+//       display: none;
+//     }
+
+//     &_page_main {
+//       &:nth-last-of-type(-n+1) {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+// @include atDesktop1279 {
+//   .card-pagination {
+//     &_page_main {
+//       &:nth-last-of-type(-n+2) {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+// @include atDesktop1199 {
+//   .card-pagination {
+//     &_type_shapes {
+//       &:nth-last-of-type(-n+12) {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+// @include atDesktop1217 {
+//   .card-pagination {
+//     &_type_shapes {
+//       &:nth-last-of-type(-n+8) {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+// @include atTabletL {
+//   .card-pagination {
+
+//     &_page_main {
+//       &:nth-last-of-type(-n+3) {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+.rights__link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: auto;
+  text-align: center;
+  flex: 1;
+  text-decoration: none;
+}
+
+.rights__card {
+  flex-direction: row;
+  align-items: unset;
+  padding: 0;
+  overflow: hidden;
+}
+
+@include atDesktop1024 {
+  .rights__card {
+    margin: 0 auto;
+    max-width: 290px;
+  }
+}
+
+.display_none {
+  display: none;
+}
+
+.rights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows: 1fr [first-line] 1px 1fr [second-line] 1px 1fr [third-line] 1px 1fr;
+  gap: 80px 30px;
+}
+
+.rights__card {
+  flex-direction: row;
+  align-items: unset;
+  padding: 0;
+  overflow: hidden;
+}
+
+.rights__rubric {
+  margin-top: 17px;
+  align-self: center;
+}
+
+.rights__line {
+  grid-column: 1 / -1;
+  background: $black;
+
+  &_stage_first {
+    grid-row-start: first-line;
+  }
+
+  &_stage_second {
+    grid-row-start: second-line;
+  }
+
+  &_stage_third {
+    grid-row-start: third-line;
+  }
+}
+
+.rights__link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: auto;
+  text-align: center;
+  flex: 1;
+  text-decoration: none;
+}
+
+@include atDesktop1440 {
+  .rights {
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  }
+}
+
+@include atDesktop1199 {
+  .rights {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr [third-line] 1px 1fr;
+  }
+
+  .rights__line {
+    &:nth-of-type(-n+2) {
+      display: none;
+    }
+  }
+}
+
+@include atDesktop1024 {
+  .rights {
+    padding-top: 50px;
+    grid-template-rows: 1fr [third-line] 1px 1fr;
+    gap: 30px;
+  }
+
+  .rights__card {
+    margin: 0 auto;
+    max-width: 290px;
+  }
+}
+
+@include atTablet {
+  .rights {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr [first-line] 1px 1fr [second-line] 1px 1fr [third-line] 1px 1fr;
+    gap: 30px;
+  }
+
+  .rights__line {
+    &:nth-of-type(-n+2) {
+      display: block;
+    }
+  }
+}
+
+@include atMobile {
+  .rights {
+    padding-top: 30px;
+  }
+}

@@ -1,18 +1,20 @@
+import React from 'react';
 import {
   Link, NavLink,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Search from '../Search/Search';
 
-import React from 'react';
-
-function Navigation({ mobMenu, handleClickMobMenu, loggedIn }) {
+function Navigation({
+  mobMenu, handleClickMobMenu, loggedIn, onLoginPopup,
+}) {
   return (
     <nav className="menu">
       <Link to="./" target="_self" className="menu__logo">наставники.про</Link>
       <div className={`menu__lists-wrap ${mobMenu ? '' : 'menu__lists-wrap_hidden'} `}>
         <ul className="menu__list">
           <li className="menu__list-item">
-            <NavLink to="./calendar" className="menu__link" onClick={handleClickMobMenu}>Календарь</NavLink>
+            { loggedIn ? <NavLink to="./calendar" className="menu__link" onClick={handleClickMobMenu}>Календарь</NavLink> : <button type="button" className="menu__link" onClick={onLoginPopup}>Календарь</button> }
           </li>
           <li className="menu__list-item">
             <NavLink to="./place" className="menu__link" onClick={handleClickMobMenu}>Куда пойти</NavLink>
@@ -79,17 +81,28 @@ function Navigation({ mobMenu, handleClickMobMenu, loggedIn }) {
       </button>
       <ul className="menu__button-list">
         <li className="menu__button-item">
-          {/* здесь компонент поиска */}
+          <Search />
         </li>
         <li className="menu__button-item">
-          <Link
-            to="/profile"
-            className={`menu__button ${loggedIn ? 'menu__button_type_active-user' : 'menu__button_type_user'}`}
-            type="button"
-            aria-label="Личный кабинет"
-            title="Личный кабинет"
-            onClick={handleClickMobMenu}
-          />
+
+          {loggedIn ? (
+            <Link
+              to="/profile"
+              className="menu__button menu__button_type_active-user"
+              type="button"
+              aria-label="Личный кабинет"
+              title="Личный кабинет"
+              onClick={handleClickMobMenu}
+            />
+          ) : (
+            <button
+              type="button"
+              aria-label="Войти"
+              className="menu__button menu__button_type_user"
+              onClick={onLoginPopup}
+            />
+          ) }
+
         </li>
       </ul>
     </nav>
@@ -100,6 +113,7 @@ Navigation.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   mobMenu: PropTypes.bool.isRequired,
   handleClickMobMenu: PropTypes.func.isRequired,
+  onLoginPopup: PropTypes.func.isRequired,
 };
 
 export default Navigation;

@@ -112,6 +112,9 @@
       padding-top: 50px;
     }
   }
+  &_hidden {
+    display: none;
+  }
 }
 
 @include atDesktop1440 {

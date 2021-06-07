@@ -6,37 +6,44 @@ import CardCaption from '../CardCaption/CardCaption';
 function PlacesCard(
   {
     color,
-    choice,
-    tittle,
-    subtitle,
+    chosen,
+    title,
+    name,
     caption,
-    textCaption,
-
+    info,
+    link,
+    activeRubrics,
+    tags,
   },
 ) {
   return (
-    <article className="card-container card-container_type_article">
+    <article
+      className={`card-container card-container_type_article ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag.slug) === -1) ? 'card-container_hidden' : ''}`}
+    >
       <div className={`card card_color_${color}`}>
-        {choice && <MentorChoice />}
+        {chosen && <MentorChoice />}
+
         <div className="card__title-wrap">
           <h2 className="section-title card__title">
-            {tittle}
+            {title}
           </h2>
           <p className="caption card__title-caption">
-            {subtitle}
+
+            {name}
           </p>
         </div>
-        <a href="#" className="link card__link">
+        <a href={link} className="link card__link">
           перейти на сайт
         </a>
       </div>
 
       <div className="card card_content_annotation">
         <div className="card__content">
-          {caption && <CardCaption textCaption={textCaption} />}
+
+          {caption && <CardCaption textCaption={info} />}
           <div className="card__annotation">
-            <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
-            <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
+            <p className="paragraph card__paragraph">Аннотация книги в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, в конце концов, научитесь даже шутить. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.</p>
+            <p className="paragraph card__paragraph">Аннотация статьи в несколько абзацев. Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга, потом понимать чуть лучше и, вконце концов, научитесь даже шутить. Аннотация статьи в несколько абзацев.</p>
           </div>
         </div>
       </div>
@@ -44,13 +51,21 @@ function PlacesCard(
   );
 }
 
+PlacesCard.defaultProps = {
+  info: '',
+  activeRubrics: [],
+};
+
 PlacesCard.propTypes = {
   color: PropTypes.string.isRequired,
-  choice: PropTypes.bool,
-  tittle: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  caption: PropTypes.bool,
-  textCaption: PropTypes.string,
+  chosen: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  caption: PropTypes.bool.isRequired,
+  info: PropTypes.string,
+  link: PropTypes.string.isRequired,
+  activeRubrics: PropTypes.arrayOf(PropTypes.string),
+  tags: PropTypes.arrayOf(PropTypes.shape({ slug: PropTypes.string.isRequired })).isRequired,
 };
 
 export default PlacesCard;
