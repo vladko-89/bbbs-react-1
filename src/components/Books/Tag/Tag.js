@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Tag({ tag, handleTagClick }) {
   const buttonElement = React.useRef(null);
+
   function onClick(event) {
     const button = event.target;
     const isActive = button.classList.contains('tags__button_active');

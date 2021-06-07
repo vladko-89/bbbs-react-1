@@ -15,3 +15,22 @@ function declOfNum(n, textForm) {
 }
 
 export default declOfNum;
+
+export function filterByTags(tags, data) {
+  return (!tags.length)
+    ? data
+    : data.filter(
+      (item) => item.tags.some((itemTag) => tags.some((tagId) => tagId === itemTag.id)),
+    );
+}
+
+export function toggleTagId(tagId, tagIdArray) {
+  if (tagId === 0) {
+    return [];
+  }
+  const index = tagIdArray.findIndex((tag) => tag === tagId);
+  if (index >= 0) {
+    return tagIdArray.filter((tag) => tag !== tagId);
+  }
+  return [...tagIdArray, tagId];
+}

@@ -14,6 +14,7 @@ import Video from '../Video/Video';
 import Catalog from '../Catalog/Catalog';
 import Articles from '../Articles/Articles';
 import Films from '../Films/Films';
+import Books from '../Books/Books';
 import PopupLogin from '../PopupLogin/PopupLogin';
 import Rights from '../Rights/Rights';
 import CurrentUserContext from '../../contexts/CurrentUser';
@@ -138,6 +139,9 @@ function App() {
             </Route>
             <Route exact path="/films">
               <Films />
+            </Route>
+            <Route exact path="/books">
+              <Books />
             </Route>
           </Switch>
           <Footer />

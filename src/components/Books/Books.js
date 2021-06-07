@@ -1,22 +1,22 @@
 import React from 'react';
 import Tag from './Tag/Tag';
-import FilmCard from './FilmCard/FilmCard';
+import BookCard from './BookCard/BookCard';
 import Pagination from '../Pagination/Pagination';
 
-import { films, filmTags } from '../../utils/filmsData';
+import { books, tags } from '../../utils/booksData';
 import { filterByTags, toggleTagId } from '../../utils/utils';
 
-export default function Films() {
-  const cardsPerPage = 16;
+export default function Books() {
+  const cardsPerPage = 12;
   const [tagIdArray, setTagIdArray] = React.useState([]);
-  const [filteredFilms, setFilteredFilms] = React.useState(films);
-  const [shownCards, setShownCards] = React.useState([]);
+  const [filteredBooks, setFilteredBooks] = React.useState(books);
+  const [shownBooks, setShownBooks] = React.useState([]);
 
   function onPageChange(currPage) {
     const begin = currPage * cardsPerPage - cardsPerPage;
     const end = begin + cardsPerPage;
-    setShownCards(
-      filteredFilms.slice(begin, end < filteredFilms.length ? end : filteredFilms.length),
+    setShownBooks(
+      filteredBooks.slice(begin, end < filteredBooks.length ? end : filteredBooks.length),
     );
   }
 
@@ -25,21 +25,21 @@ export default function Films() {
   }
 
   React.useEffect(() => {
-    setFilteredFilms(filterByTags(tagIdArray, films));
+    setFilteredBooks(filterByTags(tagIdArray, books));
   }, [tagIdArray]);
 
   React.useEffect(() => {
     onPageChange(1);
-  }, [filteredFilms]);
+  }, [filteredBooks]);
 
   return (
     <main className="main">
       <section className="lead page__section">
-        <h1 className="main-title">Фильмы</h1>
+        <h1 className="main-title">Книги</h1>
         <div className="tags">
           <ul className="tags__list">
             {
-              filmTags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />)
+              tags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />)
             }
           </ul>
         </div>
@@ -47,12 +47,12 @@ export default function Films() {
 
       <section className="cards-grid cards-grid_content_small-cards page__section">
         {
-          shownCards.map((film, i) => <FilmCard key={i.toString()} film={film} />)
+          shownBooks.map((book) => <BookCard key={book.id} book={book} />)
         }
       </section>
 
       <Pagination
-        cardsLength={filteredFilms.length}
+        cardsLength={filteredBooks.length}
         onPageChange={onPageChange}
         cardsPerPage={cardsPerPage}
       />
