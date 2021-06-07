@@ -14,7 +14,7 @@ function Navigation({
       <div className={`menu__lists-wrap ${mobMenu ? '' : 'menu__lists-wrap_hidden'} `}>
         <ul className="menu__list">
           <li className="menu__list-item">
-            <NavLink to="./calendar" className="menu__link" onClick={handleClickMobMenu}>Календарь</NavLink>
+            { loggedIn ? <NavLink to="./calendar" className="menu__link" onClick={handleClickMobMenu}>Календарь</NavLink> : <button type="button" className="menu__link" onClick={onLoginPopup}>Календарь</button> }
           </li>
           <li className="menu__list-item">
             <NavLink to="./place" className="menu__link" onClick={handleClickMobMenu}>Куда пойти</NavLink>

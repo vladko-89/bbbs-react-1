@@ -17,6 +17,7 @@ import Films from '../Films/Films';
 import Books from '../Books/Books';
 import PopupLogin from '../PopupLogin/PopupLogin';
 import Rights from '../Rights/Rights';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import api from '../../utils/Api';
 
@@ -103,12 +104,15 @@ function App() {
             <Route exact path="/about">
               <AboutUs />
             </Route>
-            <Route exact path="/calendar">
-              <Calendar
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
+
+            <ProtectedRoute
+              exact
+              path="/calendar"
+              loggedIn={loggedIn}
+              activeRubrics={activeRubrics}
+              selectRubric={changeActiveRubric}
+              component={Calendar}
+            />
             <Route exact path="/questions">
               <Questions
                 loggedIn={loggedIn}
@@ -116,9 +120,13 @@ function App() {
                 selectRubric={changeActiveRubric}
               />
             </Route>
-            <Route exact path="/profile">
-              <Profile onOutClick={handleOutClick} />
-            </Route>
+            <ProtectedRoute
+              exact
+              path="/profile"
+              onOutClick={handleOutClick}
+              loggedIn={loggedIn}
+              component={Profile}
+            />
             <Route exact path="/video">
               <Video
                 activeRubrics={activeRubrics}
