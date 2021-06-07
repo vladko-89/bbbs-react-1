@@ -12,7 +12,9 @@
   text-decoration: none;
   color: $lightGray;
   margin-left: 30px;
-
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.4;
   &:first-of-type {
     margin-left: 0;
   }
@@ -23,12 +25,14 @@
   margin-right: 30px;
   background-color: transparent;
   cursor: pointer;
+  color: #A7A6A6;
 }
 
 .personal-area__sign-up {
   padding-top: 30px;
   padding-bottom: 50px;
   border-bottom: 1px solid $darkGray;
+  color: #A7A6A6;
 }
 
 .personal-area__title {
