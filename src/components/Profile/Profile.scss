@@ -40,6 +40,11 @@
   max-width: 770px;
   text-align: center;
   color: $lightBlack;
+  font-family: $protoGrotesk;
+  font-weight: 300;
+  font-size: 23px;
+  line-height: 1.3;
+  color: $black;
 
 }
 
@@ -98,7 +103,10 @@
     padding-top: 20px;
     padding-bottom: 20px;
   }
-
+  .personal-area__title {
+    font-size: 19px;
+    line-height: 1.2;
+  }
   .personal-area__story {
     padding-top: 20px;
   }
