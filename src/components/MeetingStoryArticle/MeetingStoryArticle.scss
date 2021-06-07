@@ -38,11 +38,11 @@ overflow: auto;
 
 .personal-area__card-weekday {
   margin: 0;
-  width: 100px;
+  // width: 100px;
   font-family: $ptRootUI;
   font-size: 14px;
   line-height: 1.4;
-  text-align: center;
+  text-align: end;
 }
 
 .personal-area__card-day {

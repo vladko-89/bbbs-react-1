@@ -10,9 +10,13 @@ import mockMeetingStories from '../../utils/mockMeetigsStories.json';
 import MeetingStoryForm from '../MeetingStoryForm/MeetingStoryForm';
 import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 import { citiesList } from '../../utils/Constants';
+// import { CurrentUser } from "../../contexts/CurrentUser";
 
 // eslint-disable-next-line no-unused-vars
 function Profile({ onOutClick }) {
+  // const user = React.useContext(CurrentUser);
+  // eslint-disable-next-line no-console
+  // console.log(user);
   // eslint-disable-next-line no-unused-vars
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
@@ -144,7 +148,7 @@ function Profile({ onOutClick }) {
 
           <div className="personal-area__story">
             {userMeetings.length === 0 && (
-              <h2 className="section-title personal-area__title">
+              <h2 className="personal-area__title">
                 Составьте историю вашей дружбы с младшим. Эта страница доступна
                 только вам.
               </h2>
