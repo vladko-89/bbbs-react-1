@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Tag({ tag, handleTagClick }) {
+  const buttonElement = React.useRef(null);
   function onClick(event) {
     const button = event.target;
     const isActive = button.classList.contains('tags__button_active');
@@ -24,9 +25,13 @@ export default function Tag({ tag, handleTagClick }) {
     handleTagClick(tag.id);
   }
 
+  React.useEffect(() => {
+    if (tag.id === 0) buttonElement.current.classList.add('tags__button_active');
+  }, []);
+
   return (
     <li className="tags__list-item">
-      <button onClick={onClick} className="button tags__button" type="button">{tag.name}</button>
+      <button ref={buttonElement} onClick={onClick} className="button tags__button" type="button">{tag.name}</button>
     </li>
   );
 }
