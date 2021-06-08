@@ -65,7 +65,7 @@ PlacesCard.propTypes = {
   info: PropTypes.string,
   link: PropTypes.string.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string),
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.shape({ slug: PropTypes.string.isRequired })).isRequired,
 };
 
 export default PlacesCard;

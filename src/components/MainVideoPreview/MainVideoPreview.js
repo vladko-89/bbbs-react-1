@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './MainVideoPreview.scss';
 
 function MainVideoPreview({
   link, imageUrl, tags, title, info, activeRubrics,

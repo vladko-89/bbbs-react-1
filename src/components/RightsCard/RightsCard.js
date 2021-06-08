@@ -12,8 +12,8 @@ function RightsCard({
           <h2 className="section-title">
             {card.title}
           </h2>
-          {card.tags.map((tag) => (
-            <p className="rubric rights__rubric">{tag.name}</p>
+          {card.tags.map((tag, index) => (
+            <p key={index.toString()} className="rubric rights__rubric">{tag.name}</p>
           ))}
         </a>
       </div>
@@ -23,7 +23,13 @@ function RightsCard({
 
 RightsCard.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
-  card: PropTypes.objectOf.isRequired,
+  card: PropTypes.shape({
+    id: PropTypes.number,
+    color: PropTypes.string,
+    title: PropTypes.string,
+    form: PropTypes.string,
+    tags: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, slug: PropTypes.string })),
+  }).isRequired,
 };
 
 export default RightsCard;
