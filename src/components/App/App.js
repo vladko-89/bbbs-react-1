@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { compareAsc, parseISO } from 'date-fns';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -20,7 +19,7 @@ import PopupLogin from '../PopupLogin/PopupLogin';
 import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
-import api from '../../utils/Api';
+import { useAuth } from '../../utils/utils';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -42,20 +41,7 @@ function App() {
 
   // Probally we need a check token on a backend side before manipulation.
   React.useEffect(() => {
-    if (localStorage.getItem('bbbs-token')) {
-      const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
-      if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
-        api.getCurrentUser(tokenData.access)
-          .then((res) => { setCurrentUser(res.name); setLoggedIn(true); })
-          // eslint-disable-next-line no-console
-          .catch((err) => console.log(err));
-      } else if (compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1) {
-        api.updateToken(tokenData.refresh)
-          .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
-          // eslint-disable-next-line no-console
-          .catch((err) => console.log(err));
-      }
-    }
+    useAuth(setCurrentUser, setLoggedIn);
   }, []);
 
   const handleLoginOpen = () => {

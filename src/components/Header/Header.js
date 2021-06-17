@@ -8,11 +8,7 @@ function Header({ loggedIn, onLoginPopup }) {
   React.useEffect(() => {
     let current = 0;
     const checkScroll = () => {
-      if (window.pageYOffset < current && window.pageYOffset > 30) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
+      setIsFixed(window.pageYOffset < current && window.pageYOffset > 30);
       current = window.pageYOffset;
     };
     document.addEventListener('scroll', checkScroll);

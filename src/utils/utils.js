@@ -1,4 +1,7 @@
-function declOfNum(n, textForm) {
+import { compareAsc, parseISO } from 'date-fns';
+import api from './Api';
+
+export function declOfNum(n, textForm) {
   // eslint-disable-next-line no-param-reassign
   n = Math.abs(n) % 100;
   const n1 = n % 10;
@@ -14,7 +17,22 @@ function declOfNum(n, textForm) {
   return textForm[2];
 }
 
-export default declOfNum;
+export function useAuth(setUserData, setLoginState) {
+  if (localStorage.getItem('bbbs-token')) {
+    const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
+    if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
+      api.getCurrentUser(tokenData.access)
+        .then((res) => { setUserData(res.name); setLoginState(true); })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.log(err));
+    } else if (compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1) {
+      api.updateToken(tokenData.refresh)
+        .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
+        // eslint-disable-next-line no-console
+        .catch((err) => console.log(err));
+    }
+  }
+}
 
 export function filterByTags(tags, data) {
   return (!tags.length)

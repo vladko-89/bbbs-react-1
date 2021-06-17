@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import PropTypes from 'prop-types';
 import { placesTextForms } from '../../utils/Constants';
-import declOfNum from '../../utils/utils';
+import { declOfNum } from '../../utils/utils';
 
 function CalendarEvent({
   calendar,
