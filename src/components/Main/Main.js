@@ -25,13 +25,16 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
   const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
-    api.getMain(localStorage.getItem('bbbs-access')).then((res) => {
-      setMainState(res);
-      localStorage.setItem('mainState', JSON.stringify(res));
-    })
-      .then(() => setIsDataReady(true))
+    if (localStorage.getItem('bbbs-token')) {
+      api.getMain(JSON.parse(localStorage.getItem('bbbs-token')).access).then((res) => {
+        console.log(res);
+        setMainState(res);
+        localStorage.setItem('mainState', JSON.stringify(res));
+      })
+        .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
+        .catch((err) => console.log(err));
+    }
   }, [setMainState]);
 
   // Обнуляем выставленные фильтры при монтировании компонента
@@ -97,8 +100,8 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
               />
             ) : <MainLead />}
             <MainStory
-              title={mainState.history?.title}
-              imageUrl={mainState.history?.imageUrl}
+              title={mainState.history.title}
+              imageUrl={mainState.history.imageUrl}
             />
           </article>
         </section>
@@ -153,11 +156,11 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
               <iframe className="card__iframe" title="iframe" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=630&height=630&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" scrolling="no" allowFullScreen allow="clipboard-write; encrypted-media; picture-in-picture; web-share" />
             </div>
             <div className="main-questions">
-              {mainState.questions.map((question) => (
+              {mainState.questions.map((q) => (
                 <MainQuestion
-                  key={question.id}
-                  title={question.title}
-                  name={question.tags[0].name}
+                  key={q.id}
+                  question={q.question}
+                  name={q.tags[0]?.name}
                 />
               ))}
             </div>
