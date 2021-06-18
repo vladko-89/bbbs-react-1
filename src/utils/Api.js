@@ -4,6 +4,7 @@ import axios from 'axios';
 import {
   baseUrl,
 } from './Constants';
+
 // import mockMain from './mockMain.json';
 // import mockEvents from './mockEvents.json';
 // import mockCalendar from './mockCalendar.json';
@@ -11,9 +12,11 @@ import {
 // import mockUser from './mockUser.json';
 // import mockUserInfo from './mockUserInfo.json';
 
+
 class Api {
   constructor(paramBaseUrl) {
     this._baseUrl = paramBaseUrl;
+    this._apiUrl = 'http://bbbs.kiryanov.ru/api/v1';
   }
 
   getMain(accessToken) {
@@ -82,6 +85,7 @@ class Api {
       .catch((error) => console.log(error));
   }
 
+
   getUserInfo(accessToken) {
   //  mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
     return axios
@@ -93,18 +97,56 @@ class Api {
 
   updateUserInfo(data) {
     // mock.onPatch(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
+
     return axios
       .patch(`${this._baseUrl}/profile`,
         {
           body: {
-            user: data.user,
             city: data.city,
           },
         })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
+  getCitiesList(accessToken) {
+    mock.onGet(`${this._baseUrl}/cities/`).reply(200, mockCitiesList);
+    return axios
+      .get(`${this._baseUrl}/cities/`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+  getQuestionsTags() {
+    return fetch(`${this._apiUrl}/questions/tags/`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  }
+
+  getQuestions() {
+    return fetch(`${this._apiUrl}/questions/`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+
+  }
 }
+
 const api = new Api(baseUrl);
 
 export default api;

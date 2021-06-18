@@ -1,0 +1,92 @@
+{
+  "count": 17,
+  "next": null,
+  "previous": null,
+  "results": [
+  {
+    "id": 3,
+    "name": "Казань",
+    "isPrimary": true
+  },
+  {
+    "id": 7,
+    "name": "Москва",
+    "isPrimary": true
+  },
+  {
+    "id": 2,
+    "name": "Астрахань",
+    "isPrimary": false
+  },
+  {
+    "id": 1,
+    "name": "Волгоград",
+    "isPrimary": false
+  },
+  {
+    "id": 14,
+    "name": "г. Пермь",
+    "isPrimary": false
+  },
+  {
+    "id": 8,
+    "name": "г. Хабаровск",
+    "isPrimary": false
+  },
+  {
+    "id": 12,
+    "name": "д. Фатеж",
+    "isPrimary": false
+  },
+  {
+    "id": 4,
+    "name": "Железногорск",
+    "isPrimary": false
+  },
+  {
+    "id": 11,
+    "name": "клх Камышлов",
+    "isPrimary": false
+  },
+  {
+    "id": 15,
+    "name": "клх Крымск",
+    "isPrimary": false
+  },
+  {
+    "id": 9,
+    "name": "клх Серпухов",
+    "isPrimary": false
+  },
+  {
+    "id": 13,
+    "name": "к. Россошь",
+    "isPrimary": false
+  },
+  {
+    "id": 6,
+    "name": "Санкт-Петербург",
+    "isPrimary": false
+  },
+  {
+    "id": 10,
+    "name": "с. Кашхатау",
+    "isPrimary": false
+  },
+  {
+    "id": 17,
+    "name": "с. Прохладный",
+    "isPrimary": false
+  },
+  {
+    "id": 16,
+    "name": "ст. Усть-Джегута",
+    "isPrimary": false
+  },
+  {
+    "id": 5,
+    "name": "Чебоксары",
+    "isPrimary": false
+  }
+]
+}

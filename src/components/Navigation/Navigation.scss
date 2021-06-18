@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  position: relative;
 }
 
 .menu__logo {
@@ -26,6 +27,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 
   &_hidden {
     display: none;
@@ -194,7 +196,11 @@
     }
   }
 }
-
+.user-info_mobile {
+    bottom: 10px;
+    width: 100%;
+    justify-content: space-between;
+}
 
 @include atDesktop1380 {
   .menu {
@@ -250,6 +256,7 @@
     &:last-of-type {
       margin: 0;
     }
+
   }
 
   // аткивное состояние кнопки бургера
@@ -297,6 +304,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    margin-bottom: 50px;
 
     &_type_social {
       padding-right: 17px;
