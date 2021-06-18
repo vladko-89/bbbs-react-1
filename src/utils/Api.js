@@ -11,7 +11,7 @@ import mockEvents from './mockEvents.json';
 import mockCalendar from './mockCalendar.json';
 import mockToken from './mockToken.json';
 import mockUser from './mockUser.json';
-import mockUserInfo from './mockUserInfo.json';
+import mockCitiesList from './mockCitiesList.json';
 
 const mock = new MockAdapter(axios, { delayResponse });
 
@@ -79,22 +79,13 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getUserInfo(accessToken) {
-    mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
-    return axios
-      .post(`${this._baseUrl}/profile`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
-      .then((res) => res.data)
-      .catch((error) => console.log(error));
-  }
-
   updateUserInfo(data) {
-    mock.onPatch(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
+    mockUser.city = data.city.id;
+    mock.onPatch(`${this._baseUrl}/profile`).reply(200, mockUser);
     return axios
       .patch(`${this._baseUrl}/profile`,
         {
           body: {
-            user: data.user,
             city: data.city,
           },
         })
@@ -102,6 +93,14 @@ class Api {
       .catch((error) => console.log(error));
   }
 
+  getCitiesList(accessToken) {
+    mock.onGet(`${this._baseUrl}/cities/`).reply(200, mockCitiesList);
+    return axios
+      .get(`${this._baseUrl}/cities/`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
   getQuestionsTags() {
     return fetch(`${this._apiUrl}/questions/tags/`, {
       method: 'GET',
@@ -128,6 +127,7 @@ class Api {
         console.log(err);
         return Promise.reject(err);
       });
+
   }
 }
 

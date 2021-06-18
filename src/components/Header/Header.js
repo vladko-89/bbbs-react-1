@@ -2,7 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ loggedIn, onLoginPopup }) {
+function Header({
+  loggedIn,
+  onLoginPopup,
+  user,
+  onLogOutClick,
+  onChangeCityClick,
+}) {
   const [mobMenu, setMobMenu] = React.useState(false);
   const [isFixed, setIsFixed] = React.useState(false);
   React.useEffect(() => {
@@ -13,7 +19,7 @@ function Header({ loggedIn, onLoginPopup }) {
     };
     document.addEventListener('scroll', checkScroll);
 
-    return (() => document.removeEventListener('scroll', checkScroll));
+    return () => document.removeEventListener('scroll', checkScroll);
   }, []);
   const handleClickMobMenu = (e) => {
     if (e.target.closest('.menu__burger')) {
@@ -21,19 +27,34 @@ function Header({ loggedIn, onLoginPopup }) {
     }
   };
   return (
-    <header className={`header ${isFixed ? 'header_fixed' : ''} page__section ${mobMenu ? 'header_displayed ' : ''}`}>
+    <header
+      className={`header ${isFixed ? 'header_fixed' : ''} page__section ${
+        mobMenu ? 'header_displayed ' : ''
+      }`}
+    >
       <Navigation
         mobMenu={mobMenu}
         handleClickMobMenu={handleClickMobMenu}
         loggedIn={loggedIn}
         onLoginPopup={onLoginPopup}
+        userInfo={user}
+        onLogOutClick={onLogOutClick}
+        onChangeCityClick={onChangeCityClick}
       />
     </header>
   );
 }
+
 Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   onLoginPopup: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    user: PropTypes.number,
+    city: PropTypes.number,
+  }).isRequired,
+  onLogOutClick: PropTypes.func.isRequired,
+  onChangeCityClick: PropTypes.func.isRequired,
 };
 
 export default Header;
