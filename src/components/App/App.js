@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { compareAsc, parseISO } from 'date-fns';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -20,9 +19,8 @@ import PopupLogin from '../PopupLogin/PopupLogin';
 import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
-import api from '../../utils/Api';
 import PopupCities from '../PopupCities/PopupCities';
-// import PopupCities from '../PopupCities/PopupCities';
+import { useAuth } from '../../utils/utils';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -46,28 +44,7 @@ function App() {
 
   // Probally we need a check token on a backend side before manipulation.
   React.useEffect(() => {
-    if (localStorage.getItem('bbbs-token')) {
-      const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
-      if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
-        api
-          .getCurrentUser(tokenData.access)
-          .then((res) => {
-            setCurrentUser(res.data);
-            localStorage.setItem('user', JSON.stringify(res));
-            setLoggedIn(true);
-          })
-          // eslint-disable-next-line no-console
-          .catch((err) => console.log(err));
-      } else if (
-        compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1
-      ) {
-        api
-          .updateToken(tokenData.refresh)
-          .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
-          // eslint-disable-next-line no-console
-          .catch((err) => console.log(err));
-      }
-    }
+   useAuth(setCurrentUser, setLoggedIn);
     // запрос за списком городов
     api
       .getCitiesList()
@@ -142,74 +119,76 @@ function App() {
             onLogOutClick={handleOutClick}
             onChangeCityClick={handleChangeCityClick}
           />
-          <Switch>
-            <Route exact path="/">
-              <Main
-                loggedIn={loggedIn}
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
-            <Route exact path="/place">
-              <Places
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
-            <Route exact path="/about">
-              <AboutUs />
-            </Route>
+          <div className="page__content">
+            <Switch>
+              <Route exact path="/">
+                <Main
+                  loggedIn={loggedIn}
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/place">
+                <Places
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/about">
+                <AboutUs />
+              </Route>
 
-            <ProtectedRoute
-              exact
-              path="/calendar"
-              loggedIn={loggedIn}
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-              component={Calendar}
-            />
-            <Route exact path="/questions">
-              <Questions
+              <ProtectedRoute
+                exact
+                path="/calendar"
                 loggedIn={loggedIn}
                 activeRubrics={activeRubrics}
                 selectRubric={changeActiveRubric}
+                component={Calendar}
               />
-            </Route>
-            <ProtectedRoute
-              exact
-              path="/profile"
-              onOutClick={handleOutClick}
-              loggedIn={loggedIn}
-              component={Profile}
-            />
-            <Route exact path="/video">
-              <Video
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
+              <Route exact path="/questions">
+                <Questions
+                  loggedIn={loggedIn}
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <ProtectedRoute
+                exact
+                path="/profile"
+                onOutClick={handleOutClick}
+                loggedIn={loggedIn}
+                component={Profile}
               />
-            </Route>
-            <Route exact path="/catalog">
-              <Catalog />
-            </Route>
-            <Route exact path="/rights">
-              <Rights
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
-            <Route exact path="/articles">
-              <Articles />
-            </Route>
-            <Route exact path="/films">
-              <Films />
-            </Route>
-            <Route exact path="/books">
-              <Books />
-            </Route>
-            <Route exact path="/stories">
-              <Stories />
-            </Route>
-          </Switch>
+              <Route exact path="/video">
+                <Video
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/catalog">
+                <Catalog />
+              </Route>
+              <Route exact path="/rights">
+                <Rights
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/articles">
+                <Articles />
+              </Route>
+              <Route exact path="/films">
+                <Films />
+              </Route>
+              <Route exact path="/books">
+                <Books />
+              </Route>
+              <Route exact path="/stories">
+                <Stories />
+              </Route>
+            </Switch>
+          </div>
           <Footer />
           {isPopupLoginOpened ? (
             <PopupLogin

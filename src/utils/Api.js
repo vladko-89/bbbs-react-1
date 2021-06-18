@@ -18,6 +18,7 @@ const mock = new MockAdapter(axios, { delayResponse });
 class Api {
   constructor(paramBaseUrl) {
     this._baseUrl = paramBaseUrl;
+    this._apiUrl = 'http://bbbs.kiryanov.ru/api/v1';
   }
 
   getMain(accessToken) {
@@ -100,7 +101,36 @@ class Api {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+  getQuestionsTags() {
+    return fetch(`${this._apiUrl}/questions/tags/`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  }
+
+  getQuestions() {
+    return fetch(`${this._apiUrl}/questions/`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+
+  }
 }
+
 const api = new Api(baseUrl);
 
 export default api;

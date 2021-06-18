@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Tag from './Tag/Tag';
 
-import { tags } from '../../../utils/questionsData';
-
-export default function TagList({ selectRubric }) {
+export default function TagList({ tags, selectRubric }) {
   const [activeFilter, setActiveFilter] = React.useState('');
 
   function onFilterChange(tag) {
@@ -17,9 +15,9 @@ export default function TagList({ selectRubric }) {
         {
           tags.map((tag, i) => (
             <Tag
-              key={i.toString()}
+              key={tag.id}
               isActive={i === 0}
-              name={tag}
+              name={tag.name}
               selectRubric={selectRubric}
               onFilterChange={onFilterChange}
               activeFilter={activeFilter}
@@ -32,5 +30,10 @@ export default function TagList({ selectRubric }) {
 }
 
 TagList.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    slug: PropTypes.string,
+  })).isRequired,
   selectRubric: PropTypes.func.isRequired,
 };
