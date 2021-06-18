@@ -30,6 +30,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         loginFormValidation.values.password,
       )
       .then((res) => {
+        console.log(res);
         if (res) {
           localStorage.setItem('bbbs-token', JSON.stringify(res));
           onSubmit(e, loginFormValidation.values.login);
@@ -54,7 +55,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         <input type="password" className="popup__input" id="password" name="password" minLength={8} onChange={loginFormValidation.handleChange} required placeholder="Пароль" />
         <p className="popup__input-error" name="password-error">{loginFormValidation.errors.password}</p>
         <p className="popup__forgot-password ">Забыли пароль?</p>
-        <button className="button button_theme_light popup__enter" onClick={submitHandler} type="button" disabled={!loginFormValidation.isValid}>Войти</button>
+        <button className="button button_theme_light popup__enter" onClick={submitHandler} type="submit" disabled={!loginFormValidation.isValid}>Войти</button>
         <p className="popup__action-error" name="action-error">{actionError}</p>
       </form>
     </div>

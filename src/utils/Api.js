@@ -1,19 +1,15 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import MockAdapter from 'axios-mock-adapter';
 import {
-  baseUrl, delayResponse,
+  baseUrl,
 } from './Constants';
-import mockMain from './mockMain.json';
-import mockEvents from './mockEvents.json';
-import mockCalendar from './mockCalendar.json';
-import mockToken from './mockToken.json';
-import mockUser from './mockUser.json';
-import mockUserInfo from './mockUserInfo.json';
-
-const mock = new MockAdapter(axios, { delayResponse });
+// import mockMain from './mockMain.json';
+// import mockEvents from './mockEvents.json';
+// import mockCalendar from './mockCalendar.json';
+// import mockToken from './mockToken.json';
+// import mockUser from './mockUser.json';
+// import mockUserInfo from './mockUserInfo.json';
 
 class Api {
   constructor(paramBaseUrl) {
@@ -21,16 +17,16 @@ class Api {
   }
 
   getMain(accessToken) {
-    mock.onGet(`${this._baseUrl}/main`).reply(200, mockMain);
+    // mock.onGet(`${this._baseUrl}/main`).reply(200, mockMain);
     return axios
-      .get(`${this._baseUrl}/main`,
+      .get(`${this._baseUrl}/main/`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   getEvents(accessToken) {
-    mock.onGet(`${this._baseUrl}/afisha/events/`).reply(200, mockEvents);
+  //  mock.onGet(`${this._baseUrl}/afisha/events/`).reply(200, mockEvents);
     return axios
       .get(`${this._baseUrl}/afisha/events/`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -39,9 +35,9 @@ class Api {
   }
 
   getCalendar(accessToken) {
-    mock.onGet(`${this._baseUrl}/calendar`).reply(200, {
-      calendar: mockCalendar,
-    });
+    //   mock.onGet(`${this._baseUrl}/calendar`).reply(200, {
+    //   calendar: mockCalendar,
+    // });
     return axios
       .get(`${this._baseUrl}/calendar`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -50,10 +46,20 @@ class Api {
   }
 
   signIn(login, password) {
-    mock.onPost(`${this._baseUrl}/token`).reply(200, mockToken);
+    // return fetch(`${this._baseUrl}/token/`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     password: `${password}`,
+    //     username: `${login}`,
+    //   }),
+    // })
+    //   .then((res) => res.json())
     return axios
-      .post(`${this._baseUrl}/token`, {
-        login,
+      .post(`${this._baseUrl}/token/`, {
+        username: login,
         password,
       })
       .then((res) => res.data)
@@ -61,7 +67,7 @@ class Api {
   }
 
   getCurrentUser(accessToken) {
-    mock.onPost(`${this._baseUrl}/users`).reply(200, mockUser);
+  //  mock.onPost(`${this._baseUrl}/users`).reply(200, mockUser);
     return axios
       .post(`${this._baseUrl}/users`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -69,26 +75,24 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  // Need more data about backend
   updateToken(refreshToken) {
-    mock.onPost(`${this._baseUrl}/token`).reply(200, mockToken);
     return axios
-      .post(`${this._baseUrl}/token`, { refreshToken })
+      .post(`${this._baseUrl}/token/refresh/`, { refresh: refreshToken })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   getUserInfo(accessToken) {
-    mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
+  //  mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
     return axios
-      .post(`${this._baseUrl}/profile`,
+      .get(`${this._baseUrl}/profile/`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   updateUserInfo(data) {
-    mock.onPatch(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
+    // mock.onPatch(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
     return axios
       .patch(`${this._baseUrl}/profile`,
         {
