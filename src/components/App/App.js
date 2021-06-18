@@ -74,74 +74,76 @@ function App() {
             loggedIn={loggedIn}
             onLoginPopup={handleLoginOpen}
           />
-          <Switch>
-            <Route exact path="/">
-              <Main
-                loggedIn={loggedIn}
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
-            <Route exact path="/place">
-              <Places
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
-            <Route exact path="/about">
-              <AboutUs />
-            </Route>
+          <div className="page__content">
+            <Switch>
+              <Route exact path="/">
+                <Main
+                  loggedIn={loggedIn}
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/place">
+                <Places
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/about">
+                <AboutUs />
+              </Route>
 
-            <ProtectedRoute
-              exact
-              path="/calendar"
-              loggedIn={loggedIn}
-              activeRubrics={activeRubrics}
-              selectRubric={changeActiveRubric}
-              component={Calendar}
-            />
-            <Route exact path="/questions">
-              <Questions
+              <ProtectedRoute
+                exact
+                path="/calendar"
                 loggedIn={loggedIn}
                 activeRubrics={activeRubrics}
                 selectRubric={changeActiveRubric}
+                component={Calendar}
               />
-            </Route>
-            <ProtectedRoute
-              exact
-              path="/profile"
-              onOutClick={handleOutClick}
-              loggedIn={loggedIn}
-              component={Profile}
-            />
-            <Route exact path="/video">
-              <Video
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
+              <Route exact path="/questions">
+                <Questions
+                  loggedIn={loggedIn}
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <ProtectedRoute
+                exact
+                path="/profile"
+                onOutClick={handleOutClick}
+                loggedIn={loggedIn}
+                component={Profile}
               />
-            </Route>
-            <Route exact path="/catalog">
-              <Catalog />
-            </Route>
-            <Route exact path="/rights">
-              <Rights
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-              />
-            </Route>
-            <Route exact path="/articles">
-              <Articles />
-            </Route>
-            <Route exact path="/films">
-              <Films />
-            </Route>
-            <Route exact path="/books">
-              <Books />
-            </Route>
-            <Route exact path="/stories">
-              <Stories />
-            </Route>
-          </Switch>
+              <Route exact path="/video">
+                <Video
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/catalog">
+                <Catalog />
+              </Route>
+              <Route exact path="/rights">
+                <Rights
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/articles">
+                <Articles />
+              </Route>
+              <Route exact path="/films">
+                <Films />
+              </Route>
+              <Route exact path="/books">
+                <Books />
+              </Route>
+              <Route exact path="/stories">
+                <Stories />
+              </Route>
+            </Switch>
+          </div>
           <Footer />
           { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
         </div>
