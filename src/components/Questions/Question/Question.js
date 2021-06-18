@@ -15,7 +15,7 @@ export default function Question({ question, activeRubrics }) {
 
   return (
     <article className={`question ${activeRubrics.length > 0 && question.tags.every((tag) => activeRubrics.indexOf(tag.name) === -1) ? 'display_none' : ''}`}>
-      <h2 onClick={showAnswer} className="section-title question__title">{question.title}</h2>
+      <h2 onClick={showAnswer} className="section-title question__title">{question.question}</h2>
       <div className="question__wrap">
         {
           question.tags.map((tag, i) => <p key={i.toString()} className="rubric question__rubric">{tag.name}</p>)
@@ -24,7 +24,10 @@ export default function Question({ question, activeRubrics }) {
       </div>
       <div className="question__answer">
         {
-          question.answer.map((paragraph, i) => <p key={i.toString()} className="paragraph question__paragraph">{paragraph}</p>)
+          question.answer
+          // question.answer.map((paragraph, i) => (
+          //   <p key={i.toString()} className="paragraph question__paragraph">{paragraph}</p>
+          // ))
         }
       </div>
     </article>
@@ -44,7 +47,7 @@ Question.propTypes = {
       name: PropTypes.string,
       slug: PropTypes.string,
     })),
-    title: PropTypes.string.isRequired,
-    answer: PropTypes.arrayOf(PropTypes.string).isRequired,
+    question: PropTypes.string.isRequired,
+    answer: PropTypes.PropTypes.string.isRequired,
   }).isRequired,
 };
