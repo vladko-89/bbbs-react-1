@@ -21,6 +21,8 @@ import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import api from '../../utils/Api';
+import PopupCities from '../PopupCities/PopupCities';
+// import PopupCities from '../PopupCities/PopupCities';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -28,6 +30,8 @@ function App() {
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
+  const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
+  const [citiesList, setCitiesList] = React.useState([]);
 
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
@@ -45,24 +49,71 @@ function App() {
     if (localStorage.getItem('bbbs-token')) {
       const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
       if (compareAsc(parseISO(tokenData.accessExpire), new Date()) === 1) {
-        api.getCurrentUser(tokenData.access)
-          .then((res) => { setCurrentUser(res.name); setLoggedIn(true); })
+        api
+          .getCurrentUser(tokenData.access)
+          .then((res) => {
+            setCurrentUser(res.data);
+            localStorage.setItem('user', JSON.stringify(res));
+            setLoggedIn(true);
+          })
           // eslint-disable-next-line no-console
           .catch((err) => console.log(err));
-      } else if (compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1) {
-        api.updateToken(tokenData.refresh)
+      } else if (
+        compareAsc(parseISO(tokenData.refreshExpire), new Date()) === 1
+      ) {
+        api
+          .updateToken(tokenData.refresh)
           .then((res) => localStorage.setItem('bbbs-token', JSON.stringify(res)))
           // eslint-disable-next-line no-console
           .catch((err) => console.log(err));
       }
     }
+    // запрос за списком городов
+    api
+      .getCitiesList()
+      .then((data) => {
+        setCitiesList(data.results);
+        localStorage.setItem('citiesList', JSON.stringify(data.results));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
   }, []);
+
+  // попап городов -смена города
+  const handleChangeCityClick = () => {
+    setIsOpenPopupCities(true);
+  };
+
+  // закрытие попапа городов
+  const handleClose = (event) => {
+    if (
+      event.key === 'Escape' || event.target.classList.contains('popup_opened')
+    ) {
+      setIsOpenPopupCities(false);
+    }
+    setIsOpenPopupCities(false);
+  };
+  // изменение города в профиле пользователя
+  const handleChangeCity = (place) => {
+    // eslint-disable-next-line no-console
+    console.log(`city changed on ${place}`);
+    const cityId = citiesList.find((el) => el.name === place);
+    api.updateUserInfo({ city: cityId })
+      .then((res) => {
+        setCurrentUser(res);
+        localStorage.setItem('user', JSON.stringify(res));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  };
 
   const handleLoginOpen = () => {
     setIsPoupLoginOpened(true);
   };
   const handleLoginClose = (evt) => {
-    if (evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')) {
+    if (
+      evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')
+    ) {
       setIsPoupLoginOpened(false);
     }
   };
@@ -87,6 +138,9 @@ function App() {
           <Header
             loggedIn={loggedIn}
             onLoginPopup={handleLoginOpen}
+            user={currentUser}
+            onLogOutClick={handleOutClick}
+            onChangeCityClick={handleChangeCityClick}
           />
           <Switch>
             <Route exact path="/">
@@ -157,7 +211,24 @@ function App() {
             </Route>
           </Switch>
           <Footer />
-          { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
+          {isPopupLoginOpened ? (
+            <PopupLogin
+              onClose={handleLoginClose}
+              onSubmit={handleLoginSubmit}
+              isOpen={isPopupLoginOpened}
+            />
+          ) : (
+            ''
+          )}
+          {{ isOpenPopupCities } && (
+            <PopupCities
+              onChangeCities={handleChangeCity}
+              onCloseClick={handleClose}
+              isOpen={isOpenPopupCities}
+              isCity={JSON.parse(localStorage.getItem('user')).city}
+              citiesList={citiesList}
+            />
+          )}
         </div>
       </HelmetProvider>
     </CurrentUserContext.Provider>

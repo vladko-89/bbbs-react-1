@@ -26,6 +26,7 @@
   background-color: transparent;
   cursor: pointer;
   color: #A7A6A6;
+  padding-left: 0;
 }
 
 .personal-area__sign-up {
@@ -165,4 +166,10 @@
   }
 
 
+}
+
+@include atMobile  {
+  .personal-area__user-link_type_city {
+    font-size: 15px;
+  }
 }
