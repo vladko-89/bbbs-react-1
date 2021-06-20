@@ -145,6 +145,24 @@ class Api {
       });
 
   }
+
+  sendQuestion(question) {
+    const accessToken = JSON.parse(localStorage.getItem('bbbs-token')).access;
+
+    return fetch(`${this._apiUrl}/questions/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ question }),
+    })
+      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  }
 }
 
 const api = new Api(baseUrl);

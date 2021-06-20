@@ -1,6 +1,22 @@
 @import '../../../scss/variables.scss';
 @import '../../../scss/mixins.scss';
 
+.question-form__message {
+  margin: 0;
+  padding: 10px 30px;
+  min-height: 20px;
+
+  font-size: 14px;
+}
+
+.question-form__message_success {
+  color: #8CDD94;
+}
+
+.question-form__message_denied {
+  color: #FF4E4E;
+}
+
 .add-question {
   max-width: 970px;
 }
