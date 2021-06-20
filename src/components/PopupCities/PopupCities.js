@@ -22,7 +22,7 @@ function PopupCities({
     if (isOpen) {
       document.addEventListener('keydown', onCloseClick);
     }
-    setSelectedCity(citiesList.find((el) => el.id === isCity).name);
+    setSelectedCity(citiesList.find((el) => el.id === isCity)?.name);
     return () => {
       document.removeEventListener('keydown', onCloseClick);
     };

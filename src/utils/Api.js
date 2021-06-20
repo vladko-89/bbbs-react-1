@@ -93,10 +93,11 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  updateUserInfo(data) {
+  updateUserInfo(accessToken, data) {
     return axios
-      .patch(`${this._baseUrl}/profile`,
+      .put(`${this._baseUrl}/profile/`,
         {
+          headers: { Authorization: `Bearer ${accessToken}` },
           body: {
             city: data.city,
           },

@@ -76,7 +76,7 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     const cityId = citiesList.find((el) => el.name === place);
-    api.updateUserInfo({ city: cityId })
+    api.updateUserInfo(getAccessToken(), { city: cityId })
       .then((res) => {
         console.log(res);
         setCurrentUser(res);
@@ -201,15 +201,16 @@ function App() {
           ) : (
             ''
           )}
-          {/* {{ isOpenPopupCities } && (
+          {{ isOpenPopupCities } && (
             <PopupCities
               onChangeCities={handleChangeCity}
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
-              isCity={JSON.parse(localStorage.getItem('user'))?.city}
+              isCity={currentUser.city}
+              // isCity={JSON.parse(localStorage.getItem('user'))?.city}
               citiesList={citiesList}
             />
-          )} */}
+          )}
         </div>
       </HelmetProvider>
     </CurrentUserContext.Provider>

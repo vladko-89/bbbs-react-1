@@ -14,7 +14,7 @@ function Navigation({
   userInfo,
 }) {
   const [city, setCity] = React.useState('');
-  const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
+  // const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
