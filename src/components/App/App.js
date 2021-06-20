@@ -21,13 +21,14 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PopupCities from '../PopupCities/PopupCities';
 import { useAuth } from '../../utils/utils';
+import api from '../../utils/Api';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState('');
-  const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [isPopupLoginOpened, setIsPopupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
 
@@ -44,7 +45,7 @@ function App() {
 
   // Probally we need a check token on a backend side before manipulation.
   React.useEffect(() => {
-   useAuth(setCurrentUser, setLoggedIn);
+    useAuth(setCurrentUser, setLoggedIn);
     // запрос за списком городов
     api
       .getCitiesList()
@@ -85,20 +86,20 @@ function App() {
   };
 
   const handleLoginOpen = () => {
-    setIsPoupLoginOpened(true);
+    setIsPopupLoginOpened(true);
   };
   const handleLoginClose = (evt) => {
     if (
       evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')
     ) {
-      setIsPoupLoginOpened(false);
+      setIsPopupLoginOpened(false);
     }
   };
 
-  const handleLoginSubmit = (evt, userName) => {
+  const handleLoginSubmit = (evt, userInfo) => {
     evt.preventDefault();
     setLoggedIn(true);
-    setCurrentUser(userName);
+    setCurrentUser(userInfo);
   };
 
   const handleOutClick = () => {
@@ -204,7 +205,7 @@ function App() {
               onChangeCities={handleChangeCity}
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
-              isCity={JSON.parse(localStorage.getItem('user')).city}
+              isCity={currentUser.city}
               citiesList={citiesList}
             />
           )}

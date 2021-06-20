@@ -32,8 +32,10 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
       .then((res) => {
         console.log(res);
         if (res) {
-          localStorage.setItem('bbbs-token', JSON.stringify(res));
-          onSubmit(e, loginFormValidation.values.login);
+          localStorage.setItem('bbbs-token', JSON.stringify(res.access));
+          api.getUserInfo(res.access).then((data) => {
+            onSubmit(e, data);
+          });
           closePopup(e);
         } else {
           setActionError('Произошла ошибка. Попробуйте еще раз.');

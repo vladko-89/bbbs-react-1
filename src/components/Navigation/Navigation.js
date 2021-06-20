@@ -17,13 +17,13 @@ function Navigation({
 
   React.useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
-    const cities = JSON.parse(localStorage.getItem('citiesList'));
+    // const cities = JSON.parse(localStorage.getItem('citiesList'));
     // eslint-disable-next-line no-console
     console.log(user);
-    const cityName = cities.find((item) => item.id === user.city);
+    // const cityName = cities.find((item) => item.id === user.city);
     // eslint-disable-next-line no-console
-    console.log(cityName);
-    setCity(cityName.name);
+    // console.log(cityName);
+    setCity('Москва');
   }, [userInfo]);
 
   const handleChangeCityClick = () => {

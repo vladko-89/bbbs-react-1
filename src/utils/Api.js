@@ -12,7 +12,6 @@ import {
 // import mockUser from './mockUser.json';
 // import mockUserInfo from './mockUserInfo.json';
 
-
 class Api {
   constructor(paramBaseUrl) {
     this._baseUrl = paramBaseUrl;
@@ -85,7 +84,6 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-
   getUserInfo(accessToken) {
   //  mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
     return axios
@@ -110,13 +108,14 @@ class Api {
   }
 
   getCitiesList(accessToken) {
-    mock.onGet(`${this._baseUrl}/cities/`).reply(200, mockCitiesList);
+  //    mock.onGet(`${this._baseUrl}/cities/`).reply(200, mockCitiesList);
     return axios
       .get(`${this._baseUrl}/cities/`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
   getQuestionsTags() {
     return fetch(`${this._apiUrl}/questions/tags/`, {
       method: 'GET',
@@ -143,7 +142,6 @@ class Api {
         console.log(err);
         return Promise.reject(err);
       });
-
   }
 }
 

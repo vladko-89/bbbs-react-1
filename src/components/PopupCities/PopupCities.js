@@ -6,9 +6,10 @@ function PopupCities({
   onCloseClick,
   isOpen,
   isCity,
+  citiesList,
 }) {
   const [selectedCity, setSelectedCity] = React.useState('');
-  const citiesList = JSON.parse(localStorage.getItem('citiesList'));
+  // const citiesList = JSON.parse(localStorage.getItem('citiesList'));
   const citiesWithoutCapitals = citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва');
   const handleClickCity = (e) => {
     setSelectedCity(e.target.textContent);
@@ -21,12 +22,12 @@ function PopupCities({
   React.useEffect(() => {
     if (isOpen) {
       document.addEventListener('keydown', onCloseClick);
+      setSelectedCity(citiesList.find((el) => el.id === isCity).name);
     }
-    setSelectedCity(citiesList.find((el) => el.id === isCity).name);
     return () => {
       document.removeEventListener('keydown', onCloseClick);
     };
-  }, []);
+  }, [isOpen]);
   return (
     /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
     <div
@@ -86,6 +87,7 @@ PopupCities.propTypes = {
   onCloseClick: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   isCity: PropTypes.number.isRequired,
+  citiesList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default PopupCities;
