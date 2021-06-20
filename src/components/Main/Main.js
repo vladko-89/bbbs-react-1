@@ -16,7 +16,7 @@ import CalendarSuccessRegistration from '../CalendarSuccessRegistration/Calendar
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
 import './Main.scss';
-// TODO create wrapper component
+
 function Main({ loggedIn, activeRubrics, selectRubric }) {
   const [mainState, setMainState] = React.useState({});
   const [isDataReady, setIsDataReady] = React.useState(false);
@@ -27,6 +27,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
   React.useEffect(() => {
     if (localStorage.getItem('bbbs-token')) {
       api.getMain(JSON.parse(localStorage.getItem('bbbs-token')).access).then((res) => {
+        // eslint-disable-next-line no-console
         console.log(res);
         setMainState(res);
         localStorage.setItem('mainState', JSON.stringify(res));

@@ -32,7 +32,7 @@ export function useAuth(setUserData, setLoginState) {
         api.updateToken(tokenData.refresh)
           .then((res) => {
             res.refresh = tokenData.refresh; // TEMP until backend correction
-            return localStorage.setItem('bbbs-token', JSON.stringify(res));
+            localStorage.setItem('bbbs-token', JSON.stringify(res));
           })
           .catch((err) => console.log(err));
       }
@@ -43,6 +43,13 @@ export function useAuth(setUserData, setLoginState) {
   }
 }
 
+export function getAccessToken() {
+  if (localStorage.getItem('bbbs-token')) {
+    const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
+    return tokenData.access;
+  }
+  return 'error';
+}
 export function filterByTags(tags, data) {
   return (!tags.length)
     ? data

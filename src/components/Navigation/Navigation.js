@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Search from '../Search/Search';
+import CurrentUserContext from '../../contexts/CurrentUser';
 
 function Navigation({
   mobMenu,
@@ -13,17 +14,17 @@ function Navigation({
   userInfo,
 }) {
   const [city, setCity] = React.useState('');
-  // const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
+  const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
+  const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    // const user = JSON.parse(localStorage.getItem('user'));
     const cities = JSON.parse(localStorage.getItem('citiesList'));
     // eslint-disable-next-line no-console
-    console.log(user);
-    const cityName = cities.find((item) => item.id === user.city);
-    // eslint-disable-next-line no-console
+    console.log(currentUser);
+    const cityName = cities.find((item) => item.id === currentUser.city);
     console.log(cityName);
-    setCity(cityName.name);
+    setCity(cityName?.name);
   }, [userInfo]);
 
   const handleChangeCityClick = () => {
