@@ -71,6 +71,7 @@ function Calendar({
     // eslint-disable-next-line no-console
     console.log(calendar);
   }
+
   function handleImmidiateBooking(calendar) {
     // eslint-disable-next-line no-console
     console.log(calendar);

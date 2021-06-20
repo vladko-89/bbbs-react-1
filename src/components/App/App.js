@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -20,6 +20,7 @@ import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import { useAuth } from '../../utils/utils';
+import PageNotFound from '../PageNotFound/PageNotFound';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -142,11 +143,17 @@ function App() {
               <Route exact path="/stories">
                 <Stories />
               </Route>
+              <Route exact path="*">
+                <PageNotFound />
+              </Route>
             </Switch>
           </div>
-          <Footer />
+          {
+            useLocation().key && <Footer />
+          }
           { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
         </div>
+
       </HelmetProvider>
     </CurrentUserContext.Provider>
   );

@@ -26,6 +26,8 @@
 @import './scss/_main-section.scss';
 @import './scss/_tags.scss';
 @import './scss/section-title';
+/** Page not Found*/
+@import './scss/error.scss';
 @import "./components/Filter/Filter.scss";
 @import "./components/MainTitle/MainTitle.scss";
 @import "./components/FilterItem/FilterItem.scss";
@@ -51,6 +53,7 @@
 @import "./components/MeetingStoryArticle/MeetingStoryArticle.scss";
 @import "./components/MeetingStoryForm/MeetingStoryForm.scss";
 
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -58,6 +61,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  border: 1px solid violet;
 }
 
 code {
