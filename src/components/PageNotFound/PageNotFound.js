@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import pageNotFoundImage from '../../images/svg/404-page.svg';
 
 function PageNotFound() {
+  React.useEffect(() => {
+    const footer = document.querySelector('footer');
+    const prevDisplayStyle = footer.style.display;
+    footer.style.display = 'none';
+
+    return () => { footer.style.display = prevDisplayStyle; };
+  }, []);
+
   return (
     <section className="error">
       <img

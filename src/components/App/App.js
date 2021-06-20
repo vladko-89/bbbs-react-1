@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -148,9 +148,7 @@ function App() {
               </Route>
             </Switch>
           </div>
-          {
-            useLocation().key && <Footer />
-          }
+          <Footer />
           { isPopupLoginOpened ? <PopupLogin onClose={handleLoginClose} onSubmit={handleLoginSubmit} isOpen={isPopupLoginOpened} /> : ''}
         </div>
 
