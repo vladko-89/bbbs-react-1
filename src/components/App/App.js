@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -20,17 +21,17 @@ import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PopupCities from '../PopupCities/PopupCities';
-import { useAuth } from '../../utils/utils';
+import { useAuth, getAccessToken } from '../../utils/utils';
+import api from '../../utils/Api';
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState({ id: 0, user: 0, city: 0 });
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
-
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
@@ -42,13 +43,13 @@ function App() {
     }
   }
 
-  // Probally we need a check token on a backend side before manipulation.
   React.useEffect(() => {
-   useAuth(setCurrentUser, setLoggedIn);
+    useAuth(setCurrentUser, setLoggedIn);
     // запрос за списком городов
     api
-      .getCitiesList()
+      .getCitiesList(getAccessToken())
       .then((data) => {
+        console.log(data.results);
         setCitiesList(data.results);
         localStorage.setItem('citiesList', JSON.stringify(data.results));
       })
@@ -75,8 +76,9 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     const cityId = citiesList.find((el) => el.name === place);
-    api.updateUserInfo({ city: cityId })
+    api.updateUserInfo(getAccessToken(), { city: cityId })
       .then((res) => {
+        console.log(res);
         setCurrentUser(res);
         localStorage.setItem('user', JSON.stringify(res));
       })
@@ -204,7 +206,8 @@ function App() {
               onChangeCities={handleChangeCity}
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
-              isCity={JSON.parse(localStorage.getItem('user')).city}
+              isCity={currentUser.city}
+              // isCity={JSON.parse(localStorage.getItem('user'))?.city}
               citiesList={citiesList}
             />
           )}
