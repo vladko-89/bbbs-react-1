@@ -20,6 +20,7 @@ import PopupLogin from '../PopupLogin/PopupLogin';
 import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
+import PageNotFound from '../PageNotFound/PageNotFound';
 import PopupCities from '../PopupCities/PopupCities';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
@@ -189,6 +190,9 @@ function App() {
               <Route exact path="/stories">
                 <Stories />
               </Route>
+              <Route exact path="*">
+                <PageNotFound />
+              </Route>
             </Switch>
           </div>
           <Footer />
@@ -212,6 +216,7 @@ function App() {
             />
           )}
         </div>
+
       </HelmetProvider>
     </CurrentUserContext.Provider>
   );
