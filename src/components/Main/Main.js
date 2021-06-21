@@ -26,7 +26,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
 
   React.useEffect(() => {
     if (localStorage.getItem('bbbs-token')) {
-      api.getMain(JSON.parse(localStorage.getItem('bbbs-token')).access).then((res) => {
+      api.getMain().then((res) => {
         // eslint-disable-next-line no-console
         console.log(res);
         setMainState(res);
@@ -109,7 +109,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
 
         <MainMentor
           title={mainState.place.title}
-          name={mainState.place.name}
+          address={mainState.place.address}
           link={mainState.place.link}
           imageUrl={mainState.place.imageUrl}
           rubrics={['sport', '8-10', 'chosen']}

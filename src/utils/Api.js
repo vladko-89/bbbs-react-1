@@ -1,34 +1,22 @@
-/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import {
   baseUrl,
 } from './Constants';
 
-// import mockMain from './mockMain.json';
-// import mockEvents from './mockEvents.json';
-// import mockCalendar from './mockCalendar.json';
-// import mockToken from './mockToken.json';
-// import mockUser from './mockUser.json';
-// import mockUserInfo from './mockUserInfo.json';
-
 class Api {
   constructor(paramBaseUrl) {
     this._baseUrl = paramBaseUrl;
-    this._apiUrl = 'http://bbbs.kiryanov.ru/api/v1';
   }
 
-  getMain(accessToken) {
-    // mock.onGet(`${this._baseUrl}/main`).reply(200, mockMain);
+  getMain() {
     return axios
-      .get(`${this._baseUrl}/main/`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(`${this._baseUrl}/main/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   getEvents(accessToken) {
-  //  mock.onGet(`${this._baseUrl}/afisha/events/`).reply(200, mockEvents);
     return axios
       .get(`${this._baseUrl}/afisha/events/`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -37,9 +25,6 @@ class Api {
   }
 
   getCalendar(accessToken) {
-    //   mock.onGet(`${this._baseUrl}/calendar`).reply(200, {
-    //   calendar: mockCalendar,
-    // });
     return axios
       .get(`${this._baseUrl}/calendar`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -69,7 +54,6 @@ class Api {
   }
 
   getCurrentUser(accessToken) {
-  //  mock.onPost(`${this._baseUrl}/users`).reply(200, mockUser);
     return axios
       .post(`${this._baseUrl}/users`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -85,7 +69,6 @@ class Api {
   }
 
   getUserInfo(accessToken) {
-  //  mock.onPost(`${this._baseUrl}/profile`).reply(200, mockUserInfo);
     return axios
       .get(`${this._baseUrl}/profile/`,
         { headers: { Authorization: `Bearer ${accessToken}` } })
@@ -106,16 +89,15 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getCitiesList(accessToken) {
+  getCitiesList() {
     return axios
-      .get(`${this._baseUrl}/cities/`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(`${this._baseUrl}/cities/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   getQuestionsTags() {
-    return fetch(`${this._apiUrl}/questions/tags/`, {
+    return fetch(`${this._baseUrl}/questions/tags/`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -129,7 +111,7 @@ class Api {
   }
 
   getQuestions() {
-    return fetch(`${this._apiUrl}/questions/`, {
+    return fetch(`${this._baseUrl}/questions/`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -145,7 +127,7 @@ class Api {
   sendQuestion(question) {
     const accessToken = JSON.parse(localStorage.getItem('bbbs-token')).access;
 
-    return fetch(`${this._apiUrl}/questions/`, {
+    return fetch(`${this._baseUrl}/questions/`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

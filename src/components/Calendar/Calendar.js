@@ -10,6 +10,7 @@ import CalendarEvent from '../CalendarEvent/CalendarEvent';
 import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import api from '../../utils/Api';
+import { getAccessToken } from '../../utils/utils';
 // import { CalendarContext } from "../../contexts/CalendarContext";
 
 function Calendar({
@@ -29,9 +30,10 @@ function Calendar({
   parsedCalendarData.forEach((el) => { if (!filterArray.some((item) => item.name === el.name)) { filterArray.push(el); } });
 
   React.useEffect(() => {
-    api.getCalendar()
+    api.getEvents(getAccessToken())
       .then((res) => {
-        setCalendarData(res.calendar);
+        console.log('events', res);
+        setCalendarData(res.results);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
