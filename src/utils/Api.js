@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import {
@@ -77,14 +78,13 @@ class Api {
   }
 
   updateUserInfo(accessToken, data) {
+    console.log(`Bearer ${accessToken}`);
+    console.log(data);
     return axios
-      .put(`${this._baseUrl}/profile/`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          body: {
-            city: data.city,
-          },
-        })
+      .patch(`${this._baseUrl}/profile/`,
+        { city: data.id },
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
