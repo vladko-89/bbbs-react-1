@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { citiesList } from '../../utils/Constants';
-//  надо реализовать изменение города пользователя и отправку нового города на бэк
-// ссылки в списке сменить на спаны
+
 function PopupCities({
-  onChangeCities, onCloseClick, isOpen, isCity,
+  onChangeCities,
+  onCloseClick,
+  isOpen,
+  isCity,
 }) {
   const [selectedCity, setSelectedCity] = React.useState('');
+  const citiesList = JSON.parse(localStorage.getItem('citiesList'));
+  const citiesWithoutCapitals = citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва');
   const handleClickCity = (e) => {
     setSelectedCity(e.target.textContent);
     // eslint-disable-next-line no-console
@@ -19,7 +22,7 @@ function PopupCities({
     if (isOpen) {
       document.addEventListener('keydown', onCloseClick);
     }
-    setSelectedCity(citiesList[isCity]);
+    setSelectedCity(citiesList.find((el) => el.id === isCity)?.name);
     return () => {
       document.removeEventListener('keydown', onCloseClick);
     };
@@ -58,73 +61,20 @@ function PopupCities({
           </li>
         </ul>
         <ul className="cities__region">
-          {citiesList.slice(2).map((el) => (
-            <li className="cities__name" key={el}>
-              <a
-                href="#"
-                target="_self"
-                className="cities__link"
-                onClick={handleClickCity}
-              >
-                {el}
-              </a>
-            </li>
-          ))}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Алексин */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Барнаул */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Екатеринбург */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Зубцов */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Калининград */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Киреевск */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Коломна */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Новомосковск */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Орехово-Зуево */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Тверь */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Тула */}
-          {/*  </a> */}
-          {/* </li> */}
+          {citiesWithoutCapitals
+            .map((el) => (
+              <li className="cities__name" key={el.id}>
+                <a
+                  href="#"
+                  target="_self"
+                  className="cities__link"
+                  onClick={handleClickCity}
+                >
+                  {el.name}
+                </a>
+              </li>
+            ))}
+
         </ul>
       </div>
     </div>
@@ -135,7 +85,7 @@ PopupCities.propTypes = {
   onChangeCities: PropTypes.func.isRequired,
   onCloseClick: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  isCity: PropTypes.string.isRequired,
+  isCity: PropTypes.number.isRequired,
 };
 
 export default PopupCities;

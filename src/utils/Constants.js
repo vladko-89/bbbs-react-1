@@ -1,4 +1,5 @@
-const baseUrl = 'http://localhost:3000';
+// const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://bbbs.kiryanov.ru/api/v1';
 const delayResponse = 500;
 const scrollDelay = 100;
 const cardsPerPage = 16;

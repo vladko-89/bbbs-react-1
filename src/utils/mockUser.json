@@ -1,3 +1,6 @@
 {
-  "name": "Username"
+  "name": "Username",
+  "id": 1,
+  "user": 1,
+  "city": 2
 }
