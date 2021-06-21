@@ -25,17 +25,15 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
   const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if (localStorage.getItem('bbbs-token')) {
-      api.getMain(JSON.parse(localStorage.getItem('bbbs-token')).access).then((res) => {
-        // eslint-disable-next-line no-console
-        console.log(res);
-        setMainState(res);
-        localStorage.setItem('mainState', JSON.stringify(res));
-      })
-        .then(() => setIsDataReady(true))
+    api.getMain().then((res) => {
       // eslint-disable-next-line no-console
-        .catch((err) => console.log(err));
-    }
+      console.log(res);
+      setMainState(res);
+      localStorage.setItem('mainState', JSON.stringify(res));
+    })
+      .then(() => setIsDataReady(true))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
   }, [setMainState]);
 
   // Обнуляем выставленные фильтры при монтировании компонента
@@ -109,7 +107,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
 
         <MainMentor
           title={mainState.place.title}
-          name={mainState.place.name}
+          address={mainState.place.address}
           link={mainState.place.link}
           imageUrl={mainState.place.imageUrl}
           rubrics={['sport', '8-10', 'chosen']}

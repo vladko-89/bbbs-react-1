@@ -71,7 +71,7 @@ function Places({
       </section>
       <MainMentor
         title="Сплав на байдарках в две строки"
-        name="усадьба Архангельское в две строки"
+        address="усадьба Архангельское в две строки"
         imageUrl="https://picsum.photos/1125/394"
         link="https://www.moscowzoo.ru/"
         info="Девока, 10 лет. Активный"

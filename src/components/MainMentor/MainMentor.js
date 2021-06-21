@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './MainMentor.scss';
 
 function MainMentor({
-  title, name, imageUrl, link, description, info,
+  title, address, imageUrl, link, description, info,
 }) {
   const paragraphs = description.split('\n');
   return (
@@ -16,7 +16,7 @@ function MainMentor({
             <Link to="/place" className="card__link-wrap">
               <h2 className="section-title card__title">{title}</h2>
             </Link>
-            <p className="caption card__title-caption">{name}</p>
+            <p className="caption card__title-caption">{address}</p>
           </div>
           <Link to="/place" className="card__link-wrap card__link-wrap_content_article-img">
             <img src={imageUrl} alt="Сплав на байдарках" className="card__img" />
@@ -41,7 +41,7 @@ function MainMentor({
 
 MainMentor.propTypes = {
   title: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   info: PropTypes.string.isRequired,

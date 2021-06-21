@@ -31,15 +31,17 @@ export function useAuth(setUserData, setLoginState) {
         console.log('trying to update access');
         api.updateToken(tokenData.refresh)
           .then((res) => {
-            res.refresh = tokenData.refresh; // TEMP until backend correction
             localStorage.setItem('bbbs-token', JSON.stringify(res));
           })
           .catch((err) => console.log(err));
       }
     }
-    api.getUserInfo(tokenData.access)
-      .then((res) => { console.log(res); setUserData(res); setLoginState(true); })
-      .catch((err) => console.log(err));
+    // recheck that we _now_ have a valid access token
+    if (compareAsc(fromUnixTime(accessToken.exp), new Date()) === 1) {
+      api.getUserInfo(tokenData.access)
+        .then((res) => { console.log(res); setUserData(res); setLoginState(true); })
+        .catch((err) => console.log(err));
+    }
   }
 }
 

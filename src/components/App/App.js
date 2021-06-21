@@ -76,10 +76,9 @@ function App() {
   const handleChangeCity = (place) => {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
-    const cityId = citiesList.find((el) => el.name === place);
-    api.updateUserInfo(getAccessToken(), { city: cityId })
+    const city = citiesList.find((el) => el.name === place);
+    api.updateUserInfo(getAccessToken(), city)
       .then((res) => {
-        console.log(res);
         setCurrentUser(res);
         localStorage.setItem('user', JSON.stringify(res));
       })
@@ -211,7 +210,6 @@ function App() {
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
               isCity={currentUser.city}
-              // isCity={JSON.parse(localStorage.getItem('user'))?.city}
               citiesList={citiesList}
             />
           )}
