@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormWithValidation } from '../Validation/Validation';
 import api from '../../utils/Api';
+import { getAccessToken } from '../../utils/utils';
 
 function PopupLogin({ onClose, onSubmit, isOpen }) {
   const loginFormValidation = useFormWithValidation();
@@ -33,12 +34,18 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         console.log(res);
         if (res) {
           localStorage.setItem('bbbs-token', JSON.stringify(res));
-          onSubmit(e, loginFormValidation.values.login);
-          closePopup(e);
         } else {
           setActionError('Произошла ошибка. Попробуйте еще раз.');
         }
       })
+      .catch((err) => console.log(err))
+      .then(() => api.getUserInfo(getAccessToken())
+        .then((res) => {
+          console.log(res);
+          onSubmit(e, res);
+          closePopup(e);
+        }))
+
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }
