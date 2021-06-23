@@ -8,8 +8,10 @@ function PopupCities({
   isCity,
 }) {
   const [selectedCity, setSelectedCity] = React.useState('');
+  const [citiesWithoutCapitals, setCitiesWithoutCapitals] = React.useState([]);
   const citiesList = JSON.parse(localStorage.getItem('citiesList'));
-  const citiesWithoutCapitals = citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва');
+  // const citiesWithoutCapitals = citiesList
+  // .filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва');
   const handleClickCity = (e) => {
     setSelectedCity(e.target.textContent);
     // eslint-disable-next-line no-console
@@ -21,8 +23,9 @@ function PopupCities({
   React.useEffect(() => {
     if (isOpen) {
       document.addEventListener('keydown', onCloseClick);
+      setCitiesWithoutCapitals(citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
+      setSelectedCity(citiesList.find((el) => el.name === isCity));
     }
-    setSelectedCity(citiesList.find((el) => el.id === isCity)?.name);
     return () => {
       document.removeEventListener('keydown', onCloseClick);
     };
@@ -85,7 +88,7 @@ PopupCities.propTypes = {
   onChangeCities: PropTypes.func.isRequired,
   onCloseClick: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  isCity: PropTypes.number.isRequired,
+  isCity: PropTypes.string.isRequired,
 };
 
 export default PopupCities;

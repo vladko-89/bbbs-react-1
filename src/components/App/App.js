@@ -48,7 +48,7 @@ function App() {
     useAuth(setCurrentUser, setLoggedIn);
     // запрос за списком городов
     api
-      .getCitiesList(getAccessToken())
+      .getCitiesList()
       .then((data) => {
         console.log(data.results);
         setCitiesList(data.results);
@@ -209,7 +209,7 @@ function App() {
               onChangeCities={handleChangeCity}
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
-              isCity={currentUser.city}
+              isCity={loggedIn ? currentUser.city.name : 'Москва'}
               citiesList={citiesList}
             />
           )}
