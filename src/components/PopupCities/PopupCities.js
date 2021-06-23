@@ -21,9 +21,11 @@ function PopupCities({
   };
 
   React.useEffect(() => {
+    setCitiesWithoutCapitals(citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
     if (isOpen) {
       document.addEventListener('keydown', onCloseClick);
-      setCitiesWithoutCapitals(citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
+      // setCitiesWithoutCapitals(citiesList.
+      // filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
       setSelectedCity(citiesList.find((el) => el.name === isCity));
     }
     return () => {

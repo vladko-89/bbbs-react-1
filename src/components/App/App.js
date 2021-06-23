@@ -85,6 +85,11 @@ function App() {
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   };
+  // смена города для неавторизованного
+  const handleChangeCityNotAuth = (place) => {
+    // eslint-disable-next-line no-console
+    console.log(`city changed on ${place}`);
+  };
 
   const handleLoginOpen = () => {
     setIsPoupLoginOpened(true);
@@ -206,7 +211,7 @@ function App() {
           )}
           {{ isOpenPopupCities } && (
             <PopupCities
-              onChangeCities={handleChangeCity}
+              onChangeCities={loggedIn ? handleChangeCity : handleChangeCityNotAuth}
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
               isCity={loggedIn ? currentUser.city.name : 'Москва'}
