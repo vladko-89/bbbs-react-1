@@ -22,13 +22,13 @@ function PopupCities({
 
   React.useEffect(() => {
     if (isOpen) {
-      const cities = JSON.parse(localStorage.getItem('citiesList'));
-      setCitiesWithoutCapitals(cities.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
       document.addEventListener('keydown', onCloseClick);
       // setCitiesWithoutCapitals(citiesList.
       // filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
       setSelectedCity(citiesList.find((el) => el.name === isCity));
     }
+    const cities = JSON.parse(localStorage.getItem('citiesList'));
+    setCitiesWithoutCapitals(cities.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
     return () => {
       document.removeEventListener('keydown', onCloseClick);
     };
