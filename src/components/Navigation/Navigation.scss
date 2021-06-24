@@ -157,10 +157,12 @@
 
   &_type_user {
     background-image: url('../../images/svg/user.svg');
+    display: inline-block;
   }
 
   &_type_active-user {
     background-image: url('../../images/svg/user-active.svg');
+    display: inline-block;
   }
 }
 
