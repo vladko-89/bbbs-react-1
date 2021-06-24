@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Search from '../Search/Search';
 import CurrentUserContext from '../../contexts/CurrentUser';
@@ -13,18 +13,18 @@ function Navigation({
   onChangeCityClick,
   userInfo,
 }) {
-  const [city, setCity] = React.useState('');
+  // const [city, setCity] = React.useState('');
   // const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
     // const user = JSON.parse(localStorage.getItem('user'));
-    const cities = JSON.parse(localStorage.getItem('citiesList'));
+    // const cities = JSON.parse(localStorage.getItem('citiesList'));
     // eslint-disable-next-line no-console
     console.log(currentUser);
-    const cityName = cities.find((item) => item.id === currentUser.city);
-    console.log(cityName);
-    setCity(cityName?.name);
+    // const cityName = loggedIn ? currentUser.city.name : '';
+    // console.log(cityName);
+    // setCity(cityName);
   }, [userInfo]);
 
   const handleChangeCityClick = () => {
@@ -204,7 +204,8 @@ function Navigation({
             </a>
           </li>
         </ul>
-        {loggedIn && (
+
+        <Route path={['/profile', '/calendar', '/place']}>
           <div
             className={`personal-area__user-info ${
               mobMenu ? 'user-info_mobile' : ''
@@ -215,17 +216,20 @@ function Navigation({
               className="personal-area__user-link personal-area__user-link_type_city "
               onClick={handleChangeCityClick}
             >
-              {`${city}. Изменить город`}
+              {loggedIn ? `${currentUser.city.name}.  Изменить город` : 'Изменить ваш город'}
             </button>
-            <Link
-              to="/"
-              className="personal-area__user-link personal-area__user-link_type_exit"
-              onClick={onLogOutClick}
-            >
-              Выйти
-            </Link>
+
+            <Route path="/profile">
+              <Link
+                to="/"
+                className="personal-area__user-link personal-area__user-link_type_exit"
+                onClick={onLogOutClick}
+              >
+                Выйти
+              </Link>
+            </Route>
           </div>
-        )}
+        </Route>
       </div>
 
       <button
@@ -276,7 +280,11 @@ Navigation.propTypes = {
   userInfo: PropTypes.shape({
     id: PropTypes.number,
     user: PropTypes.number,
-    city: PropTypes.number,
+    city: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      isPrimary: PropTypes.bool,
+    }),
   }).isRequired,
 };
 

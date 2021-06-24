@@ -157,10 +157,12 @@
 
   &_type_user {
     background-image: url('../../images/svg/user.svg');
+    display: inline-block;
   }
 
   &_type_active-user {
     background-image: url('../../images/svg/user-active.svg');
+    display: inline-block;
   }
 }
 
@@ -197,9 +199,12 @@
   }
 }
 .user-info_mobile {
-    bottom: 10px;
-    width: 100%;
-    justify-content: space-between;
+  height: fit-content;
+  top: 300px;
+  justify-content: space-between;
+}
+.personal-area__user-link:last-of-type.personal-area__user-link_type_exit {
+  margin-left: 30px;
 }
 
 @include atDesktop1380 {

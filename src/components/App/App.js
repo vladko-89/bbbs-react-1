@@ -29,7 +29,15 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState({ id: 0, user: 0, city: 0 });
+  const [currentUser, setCurrentUser] = React.useState({
+    id: 0,
+    user: 0,
+    city: {
+      id: 0,
+      name: 'Москва',
+      isPrimary: false,
+    },
+  });
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
@@ -48,7 +56,7 @@ function App() {
     useAuth(setCurrentUser, setLoggedIn);
     // запрос за списком городов
     api
-      .getCitiesList(getAccessToken())
+      .getCitiesList()
       .then((data) => {
         console.log(data.results);
         setCitiesList(data.results);
@@ -77,13 +85,32 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     const city = citiesList.find((el) => el.name === place);
-    api.updateUserInfo(getAccessToken(), city)
+    api
+      .updateUserInfo(getAccessToken(), city)
       .then((res) => {
-        setCurrentUser(res);
-        localStorage.setItem('user', JSON.stringify(res));
+        if (typeof res.city === 'number') {
+          const user = {
+            id: res.id,
+            user: res.user,
+            city,
+          };
+          setCurrentUser(user);
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          setCurrentUser(res);
+          localStorage.setItem('user', JSON.stringify(res));
+        }
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
+  };
+  // смена города для неавторизованного
+  const handleChangeCityNotAuth = (place) => {
+    const selectedCity = citiesList.find((item) => item.name === place);
+    // eslint-disable-next-line no-console
+    console.log(`city changed on ${place}`);
+    console.log(selectedCity);
+    return selectedCity; // здесь нет логики смены для неавторизованного юзера
   };
 
   const handleLoginOpen = () => {
@@ -206,15 +233,16 @@ function App() {
           )}
           {{ isOpenPopupCities } && (
             <PopupCities
-              onChangeCities={handleChangeCity}
+              onChangeCities={
+                loggedIn ? handleChangeCity : handleChangeCityNotAuth
+              }
               onCloseClick={handleClose}
               isOpen={isOpenPopupCities}
-              isCity={currentUser.city}
+              isCity={loggedIn ? currentUser.city.name : 'Москва'}
               citiesList={citiesList}
             />
           )}
         </div>
-
       </HelmetProvider>
     </CurrentUserContext.Provider>
   );
