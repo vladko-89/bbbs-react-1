@@ -280,7 +280,11 @@ Navigation.propTypes = {
   userInfo: PropTypes.shape({
     id: PropTypes.number,
     user: PropTypes.number,
-    city: PropTypes.number,
+    city: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      isPrimary: PropTypes.bool,
+    }),
   }).isRequired,
 };
 
