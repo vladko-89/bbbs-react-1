@@ -1,3 +1,20 @@
+@import '../../scss/variables.scss';
+@import '../../scss/mixins.scss';
+.rubric {
+  margin: 0;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, .3);
+  font-family: $ptRootUI;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 1px;
+  color: $darkGray;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 .question {
   margin-top: 30px;
   margin-right: 100px;
@@ -181,4 +198,37 @@
       display: flex;
     }
   }
+}
+
+.section-title {
+  margin: 0;
+  font-family: $protoGrotesk;
+  font-weight: 300;
+  font-size: 23px;
+  line-height: 1.3;
+  color: $black;
+
+  &_clickable {
+    display: inline-block;
+    text-decoration: none;
+    transition: .2s linear;
+
+    &:hover {
+      color: $blue;
+    }
+  }
+}
+
+.section-title_type_test {
+  margin-top: 40px;
+}
+
+@include atDesktop1024 {
+  .section-title {
+    font-size: 19px;
+    line-height: 1.2;
+  }
+}
+.main-questions__rubric-contaier{
+  margin-top: 15px;
 }
