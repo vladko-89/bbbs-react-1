@@ -159,7 +159,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 <MainQuestion
                   key={q.id}
                   question={q.question}
-                  name={q.tags[0]?.name}
+                  name={q.tag}
                 />
               ))}
             </div>

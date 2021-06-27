@@ -141,6 +141,36 @@ class Api {
         return Promise.reject(err);
       });
   }
+
+  // СОБЫТИЯ КАЛЕНДАРЬ
+
+  // Запись на встречу
+  signUpOnEvent(accessToken, id) {
+    return axios
+      .post(`${this._baseUrl}/afisha/event-participants/`,
+        { event: id },
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Отмена записи встречи
+  signOutOnEvent(accessToken, _id) {
+    return axios
+      .delete(`${this._baseUrl}/afisha/event-participants/${_id}/`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Получаю все события на которые подписан
+  getMyEvents(accessToken) {
+    return axios
+      .get(`${this._baseUrl}/afisha/event-participants/`,
+        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
 }
 
 const api = new Api(baseUrl);
