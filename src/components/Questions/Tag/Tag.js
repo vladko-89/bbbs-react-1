@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import styles from './Tag.module.scss';
+
 export default function Tag({
   name,
   onFilterChange,
@@ -25,8 +27,8 @@ export default function Tag({
   }, [activeFilter]);
 
   return (
-    <li className="tags__list-item">
-      <button onClick={handleClick} className={`button tags__button${active && (name !== 'Все') ? ' tags__button_active' : ''}`} type="button">{name}</button>
+    <li className={styles['tags__list-item']}>
+      <button onClick={handleClick} className={`${styles.button} ${styles.tags__button}${active && (name !== 'Все') ? ` ${styles.tags__button_active}` : ''}`} type="button">{name}</button>
     </li>
   );
 }

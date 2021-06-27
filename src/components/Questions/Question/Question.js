@@ -3,31 +3,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import styles from './Question.module.scss';
+
 export default function Question({ question, activeRubrics }) {
   function showAnswer(event) {
-    const questionElement = event.target.closest('.question');
-    const questionShowButton = questionElement.querySelector('.question__show-button');
-    const questionAnswer = questionElement.querySelector('.question__answer');
+    const questionElement = event.target.closest(`.${styles.question}`);
+    const questionShowButton = questionElement.querySelector(`.${styles['question__show-button']}`);
+    const questionAnswer = questionElement.querySelector(`.${styles.question__answer}`);
 
-    questionShowButton.classList.toggle('question__show-button_active');
-    questionAnswer.classList.toggle('question__answer_visible');
+    questionShowButton.classList.toggle(styles['question__show-button_active']);
+    questionAnswer.classList.toggle(styles.question__answer_visible);
   }
 
   return (
-    <article className={`question ${activeRubrics.length > 0 && question.tags.every((tag) => activeRubrics.indexOf(tag.name) === -1) ? 'display_none' : ''}`}>
-      <h2 onClick={showAnswer} className="section-title question__title">{question.question}</h2>
-      <div className="question__wrap">
+    <article className={`${styles.question}${activeRubrics.length > 0 && question.tag.every((tag) => activeRubrics.indexOf(tag) === -1) ? ' display_none' : ''}`}>
+      <h2 onClick={showAnswer} className={`${styles['section-title']} ${styles.question__title}`}>{question.question}</h2>
+      <div className={styles.question__wrap}>
         {
-          question.tags.map((tag, i) => <p key={i.toString()} className="rubric question__rubric">{tag.name}</p>)
+          question.tag.map((tag, i) => <p key={i.toString()} className={`${styles.rubric} ${styles.question__rubric}`}>{tag}</p>)
         }
-        <button onClick={showAnswer} className="question__show-button" type="button" aria-label="Показать ответ" title="Показать ответ" />
+        <button onClick={showAnswer} className={styles['question__show-button']} type="button" aria-label="Показать ответ" title="Показать ответ" />
       </div>
-      <div className="question__answer">
+      <div className={styles.question__answer}>
         {
           question.answer
-          // question.answer.map((paragraph, i) => (
-          //   <p key={i.toString()} className="paragraph question__paragraph">{paragraph}</p>
-          // ))
         }
       </div>
     </article>
@@ -42,12 +41,8 @@ Question.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string),
   question: PropTypes.shape({
     id: PropTypes.number,
-    tags: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      slug: PropTypes.string,
-    })),
+    tag: PropTypes.arrayOf(PropTypes.string),
     question: PropTypes.string.isRequired,
-    answer: PropTypes.PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired,
   }).isRequired,
 };
