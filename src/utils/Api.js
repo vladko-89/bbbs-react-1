@@ -11,7 +11,7 @@ class Api {
   }
 
   getMain() {
-    const accessToken = JSON.parse(localStorage.getItem('bbbs-token')).access;
+    const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
 
     return axios
       .get(`${this._baseUrl}/main/`, accessToken && { headers: { Authorization: `Bearer ${accessToken}` } })
