@@ -1,5 +1,4 @@
-// const baseUrl = 'http://localhost:3000';
-const baseUrl = 'http://bbbs.kiryanov.ru/api/v1';
+const baseUrl = `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}`; // проект бэка запускается на 8000 порту
 const delayResponse = 500;
 const scrollDelay = 100;
 const cardsPerPage = 16;
