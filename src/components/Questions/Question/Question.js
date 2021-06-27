@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './Question.scss';
+
 export default function Question({ question, activeRubrics }) {
   function showAnswer(event) {
     const questionElement = event.target.closest('.question');

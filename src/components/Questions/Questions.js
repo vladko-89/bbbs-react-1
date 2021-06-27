@@ -8,6 +8,8 @@ import Preloader from '../Preloader/Preloader';
 
 import api from '../../utils/Api';
 
+import './Questions.scss';
+
 export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
@@ -25,7 +27,6 @@ export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
           slug: 'all',
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
-        console.dir(resQuestions);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
