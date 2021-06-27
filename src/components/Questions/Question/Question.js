@@ -14,20 +14,17 @@ export default function Question({ question, activeRubrics }) {
   }
 
   return (
-    <article className={`question ${activeRubrics.length > 0 && question.tags.every((tag) => activeRubrics.indexOf(tag.name) === -1) ? 'display_none' : ''}`}>
+    <article className={`question ${activeRubrics.length > 0 && question.tag.every((tag) => activeRubrics.indexOf(tag) === -1) ? 'display_none' : ''}`}>
       <h2 onClick={showAnswer} className="section-title question__title">{question.question}</h2>
       <div className="question__wrap">
         {
-          question.tags.map((tag, i) => <p key={i.toString()} className="rubric question__rubric">{tag.name}</p>)
+          question.tag.map((tag, i) => <p key={i.toString()} className="rubric question__rubric">{tag}</p>)
         }
         <button onClick={showAnswer} className="question__show-button" type="button" aria-label="Показать ответ" title="Показать ответ" />
       </div>
       <div className="question__answer">
         {
           question.answer
-          // question.answer.map((paragraph, i) => (
-          //   <p key={i.toString()} className="paragraph question__paragraph">{paragraph}</p>
-          // ))
         }
       </div>
     </article>
@@ -42,12 +39,8 @@ Question.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string),
   question: PropTypes.shape({
     id: PropTypes.number,
-    tags: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      slug: PropTypes.string,
-    })),
+    tag: PropTypes.arrayOf(PropTypes.string),
     question: PropTypes.string.isRequired,
-    answer: PropTypes.PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired,
   }).isRequired,
 };

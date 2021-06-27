@@ -25,6 +25,7 @@ export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
           slug: 'all',
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
+        console.dir(resQuestions);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
