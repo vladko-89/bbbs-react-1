@@ -55,7 +55,7 @@ function CalendarDescription({
           <div className="calendar__submit">
             <button
               className="button button_theme_light button_action_confirm"
-              disabled={!availablePlaces}
+              disabled={!availablePlaces || currentEvent.booked}
               type="button"
               onClick={() => onActionClick(currentEvent)}
             >
@@ -77,6 +77,7 @@ CalendarDescription.propTypes = {
   onClose: PropTypes.func.isRequired,
   onActionClick: PropTypes.func.isRequired,
   currentEvent: PropTypes.shape({
+    booked: PropTypes.bool,
     startAt: PropTypes.string,
     endAt: PropTypes.string,
     title: PropTypes.string,

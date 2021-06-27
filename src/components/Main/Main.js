@@ -160,7 +160,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 <MainQuestion
                   key={q.id}
                   question={q.question}
-                  tag={q.tag}
+                  name={q.tag}
                 />
               ))}
             </div>

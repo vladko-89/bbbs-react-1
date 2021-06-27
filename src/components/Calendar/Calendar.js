@@ -20,7 +20,10 @@ function Calendar({
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
   const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
+  const [isQuery, setIsQuery] = React.useState(false);
   const [calendarData, setCalendarData] = React.useState([]);
+  // События на которые подписан
+  const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
   const filterArray = [];
   const parsedCalendarData = calendarData.map((el) => ({
@@ -30,6 +33,25 @@ function Calendar({
   parsedCalendarData.forEach((el) => { if (!filterArray.some((item) => item.name === el.name)) { filterArray.push(el); } });
 
   React.useEffect(() => {
+    selectRubric('All', true);
+  }, []);
+
+  function getSubscribes() {
+    api.getMyEvents(getAccessToken())
+      .then((res) => setMyEvents(res.results))
+      .catch((error) => console.log(error));
+  }
+
+  function unSubscribes(calendar) {
+    setIsQuery(true);
+    const event = myEvents.filter((item) => item.event === calendar.id);
+    api.signOutOnEvent(getAccessToken(), event[0].id)
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error))
+      .finally(() => setIsQuery(false));
+  }
+
+  function getCalendarEvents() {
     api.getEvents(getAccessToken())
       .then((res) => {
         console.log('events', res);
@@ -39,18 +61,34 @@ function Calendar({
         // eslint-disable-next-line no-console
         console.log(error);
       });
-  }, []);
+  }
+
   React.useEffect(() => {
-    selectRubric('All', true);
+    getCalendarEvents();
+    getSubscribes();
   }, []);
+
+  React.useEffect(() => {
+    getCalendarEvents();
+  }, [isQuery]);
 
   function openConfirmationPopup() {
     setIsConfirmationPopupOpen(true);
   }
 
   function handleSuccessRegPopup() {
-    setIsSuccessRegPopupOpen(true);
-    openConfirmationPopup();
+    api.signUpOnEvent(getAccessToken(), currentEvent.id)
+      .then((res) => {
+        console.log(res);
+        setIsSuccessRegPopupOpen(true);
+        openConfirmationPopup();
+        getCalendarEvents();
+        getSubscribes();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
   }
 
   function closeAllPopups() {
@@ -69,15 +107,23 @@ function Calendar({
   }
 
   function handleCancelBooking(calendar) {
-    // some handle code for backend
-    // eslint-disable-next-line no-console
-    console.log(calendar);
+    unSubscribes(calendar);
+    getSubscribes();
   }
 
   function handleImmidiateBooking(calendar) {
-    // eslint-disable-next-line no-console
-    console.log(calendar);
-    setIsSuccessRegPopupOpen(true);
+    api.signUpOnEvent(getAccessToken(), calendar.id)
+      .then((res) => {
+        console.log(res);
+        setIsSuccessRegPopupOpen(true);
+        openConfirmationPopup();
+        getCalendarEvents();
+        getSubscribes();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
   }
 
   return (
