@@ -15,6 +15,7 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
+import { cardsOnMain } from '../../utils/Constants';
 import './Main.scss';
 
 function Main({ loggedIn, activeRubrics, selectRubric }) {
@@ -123,7 +124,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
         </section>
 
         <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {mainState.movies.slice(0, 4).map((movie) => (
+          {mainState.movies.slice(0, cardsOnMain).map((movie) => (
             <MainVideoPreview
               link={movie.link}
               key={movie.id}
