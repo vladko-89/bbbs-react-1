@@ -145,8 +145,6 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
             link={mainState.video.link}
             imageUrl={mainState.video.imageUrl}
             duration={mainState.video.duration}
-            tags={mainState.video.tags}
-            activeRubrics={activeRubrics}
           />
         </section>
 

@@ -1,0 +1,176 @@
+@import '../../scss/variables.scss';
+@import '../../scss/mixins.scss';
+
+.main {
+  padding-bottom: 120px;
+}
+
+@include atDesktop1024 {
+  .main {
+    padding-bottom: 100px;
+  }
+}
+
+@include atMobile {
+  .main {
+    padding-bottom: 50px;
+  }
+}
+
+.lead {
+  margin: 40px auto 0;
+  max-width: 1170px;
+  text-align: center;
+}
+
+@include atDesktop1440 {
+  .lead {
+    max-width: 970px;
+  }
+}
+
+@include atDesktop1024 {
+  .lead {
+    margin-top: 20px;
+  }
+}
+
+.page__section {
+  margin: 0 auto;
+  padding: 80px 75px 0;
+}
+
+@include atDesktop1440 {
+  .page__section {
+    padding-left: 135px;
+    padding-right: 135px;
+  }
+}
+
+@include atDesktop1024 {
+  .page__section {
+    padding: 40px 127px 0;
+  }
+}
+
+@include atTablet {
+  .page__section {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+@include atMobile {
+  .page__section {
+    padding: 20px 15px 0;
+  }
+}
+
+.tags {
+  padding-top: 25px;
+  position: relative;
+}
+
+.tags__list {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+
+  &_type_long {
+    flex-wrap: wrap;
+  }
+}
+
+.tags__list-item {
+  margin-top: 15px;
+}
+
+.tags__button {
+  &_active {
+    background-color: $black;
+    color: $background;
+
+    &:hover {
+      background-color: $darkBlue;
+      color: $background;
+      border-color: $darkBlue;
+    }
+  }
+}
+
+@include atDesktop1024 {
+  .tags {
+    padding-top: 10px;
+
+    &_content_long-list {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -1px;
+        width: 40px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, $background 100%);
+      }
+    }
+  }
+
+  .tags__list {
+    &_type_long {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  .tags__list-item {
+    margin-top: 10px;
+  }
+}
+
+@include atTablet {
+  .tags {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -1px;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, $background 100%);
+    }
+  }
+  .tags__list {
+    justify-content: flex-start;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.questions {
+  max-width: 970px;
+  margin: 0 auto;
+}
+
+@include atDesktop1024 {
+  .questions {
+    padding-top: 50px;
+  }
+}
+
+@include atMobile {
+  .questions {
+    padding-top: 30px;
+  }
+}

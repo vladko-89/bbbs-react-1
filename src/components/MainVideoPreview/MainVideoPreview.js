@@ -11,8 +11,8 @@ function MainVideoPreview({
         <a href={link} className="card__link-wrap">
           <img src={imageUrl} alt="Превью видео" className="video__img" />
           <ul className="video__rubric-list">
-            {tags.map((rubric) => (
-              <li key={rubric.id}>
+            {tags.map((rubric, index) => (
+              <li key={index.toString()}>
                 <p
                   className="rubric video__rubric"
                 >
@@ -40,7 +40,7 @@ MainVideoPreview.propTypes = {
   title: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   info: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default MainVideoPreview;
