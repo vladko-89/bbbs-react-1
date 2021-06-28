@@ -26,7 +26,7 @@ import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
+  console.log(getAccessToken());
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({
