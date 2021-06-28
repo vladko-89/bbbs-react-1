@@ -172,6 +172,7 @@ function App() {
                 exact
                 path="/calendar"
                 loggedIn={loggedIn}
+                currentUser={currentUser}
                 activeRubrics={activeRubrics}
                 selectRubric={changeActiveRubric}
                 component={Calendar}

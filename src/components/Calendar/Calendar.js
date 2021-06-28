@@ -16,6 +16,7 @@ import { getAccessToken } from '../../utils/utils';
 function Calendar({
   activeRubrics,
   selectRubric,
+  currentUser,
 }) {
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
@@ -66,7 +67,7 @@ function Calendar({
   React.useEffect(() => {
     getCalendarEvents();
     getSubscribes();
-  }, []);
+  }, [currentUser]);
 
   React.useEffect(() => {
     getCalendarEvents();
@@ -181,5 +182,7 @@ function Calendar({
 Calendar.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  currentUser: PropTypes.object.isRequired,
 };
 export default Calendar;
