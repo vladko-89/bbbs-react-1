@@ -10,7 +10,7 @@ function MainQuestion({ question, tag }) {
         <h2 className={`${styles['section-title']} ${styles.question__title} ${styles['main-questions__title']}`}>{question}</h2>
       </Link>
       <div className={styles['main-questions__rubric-contaier']}>
-        {tag.map((t) => (<p className={`${styles.rubric} ${styles.question__rubric} ${styles['main-questions__rubric']}`}>{t}</p>))}
+        {tag.map((t, idx) => (<p key={idx.toString()} className={`${styles.rubric} ${styles.question__rubric} ${styles['main-questions__rubric']}`}>{t}</p>))}
       </div>
     </article>
   );

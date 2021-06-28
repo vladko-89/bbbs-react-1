@@ -145,8 +145,6 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
             link={mainState.video.link}
             imageUrl={mainState.video.imageUrl}
             duration={mainState.video.duration}
-            tags={mainState.video.tags}
-            activeRubrics={activeRubrics}
           />
         </section>
 
@@ -160,7 +158,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 <MainQuestion
                   key={q.id}
                   question={q.question}
-                  name={q.tag}
+                  tag={q.tag}
                 />
               ))}
             </div>
