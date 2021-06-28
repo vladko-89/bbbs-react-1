@@ -32,19 +32,24 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
       )
       .then((res) => {
         console.log(res);
-        if (res) {
+        if (res.access) {
           localStorage.setItem('bbbs-token', JSON.stringify(res));
         } else {
-          setActionError('Произошла ошибка. Попробуйте еще раз.');
+          setActionError(`Произошла обшибка: ${res.status} ${res.statusText} ${res.text}`);
+          // eslint-disable-next-line no-debugger
         }
       })
       .catch((err) => console.log(err))
-      .then(() => api.getUserInfo(getAccessToken())
-        .then((res) => {
-          console.log(res);
-          onSubmit(e, res);
-          closePopup(e);
-        }))
+      .then(() => {
+        console.log(getAccessToken());
+        if (getAccessToken()) {
+          api.getUserInfo(getAccessToken())
+            .then((res) => {
+              onSubmit(e, res);
+              closePopup(e);
+            });
+        }
+      })
 
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
