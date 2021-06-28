@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -26,6 +26,7 @@ import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
 function App() {
+  const location = useLocation();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({
@@ -100,6 +101,7 @@ function App() {
           localStorage.setItem('user', JSON.stringify(res));
         }
       })
+      .then((res) => { if (location.pathname === '/calendar') { console.log('here'); } })
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   };

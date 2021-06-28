@@ -71,14 +71,6 @@ class Api {
     //   .catch((error) => console.log(error));
   }
 
-  // getCurrentUser(accessToken) {
-  //   return axios
-  //     .post(`${this._baseUrl}/users`,
-  //       { headers: { Authorization: `Bearer ${accessToken}` } })
-  //     .then((res) => res.data)
-  //     .catch((error) => console.log(error));
-  // }
-
   updateToken(refreshToken) {
     return axios
       .post(`${this._baseUrl}/token/refresh/`, { refresh: refreshToken })

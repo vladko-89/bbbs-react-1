@@ -60,7 +60,6 @@ export function getAccessToken() {
     }
     // recheck that we _now_ have a valid access token
     if (compareAsc(fromUnixTime(accessToken.exp), new Date()) === 1) {
-      console.log('token valid');
       return tokenData.access;
     } localStorage.removeItem('bbbs-token'); // access && refresh expired
   }

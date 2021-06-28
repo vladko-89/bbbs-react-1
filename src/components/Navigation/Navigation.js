@@ -27,9 +27,6 @@ function Navigation({
     // setCity(cityName);
   }, [userInfo]);
 
-  const handleChangeCityClick = () => {
-    onChangeCityClick();
-  };
   return (
     <nav className="menu">
       <Link to="./" target="_self" className="menu__logo">
@@ -214,7 +211,7 @@ function Navigation({
             <button
               type="button"
               className="personal-area__user-link personal-area__user-link_type_city "
-              onClick={handleChangeCityClick}
+              onClick={onChangeCityClick}
             >
               {loggedIn ? `${currentUser.city.name}.  Изменить город` : 'Изменить ваш город'}
             </button>
