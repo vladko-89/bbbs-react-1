@@ -180,6 +180,21 @@ class Api {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
+  getPlaces(cityId) {
+    if (localStorage.getItem('bbbs-token')) {
+      const token = JSON.parse(localStorage.getItem('bbbs-token')).access;
+      return axios
+        .get(`${this._baseUrl}/places/`,
+          { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => res.data.results)
+        .catch((error) => console.log(error));
+    }
+    return axios
+      .get(`${this._baseUrl}/places/?city=${cityId}`)
+      .then((res) => res.data.results)
+      .catch((error) => console.log(error));
+  }
 }
 
 const api = new Api(baseUrl);

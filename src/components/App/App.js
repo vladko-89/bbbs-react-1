@@ -111,7 +111,12 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     console.log(selectedCity);
-    return selectedCity; // здесь нет логики смены для неавторизованного юзера
+    currentUser.city = selectedCity;
+    api.getPlaces(selectedCity.id)
+      .then((res) => localStorage.setItem('places', JSON.stringify(res)))
+      .catch((err) => console.log(err));
+    setIsOpenPopupCities(false);
+    setCurrentUser(currentUser);
   };
 
   const handleLoginOpen = () => {
@@ -162,6 +167,8 @@ function App() {
                 <Places
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                  currentUser={currentUser}
+                  loggedIn={loggedIn}
                 />
               </Route>
               <Route exact path="/about">
