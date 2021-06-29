@@ -35,33 +35,41 @@ class Api {
   }
 
   signIn(login, password) {
-    // return fetch(`${this._baseUrl}/token/`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     password: `${password}`,
-    //     username: `${login}`,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    return axios
-      .post(`${this._baseUrl}/token/`, {
-        username: login,
-        password,
+    const errorMessage = {};
+    return fetch(`${this._baseUrl}/token/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password: `${password}`,
+        username: `${login}`,
+      }),
+    })
+      // eslint-disable-next-line consistent-return
+      .then((res) => {
+        console.log(res);
+        if (res.ok) { return res.json(); }
+        errorMessage.status = res.status;
+        errorMessage.statusText = res.statusText;
+        return res.json();
       })
-      .then((res) => res.data)
+      .then((res) => {
+        if (!res.access) {
+          errorMessage.text = res.non_field_errors;
+          return errorMessage;
+        }
+        return res;
+      })
       .catch((error) => console.log(error));
+    // return axios
+    //   .post(`${this._baseUrl}/token/`, {
+    //     username: login,
+    //     password,
+    //   })
+    //   .then((res) => { console.log(res); return res.data; })
+    //   .catch((error) => console.log(error));
   }
-
-  // getCurrentUser(accessToken) {
-  //   return axios
-  //     .post(`${this._baseUrl}/users`,
-  //       { headers: { Authorization: `Bearer ${accessToken}` } })
-  //     .then((res) => res.data)
-  //     .catch((error) => console.log(error));
-  // }
 
   updateToken(refreshToken) {
     return axios
