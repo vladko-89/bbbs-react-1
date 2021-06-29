@@ -9,23 +9,23 @@ import CalendarSuccessRegistration from '../CalendarSuccessRegistration/Calendar
 import CalendarEvent from '../CalendarEvent/CalendarEvent';
 import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
-import api from '../../utils/Api';
-import { getAccessToken } from '../../utils/utils';
 // import { CalendarContext } from "../../contexts/CalendarContext";
 
 function Calendar({
   activeRubrics,
   selectRubric,
-  currentUser,
+  onBooking,
+  onDescription,
+  onCancel,
+  onClose,
+  currentEvent,
+  isConfirmationPopupOpen,
+  isDescriptionPopupOpen,
+  isSuccessRegPopupOpen,
+  calendarData,
+  handleSuccessRegPopup,
+  handleImmidiateBooking,
 }) {
-  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
-  const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
-  const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
-  const [isQuery, setIsQuery] = React.useState(false);
-  const [calendarData, setCalendarData] = React.useState([]);
-  // События на которые подписан
-  const [myEvents, setMyEvents] = React.useState([]);
-  const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
   const filterArray = [];
   const parsedCalendarData = calendarData.map((el) => ({
     name: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }),
@@ -36,96 +36,6 @@ function Calendar({
   React.useEffect(() => {
     selectRubric('All', true);
   }, []);
-
-  function getSubscribes() {
-    api.getMyEvents(getAccessToken())
-      .then((res) => setMyEvents(res.results))
-      .catch((error) => console.log(error));
-  }
-
-  function unSubscribes(calendar) {
-    setIsQuery(true);
-    const event = myEvents.filter((item) => item.event === calendar.id);
-    api.signOutOnEvent(getAccessToken(), event[0].id)
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error))
-      .finally(() => setIsQuery(false));
-  }
-
-  function getCalendarEvents() {
-    api.getEvents(getAccessToken())
-      .then((res) => {
-        console.log('events', res);
-        setCalendarData(res.results);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      });
-  }
-
-  React.useEffect(() => {
-    getCalendarEvents();
-    getSubscribes();
-  }, [currentUser]);
-
-  React.useEffect(() => {
-    getCalendarEvents();
-  }, [isQuery]);
-
-  function openConfirmationPopup() {
-    setIsConfirmationPopupOpen(true);
-  }
-
-  function handleSuccessRegPopup() {
-    api.signUpOnEvent(getAccessToken(), currentEvent.id)
-      .then((res) => {
-        console.log(res);
-        setIsSuccessRegPopupOpen(true);
-        openConfirmationPopup();
-        getCalendarEvents();
-        getSubscribes();
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      });
-  }
-
-  function closeAllPopups() {
-    setIsConfirmationPopupOpen(false);
-    setIsDescriptionPopupOpen(false);
-    setIsSuccessRegPopupOpen(false);
-  }
-
-  function handleDescription(calendar) {
-    setCurrentEvent(calendar);
-    setIsDescriptionPopupOpen(true);
-  }
-  function handleBooking(calendar) {
-    setCurrentEvent(calendar);
-    openConfirmationPopup();
-  }
-
-  function handleCancelBooking(calendar) {
-    unSubscribes(calendar);
-    getSubscribes();
-  }
-
-  function handleImmidiateBooking(calendar) {
-    api.signUpOnEvent(getAccessToken(), calendar.id)
-      .then((res) => {
-        console.log(res);
-        setIsSuccessRegPopupOpen(true);
-        openConfirmationPopup();
-        getCalendarEvents();
-        getSubscribes();
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      });
-  }
 
   return (
     <>
@@ -147,9 +57,9 @@ function Calendar({
               endAt={calendar.endAt}
               seats={calendar.seats}
               takenSeats={calendar.takenSeats}
-              onBooking={handleBooking}
-              onDescription={handleDescription}
-              onCancel={handleCancelBooking}
+              onBooking={onBooking}
+              onDescription={onDescription}
+              onCancel={onCancel}
               activeRubrics={activeRubrics}
               tags={[{
                 name: format(new Date(calendar.startAt), 'LLLL', { locale: ruLocale }),
@@ -161,28 +71,48 @@ function Calendar({
       </main>
       <CalendarConfirmation
         isOpen={isConfirmationPopupOpen}
-        onClose={closeAllPopups}
+        onClose={onClose}
         handleSuccessRegClick={handleSuccessRegPopup}
         currentEvent={currentEvent}
       />
       <CalendarDescription
         isOpen={isDescriptionPopupOpen}
-        onClose={closeAllPopups}
+        onClose={onClose}
         onActionClick={handleImmidiateBooking}
         currentEvent={currentEvent}
       />
       <CalendarSuccessRegistration
         isOpen={isSuccessRegPopupOpen}
-        handleCloseSuccessRegPopup={closeAllPopups}
+        handleCloseSuccessRegPopup={onClose}
         currentEvent={currentEvent}
       />
     </>
   );
 }
 Calendar.propTypes = {
+  calendarData: PropTypes.arrayOf.isRequired,
+  handleImmidiateBooking: PropTypes.func.isRequired,
+  handleSuccessRegPopup: PropTypes.func.isRequired,
+  isConfirmationPopupOpen: PropTypes.bool.isRequired,
+  isDescriptionPopupOpen: PropTypes.bool.isRequired,
+  isSuccessRegPopupOpen: PropTypes.bool.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  currentUser: PropTypes.object.isRequired,
+  onBooking: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onDescription: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  currentEvent: PropTypes.shape({
+    booked: PropTypes.bool,
+    startAt: PropTypes.string,
+    endAt: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    seats: PropTypes.number,
+    takenSeats: PropTypes.number,
+    address: PropTypes.string,
+    contact: PropTypes.string,
+  }).isRequired,
 };
 export default Calendar;

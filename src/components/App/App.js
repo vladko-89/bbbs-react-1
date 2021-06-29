@@ -41,6 +41,105 @@ function App() {
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
+
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
+  const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
+  const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
+  const [isQuery, setIsQuery] = React.useState(false);
+  const [calendarData, setCalendarData] = React.useState([]);
+  // События на которые подписан
+  const [myEvents, setMyEvents] = React.useState([]);
+  const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+
+  function getSubscribes() {
+    api.getMyEvents(getAccessToken())
+      .then((res) => setMyEvents(res.results))
+      .catch((error) => console.log(error));
+  }
+
+  function unSubscribes(calendar) {
+    setIsQuery(true);
+    const event = myEvents.filter((item) => item.event === calendar.id);
+    api.signOutOnEvent(getAccessToken(), event[0].id)
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error))
+      .finally(() => setIsQuery(false));
+  }
+
+  function getCalendarEvents() {
+    api.getEvents(getAccessToken())
+      .then((res) => {
+        console.log('events', res);
+        setCalendarData(res.results);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
+
+  React.useEffect(() => {
+    getCalendarEvents();
+    getSubscribes();
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    getCalendarEvents();
+  }, [isQuery]);
+
+  function openConfirmationPopup() {
+    setIsConfirmationPopupOpen(true);
+  }
+
+  function handleSuccessRegPopup() {
+    api.signUpOnEvent(getAccessToken(), currentEvent.id)
+      .then((res) => {
+        console.log(res);
+        setIsSuccessRegPopupOpen(true);
+        openConfirmationPopup();
+        getCalendarEvents();
+        getSubscribes();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
+
+  function closeAllPopups() {
+    setIsConfirmationPopupOpen(false);
+    setIsDescriptionPopupOpen(false);
+    setIsSuccessRegPopupOpen(false);
+  }
+
+  function handleDescription(calendar) {
+    setCurrentEvent(calendar);
+    setIsDescriptionPopupOpen(true);
+  }
+  function handleBooking(calendar) {
+    setCurrentEvent(calendar);
+    openConfirmationPopup();
+  }
+
+  function handleCancelBooking(calendar) {
+    unSubscribes(calendar);
+    getSubscribes();
+  }
+
+  function handleImmidiateBooking(calendar) {
+    api.signUpOnEvent(getAccessToken(), calendar.id)
+      .then((res) => {
+        console.log(res);
+        setIsSuccessRegPopupOpen(true);
+        openConfirmationPopup();
+        getCalendarEvents();
+        getSubscribes();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
     if (rubric === 'All' || rubric === 'Все') {
@@ -156,6 +255,17 @@ function App() {
                   loggedIn={loggedIn}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                  onBooking={handleBooking}
+                  onDescription={handleDescription}
+                  onCancel={handleCancelBooking}
+                  onClose={closeAllPopups}
+                  currentEvent={currentEvent}
+                  isConfirmationPopupOpen={isConfirmationPopupOpen}
+                  isDescriptionPopupOpen={isDescriptionPopupOpen}
+                  isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                  calendarData={calendarData}
+                  handleSuccessRegPopup={handleSuccessRegPopup}
+                  handleImmidiateBooking={handleImmidiateBooking}
                 />
               </Route>
               <Route exact path="/place">
@@ -176,6 +286,17 @@ function App() {
                 activeRubrics={activeRubrics}
                 selectRubric={changeActiveRubric}
                 component={Calendar}
+                onBooking={handleBooking}
+                onDescription={handleDescription}
+                onCancel={handleCancelBooking}
+                onClose={closeAllPopups}
+                currentEvent={currentEvent}
+                isConfirmationPopupOpen={isConfirmationPopupOpen}
+                isDescriptionPopupOpen={isDescriptionPopupOpen}
+                isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                calendarData={calendarData}
+                handleSuccessRegPopup={handleSuccessRegPopup}
+                handleImmidiateBooking={handleImmidiateBooking}
               />
               <Route exact path="/questions">
                 <Questions

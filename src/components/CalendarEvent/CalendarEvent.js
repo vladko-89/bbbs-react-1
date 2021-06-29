@@ -13,7 +13,7 @@ function CalendarEvent({
   const availablePlaces = seats - takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
   return (
-    <article className={`calendar calendar_selected ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag.slug) === -1) ? 'card-container_hidden display_none' : ''}`}>
+    <article className={`calendar ${booked && 'calendar_selected'} ${activeRubrics.length > 0 && tags.every((tag) => activeRubrics.indexOf(tag.slug) === -1) ? 'card-container_hidden display_none' : ''}`}>
       <div className="calendar__caption">
         <div className="calendar__info">
           <p className="calendar__type">Волонтёры + дети</p>
