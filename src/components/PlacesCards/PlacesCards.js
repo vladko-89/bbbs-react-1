@@ -6,7 +6,6 @@ import { colors } from '../../utils/Constants';
 
 function PlacesCards({ places }) {
   const coloredCards = colorizeCards(places, colors);
-  console.log(coloredCards);
   return (
     <section className="cards-grid page__section">
       {coloredCards.map((card) => (

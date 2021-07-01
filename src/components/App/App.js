@@ -142,7 +142,7 @@ function App() {
   }
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
-    if (rubric === 'All' || rubric === 'Все') {
+    if (rubric === 'all' || rubric === 'Все') {
       setActiveRubrics([]);
     } else if (!active) {
       setActiveRubrics([...activeRubrics, rubric]);
