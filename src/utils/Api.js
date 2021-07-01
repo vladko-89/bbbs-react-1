@@ -34,6 +34,20 @@ class Api {
       .catch((error) => console.log(error));
   }
 
+  getPlaces() {
+    return axios
+      .get(`${this._baseUrl}/places/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getPlacesTags() {
+    return axios
+      .get(`${this._baseUrl}/places/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
   signIn(login, password) {
     const errorMessage = {};
     return fetch(`${this._baseUrl}/token/`, {

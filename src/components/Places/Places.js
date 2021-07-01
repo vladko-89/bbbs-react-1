@@ -4,88 +4,58 @@ import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import MainMentor from '../MainMentor/MainMentor';
 import PlacesCards from '../PlacesCards/PlacesCards';
+import Preloader from '../Preloader/Preloader';
+import api from '../../utils/Api';
 
 function Places({
-  activeRubrics,
   selectRubric,
 }) {
-  const FilterArrayFirst = [
-    {
-      name: 'Все',
-      slug: 'All',
-    },
-    {
-      name: 'Выбор наставников',
-      slug: 'chosen',
-    },
-    {
-      name: 'Музеи',
-      slug: 'museums',
-    },
-    {
-      name: 'Парки',
-      slug: 'parks',
-    },
-    {
-      name: 'Театры',
-      slug: 'theatres',
-    },
-    {
-      name: 'Спорт',
-      slug: 'sport',
-    },
-    {
-      name: 'Экскурсии',
-      slug: 'excursions',
-    },
-    {
-      name: 'Секции',
-      slug: 'sections',
-    },
-    {
-      name: '8-10 лет',
-      slug: '8-10',
-    },
-    {
-      name: '11-13 лет',
-      slug: '11-13',
-    },
-    {
-      name: '14-18 лет',
-      slug: '14-18',
-    },
-    {
-      name: '18+ лет',
-      slug: '18+',
-    },
-  ];
-
-  return (
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [tags, setTags] = React.useState([]);
+  const [places, setPlaces] = React.useState([]);
+  React.useEffect(() => {
+    Promise.all([
+      api.getPlacesTags(),
+      api.getPlaces(),
+    ])
+      .then(([resTags, resPlaces]) => {
+        console.log(resPlaces);
+        setTags([{
+          id: 0,
+          name: 'Все',
+          slug: 'all',
+        }, ...resTags.results]);
+        setPlaces(resPlaces);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+  return isLoading ? (<Preloader />) : (
     <div className="main">
       <section className="lead page__section">
         <MainTitle title="Куда пойти" />
         <Filter
-          array={FilterArrayFirst}
+          array={tags}
           selectRubric={selectRubric}
         />
       </section>
       <MainMentor
-        title="Сплав на байдарках в две строки"
-        address="усадьба Архангельское в две строки"
-        imageUrl="https://picsum.photos/1125/394"
-        link="https://www.moscowzoo.ru/"
-        info="Девока, 10 лет. Активный"
-        tags={['sport', '8-10', 'chosen']}
-        activeRubrics={activeRubrics}
-        description={'Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга,  потом понимать чуть лучше и, Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не понимать друг друга,  потом понимать чуть лучше и,\nАннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется. Вы будете не по Аннотация статьи в несколько абзацев. В тот момент, как ребёнок научился говорить, и не одно слово, а задавать бесконечное количество вопросов, жизнь меняется.'}
+        title={places.results[0].title}
+        address={places.results[0].address}
+        imageUrl={places.results[0].imageUrl}
+        link={places.results[0].link}
+        info={places.results[0].info}
+        description={places.results[0].description}
       />
-      <PlacesCards activeRubrics={activeRubrics} />
+      <PlacesCards places={places.results} />
     </div>
   );
 }
 
 Places.propTypes = {
-  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
 };
 

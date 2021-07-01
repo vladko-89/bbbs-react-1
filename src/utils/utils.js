@@ -65,6 +65,14 @@ export function getAccessToken() {
   }
   return null;
 }
+
+export function colorizeCards(cardsArr, colorsArr) {
+  function getColor(count, colors) {
+    if (count >= colors.length) { return colors[count % colors.length]; }
+    return colors[count];
+  }
+  return cardsArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
+}
 export function filterByTags(tags, data) {
   return (!tags.length)
     ? data
