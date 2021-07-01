@@ -4,6 +4,7 @@ const scrollDelay = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
 const placesTextForms = ['место', 'места', 'мест'];
+const colors = ['yellow', 'green', 'yellow', 'orange', 'blue', 'orange', 'green', 'yellow', 'green', 'blue', 'orange', 'blue'];
 const citiesList = [
   'Москва',
   'Санкт-Петербург',
@@ -21,5 +22,6 @@ const citiesList = [
 ];
 
 export {
-  baseUrl, delayResponse, scrollDelay, cardsPerPage, cardsOnMain, placesTextForms, citiesList,
+  baseUrl, delayResponse, scrollDelay, cardsPerPage,
+  cardsOnMain, placesTextForms, colors, citiesList,
 };
