@@ -11,6 +11,14 @@ function CalendarDescription({
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
+  React.useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', onClose);
+    }
+    return (() => {
+      document.removeEventListener('keydown', onClose);
+    });
+  });
   return (
     <div className={`popup popup_type_description ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_calendar">

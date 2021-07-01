@@ -311,6 +311,8 @@ function App() {
                 onOutClick={handleOutClick}
                 loggedIn={loggedIn}
                 component={Profile}
+                openEventDescription={handleDescription}
+                user={currentUser}
               />
               <Route exact path="/video">
                 <Video

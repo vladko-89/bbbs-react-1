@@ -21,10 +21,8 @@ function Header({
 
     return () => document.removeEventListener('scroll', checkScroll);
   }, []);
-  const handleClickMobMenu = (e) => {
-    if (e.target.closest('.menu__burger')) {
-      setMobMenu(!mobMenu);
-    }
+  const handleClickMobMenu = () => {
+    setMobMenu(!mobMenu);
   };
   return (
     <header
