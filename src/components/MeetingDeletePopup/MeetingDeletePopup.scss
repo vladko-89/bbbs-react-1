@@ -309,6 +309,7 @@
   position: absolute;
   right: 0px;
   top: 50px;
+
 }
 
 .personal-area__user-link {
@@ -540,9 +541,14 @@
   color: $lightGray;
 }
 
+@media screen and (min-width: 1380px)  {
+  .personal-area__user-info {
+    background-color: #f3f2f2c7;
+  }
+}
 
 @include atDesktop1024 {
-  //.personal-area__user-info {
+  // {
   //  display: none;
   //}
 
