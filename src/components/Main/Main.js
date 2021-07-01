@@ -87,11 +87,11 @@ function Main({
         </section>
 
         <MainMentor
+          id={mainState.place.id}
           title={mainState.place.title}
           address={mainState.place.address}
           link={mainState.place.link}
           imageUrl={mainState.place.imageUrl}
-          rubrics={['sport', '8-10', 'chosen']}
           info={mainState.place.info}
           description={mainState.place.description}
         />
