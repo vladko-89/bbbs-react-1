@@ -37,19 +37,17 @@ function Main({
 
   React.useEffect(() => {
     api.getMain().then((res) => {
-      // eslint-disable-next-line no-console
-      console.log(res);
+      console.log('main', res);
       setMainState(res);
-      localStorage.setItem('mainState', JSON.stringify(res));
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, [setMainState]);
+  }, []);
 
   // Обнуляем выставленные фильтры при монтировании компонента
   React.useEffect(() => {
-    selectRubric('All', true);
+    selectRubric('all', true);
   }, []);
 
   if (isDataReady) {
@@ -80,14 +78,15 @@ function Main({
               />
             ) : <MainLead />}
             <MainStory
-              title={mainState.history.title}
-              imageUrl={mainState.history.imageUrl}
+              title={mainState?.history?.title}
+              imageUrl={mainState?.history?.imageUrl}
             />
           </article>
         </section>
 
         <MainMentor
           id={mainState.place.id}
+          chosen={mainState.place.chosen}
           title={mainState.place.title}
           address={mainState.place.address}
           link={mainState.place.link}
@@ -98,8 +97,8 @@ function Main({
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[0].title}
-            color={mainState.articles[0].color}
+            title={mainState.articles[0]?.title}
+            color={mainState.articles[0]?.color}
           />
         </section>
 

@@ -213,7 +213,7 @@ function Navigation({
               className="personal-area__user-link personal-area__user-link_type_city "
               onClick={onChangeCityClick}
             >
-              {loggedIn ? `${currentUser.city.name}.  Изменить город` : 'Изменить ваш город'}
+              {loggedIn ? `${currentUser.city.name}.  Изменить город` : `${currentUser.city.name}. Изменить ваш город`}
             </button>
 
             <Route path="/profile">
