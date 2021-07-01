@@ -7,7 +7,15 @@ import PlacesCards from '../PlacesCards/PlacesCards';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
 
-function Places({ activeRubrics, selectRubric }) {
+function Places({
+  loggedIn, openChangeCity, activeRubrics, selectRubric,
+}) {
+  React.useEffect(() => {
+    if (!loggedIn && !localStorage.getItem('bbbs-user')) {
+      openChangeCity(true);
+    }
+  },
+  []);
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [places, setPlaces] = React.useState([]);
@@ -61,6 +69,8 @@ function Places({ activeRubrics, selectRubric }) {
 }
 
 Places.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  openChangeCity: PropTypes.func.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
 };
