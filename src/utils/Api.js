@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-import {
-  baseUrl,
-} from './Constants';
+import { baseUrl } from './Constants';
 
 class Api {
   constructor(paramBaseUrl) {
@@ -13,55 +11,92 @@ class Api {
   getMain() {
     const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
     return axios
-      .get(`${this._baseUrl}/main/`, accessToken && { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(
+        `${this._baseUrl}/main/`,
+        accessToken && { headers: { Authorization: `Bearer ${accessToken}` } },
+      )
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   getEvents(accessToken) {
     return axios
-      .get(`${this._baseUrl}/afisha/events/`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(`${this._baseUrl}/afisha/events/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   getCalendar(accessToken) {
     return axios
-      .get(`${this._baseUrl}/calendar`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(`${this._baseUrl}/calendar`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getPlacesTags() {
+    return axios
+      .get(`${this._baseUrl}/places/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getPlaces({
+    token, cityId, limit, offset, tags,
+  }) {
+    const params = new URLSearchParams();
+    params.append('city', cityId);
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    return axios
+      .get(`${this._baseUrl}/places/`,
+        token ? {
+          headers: { Authorization: `Bearer ${token}` },
+        } : {
+          params,
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
   signIn(login, password) {
     const errorMessage = {};
-    return fetch(`${this._baseUrl}/token/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        password: `${password}`,
-        username: `${login}`,
-      }),
-    })
-      // eslint-disable-next-line consistent-return
-      .then((res) => {
-        console.log(res);
-        if (res.ok) { return res.json(); }
-        errorMessage.status = res.status;
-        errorMessage.statusText = res.statusText;
-        return res.json();
+    return (
+      fetch(`${this._baseUrl}/token/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: `${password}`,
+          username: `${login}`,
+        }),
       })
-      .then((res) => {
-        if (!res.access) {
-          errorMessage.text = res.non_field_errors;
-          return errorMessage;
-        }
-        return res;
-      })
-      .catch((error) => console.log(error));
+        // eslint-disable-next-line consistent-return
+        .then((res) => {
+          console.log(res);
+          if (res.ok) {
+            return res.json();
+          }
+          errorMessage.status = res.status;
+          errorMessage.statusText = res.statusText;
+          return res.json();
+        })
+        .then((res) => {
+          if (!res.access) {
+            errorMessage.text = res.non_field_errors;
+            return errorMessage;
+          }
+          return res;
+        })
+        .catch((error) => console.log(error))
+    );
     // return axios
     //   .post(`${this._baseUrl}/token/`, {
     //     username: login,
@@ -80,8 +115,9 @@ class Api {
 
   getUserInfo(accessToken) {
     return axios
-      .get(`${this._baseUrl}/profile/`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(`${this._baseUrl}/profile/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -90,9 +126,11 @@ class Api {
     console.log(`Bearer ${accessToken}`);
     console.log(data);
     return axios
-      .patch(`${this._baseUrl}/profile/`,
+      .patch(
+        `${this._baseUrl}/profile/`,
         { city: data.id },
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      )
 
       .then((res) => res.data)
       .catch((error) => console.log(error));
@@ -112,7 +150,7 @@ class Api {
         'content-type': 'application/json',
       },
     })
-      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
       .catch((err) => {
         console.log(err);
         return Promise.reject(err);
@@ -126,7 +164,7 @@ class Api {
         'content-type': 'application/json',
       },
     })
-      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
       .catch((err) => {
         console.log(err);
         return Promise.reject(err);
@@ -144,7 +182,7 @@ class Api {
       },
       body: JSON.stringify({ question }),
     })
-      .then((res) => (res.json().then((data) => (res.ok ? data : Promise.reject(data)))))
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
       .catch((err) => {
         console.log(err);
         return Promise.reject(err);
@@ -156,9 +194,11 @@ class Api {
   // Запись на встречу
   signUpOnEvent(accessToken, id) {
     return axios
-      .post(`${this._baseUrl}/afisha/event-participants/`,
+      .post(
+        `${this._baseUrl}/afisha/event-participants/`,
         { event: id },
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      )
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -166,8 +206,9 @@ class Api {
   // Отмена записи встречи
   signOutOnEvent(accessToken, _id) {
     return axios
-      .delete(`${this._baseUrl}/afisha/event-participants/${_id}/`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .delete(`${this._baseUrl}/afisha/event-participants/${_id}/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -175,8 +216,31 @@ class Api {
   // Получаю все события на которые подписан
   getMyEvents(accessToken) {
     return axios
-      .get(`${this._baseUrl}/afisha/event-participants/`,
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+      .get(`${this._baseUrl}/afisha/event-participants/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // ПРАВА ДЕТЕЙ
+
+  // Получаю карточки прав
+  getRights(tags) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    return axios
+      .get(`${this._baseUrl}/rights/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Получаю теги прав
+  getRightsTags() {
+    return axios
+      .get(`${this._baseUrl}/rights/tags/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }

@@ -22,10 +22,11 @@ export function declOfNum(n, textForm) {
 export function useAuth(setUserData, setLoginState) {
   if (localStorage.getItem('bbbs-token')) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
-    const accessToken = jwt.decode(tokenData.access);
-    const refreshToken = jwt.decode(tokenData.refresh);
-    if (!(compareAsc(fromUnixTime(accessToken.exp), new Date()) === 1)) { // access token expired
-      if (compareAsc(fromUnixTime(refreshToken.exp), new Date()) === 1) { // refresh token valid
+    const parsedAccess = jwt.decode(tokenData.access);
+    const parsedRefresh = jwt.decode(tokenData.refresh);
+    console.log('access exp date', fromUnixTime(parsedAccess.exp));
+    if (!(compareAsc(fromUnixTime(parsedAccess.exp), new Date()) === 1)) { // access token expired
+      if (compareAsc(fromUnixTime(parsedRefresh.exp), new Date()) === 1) { // refresh token valid
         console.log('trying to update access');
         api.updateToken(tokenData.refresh)
           .then((res) => {
@@ -35,12 +36,14 @@ export function useAuth(setUserData, setLoginState) {
       }
     }
     // recheck that we _now_ have a valid access token
-    if (compareAsc(fromUnixTime(accessToken.exp), new Date()) === 1) {
+    if (compareAsc(fromUnixTime(parsedAccess.exp), new Date()) === 1) {
       api.getUserInfo(tokenData.access)
-        .then((res) => { console.log(res); setUserData(res); setLoginState(true); })
+        .then((res) => { console.log('auth =>', res); setUserData(res); setLoginState(true); })
         .catch((err) => console.log(err));
     }
+    //  localStorage.removeItem('bbbs-token'); // no valid access and refresh tokens
   }
+  return null; // means an error
 }
 
 export function getAccessToken() {
@@ -61,9 +64,17 @@ export function getAccessToken() {
     // recheck that we _now_ have a valid access token
     if (compareAsc(fromUnixTime(accessToken.exp), new Date()) === 1) {
       return tokenData.access;
-    } localStorage.removeItem('bbbs-token'); // access && refresh expired
+    } // localStorage.removeItem('bbbs-token'); // access && refresh expired
   }
   return null;
+}
+
+export function colorizeCards(cardsArr, colorsArr) {
+  function getColor(count, colors) {
+    if (count >= colors.length) { return colors[count % colors.length]; }
+    return colors[count];
+  }
+  return cardsArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
 }
 export function filterByTags(tags, data) {
   return (!tags.length)
@@ -82,4 +93,19 @@ export function toggleTagId(tagId, tagIdArray) {
     return tagIdArray.filter((tag) => tag !== tagId);
   }
   return [...tagIdArray, tagId];
+}
+
+export function formingCards(cardsArr, formsArr, colorsArr) {
+  function getForm(count, forms) {
+    if (count >= forms.length) { return forms[count % forms.length]; }
+    return forms[count];
+  }
+  function getColor(count, colors) {
+    if (count >= colors.length) { return colors[count % colors.length]; }
+    return colors[count];
+  }
+  const NewArr = cardsArr.map((card, index) => ({ ...card, form: getForm(index, formsArr) }));
+  const result = NewArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
+  console.log('NewArr', result);
+  return result;
 }

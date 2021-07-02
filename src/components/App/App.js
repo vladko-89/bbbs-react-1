@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -21,19 +21,19 @@ import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
 import PopupCities from '../PopupCities/PopupCities';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
 function App() {
-  const location = useLocation();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({
     id: 0,
     user: 0,
     city: {
-      id: 0,
+      id: 7,
       name: 'Москва',
       isPrimary: false,
     },
@@ -50,6 +50,22 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+
+  // const [path, setPath] = React.useState('');
+
+  React.useEffect(() => {
+    useAuth(setCurrentUser, setLoggedIn);
+    // запрос за списком городов
+    api
+      .getCitiesList()
+      .then((data) => {
+        console.log('CitiesList', data.results);
+        setCitiesList(data.results);
+        localStorage.setItem('citiesList', JSON.stringify(data.results));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  }, []);
 
   function getSubscribes() {
     api.getMyEvents(getAccessToken())
@@ -77,15 +93,23 @@ function App() {
         console.log(error);
       });
   }
+  // logic for restoring city for unauth user
+  React.useEffect(() => {
+    if (!loggedIn && localStorage.getItem('bbbs-user')) {
+      setCurrentUser(JSON.parse(localStorage.getItem('bbbs-user')));
+    }
+  }, []);
 
   React.useEffect(() => {
-    getCalendarEvents();
-    getSubscribes();
+    if (loggedIn) {
+      getCalendarEvents();
+      getSubscribes();
+    }
   }, [currentUser]);
 
   React.useEffect(() => {
-    getCalendarEvents();
-  }, [isQuery]);
+    if (loggedIn) getCalendarEvents();
+  }, [isQuery, loggedIn]);
 
   function openConfirmationPopup() {
     setIsConfirmationPopupOpen(true);
@@ -142,7 +166,7 @@ function App() {
   }
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
-    if (rubric === 'All' || rubric === 'Все') {
+    if (rubric === 'all' || rubric === 'Все') {
       setActiveRubrics([]);
     } else if (!active) {
       setActiveRubrics([...activeRubrics, rubric]);
@@ -150,21 +174,6 @@ function App() {
       setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
     }
   }
-
-  React.useEffect(() => {
-    useAuth(setCurrentUser, setLoggedIn);
-    // запрос за списком городов
-    api
-      .getCitiesList()
-      .then((data) => {
-        console.log(data.results);
-        setCitiesList(data.results);
-        localStorage.setItem('citiesList', JSON.stringify(data.results));
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
-  }, []);
-
   // попап городов -смена города
   const handleChangeCityClick = () => {
     setIsOpenPopupCities(true);
@@ -200,7 +209,6 @@ function App() {
           localStorage.setItem('user', JSON.stringify(res));
         }
       })
-      .then((res) => { if (location.pathname === '/calendar') { console.log('here'); } })
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   };
@@ -210,11 +218,13 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     console.log(selectedCity);
-    return selectedCity; // здесь нет логики смены для неавторизованного юзера
+    localStorage.setItem('bbbs-user', JSON.stringify({ ...currentUser, city: selectedCity }));
+    setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
-  const handleLoginOpen = () => {
+  const handleLoginOpen = (path) => {
     setIsPoupLoginOpened(true);
+    // setPath(path);
   };
   const handleLoginClose = (evt) => {
     if (
@@ -232,6 +242,25 @@ function App() {
 
   const handleOutClick = () => {
     localStorage.removeItem('bbbs-token');
+    setCurrentUser({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    });
+    localStorage.setItem('bbbs-user', JSON.stringify({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    }));
+
     setLoggedIn(false);
   };
   return (
@@ -263,13 +292,14 @@ function App() {
                   isConfirmationPopupOpen={isConfirmationPopupOpen}
                   isDescriptionPopupOpen={isDescriptionPopupOpen}
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
-                  calendarData={calendarData}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
                 />
               </Route>
               <Route exact path="/place">
                 <Places
+                  loggedIn={loggedIn}
+                  openChangeCity={handleChangeCityClick}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
                 />
@@ -320,6 +350,11 @@ function App() {
                   selectRubric={changeActiveRubric}
                 />
               </Route>
+              <Route exact path="/read-watch-main">
+                <ReadAndWatch
+                  activeRubrics={activeRubrics}
+                />
+              </Route>
               <Route exact path="/catalog">
                 <Catalog />
               </Route>
@@ -346,7 +381,7 @@ function App() {
               </Route>
             </Switch>
           </div>
-          <Footer />
+          <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
           {isPopupLoginOpened ? (
             <PopupLogin
               onClose={handleLoginClose}

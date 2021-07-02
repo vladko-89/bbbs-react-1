@@ -8,6 +8,7 @@ import { getAccessToken } from '../../utils/utils';
 function PopupLogin({ onClose, onSubmit, isOpen }) {
   const loginFormValidation = useFormWithValidation();
   const [actionError, setActionError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   function closePopup(evt) {
     evt.target.closest('form').reset();
@@ -25,6 +26,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
   });
   function submitHandler(e) {
     e.preventDefault();
+    setLoading(true);
     api
       .signIn(
         loginFormValidation.values.login,
@@ -40,6 +42,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         }
       })
       .catch((err) => console.log(err))
+      .finally(() => setLoading(false))
       .then(() => {
         console.log(getAccessToken());
         if (getAccessToken()) {
@@ -67,7 +70,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         <input type="password" className="popup__input" id="password" name="password" minLength={8} onChange={loginFormValidation.handleChange} required placeholder="Пароль" />
         <p className="popup__input-error" name="password-error">{loginFormValidation.errors.password}</p>
         <p className="popup__forgot-password ">Забыли пароль?</p>
-        <button className="button button_theme_light popup__enter" onClick={submitHandler} type="submit" disabled={!loginFormValidation.isValid}>Войти</button>
+        <button className="button button_theme_light popup__enter" onClick={submitHandler} type="submit" disabled={!loginFormValidation.isValid || loading}>Войти</button>
         <p className="popup__action-error" name="action-error">{actionError}</p>
       </form>
     </div>
