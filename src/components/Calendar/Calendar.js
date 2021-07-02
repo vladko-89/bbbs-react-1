@@ -34,7 +34,7 @@ function Calendar({
   parsedCalendarData.forEach((el) => { if (!filterArray.some((item) => item.name === el.name)) { filterArray.push(el); } });
 
   React.useEffect(() => {
-    selectRubric('All', true);
+    selectRubric('all', true);
   }, []);
 
   return (
@@ -90,7 +90,17 @@ function Calendar({
   );
 }
 Calendar.propTypes = {
-  calendarData: PropTypes.arrayOf.isRequired,
+  calendarData: PropTypes.arrayOf(PropTypes.shape({
+    booked: PropTypes.bool,
+    startAt: PropTypes.string,
+    endAt: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    seats: PropTypes.number,
+    takenSeats: PropTypes.number,
+    address: PropTypes.string,
+    contact: PropTypes.string,
+  })).isRequired,
   handleImmidiateBooking: PropTypes.func.isRequired,
   handleSuccessRegPopup: PropTypes.func.isRequired,
   isConfirmationPopupOpen: PropTypes.bool.isRequired,
