@@ -20,6 +20,28 @@ const citiesList = [
   'Тула',
 ];
 
+const colors = ['yellow', 'green', 'yellow', 'pink', 'blue', 'pink', 'green', 'yellow', 'green', 'blue', 'pink', 'blue'];
+
+const figures = [
+  'square',
+  'circle',
+  'arch',
+  'circle',
+  'arch',
+  'square',
+  'arch',
+  'square',
+  'circle',
+];
+
 export {
-  baseUrl, delayResponse, scrollDelay, cardsPerPage, cardsOnMain, placesTextForms, citiesList,
+  baseUrl,
+  delayResponse,
+  scrollDelay,
+  cardsPerPage,
+  cardsOnMain,
+  placesTextForms,
+  citiesList,
+  figures,
+  colors,
 };

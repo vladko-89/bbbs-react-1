@@ -40,7 +40,7 @@ function Main({
       // eslint-disable-next-line no-console
       console.log(res);
       setMainState(res);
-      localStorage.setItem('mainState', JSON.stringify(res));
+      // localStorage.setItem('mainState', JSON.stringify(res));
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
@@ -138,7 +138,7 @@ function Main({
                 <MainQuestion
                   key={q.id}
                   question={q.question}
-                  tag={q.tag}
+                  tag={q.tags}
                 />
               ))}
             </div>
