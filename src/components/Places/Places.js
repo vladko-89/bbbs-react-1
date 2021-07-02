@@ -25,6 +25,7 @@ function Places({
   const [places, setPlaces] = React.useState([]);
 
   function onPageChange(page) {
+    console.log(page);
     const offset = page !== 1 ? page * placesPerPage - placesPerPage : 0;
     api
       .getPlaces({
@@ -99,11 +100,13 @@ function Places({
         description={places.results[0]?.description}
       />
       <PlacesCards places={places.results} />
-      <Pagination
-        cardsLength={places.count}
-        cardsPerPage={placesPerPage}
-        onPageChange={onPageChange}
-      />
+      {places.count > placesPerPage ? (
+        <Pagination
+          cardsLength={places.count}
+          cardsPerPage={placesPerPage}
+          onPageChange={onPageChange}
+        />
+      ) : ''}
     </div>
   );
 }
