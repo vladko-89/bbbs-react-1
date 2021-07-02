@@ -32,7 +32,7 @@ function App() {
     id: 0,
     user: 0,
     city: {
-      id: 0,
+      id: 7,
       name: 'Москва',
       isPrimary: false,
     },
