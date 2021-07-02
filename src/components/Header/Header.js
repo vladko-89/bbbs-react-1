@@ -11,6 +11,7 @@ function Header({
 }) {
   const [mobMenu, setMobMenu] = React.useState(false);
   const [isFixed, setIsFixed] = React.useState(false);
+
   React.useEffect(() => {
     let current = 0;
     const checkScroll = () => {
@@ -21,10 +22,8 @@ function Header({
 
     return () => document.removeEventListener('scroll', checkScroll);
   }, []);
-  const handleClickMobMenu = (e) => {
-    if (e.target.closest('.menu__burger')) {
-      setMobMenu(!mobMenu);
-    }
+  const handleClickMobMenu = () => {
+    setMobMenu(!mobMenu);
   };
   return (
     <header

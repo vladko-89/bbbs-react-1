@@ -18,18 +18,10 @@ function Navigation({
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
-    // const user = JSON.parse(localStorage.getItem('user'));
-    // const cities = JSON.parse(localStorage.getItem('citiesList'));
     // eslint-disable-next-line no-console
     console.log(currentUser);
-    // const cityName = loggedIn ? currentUser.city.name : '';
-    // console.log(cityName);
-    // setCity(cityName);
   }, [userInfo]);
 
-  const handleChangeCityClick = () => {
-    onChangeCityClick();
-  };
   return (
     <nav className="menu">
       <Link to="./" target="_self" className="menu__logo">
@@ -155,9 +147,7 @@ function Navigation({
         </ul>
 
         <ul
-          className={`menu__list menu__list_type_social ${
-            mobMenu ? '' : 'menu__list_hidden'
-          }`}
+          className={`${mobMenu ? 'menu__list' : 'menu__list_hidden'} menu__list_type_social `}
         >
           <li className="menu__list-item">
             <a
@@ -214,9 +204,9 @@ function Navigation({
             <button
               type="button"
               className="personal-area__user-link personal-area__user-link_type_city "
-              onClick={handleChangeCityClick}
+              onClick={onChangeCityClick}
             >
-              {loggedIn ? `${currentUser.city.name}.  Изменить город` : 'Изменить ваш город'}
+              {loggedIn ? `${currentUser.city.name}.  Изменить город` : `${currentUser.city.name}. Изменить ваш город`}
             </button>
 
             <Route path="/profile">

@@ -27,14 +27,13 @@ import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({
     id: 0,
     user: 0,
     city: {
-      id: 0,
+      id: 7,
       name: 'Москва',
       isPrimary: false,
     },
@@ -42,16 +41,17 @@ function App() {
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
-  // Отслеживаем активные фильтры в компонентах
-  function changeActiveRubric(rubric, active) {
-    if (rubric === 'All' || rubric === 'Все') {
-      setActiveRubrics([]);
-    } else if (!active) {
-      setActiveRubrics([...activeRubrics, rubric]);
-    } else {
-      setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
-    }
-  }
+
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
+  const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
+  const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
+  const [isQuery, setIsQuery] = React.useState(false);
+  const [calendarData, setCalendarData] = React.useState([]);
+  // События на которые подписан
+  const [myEvents, setMyEvents] = React.useState([]);
+  const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+
+  // const [path, setPath] = React.useState('');
 
   React.useEffect(() => {
     useAuth(setCurrentUser, setLoggedIn);
@@ -59,7 +59,7 @@ function App() {
     api
       .getCitiesList()
       .then((data) => {
-        console.log(data.results);
+        console.log('CitiesList', data.results);
         setCitiesList(data.results);
         localStorage.setItem('citiesList', JSON.stringify(data.results));
       })
@@ -67,6 +67,113 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
+  function getSubscribes() {
+    api.getMyEvents(getAccessToken())
+      .then((res) => setMyEvents(res.results))
+      .catch((error) => console.log(error));
+  }
+
+  function unSubscribes(calendar) {
+    setIsQuery(true);
+    const event = myEvents.filter((item) => item.event === calendar.id);
+    api.signOutOnEvent(getAccessToken(), event[0].id)
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error))
+      .finally(() => setIsQuery(false));
+  }
+
+  function getCalendarEvents() {
+    api.getEvents(getAccessToken())
+      .then((res) => {
+        console.log('events', res);
+        setCalendarData(res.results);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
+  // logic for restoring city for unauth user
+  React.useEffect(() => {
+    if (!loggedIn && localStorage.getItem('bbbs-user')) {
+      setCurrentUser(JSON.parse(localStorage.getItem('bbbs-user')));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      getCalendarEvents();
+      getSubscribes();
+    }
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    if (loggedIn) getCalendarEvents();
+  }, [isQuery, loggedIn]);
+
+  function openConfirmationPopup() {
+    setIsConfirmationPopupOpen(true);
+  }
+
+  function handleSuccessRegPopup() {
+    api.signUpOnEvent(getAccessToken(), currentEvent.id)
+      .then((res) => {
+        console.log(res);
+        setIsSuccessRegPopupOpen(true);
+        openConfirmationPopup();
+        getCalendarEvents();
+        getSubscribes();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
+
+  function closeAllPopups() {
+    setIsConfirmationPopupOpen(false);
+    setIsDescriptionPopupOpen(false);
+    setIsSuccessRegPopupOpen(false);
+  }
+
+  function handleDescription(calendar) {
+    setCurrentEvent(calendar);
+    setIsDescriptionPopupOpen(true);
+  }
+  function handleBooking(calendar) {
+    setCurrentEvent(calendar);
+    openConfirmationPopup();
+  }
+
+  function handleCancelBooking(calendar) {
+    unSubscribes(calendar);
+    getSubscribes();
+  }
+
+  function handleImmidiateBooking(calendar) {
+    api.signUpOnEvent(getAccessToken(), calendar.id)
+      .then((res) => {
+        console.log(res);
+        setIsSuccessRegPopupOpen(true);
+        openConfirmationPopup();
+        getCalendarEvents();
+        getSubscribes();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
+  // Отслеживаем активные фильтры в компонентах
+  function changeActiveRubric(rubric, active) {
+    if (rubric === 'all' || rubric === 'Все') {
+      setActiveRubrics([]);
+    } else if (!active) {
+      setActiveRubrics([...activeRubrics, rubric]);
+    } else {
+      setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
+    }
+  }
   // попап городов -смена города
   const handleChangeCityClick = () => {
     setIsOpenPopupCities(true);
@@ -111,11 +218,13 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     console.log(selectedCity);
-    return selectedCity; // здесь нет логики смены для неавторизованного юзера
+    localStorage.setItem('bbbs-user', JSON.stringify({ ...currentUser, city: selectedCity }));
+    setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
-  const handleLoginOpen = () => {
+  const handleLoginOpen = (path) => {
     setIsPoupLoginOpened(true);
+    // setPath(path);
   };
   const handleLoginClose = (evt) => {
     if (
@@ -133,6 +242,25 @@ function App() {
 
   const handleOutClick = () => {
     localStorage.removeItem('bbbs-token');
+    setCurrentUser({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    });
+    localStorage.setItem('bbbs-user', JSON.stringify({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    }));
+
     setLoggedIn(false);
   };
   return (
@@ -156,10 +284,22 @@ function App() {
                   loggedIn={loggedIn}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                  onBooking={handleBooking}
+                  onDescription={handleDescription}
+                  onCancel={handleCancelBooking}
+                  onClose={closeAllPopups}
+                  currentEvent={currentEvent}
+                  isConfirmationPopupOpen={isConfirmationPopupOpen}
+                  isDescriptionPopupOpen={isDescriptionPopupOpen}
+                  isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                  handleSuccessRegPopup={handleSuccessRegPopup}
+                  handleImmidiateBooking={handleImmidiateBooking}
                 />
               </Route>
               <Route exact path="/place">
                 <Places
+                  loggedIn={loggedIn}
+                  openChangeCity={handleChangeCityClick}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
                 />
@@ -172,9 +312,21 @@ function App() {
                 exact
                 path="/calendar"
                 loggedIn={loggedIn}
+                currentUser={currentUser}
                 activeRubrics={activeRubrics}
                 selectRubric={changeActiveRubric}
                 component={Calendar}
+                onBooking={handleBooking}
+                onDescription={handleDescription}
+                onCancel={handleCancelBooking}
+                onClose={closeAllPopups}
+                currentEvent={currentEvent}
+                isConfirmationPopupOpen={isConfirmationPopupOpen}
+                isDescriptionPopupOpen={isDescriptionPopupOpen}
+                isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                calendarData={calendarData}
+                handleSuccessRegPopup={handleSuccessRegPopup}
+                handleImmidiateBooking={handleImmidiateBooking}
               />
               <Route exact path="/questions">
                 <Questions
@@ -189,6 +341,8 @@ function App() {
                 onOutClick={handleOutClick}
                 loggedIn={loggedIn}
                 component={Profile}
+                openEventDescription={handleDescription}
+                user={currentUser}
               />
               <Route exact path="/video">
                 <Video
@@ -227,7 +381,7 @@ function App() {
               </Route>
             </Switch>
           </div>
-          <Footer />
+          <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
           {isPopupLoginOpened ? (
             <PopupLogin
               onClose={handleLoginClose}

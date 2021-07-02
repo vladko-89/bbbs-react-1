@@ -3,7 +3,8 @@
   border-bottom: 0.5px solid rgba(70, 70, 70, 1);
 }
 .coming-events__list {
-overflow-x: scroll;
+  overflow-y: hidden;
+overflow-x: auto;
   display: flex;
   list-style: none;
   padding: 0;
@@ -15,6 +16,7 @@ overflow-x: scroll;
 
 }
 .coming-events__event {
+  cursor: pointer;
   width: 270px;
   min-width: 270px;
   height: 158px;
@@ -24,6 +26,10 @@ overflow-x: scroll;
   border-radius: 30px;
   background-color: white;
   box-sizing: border-box;
+  transition: all 0.3s;
+}
+.coming-events__event:hover {
+  transform: scale(1.02);
 }
 .coming-events__title {
   font-family: 'ProtoGrotesk';

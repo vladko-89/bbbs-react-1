@@ -9,12 +9,10 @@ import mockMeetingStories from '../../utils/mockMeetigsStories.json';
 import MeetingStoryForm from '../MeetingStoryForm/MeetingStoryForm';
 import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 import { getAccessToken } from '../../utils/utils';
-
-// import { CurrentUser } from "../../contexts/CurrentUser";
+import CalendarDescription from '../CalendarDescription/CalendarDescription';
 
 // eslint-disable-next-line no-unused-vars
-function Profile() {
-  // const user = React.useContext(CurrentUser);
+function Profile(user) {
   // eslint-disable-next-line no-console
   // console.log(user);
   // eslint-disable-next-line no-unused-vars
@@ -24,7 +22,8 @@ function Profile() {
   const [isOpenPopupDeleteMeet, setIsOpenPopupDeleteMeet] = React.useState(
     () => !!userMeetings.length > 0,
   );
-
+  const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
+  const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
   const [isHidden, setIsHidden] = React.useState(false);
   const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
@@ -41,7 +40,7 @@ function Profile() {
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, []);
+  }, [user]);
   // eslint-disable-next-line no-console
   console.log(userMeetings);
   // eslint-disable-next-line no-console
@@ -67,8 +66,10 @@ function Profile() {
       event.key === 'Escape' || event.target.classList.contains('popup_opened')
     ) {
       setIsOpenPopupDeleteMeet(false);
+      setIsDescriptionPopupOpen(false);
     }
     setIsOpenPopupDeleteMeet(false);
+    setIsDescriptionPopupOpen(false);
   };
 
   const handleDeleteMeet = () => {
@@ -90,17 +91,23 @@ function Profile() {
   const handleAddMeetClick = () => {
     setIsHidden(false);
   };
+  const handleEventClick = (item) => {
+    setCurrentEvent(item);
+    setIsDescriptionPopupOpen(true);
+    console.log(item);
+  };
   return (
     <>
       <main className="main">
         <section className="personal-area page__section">
           <div className="personal-area__sign-up">
-            <h2 className="section-title personal-area__title personal-area__title_type_sign-up">
+            <h2 className="personal-area__title personal-area__title_type_sign-up">
               {userEvents.length > 0
                 ? 'Вы записаны на мероприятия:'
                 : 'У вас нет записи на мероприятия'}
             </h2>
-            {userEvents.length > 0 && <EventInProfile events={userEvents} />}
+            {userEvents.length > 0
+            && <EventInProfile events={userEvents} openEventDescription={handleEventClick} />}
           </div>
 
           <div className="personal-area__story">
@@ -159,8 +166,19 @@ function Profile() {
         title={`${meetTitle} ${meetTime}`}
       />
       )}
+      {{ isDescriptionPopupOpen } && (
+        <CalendarDescription
+          currentEvent={currentEvent}
+          onClose={handleClose}
+          isOpen={isDescriptionPopupOpen}
+          onActionClick={() => console.log('No function')}
+        />
+      )}
     </>
   );
 }
+Profile.propTypes = {
+
+};
 
 export default Profile;

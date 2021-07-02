@@ -11,7 +11,14 @@ function CalendarDescription({
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
-
+  React.useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', onClose);
+    }
+    return (() => {
+      document.removeEventListener('keydown', onClose);
+    });
+  });
   return (
     <div className={`popup popup_type_description ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_calendar">
@@ -55,7 +62,7 @@ function CalendarDescription({
           <div className="calendar__submit">
             <button
               className="button button_theme_light button_action_confirm"
-              disabled={!availablePlaces}
+              disabled={!availablePlaces || currentEvent.booked}
               type="button"
               onClick={() => onActionClick(currentEvent)}
             >
@@ -77,6 +84,7 @@ CalendarDescription.propTypes = {
   onClose: PropTypes.func.isRequired,
   onActionClick: PropTypes.func.isRequired,
   currentEvent: PropTypes.shape({
+    booked: PropTypes.bool,
     startAt: PropTypes.string,
     endAt: PropTypes.string,
     title: PropTypes.string,

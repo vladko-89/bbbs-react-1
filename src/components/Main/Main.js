@@ -15,62 +15,42 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
+import { cardsOnMain } from '../../utils/Constants';
 import './Main.scss';
 
-function Main({ loggedIn, activeRubrics, selectRubric }) {
+function Main({
+  loggedIn,
+  activeRubrics,
+  selectRubric,
+  onBooking,
+  onDescription,
+  onCancel,
+  onClose,
+  isConfirmationPopupOpen,
+  isDescriptionPopupOpen,
+  isSuccessRegPopupOpen,
+  handleSuccessRegPopup,
+  handleImmidiateBooking,
+}) {
   const [mainState, setMainState] = React.useState({});
   const [isDataReady, setIsDataReady] = React.useState(false);
-  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
-  const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
-  const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
     api.getMain().then((res) => {
-      // eslint-disable-next-line no-console
-      console.log(res);
+      console.log('main', res);
       setMainState(res);
       localStorage.setItem('mainState', JSON.stringify(res));
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, [setMainState]);
+  }, []);
 
   // Обнуляем выставленные фильтры при монтировании компонента
   React.useEffect(() => {
-    selectRubric('All', true);
+    selectRubric('all', true);
   }, []);
 
-  function openConfirmationPopup() {
-    setIsConfirmationPopupOpen(true);
-  }
-  function handleSuccessRegPopup() {
-    setIsSuccessRegPopupOpen(true);
-    openConfirmationPopup();
-  }
-  function handleDescription() {
-    setIsDescriptionPopupOpen(true);
-  }
-  function handleBooking() {
-    openConfirmationPopup();
-  }
-
-  function handleCancelBooking(calendar) {
-    // some handle code for backend
-    // eslint-disable-next-line no-console
-    console.log(calendar);
-  }
-
-  function handleImmidiateBooking(calendar) {
-    // eslint-disable-next-line no-console
-    console.log(calendar);
-    setIsSuccessRegPopupOpen(true);
-  }
-  function closeAllPopups() {
-    setIsConfirmationPopupOpen(false);
-    setIsDescriptionPopupOpen(false);
-    setIsSuccessRegPopupOpen(false);
-  }
   if (isDataReady) {
     return (
       <main className="main">
@@ -88,9 +68,9 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 endAt={mainState.event.endAt}
                 seats={mainState.event.seats}
                 takenSeats={mainState.event.takenSeats}
-                onBooking={handleBooking}
-                onDescription={handleDescription}
-                onCancel={handleCancelBooking}
+                onBooking={onBooking}
+                onDescription={onDescription}
+                onCancel={onCancel}
                 activeRubrics={activeRubrics}
                 tags={[{
                   name: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
@@ -99,31 +79,32 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
               />
             ) : <MainLead />}
             <MainStory
-              title={mainState.history.title}
-              imageUrl={mainState.history.imageUrl}
+              title={mainState?.history?.title}
+              imageUrl={mainState?.history?.imageUrl}
             />
           </article>
         </section>
 
         <MainMentor
+          id={mainState.place.id}
+          chosen={mainState.place.chosen}
           title={mainState.place.title}
           address={mainState.place.address}
           link={mainState.place.link}
           imageUrl={mainState.place.imageUrl}
-          rubrics={['sport', '8-10', 'chosen']}
           info={mainState.place.info}
           description={mainState.place.description}
         />
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[0].title}
-            color={mainState.articles[0].color}
+            title={mainState.articles[0]?.title}
+            color={mainState.articles[0]?.color}
           />
         </section>
 
         <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {mainState.movies.slice(0, 4).map((movie) => (
+          {mainState.movies.slice(0, cardsOnMain).map((movie) => (
             <MainVideoPreview
               link={movie.link}
               key={movie.id}
@@ -144,8 +125,6 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
             link={mainState.video.link}
             imageUrl={mainState.video.imageUrl}
             duration={mainState.video.duration}
-            tags={mainState.video.tags}
-            activeRubrics={activeRubrics}
           />
         </section>
 
@@ -159,7 +138,7 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 <MainQuestion
                   key={q.id}
                   question={q.question}
-                  name={q.tags[1]?.name}
+                  tag={q.tags}
                 />
               ))}
             </div>
@@ -175,20 +154,20 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
         <CalendarConfirmation
           isOpen={isConfirmationPopupOpen}
           handleSuccessRegClick={handleSuccessRegPopup}
-          onClose={closeAllPopups}
+          onClose={onClose}
           currentEvent={mainState.event}
         />
         <CalendarDescription
           isOpen={isDescriptionPopupOpen}
-          onClose={closeAllPopups}
+          onClose={onClose}
           currentEvent={mainState.event}
           onActionClick={handleImmidiateBooking}
         />
         <CalendarSuccessRegistration
           currentEvent={mainState.event}
           isOpen={isSuccessRegPopupOpen}
-          handleCloseSuccessRegPopup={closeAllPopups}
-          onClose={closeAllPopups}
+          handleCloseSuccessRegPopup={onClose}
+          onClose={onClose}
         />
       </main>
     );
@@ -201,6 +180,15 @@ Main.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
+  onBooking: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onDescription: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  handleImmidiateBooking: PropTypes.func.isRequired,
+  handleSuccessRegPopup: PropTypes.func.isRequired,
+  isConfirmationPopupOpen: PropTypes.bool.isRequired,
+  isDescriptionPopupOpen: PropTypes.bool.isRequired,
+  isSuccessRegPopupOpen: PropTypes.bool.isRequired,
 };
 
 export default Main;
