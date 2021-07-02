@@ -2,7 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function FilmCard({ film }) {
+// eslint-disable-next-line react/prop-types
+export default function FilmCard({ film, isAnnotation }) {
   return (
     <article className="card-container card-pagination">
       <div className="card card_content_video">
@@ -24,7 +25,7 @@ export default function FilmCard({ film }) {
           <a href={film.trailer} className="link card__link link_action_open-video">смотреть трейлер</a>
         </div>
       </div>
-      <div className="card card_content_annotation">
+      <div className={`card card_content_annotation ${isAnnotation ? '' : 'card_content_annotation_disabled'}`}>
         <div className="card__content">
           <div className="card__annotation">
             {

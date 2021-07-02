@@ -21,6 +21,7 @@ import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
 import PopupCities from '../PopupCities/PopupCities';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
@@ -347,6 +348,11 @@ function App() {
                 <Video
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/read-watch-main">
+                <ReadAndWatch
+                  activeRubrics={activeRubrics}
                 />
               </Route>
               <Route exact path="/catalog">
