@@ -3,6 +3,7 @@ const delayResponse = 500;
 const scrollDelay = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
+const placesPerPage = 3;
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
   'Москва',
@@ -20,7 +21,20 @@ const citiesList = [
   'Тула',
 ];
 
-const colors = ['yellow', 'green', 'yellow', 'pink', 'blue', 'pink', 'green', 'yellow', 'green', 'blue', 'pink', 'blue'];
+const colors = [
+  'yellow',
+  'green',
+  'yellow',
+  'pink',
+  'blue',
+  'pink',
+  'green',
+  'yellow',
+  'green',
+  'blue',
+  'pink',
+  'blue',
+];
 
 const figures = [
   'square',
@@ -40,6 +54,7 @@ export {
   scrollDelay,
   cardsPerPage,
   cardsOnMain,
+  placesPerPage,
   placesTextForms,
   citiesList,
   figures,

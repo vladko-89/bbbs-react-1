@@ -37,20 +37,23 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getPlacesTags(tags) {
-    const params = new URLSearchParams();
-    if (tags) tags.forEach((tag) => params.append('tag', tag));
+  getPlacesTags() {
     return axios
-      .get(`${this._baseUrl}/places/tags/`, {
-        params,
-      })
+      .get(`${this._baseUrl}/places/tags/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
-  getPlaces({ token, cityId }) {
+  getPlaces({
+    token, cityId, limit, offset, tags,
+  }) {
     const params = new URLSearchParams();
     params.append('city', cityId);
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
     return axios
       .get(`${this._baseUrl}/places/`,
         token ? {
