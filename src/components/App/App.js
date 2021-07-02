@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -26,7 +26,6 @@ import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
 function App() {
-  const location = useLocation();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [activeRubrics, setActiveRubrics] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({
@@ -79,14 +78,22 @@ function App() {
         console.log(error);
       });
   }
+  // logic for restoring city for unauth user
+  React.useEffect(() => {
+    if (!loggedIn && localStorage.getItem('bbbs-user')) {
+      setCurrentUser(JSON.parse(localStorage.getItem('bbbs-user')));
+    }
+  }, []);
 
   React.useEffect(() => {
-    getCalendarEvents();
-    getSubscribes();
+    if (loggedIn) {
+      getCalendarEvents();
+      getSubscribes();
+    }
   }, [currentUser]);
 
   React.useEffect(() => {
-    getCalendarEvents();
+    if (loggedIn) getCalendarEvents();
   }, [isQuery]);
 
   function openConfirmationPopup() {
@@ -144,7 +151,7 @@ function App() {
   }
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
-    if (rubric === 'All' || rubric === 'Все') {
+    if (rubric === 'all' || rubric === 'Все') {
       setActiveRubrics([]);
     } else if (!active) {
       setActiveRubrics([...activeRubrics, rubric]);
@@ -159,7 +166,7 @@ function App() {
     api
       .getCitiesList()
       .then((data) => {
-        console.log(data.results);
+        console.log('CitiesList', data.results);
         setCitiesList(data.results);
         localStorage.setItem('citiesList', JSON.stringify(data.results));
       })
@@ -202,7 +209,6 @@ function App() {
           localStorage.setItem('user', JSON.stringify(res));
         }
       })
-      .then((res) => { if (location.pathname === '/calendar') { console.log('here'); } })
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   };
@@ -212,7 +218,8 @@ function App() {
     // eslint-disable-next-line no-console
     console.log(`city changed on ${place}`);
     console.log(selectedCity);
-    return selectedCity; // здесь нет логики смены для неавторизованного юзера
+    localStorage.setItem('bbbs-user', JSON.stringify({ ...currentUser, city: selectedCity }));
+    setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
   const handleLoginOpen = (path) => {
@@ -273,6 +280,8 @@ function App() {
               </Route>
               <Route exact path="/place">
                 <Places
+                  loggedIn={loggedIn}
+                  openChangeCity={handleChangeCityClick}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
                 />
@@ -314,6 +323,8 @@ function App() {
                 onOutClick={handleOutClick}
                 loggedIn={loggedIn}
                 component={Profile}
+                openEventDescription={handleDescription}
+                user={currentUser}
               />
               <Route exact path="/video">
                 <Video
@@ -347,7 +358,7 @@ function App() {
               </Route>
             </Switch>
           </div>
-          <Footer />
+          <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
           {isPopupLoginOpened ? (
             <PopupLogin
               onClose={handleLoginClose}

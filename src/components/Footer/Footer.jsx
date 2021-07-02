@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import logo from '../../images/svg/footer-logo.svg';
 import { scrollDelay } from '../../utils/Constants';
 
-function Footer() {
+function Footer({ loggedIn, onLoginPopup }) {
   function onLinkNav() {
     setTimeout(() => {
       window.scrollTo({
@@ -50,11 +51,24 @@ function Footer() {
             </Link>
           </li>
           <li className="footer__column-links">
-            <Link to="/calendar" onClick={onLinkNav} className="footer__column-link">
-              Календарь
-            </Link>
+            {loggedIn ? (
+              <Link to="/calendar" onClick={onLinkNav} className="footer__column-link">
+
+                Календарь
+              </Link>
+            ) : (
+              <button
+                type="button"
+                className="footer__column-link"
+                onClick={onLoginPopup}
+              >
+                Календарь
+              </button>
+            ) }
+
           </li>
           <li className="footer__column-links">
+
             <Link to="/place" onClick={onLinkNav} className="footer__column-link">
               куда пойти
             </Link>
@@ -128,3 +142,8 @@ function Footer() {
 }
 
 export default Footer;
+
+Footer.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  onLoginPopup: PropTypes.func.isRequired,
+};
