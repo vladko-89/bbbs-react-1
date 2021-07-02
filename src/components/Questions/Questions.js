@@ -10,16 +10,10 @@ import api from '../../utils/Api';
 
 import styles from './Questions.module.scss';
 
-export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
+export default function Questions({ loggedIn }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
-
-  const [activeFilter, setActiveFilter] = React.useState('');
-
-  function onFilterChange(tag) {
-    setActiveFilter(tag);
-  }
 
   React.useEffect(() => {
     Promise.all([
@@ -48,14 +42,10 @@ export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
         <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
           <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
             {
-              tags.map((tag, i) => (
+              tags.map((tag) => (
                 <Tag
                   key={tag.id}
-                  isActive={i === 0}
                   name={tag.name}
-                  selectRubric={selectRubric}
-                  onFilterChange={onFilterChange}
-                  activeFilter={activeFilter}
                 />
               ))
             }
@@ -68,7 +58,6 @@ export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
             <Question
               key={question.id}
               question={question}
-              activeRubrics={activeRubrics}
             />
           ))
         }
@@ -86,6 +75,4 @@ Questions.defaultProps = {
 
 Questions.propTypes = {
   loggedIn: PropTypes.bool,
-  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectRubric: PropTypes.func.isRequired,
 };

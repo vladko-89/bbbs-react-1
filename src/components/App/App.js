@@ -308,11 +308,7 @@ function App() {
                 handleImmidiateBooking={handleImmidiateBooking}
               />
               <Route exact path="/questions">
-                <Questions
-                  loggedIn={loggedIn}
-                  activeRubrics={activeRubrics}
-                  selectRubric={changeActiveRubric}
-                />
+                <Questions loggedIn={loggedIn} />
               </Route>
               <ProtectedRoute
                 exact
