@@ -50,6 +50,8 @@ function App() {
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
 
+  // const [path, setPath] = React.useState('');
+
   function getSubscribes() {
     api.getMyEvents(getAccessToken())
       .then((res) => setMyEvents(res.results))
@@ -220,8 +222,9 @@ function App() {
     setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
-  const handleLoginOpen = () => {
+  const handleLoginOpen = (path) => {
     setIsPoupLoginOpened(true);
+    // setPath(path);
   };
   const handleLoginClose = (evt) => {
     if (

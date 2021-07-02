@@ -212,6 +212,28 @@ class Api {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
+  // ПРАВА ДЕТЕЙ
+
+  // Получаю карточки прав
+  getRights(tags) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    return axios
+      .get(`${this._baseUrl}/rights/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Получаю теги прав
+  getRightsTags() {
+    return axios
+      .get(`${this._baseUrl}/rights/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
 }
 
 const api = new Api(baseUrl);

@@ -1,37 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
-import { FilterArrayFirst, cards } from '../../utils/RightsData';
 import Filter from '../Filter/Filter';
 import RightsCard from '../RightsCard/RightsCard';
-import Pagination from '../Pagination/Pagination';
-import { cardsPerPage } from '../../utils/Constants';
+import Preloader from '../Preloader/Preloader';
+import api from '../../utils/Api';
+import { formingCards } from '../../utils/utils';
+import { figures, colors } from '../../utils/Constants';
 
 function Rights({
   activeRubrics,
   selectRubric,
 }) {
-  const currentIndex = React.useRef(0);
-  const [cardsToShow, setCardsToShow] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [tags, setTags] = React.useState([]);
+  const [rights, setRights] = React.useState([]);
+
   React.useEffect(() => {
-    selectRubric('All', true);
+    Promise.all([api.getRightsTags(), api.getRights()])
+      .then(([resTags, resRights]) => {
+        setTags([
+          {
+            id: 0,
+            name: 'Все',
+            slug: 'all',
+          },
+          ...resTags.results,
+        ]);
+        console.log(resRights.results);
+        const result = formingCards(resRights.results, figures, colors);
+        setRights(result);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
-  function onPageChange(page) {
-    if (page !== 1) {
-      currentIndex.current = page * cardsPerPage - cardsPerPage;
-    } else {
-      currentIndex.current = 0;
-    }
-    setCardsToShow(cards.slice(currentIndex.current, page * cardsPerPage));
-  }
+  React.useEffect(() => {
+    api
+      .getRights(activeRubrics)
+      .then((res) => {
+        const result = formingCards(res.results, figures, colors);
+        setRights(result);
+      })
+      .catch((err) => console.log(err));
+  }, [activeRubrics]);
 
-  return (
+  return isLoading ? (
+    <Preloader />
+  ) : (
     <main className="main">
       <section className="lead page__section">
         <MainTitle title="Права детей" />
         <Filter
-          array={FilterArrayFirst}
+          array={tags}
         // eslint-disable-next-line no-console
           selectRubric={selectRubric}
         />
@@ -39,7 +63,7 @@ function Rights({
           <div className="rights__line rights__line_stage_first" />
           <div className="rights__line rights__line_stage_second" />
           <div className="rights__line rights__line_stage_third" />
-          {cardsToShow.map((card) => (
+          {rights.map((card) => (
             <RightsCard
               key={card.id}
               activeRubrics={activeRubrics}
@@ -47,11 +71,6 @@ function Rights({
             />
           ))}
         </section>
-        <Pagination
-          cardsLength={cards.length}
-          onPageChange={onPageChange}
-          cardsPerPage={cardsPerPage}
-        />
       </section>
     </main>
   );
