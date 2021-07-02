@@ -5,15 +5,9 @@ import './Pagination.scss';
 
 function Pagination({ cardsLength, onPageChange, cardsPerPage }) {
   const totalPages = Math.ceil(cardsLength / cardsPerPage);
-  React.useEffect(() => {
-    onPageChange(1);
-  }, [cardsLength]);
-
   return (
     <section
-      className={`pagination page__section ${
-        totalPages === 1 ? 'display_none' : ''
-      }`}
+      className="pagination page__section"
     >
       <nav className="pagination__nav" aria-label="Навигация по страницам">
         <ReactPaginate
