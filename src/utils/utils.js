@@ -24,6 +24,7 @@ export function useAuth(setUserData, setLoginState) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
     const parsedAccess = jwt.decode(tokenData.access);
     const parsedRefresh = jwt.decode(tokenData.refresh);
+    console.log('access exp date', fromUnixTime(parsedAccess.exp));
     if (!(compareAsc(fromUnixTime(parsedAccess.exp), new Date()) === 1)) { // access token expired
       if (compareAsc(fromUnixTime(parsedRefresh.exp), new Date()) === 1) { // refresh token valid
         console.log('trying to update access');
@@ -37,7 +38,7 @@ export function useAuth(setUserData, setLoginState) {
     // recheck that we _now_ have a valid access token
     if (compareAsc(fromUnixTime(parsedAccess.exp), new Date()) === 1) {
       api.getUserInfo(tokenData.access)
-        .then((res) => { console.log(res); setUserData(res); setLoginState(true); })
+        .then((res) => { console.log('auth =>', res); setUserData(res); setLoginState(true); })
         .catch((err) => console.log(err));
     }
     //  localStorage.removeItem('bbbs-token'); // no valid access and refresh tokens

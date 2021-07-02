@@ -52,6 +52,20 @@ function App() {
 
   // const [path, setPath] = React.useState('');
 
+  React.useEffect(() => {
+    useAuth(setCurrentUser, setLoggedIn);
+    // запрос за списком городов
+    api
+      .getCitiesList()
+      .then((data) => {
+        console.log('CitiesList', data.results);
+        setCitiesList(data.results);
+        localStorage.setItem('citiesList', JSON.stringify(data.results));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  }, []);
+
   function getSubscribes() {
     api.getMyEvents(getAccessToken())
       .then((res) => setMyEvents(res.results))
@@ -94,7 +108,7 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) getCalendarEvents();
-  }, [isQuery]);
+  }, [isQuery, loggedIn]);
 
   function openConfirmationPopup() {
     setIsConfirmationPopupOpen(true);
@@ -159,21 +173,6 @@ function App() {
       setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
     }
   }
-
-  React.useEffect(() => {
-    useAuth(setCurrentUser, setLoggedIn);
-    // запрос за списком городов
-    api
-      .getCitiesList()
-      .then((data) => {
-        console.log('CitiesList', data.results);
-        setCitiesList(data.results);
-        localStorage.setItem('citiesList', JSON.stringify(data.results));
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
-  }, []);
-
   // попап городов -смена города
   const handleChangeCityClick = () => {
     setIsOpenPopupCities(true);
@@ -292,7 +291,6 @@ function App() {
                   isConfirmationPopupOpen={isConfirmationPopupOpen}
                   isDescriptionPopupOpen={isDescriptionPopupOpen}
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
-                  calendarData={calendarData}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
                 />
