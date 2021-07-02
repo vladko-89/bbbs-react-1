@@ -40,7 +40,7 @@ export function useAuth(setUserData, setLoginState) {
         .then((res) => { console.log(res); setUserData(res); setLoginState(true); })
         .catch((err) => console.log(err));
     }
-    localStorage.removeItem('bbbs-token'); // no valid access and refresh tokens
+    //  localStorage.removeItem('bbbs-token'); // no valid access and refresh tokens
   }
   return null; // means an error
 }
@@ -63,7 +63,7 @@ export function getAccessToken() {
     // recheck that we _now_ have a valid access token
     if (compareAsc(fromUnixTime(accessToken.exp), new Date()) === 1) {
       return tokenData.access;
-    } localStorage.removeItem('bbbs-token'); // access && refresh expired
+    } // localStorage.removeItem('bbbs-token'); // access && refresh expired
   }
   return null;
 }

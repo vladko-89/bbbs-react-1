@@ -6,10 +6,14 @@ import MainMentor from '../MainMentor/MainMentor';
 import PlacesCards from '../PlacesCards/PlacesCards';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
+import CurrentUserContext from '../../contexts/CurrentUser';
+import { getAccessToken } from '../../utils/utils';
 
 function Places({
   loggedIn, openChangeCity, activeRubrics, selectRubric,
 }) {
+  const currentUser = React.useContext(CurrentUserContext);
+  console.log(currentUser);
   React.useEffect(() => {
     if (!loggedIn && !localStorage.getItem('bbbs-user')) {
       openChangeCity(true);
@@ -19,8 +23,10 @@ function Places({
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [places, setPlaces] = React.useState([]);
+
   React.useEffect(() => {
-    Promise.all([api.getPlacesTags(), api.getPlaces()])
+    Promise.all([api.getPlacesTags(),
+      api.getPlaces({ token: getAccessToken(), cityId: currentUser.city.id })])
       .then(([resTags, resPlaces]) => {
         setTags([
           {
@@ -40,8 +46,7 @@ function Places({
   }, []);
 
   React.useEffect(() => {
-    api
-      .getPlaces(activeRubrics)
+    api.getPlaces({ token: getAccessToken(), cityId: currentUser.city.id })
       .then((res) => setPlaces(res))
       .catch((err) => console.log(err));
   }, [activeRubrics]);
