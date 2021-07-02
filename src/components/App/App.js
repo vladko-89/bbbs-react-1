@@ -250,7 +250,7 @@ function App() {
         isPrimary: false,
       },
     });
-    localStorage.setItem(JSON.stringify({
+    localStorage.setItem('bbbs-user', JSON.stringify({
       id: 0,
       user: 0,
       city: {
