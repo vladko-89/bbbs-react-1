@@ -47,7 +47,8 @@ export default function Films() {
 
       <section className="cards-grid cards-grid_content_small-cards page__section">
         {
-          shownCards.map((film, i) => <FilmCard key={i.toString()} film={film} />)
+          // eslint-disable-next-line max-len
+          shownCards.map((film, i) => <FilmCard key={i.toString()} film={film} isAnnotation="true" />)
         }
       </section>
 

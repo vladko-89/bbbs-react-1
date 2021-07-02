@@ -17,14 +17,13 @@ import { books } from '../../utils/booksData';
 
 export default function ReadAndWatch(activeRubrics) {
   const [moviesToShow, setMoviesToShow] = React.useState([]);
-
   React.useEffect(() => {
     api.getMain().then((res) => {
       setMoviesToShow(res.movies);
     })
       .catch((err) => console.log(err));
   }, []);
-
+  const isAnnotation = false;
   return (
     <main className="main">
       <section className="rights preview page__section">
@@ -44,7 +43,6 @@ export default function ReadAndWatch(activeRubrics) {
         {/* <div className="preview__row"> */}
         <Swiper
           className="preview__row preview__card catalog-card"
-          // centeredSlides="true"
           slidesPerView="auto"
           breakpoints={{
             320: {
@@ -100,7 +98,6 @@ export default function ReadAndWatch(activeRubrics) {
         <div className="preview__row">
           <Swiper
             className="preview__row preview__card catalog-card"
-            // centeredSlides="true"
             slidesPerView="auto"
             breakpoints={{
               320: {
@@ -153,7 +150,6 @@ export default function ReadAndWatch(activeRubrics) {
         <div className="preview__row">
           <Swiper
             className="preview__row preview__card catalog-card"
-            // centeredSlides="true"
             slidesPerView="auto"
             breakpoints={{
               320: {
@@ -196,7 +192,6 @@ export default function ReadAndWatch(activeRubrics) {
         <div className="preview__row">
           <Swiper
             className="preview__row preview__card catalog-card"
-            // centeredSlides="true"
             slidesPerView="auto"
             breakpoints={{
               320: {
@@ -218,7 +213,7 @@ export default function ReadAndWatch(activeRubrics) {
             {// eslint-disable-next-line max-len
               films.map((film, i) => (
                 <SwiperSlide>
-                  <FilmCard key={i.toString()} film={film} />
+                  <FilmCard key={i.toString()} film={film} isAnnotation={isAnnotation} />
                   {' '}
                 </SwiperSlide>
               ))
@@ -243,7 +238,6 @@ export default function ReadAndWatch(activeRubrics) {
         <div className="preview__row ">
           <Swiper
             className="preview__row preview__card catalog-card"
-            // centeredSlides="true"
             slidesPerView="auto"
             breakpoints={{
               320: {
