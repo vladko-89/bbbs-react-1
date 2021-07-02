@@ -242,6 +242,25 @@ function App() {
 
   const handleOutClick = () => {
     localStorage.removeItem('bbbs-token');
+    setCurrentUser({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    });
+    localStorage.setItem(JSON.stringify({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    }));
+
     setLoggedIn(false);
   };
   return (

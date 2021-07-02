@@ -382,3 +382,13 @@
     } */
   }
 }
+
+@media screen and (min-width: 1380px){
+  .menu__list_type_social {
+    display: none;
+  }
+  .user-info_mobile {
+    top: 50px;
+  }
+
+}
