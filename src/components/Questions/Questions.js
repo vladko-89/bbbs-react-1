@@ -35,38 +35,42 @@ export default function Questions({ loggedIn }) {
       .finally(() => setIsLoading(false));
   }, []);
 
-  return isLoading ? (<Preloader />) : (
-    <main className={styles.main}>
-      <section className={`${styles.lead} ${styles.page__section}`}>
-        <MainTitle title="Ответы на вопросы" />
-        <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
-          <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
-            {
-              tags.map((tag) => (
-                <Tag
-                  key={tag.id}
-                  name={tag.name}
-                />
-              ))
-            }
-          </ul>
-        </div>
-      </section>
-      <section className={`${styles.questions} ${styles.page__section}`}>
+  try {
+    return isLoading ? (<Preloader />) : (
+      <main className={styles.main}>
+        <section className={`${styles.lead} ${styles.page__section}`}>
+          <MainTitle title="Ответы на вопросы" />
+          <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
+            <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
+              {
+                tags.map((tag) => (
+                  <Tag key={tag.id} name={tag.name} />
+                ))
+              }
+            </ul>
+          </div>
+        </section>
+        <section className={`${styles.questions} ${styles.page__section}`}>
+          {
+            questions.map((question) => (
+              <Question key={question.id} question={question} />
+            ))
+          }
+        </section>
         {
-          questions.map((question) => (
-            <Question
-              key={question.id}
-              question={question}
-            />
-          ))
+          loggedIn && <QuestionForm />
         }
-      </section>
-      {
-        loggedIn && <QuestionForm />
-      }
-    </main>
-  );
+      </main>
+    );
+  } catch (error) {
+    return (
+      <main className={styles.main}>
+        <section className={`${styles.lead} ${styles.page__section}`}>
+          <MainTitle title="Ответы на вопросы" />
+        </section>
+      </main>
+    );
+  }
 }
 
 Questions.defaultProps = {
