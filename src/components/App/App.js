@@ -22,7 +22,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import PopupCities from '../PopupCities/PopupCities';
-import ErrorBoundary from '../ErrorBoundry/ErrorBoundry';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
