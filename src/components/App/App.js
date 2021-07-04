@@ -257,46 +257,12 @@ function App() {
             onChangeCityClick={handleChangeCityClick}
           />
           <div className="page__content">
-            <ErrorBoundary>
-              <Switch>
-                <Route exact path="/">
-                  <Main
-                    loggedIn={loggedIn}
-                    activeRubrics={activeRubrics}
-                    selectRubric={changeActiveRubric}
-                    onBooking={handleBooking}
-                    onDescription={handleDescription}
-                    onCancel={handleCancelBooking}
-                    onClose={closeAllPopups}
-                    currentEvent={currentEvent}
-                    isConfirmationPopupOpen={isConfirmationPopupOpen}
-                    isDescriptionPopupOpen={isDescriptionPopupOpen}
-                    isSuccessRegPopupOpen={isSuccessRegPopupOpen}
-                    calendarData={calendarData}
-                    handleSuccessRegPopup={handleSuccessRegPopup}
-                    handleImmidiateBooking={handleImmidiateBooking}
-                  />
-                </Route>
-                <Route exact path="/place">
-                  <Places
-                    loggedIn={loggedIn}
-                    openChangeCity={handleChangeCityClick}
-                    activeRubrics={activeRubrics}
-                    selectRubric={changeActiveRubric}
-                  />
-                </Route>
-                <Route exact path="/about">
-                  <AboutUs />
-                </Route>
-
-                <ProtectedRoute
-                  exact
-                  path="/calendar"
+            <Switch>
+              <Route exact path="/">
+                <Main
                   loggedIn={loggedIn}
-                  currentUser={currentUser}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
-                  component={Calendar}
                   onBooking={handleBooking}
                   onDescription={handleDescription}
                   onCancel={handleCancelBooking}
@@ -309,50 +275,82 @@ function App() {
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
                 />
-                <Route exact path="/questions">
-                  <Questions loggedIn={loggedIn} />
-                </Route>
-                <ProtectedRoute
-                  exact
-                  path="/profile"
-                  onOutClick={handleOutClick}
+              </Route>
+              <Route exact path="/place">
+                <Places
                   loggedIn={loggedIn}
-                  component={Profile}
-                  openEventDescription={handleDescription}
-                  user={currentUser}
+                  openChangeCity={handleChangeCityClick}
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
                 />
-                <Route exact path="/video">
-                  <Video
-                    activeRubrics={activeRubrics}
-                    selectRubric={changeActiveRubric}
-                  />
-                </Route>
-                <Route exact path="/catalog">
-                  <Catalog />
-                </Route>
-                <Route exact path="/rights">
-                  <Rights
-                    activeRubrics={activeRubrics}
-                    selectRubric={changeActiveRubric}
-                  />
-                </Route>
-                <Route exact path="/articles">
-                  <Articles />
-                </Route>
-                <Route exact path="/films">
-                  <Films />
-                </Route>
-                <Route exact path="/books">
-                  <Books />
-                </Route>
-                <Route exact path="/stories">
-                  <Stories />
-                </Route>
-                <Route exact path="*">
-                  <PageNotFound />
-                </Route>
-              </Switch>
-            </ErrorBoundary>
+              </Route>
+              <Route exact path="/about">
+                <AboutUs />
+              </Route>
+
+              <ProtectedRoute
+                exact
+                path="/calendar"
+                loggedIn={loggedIn}
+                currentUser={currentUser}
+                activeRubrics={activeRubrics}
+                selectRubric={changeActiveRubric}
+                component={Calendar}
+                onBooking={handleBooking}
+                onDescription={handleDescription}
+                onCancel={handleCancelBooking}
+                onClose={closeAllPopups}
+                currentEvent={currentEvent}
+                isConfirmationPopupOpen={isConfirmationPopupOpen}
+                isDescriptionPopupOpen={isDescriptionPopupOpen}
+                isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                calendarData={calendarData}
+                handleSuccessRegPopup={handleSuccessRegPopup}
+                handleImmidiateBooking={handleImmidiateBooking}
+              />
+              <Route exact path="/questions">
+                <Questions loggedIn={loggedIn} />
+              </Route>
+              <ProtectedRoute
+                exact
+                path="/profile"
+                onOutClick={handleOutClick}
+                loggedIn={loggedIn}
+                component={Profile}
+                openEventDescription={handleDescription}
+                user={currentUser}
+              />
+              <Route exact path="/video">
+                <Video
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/catalog">
+                <Catalog />
+              </Route>
+              <Route exact path="/rights">
+                <Rights
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/articles">
+                <Articles />
+              </Route>
+              <Route exact path="/films">
+                <Films />
+              </Route>
+              <Route exact path="/books">
+                <Books />
+              </Route>
+              <Route exact path="/stories">
+                <Stories />
+              </Route>
+              <Route exact path="*">
+                <PageNotFound />
+              </Route>
+            </Switch>
           </div>
           <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
           {isPopupLoginOpened ? (
