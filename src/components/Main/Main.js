@@ -44,7 +44,7 @@ function Main({
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, []);
+  }, [mainState]);
 
   // Обнуляем выставленные фильтры при монтировании компонента
   React.useEffect(() => {
