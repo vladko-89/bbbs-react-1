@@ -105,7 +105,7 @@ function App() {
       getCalendarEvents();
       getSubscribes();
     }
-  }, [currentUser]);
+  }, [currentUser, loggedIn]);
 
   React.useEffect(() => {
     if (loggedIn) getCalendarEvents();
