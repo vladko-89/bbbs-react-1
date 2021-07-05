@@ -7,6 +7,7 @@ import QuestionForm from './QuestionForm/QuestionForm';
 import Preloader from '../Preloader/Preloader';
 
 import api from '../../utils/Api';
+import { toggleTagId } from '../../utils/utils';
 
 import styles from './Questions.module.scss';
 
@@ -14,6 +15,7 @@ export default function Questions({ loggedIn }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
+  const [tagIdArray, setTagIdArray] = React.useState([]);
 
   React.useEffect(() => {
     Promise.all([
@@ -35,6 +37,13 @@ export default function Questions({ loggedIn }) {
       .finally(() => setIsLoading(false));
   }, []);
 
+  React.useEffect(() => {
+  }, [tagIdArray]);
+
+  function handleTagClick(tagId) {
+    setTagIdArray(toggleTagId(tagId, tagIdArray));
+  }
+
   try {
     return isLoading ? (<Preloader />) : (
       <main className={styles.main}>
@@ -44,7 +53,7 @@ export default function Questions({ loggedIn }) {
             <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
               {
                 tags.map((tag) => (
-                  <Tag key={tag.id} name={tag.name} />
+                  <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
                 ))
               }
             </ul>
