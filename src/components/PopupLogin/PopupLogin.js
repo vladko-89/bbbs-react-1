@@ -37,7 +37,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         if (res.access) {
           localStorage.setItem('bbbs-token', JSON.stringify(res));
         } else {
-          setActionError(`Произошла обшибка: ${res.status} ${res.statusText} ${res.text}`);
+          setActionError(`Произошла обшибка: ${res.text}`);
           // eslint-disable-next-line no-debugger
         }
       })
