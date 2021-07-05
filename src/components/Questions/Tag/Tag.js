@@ -25,7 +25,7 @@ export default function Tag({ tag, handleTagClick }) {
       tagElement.current.classList.toggle(styles.tags__button_active);
     }
 
-    handleTagClick(tag.id);
+    handleTagClick(tag);
   }
 
   React.useEffect(() => {

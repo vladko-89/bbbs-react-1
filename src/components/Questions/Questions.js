@@ -7,15 +7,38 @@ import QuestionForm from './QuestionForm/QuestionForm';
 import Preloader from '../Preloader/Preloader';
 
 import api from '../../utils/Api';
-import { toggleTagId } from '../../utils/utils';
+import { toggleTag } from '../../utils/utils';
 
 import styles from './Questions.module.scss';
+
+const requestDelay = 2000;
 
 export default function Questions({ loggedIn }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
-  const [tagIdArray, setTagIdArray] = React.useState([]);
+  const selectedTags = React.useRef([]);
+  const requestTimer = React.useRef(null);
+
+  function handleTagClick(tag) {
+    clearTimeout(requestTimer.current);
+
+    selectedTags.current = toggleTag(tag, selectedTags.current);
+
+    const searchParams = new URLSearchParams();
+    selectedTags.current.forEach((item) => {
+      searchParams.append('tag', item.slug);
+    });
+
+    requestTimer.current = setTimeout(() => {
+      api.getQuestions(searchParams.toString())
+        .then((resQuestions) => {
+          setQuestions(resQuestions.results);
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err))
+        .finally(() => { requestTimer.current = null; });
+    }, requestDelay);
+  }
 
   React.useEffect(() => {
     Promise.all([
@@ -30,19 +53,9 @@ export default function Questions({ loggedIn }) {
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
       })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      })
+      .catch((err) => console.log('Ошибка загрузки данных: ', err))
       .finally(() => setIsLoading(false));
   }, []);
-
-  React.useEffect(() => {
-  }, [tagIdArray]);
-
-  function handleTagClick(tagId) {
-    setTagIdArray(toggleTagId(tagId, tagIdArray));
-  }
 
   try {
     return isLoading ? (<Preloader />) : (
@@ -72,6 +85,7 @@ export default function Questions({ loggedIn }) {
       </main>
     );
   } catch (error) {
+    console.log('Ошибка рендеринга вопросов: ', error);
     return (
       <main className={styles.main}>
         <section className={`${styles.lead} ${styles.page__section}`}>
