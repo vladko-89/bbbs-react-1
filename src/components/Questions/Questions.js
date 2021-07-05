@@ -14,7 +14,8 @@ import styles from './Questions.module.scss';
 const requestDelay = 2000;
 
 export default function Questions({ loggedIn }) {
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoadingTags, setIsLoadingTags] = React.useState(true);
+  const [isLoadingQuestions, setIsLoadingQuestions] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
   const selectedTags = React.useRef([]);
@@ -22,6 +23,7 @@ export default function Questions({ loggedIn }) {
 
   function handleTagClick(tag) {
     clearTimeout(requestTimer.current);
+    setIsLoadingQuestions(true);
 
     selectedTags.current = toggleTag(tag, selectedTags.current);
 
@@ -36,7 +38,10 @@ export default function Questions({ loggedIn }) {
           setQuestions(resQuestions.results);
         })
         .catch((err) => console.log('Ошибка загрузки данных: ', err))
-        .finally(() => { requestTimer.current = null; });
+        .finally(() => {
+          requestTimer.current = null;
+          setIsLoadingQuestions(false);
+        });
     }, requestDelay);
   }
 
@@ -54,29 +59,38 @@ export default function Questions({ loggedIn }) {
         setQuestions(resQuestions.results);
       })
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoadingTags(false);
+        setIsLoadingQuestions(false);
+      });
   }, []);
 
   try {
-    return isLoading ? (<Preloader />) : (
+    return (
       <main className={styles.main}>
         <section className={`${styles.lead} ${styles.page__section}`}>
           <MainTitle title="Ответы на вопросы" />
           <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
-            <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
-              {
-                tags.map((tag) => (
-                  <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
-                ))
-              }
-            </ul>
+            {
+              isLoadingTags ? <Preloader /> : (
+                <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
+                  {
+                    tags.map((tag) => (
+                      <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
+                    ))
+                  }
+                </ul>
+              )
+            }
           </div>
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
           {
-            questions.map((question) => (
-              <Question key={question.id} question={question} />
-            ))
+            isLoadingQuestions ? <Preloader /> : (
+              questions.map((question) => (
+                <Question key={question.id} question={question} />
+              ))
+            )
           }
         </section>
         {
