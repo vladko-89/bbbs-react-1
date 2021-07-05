@@ -93,6 +93,7 @@ export default function Questions({ loggedIn }) {
             )
           }
         </section>
+        <button type="button" className={styles['more-button']}>Ещё</button>
         {
           loggedIn && <QuestionForm />
         }

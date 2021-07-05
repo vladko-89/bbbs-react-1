@@ -1,6 +1,47 @@
 @import '../../scss/variables.scss';
 @import '../../scss/mixins.scss';
 
+
+.more-button {
+  display: block;
+  margin: 60px auto 80px;
+  padding: 1em;
+  max-width: 970px;
+  width: 100%;
+  border: 1px solid #224CFF;
+  border-radius: 100px;
+
+  background-color: transparent;
+
+  font-family: 'Proto Grotesk Web Light', Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 19px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: #224CFF;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.more-button:hover {
+  background-color: #C8D1FF;
+}
+
+.more-button:active {
+  border-color: #224CFF;
+  background-color: #224CFF;
+  color: #F3F2F2;
+}
+
+.more-button:active:hover {
+  border-color: #2E2468;
+  background-color: #2E2468;
+}
+
 .main {
   padding-bottom: 120px;
 }
