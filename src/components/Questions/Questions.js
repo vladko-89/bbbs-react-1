@@ -20,11 +20,12 @@ export default function Questions({ loggedIn }) {
   const [questions, setQuestions] = React.useState([]);
   const selectedTags = React.useRef([]);
   const requestTimer = React.useRef(null);
-  const nextLink = React.useRef(null);
+  const [nextLink, setNextLink] = React.useState(null);
 
   function handleTagClick(tag) {
     clearTimeout(requestTimer.current);
     setIsLoading(true);
+    setNextLink(null);
 
     selectedTags.current = toggleTag(tag, selectedTags.current);
 
@@ -38,7 +39,7 @@ export default function Questions({ loggedIn }) {
       api.getQuestions(searchParams.toString())
         .then((resQuestions) => {
           setQuestions(resQuestions.results);
-          nextLink.current = resQuestions.next;
+          setNextLink(resQuestions.next);
         })
         .catch((err) => console.log('Ошибка загрузки данных: ', err))
         .finally(() => {
@@ -49,11 +50,11 @@ export default function Questions({ loggedIn }) {
   }
 
   function handleMoreClick() {
-    if (nextLink.current) {
-      api.getMoreQuestions(nextLink.current)
+    if (nextLink) {
+      api.getMoreQuestions(nextLink)
         .then((resQuestions) => {
           setQuestions([...questions, ...resQuestions.results]);
-          nextLink.current = resQuestions.next;
+          setNextLink(resQuestions.next);
         })
         .catch((err) => console.log('Ошибка загрузки данных: ', err));
     }
@@ -74,7 +75,7 @@ export default function Questions({ loggedIn }) {
           slug: 'all',
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
-        nextLink.current = resQuestions.next;
+        setNextLink(resQuestions.next);
       })
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
       .finally(() => {
@@ -104,7 +105,7 @@ export default function Questions({ loggedIn }) {
               ))
           }
           {
-            nextLink.current && <button onClick={handleMoreClick} type="button" className={styles['more-button']}>Ещё</button>
+            nextLink && <button onClick={handleMoreClick} type="button" className={styles['more-button']}>Ещё</button>
           }
         </section>
         {
