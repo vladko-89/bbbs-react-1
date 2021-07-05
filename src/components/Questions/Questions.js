@@ -1,4 +1,5 @@
 import React from 'react';
+import { CSSTransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
 import Tag from './Tag/Tag';
@@ -12,18 +13,20 @@ import { toggleTag } from '../../utils/utils';
 import styles from './Questions.module.scss';
 
 const requestDelay = 2000;
+const limit = 4;
 
 export default function Questions({ loggedIn }) {
-  const [isLoadingTags, setIsLoadingTags] = React.useState(true);
-  const [isLoadingQuestions, setIsLoadingQuestions] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
   const selectedTags = React.useRef([]);
   const requestTimer = React.useRef(null);
+  const [nextLink, setNextLink] = React.useState(null);
 
   function handleTagClick(tag) {
     clearTimeout(requestTimer.current);
-    setIsLoadingQuestions(true);
+    setIsLoading(true);
+    setNextLink(null);
 
     selectedTags.current = toggleTag(tag, selectedTags.current);
 
@@ -31,24 +34,40 @@ export default function Questions({ loggedIn }) {
     selectedTags.current.forEach((item) => {
       searchParams.append('tag', item.slug);
     });
+    searchParams.append('limit', limit);
 
     requestTimer.current = setTimeout(() => {
       api.getQuestions(searchParams.toString())
         .then((resQuestions) => {
           setQuestions(resQuestions.results);
+          setNextLink(resQuestions.next);
         })
         .catch((err) => console.log('Ошибка загрузки данных: ', err))
         .finally(() => {
           requestTimer.current = null;
-          setIsLoadingQuestions(false);
+          setIsLoading(false);
         });
     }, requestDelay);
   }
 
+  function handleMoreClick() {
+    if (nextLink) {
+      api.getMoreQuestions(nextLink)
+        .then((resQuestions) => {
+          setQuestions([...questions, ...resQuestions.results]);
+          setNextLink(resQuestions.next);
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err));
+    }
+  }
+
   React.useEffect(() => {
+    const searchParams = new URLSearchParams();
+    searchParams.append('limit', limit);
+
     Promise.all([
       api.getQuestionsTags(),
-      api.getQuestions(),
+      api.getQuestions(searchParams.toString()),
     ])
       .then(([resTags, resQuestions]) => {
         setTags([{
@@ -57,11 +76,11 @@ export default function Questions({ loggedIn }) {
           slug: 'all',
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
+        setNextLink(resQuestions.next);
       })
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
       .finally(() => {
-        setIsLoadingTags(false);
-        setIsLoadingQuestions(false);
+        setIsLoading(false);
       });
   }, []);
 
@@ -71,26 +90,38 @@ export default function Questions({ loggedIn }) {
         <section className={`${styles.lead} ${styles.page__section}`}>
           <MainTitle title="Ответы на вопросы" />
           <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
-            {
-              isLoadingTags ? <Preloader /> : (
-                <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
-                  {
-                    tags.map((tag) => (
-                      <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
-                    ))
-                  }
-                </ul>
-              )
-            }
+            <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
+              {
+                tags.map((tag) => (
+                  <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
+                ))
+              }
+            </ul>
           </div>
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
+          <CSSTransitionGroup
+            transitionName={{
+              enter: styles['transition-group-enter'],
+              enterActive: styles['transition-group-enter-active'],
+              leave: styles['transition-group-leave'],
+              leaveActive: styles['transition-group-leave-active'],
+              appear: styles['transition-group-appear'],
+              appearActive: styles['transition-group-appear-active'],
+            }}
+            transitionAppear
+            transitionAppearTimeout={500}
+            transitionEnter={300}
+            transitionLeave={false}
+          >
+            {
+                isLoading ? <Preloader /> : questions.map((question) => (
+                  <Question key={question.id} question={question} />
+                ))
+            }
+          </CSSTransitionGroup>
           {
-            isLoadingQuestions ? <Preloader /> : (
-              questions.map((question) => (
-                <Question key={question.id} question={question} />
-              ))
-            )
+            nextLink && <button onClick={handleMoreClick} type="button" className={`${styles.button} ${styles.button_theme_light}`}>Ещё</button>
           }
         </section>
         {
