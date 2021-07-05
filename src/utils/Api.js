@@ -84,13 +84,11 @@ class Api {
           if (res.ok) {
             return res.json();
           }
-          errorMessage.status = res.status;
-          errorMessage.statusText = res.statusText;
           return res.json();
         })
         .then((res) => {
           if (!res.access) {
-            errorMessage.text = res.non_field_errors;
+            errorMessage.text = res.message;
             return errorMessage;
           }
           return res;
