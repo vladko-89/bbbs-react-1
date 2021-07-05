@@ -47,7 +47,7 @@ class Api {
     token, cityId, limit, offset, tags,
   }) {
     const params = new URLSearchParams();
-    params.append('city', cityId);
+    if (!token) { params.append('city', cityId); }
     if (limit) {
       params.append('limit', limit);
       params.append('offset', offset);
@@ -57,6 +57,7 @@ class Api {
       .get(`${this._baseUrl}/places/`,
         token ? {
           headers: { Authorization: `Bearer ${token}` },
+          params,
         } : {
           params,
         })
