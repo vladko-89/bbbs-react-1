@@ -7,18 +7,42 @@ import QuestionForm from './QuestionForm/QuestionForm';
 import Preloader from '../Preloader/Preloader';
 
 import api from '../../utils/Api';
+import { toggleTag } from '../../utils/utils';
 
 import styles from './Questions.module.scss';
 
-export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
-  const [isLoading, setIsLoading] = React.useState(true);
+const requestDelay = 2000;
+
+export default function Questions({ loggedIn }) {
+  const [isLoadingTags, setIsLoadingTags] = React.useState(true);
+  const [isLoadingQuestions, setIsLoadingQuestions] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
+  const selectedTags = React.useRef([]);
+  const requestTimer = React.useRef(null);
 
-  const [activeFilter, setActiveFilter] = React.useState('');
+  function handleTagClick(tag) {
+    clearTimeout(requestTimer.current);
+    setIsLoadingQuestions(true);
 
-  function onFilterChange(tag) {
-    setActiveFilter(tag);
+    selectedTags.current = toggleTag(tag, selectedTags.current);
+
+    const searchParams = new URLSearchParams();
+    selectedTags.current.forEach((item) => {
+      searchParams.append('tag', item.slug);
+    });
+
+    requestTimer.current = setTimeout(() => {
+      api.getQuestions(searchParams.toString())
+        .then((resQuestions) => {
+          setQuestions(resQuestions.results);
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err))
+        .finally(() => {
+          requestTimer.current = null;
+          setIsLoadingQuestions(false);
+        });
+    }, requestDelay);
   }
 
   React.useEffect(() => {
@@ -34,50 +58,56 @@ export default function Questions({ loggedIn, activeRubrics, selectRubric }) {
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
       })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      })
-      .finally(() => setIsLoading(false));
+      .catch((err) => console.log('Ошибка загрузки данных: ', err))
+      .finally(() => {
+        setIsLoadingTags(false);
+        setIsLoadingQuestions(false);
+      });
   }, []);
 
-  return isLoading ? (<Preloader />) : (
-    <main className={styles.main}>
-      <section className={`${styles.lead} ${styles.page__section}`}>
-        <MainTitle title="Ответы на вопросы" />
-        <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
-          <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
+  try {
+    return (
+      <main className={styles.main}>
+        <section className={`${styles.lead} ${styles.page__section}`}>
+          <MainTitle title="Ответы на вопросы" />
+          <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
             {
-              tags.map((tag, i) => (
-                <Tag
-                  key={tag.id}
-                  isActive={i === 0}
-                  name={tag.name}
-                  selectRubric={selectRubric}
-                  onFilterChange={onFilterChange}
-                  activeFilter={activeFilter}
-                />
-              ))
+              isLoadingTags ? <Preloader /> : (
+                <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
+                  {
+                    tags.map((tag) => (
+                      <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
+                    ))
+                  }
+                </ul>
+              )
             }
-          </ul>
-        </div>
-      </section>
-      <section className={`${styles.questions} ${styles.page__section}`}>
+          </div>
+        </section>
+        <section className={`${styles.questions} ${styles.page__section}`}>
+          {
+            isLoadingQuestions ? <Preloader /> : (
+              questions.map((question) => (
+                <Question key={question.id} question={question} />
+              ))
+            )
+          }
+        </section>
         {
-          questions.map((question) => (
-            <Question
-              key={question.id}
-              question={question}
-              activeRubrics={activeRubrics}
-            />
-          ))
+          loggedIn && <QuestionForm />
         }
-      </section>
-      {
-        loggedIn && <QuestionForm />
-      }
-    </main>
-  );
+      </main>
+    );
+  } catch (error) {
+    console.log('Ошибка рендеринга вопросов: ', error);
+    return (
+      <main className={styles.main}>
+        <section className={`${styles.lead} ${styles.page__section}`}>
+          <MainTitle title="Ответы на вопросы" />
+        </section>
+      </main>
+    );
+  }
 }
 
 Questions.defaultProps = {
@@ -86,6 +116,4 @@ Questions.defaultProps = {
 
 Questions.propTypes = {
   loggedIn: PropTypes.bool,
-  activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectRubric: PropTypes.func.isRequired,
 };

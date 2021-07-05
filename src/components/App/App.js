@@ -23,6 +23,7 @@ import CurrentUserContext from '../../contexts/CurrentUser';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
 import PopupCities from '../PopupCities/PopupCities';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
 
@@ -330,11 +331,7 @@ function App() {
                 handleImmidiateBooking={handleImmidiateBooking}
               />
               <Route exact path="/questions">
-                <Questions
-                  loggedIn={loggedIn}
-                  activeRubrics={activeRubrics}
-                  selectRubric={changeActiveRubric}
-                />
+                <Questions loggedIn={loggedIn} />
               </Route>
               <ProtectedRoute
                 exact

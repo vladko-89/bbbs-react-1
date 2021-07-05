@@ -141,36 +141,28 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getQuestionsTags() {
+  async getQuestionsTags() {
     return fetch(`${this._baseUrl}/questions/tags/`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
-  getQuestions() {
-    return fetch(`${this._baseUrl}/questions/`, {
+  async getQuestions(searchParams = '') {
+    return fetch(`${this._baseUrl}/questions/?${searchParams}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
-  sendQuestion(question) {
-    const accessToken = JSON.parse(localStorage.getItem('bbbs-token')).access;
+  async sendQuestion(question) {
+    const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
 
     return fetch(`${this._baseUrl}/questions/`, {
       method: 'POST',
@@ -180,11 +172,7 @@ class Api {
       },
       body: JSON.stringify({ question }),
     })
-      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
   // СОБЫТИЯ КАЛЕНДАРЬ

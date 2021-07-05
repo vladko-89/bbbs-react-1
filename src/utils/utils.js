@@ -76,6 +76,7 @@ export function colorizeCards(cardsArr, colorsArr) {
   }
   return cardsArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
 }
+
 export function filterByTags(tags, data) {
   return (!tags.length)
     ? data
@@ -93,6 +94,17 @@ export function toggleTagId(tagId, tagIdArray) {
     return tagIdArray.filter((tag) => tag !== tagId);
   }
   return [...tagIdArray, tagId];
+}
+
+export function toggleTag(tag, tagArray) {
+  if (tag.id === 0) {
+    return [];
+  }
+  const index = tagArray.findIndex((item) => item.id === tag.id);
+  if (index >= 0) {
+    return tagArray.filter((item) => item.id !== tag.id);
+  }
+  return [...tagArray, tag];
 }
 
 export function formingCards(cardsArr, formsArr, colorsArr) {
