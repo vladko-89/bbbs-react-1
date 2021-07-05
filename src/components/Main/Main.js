@@ -17,6 +17,7 @@ import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
 import { cardsOnMain } from '../../utils/Constants';
 import './Main.scss';
+import { getAccessToken } from '../../utils/utils';
 
 function Main({
   loggedIn,
@@ -31,19 +32,21 @@ function Main({
   isSuccessRegPopupOpen,
   handleSuccessRegPopup,
   handleImmidiateBooking,
+  calendarData,
 }) {
   const [mainState, setMainState] = React.useState({});
   const [isDataReady, setIsDataReady] = React.useState(false);
 
   React.useEffect(() => {
-    api.getMain().then((res) => {
+    api.getMain(getAccessToken()).then((res) => {
       console.log('main', res);
       setMainState(res);
+      localStorage.setItem('mainState', JSON.stringify(res));
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, []);
+  }, [calendarData]);
 
   // Обнуляем выставленные фильтры при монтировании компонента
   React.useEffect(() => {
@@ -137,7 +140,7 @@ function Main({
                 <MainQuestion
                   key={q.id}
                   question={q.question}
-                  tag={q.tag}
+                  tag={q.tags}
                 />
               ))}
             </div>
@@ -188,6 +191,30 @@ Main.propTypes = {
   isConfirmationPopupOpen: PropTypes.bool.isRequired,
   isDescriptionPopupOpen: PropTypes.bool.isRequired,
   isSuccessRegPopupOpen: PropTypes.bool.isRequired,
+  calendarData: PropTypes.arrayOf(PropTypes.shape({
+    booked: PropTypes.bool,
+    startAt: PropTypes.string,
+    endAt: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    seats: PropTypes.number,
+    takenSeats: PropTypes.number,
+    address: PropTypes.string,
+    contact: PropTypes.string,
+  })),
 };
 
+Main.defaultProps = {
+  calendarData: PropTypes.arrayOf(PropTypes.shape({
+    booked: false,
+    startAt: '',
+    endAt: '',
+    title: '',
+    description: '',
+    seats: 0,
+    takenSeats: 0,
+    address: '',
+    contact: '',
+  })),
+};
 export default Main;

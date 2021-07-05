@@ -35,7 +35,6 @@
 @import "./components/Footer/Footer.scss";
 @import './components/App/App.scss';
 @import './components/Header/Header';
-
 @import './components/Search/Search';
 @import './components/MainLead/MainLead.scss';
 @import './components/MainVideo/MainVideo.scss';
@@ -52,7 +51,8 @@
 @import "./components/MeetingStoryArticle/MeetingStoryArticle.scss";
 @import "./components/MeetingStoryForm/MeetingStoryForm.scss";
 @import './components/Navigation/Navigation';
-
+/** Read and Watch*/
+@import './scss/_preview.scss';
 
 body {
   margin: 0;

@@ -21,6 +21,7 @@ import Rights from '../Rights/Rights';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
@@ -33,7 +34,7 @@ function App() {
     id: 0,
     user: 0,
     city: {
-      id: 0,
+      id: 7,
       name: 'Москва',
       isPrimary: false,
     },
@@ -50,6 +51,22 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+
+  // const [path, setPath] = React.useState('');
+
+  React.useEffect(() => {
+    useAuth(setCurrentUser, setLoggedIn);
+    // запрос за списком городов
+    api
+      .getCitiesList()
+      .then((data) => {
+        console.log('CitiesList', data.results);
+        setCitiesList(data.results);
+        localStorage.setItem('citiesList', JSON.stringify(data.results));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  }, []);
 
   function getSubscribes() {
     api.getMyEvents(getAccessToken())
@@ -89,11 +106,11 @@ function App() {
       getCalendarEvents();
       getSubscribes();
     }
-  }, [currentUser]);
+  }, [currentUser, loggedIn]);
 
   React.useEffect(() => {
     if (loggedIn) getCalendarEvents();
-  }, [isQuery]);
+  }, [isQuery, loggedIn]);
 
   function openConfirmationPopup() {
     setIsConfirmationPopupOpen(true);
@@ -158,21 +175,6 @@ function App() {
       setActiveRubrics(activeRubrics.filter((item) => item !== rubric));
     }
   }
-
-  React.useEffect(() => {
-    useAuth(setCurrentUser, setLoggedIn);
-    // запрос за списком городов
-    api
-      .getCitiesList()
-      .then((data) => {
-        console.log('CitiesList', data.results);
-        setCitiesList(data.results);
-        localStorage.setItem('citiesList', JSON.stringify(data.results));
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
-  }, []);
-
   // попап городов -смена города
   const handleChangeCityClick = () => {
     setIsOpenPopupCities(true);
@@ -221,8 +223,9 @@ function App() {
     setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
-  const handleLoginOpen = () => {
+  const handleLoginOpen = (path) => {
     setIsPoupLoginOpened(true);
+    // setPath(path);
   };
   const handleLoginClose = (evt) => {
     if (
@@ -240,6 +243,25 @@ function App() {
 
   const handleOutClick = () => {
     localStorage.removeItem('bbbs-token');
+    setCurrentUser({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    });
+    localStorage.setItem('bbbs-user', JSON.stringify({
+      id: 0,
+      user: 0,
+      city: {
+        id: 7,
+        name: 'Москва',
+        isPrimary: false,
+      },
+    }));
+
     setLoggedIn(false);
   };
   return (
@@ -271,9 +293,9 @@ function App() {
                   isConfirmationPopupOpen={isConfirmationPopupOpen}
                   isDescriptionPopupOpen={isDescriptionPopupOpen}
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
-                  calendarData={calendarData}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
+                  calendarData={calendarData}
                 />
               </Route>
               <Route exact path="/place">
@@ -324,6 +346,11 @@ function App() {
                 <Video
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/read-watch-main">
+                <ReadAndWatch
+                  activeRubrics={activeRubrics}
                 />
               </Route>
               <Route exact path="/catalog">

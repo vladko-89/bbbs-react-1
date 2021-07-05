@@ -11,6 +11,7 @@ function Header({
 }) {
   const [mobMenu, setMobMenu] = React.useState(false);
   const [isFixed, setIsFixed] = React.useState(false);
+
   React.useEffect(() => {
     let current = 0;
     const checkScroll = () => {

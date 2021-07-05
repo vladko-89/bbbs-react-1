@@ -8,8 +8,7 @@ class Api {
     this._baseUrl = paramBaseUrl;
   }
 
-  getMain() {
-    const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
+  getMain(accessToken) {
     return axios
       .get(
         `${this._baseUrl}/main/`,
@@ -37,20 +36,31 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getPlaces(tags) {
-    const params = new URLSearchParams();
-    if (tags) tags.forEach((tag) => params.append('tag', tag));
+  getPlacesTags() {
     return axios
-      .get(`${this._baseUrl}/places/`, {
-        params,
-      })
+      .get(`${this._baseUrl}/places/tags/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
 
-  getPlacesTags() {
+  getPlaces({
+    token, cityId, limit, offset, tags,
+  }) {
+    const params = new URLSearchParams();
+    if (!token) { params.append('city', cityId); }
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
     return axios
-      .get(`${this._baseUrl}/places/tags/`)
+      .get(`${this._baseUrl}/places/`,
+        token ? {
+          headers: { Authorization: `Bearer ${token}` },
+          params,
+        } : {
+          params,
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -74,13 +84,11 @@ class Api {
           if (res.ok) {
             return res.json();
           }
-          errorMessage.status = res.status;
-          errorMessage.statusText = res.statusText;
           return res.json();
         })
         .then((res) => {
           if (!res.access) {
-            errorMessage.text = res.non_field_errors;
+            errorMessage.text = res.message;
             return errorMessage;
           }
           return res;
@@ -197,6 +205,28 @@ class Api {
       .get(`${this._baseUrl}/afisha/event-participants/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // ПРАВА ДЕТЕЙ
+
+  // Получаю карточки прав
+  getRights(tags) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    return axios
+      .get(`${this._baseUrl}/rights/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Получаю теги прав
+  getRightsTags() {
+    return axios
+      .get(`${this._baseUrl}/rights/tags/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }

@@ -101,7 +101,7 @@ function Profile(user) {
       <main className="main">
         <section className="personal-area page__section">
           <div className="personal-area__sign-up">
-            <h2 className="section-title personal-area__title personal-area__title_type_sign-up">
+            <h2 className="personal-area__title personal-area__title_type_sign-up">
               {userEvents.length > 0
                 ? 'Вы записаны на мероприятия:'
                 : 'У вас нет записи на мероприятия'}
