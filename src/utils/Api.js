@@ -161,6 +161,17 @@ class Api {
       .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async getMoreQuestions(url) {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
+  }
+
   async sendQuestion(question) {
     const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
 

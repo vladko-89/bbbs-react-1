@@ -15,16 +15,16 @@ const requestDelay = 2000;
 const limit = 4;
 
 export default function Questions({ loggedIn }) {
-  const [isLoadingTags, setIsLoadingTags] = React.useState(true);
-  const [isLoadingQuestions, setIsLoadingQuestions] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
   const selectedTags = React.useRef([]);
   const requestTimer = React.useRef(null);
+  const nextLink = React.useRef(null);
 
   function handleTagClick(tag) {
     clearTimeout(requestTimer.current);
-    setIsLoadingQuestions(true);
+    setIsLoading(true);
 
     selectedTags.current = toggleTag(tag, selectedTags.current);
 
@@ -38,13 +38,25 @@ export default function Questions({ loggedIn }) {
       api.getQuestions(searchParams.toString())
         .then((resQuestions) => {
           setQuestions(resQuestions.results);
+          nextLink.current = resQuestions.next;
         })
         .catch((err) => console.log('Ошибка загрузки данных: ', err))
         .finally(() => {
           requestTimer.current = null;
-          setIsLoadingQuestions(false);
+          setIsLoading(false);
         });
     }, requestDelay);
+  }
+
+  function handleMoreClick() {
+    if (nextLink.current) {
+      api.getMoreQuestions(nextLink.current)
+        .then((resQuestions) => {
+          setQuestions([...questions, ...resQuestions.results]);
+          nextLink.current = resQuestions.next;
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err));
+    }
   }
 
   React.useEffect(() => {
@@ -62,11 +74,11 @@ export default function Questions({ loggedIn }) {
           slug: 'all',
         }, ...resTags.results]);
         setQuestions(resQuestions.results);
+        nextLink.current = resQuestions.next;
       })
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
       .finally(() => {
-        setIsLoadingTags(false);
-        setIsLoadingQuestions(false);
+        setIsLoading(false);
       });
   }, []);
 
@@ -76,28 +88,24 @@ export default function Questions({ loggedIn }) {
         <section className={`${styles.lead} ${styles.page__section}`}>
           <MainTitle title="Ответы на вопросы" />
           <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
-            {
-              isLoadingTags ? <Preloader /> : (
-                <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
-                  {
-                    tags.map((tag) => (
-                      <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
-                    ))
-                  }
-                </ul>
-              )
-            }
+            <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
+              {
+                tags.map((tag) => (
+                  <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />
+                ))
+              }
+            </ul>
           </div>
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
           {
-            isLoadingQuestions ? <Preloader /> : (
-              questions.map((question) => (
+              isLoading ? <Preloader /> : questions.map((question) => (
                 <Question key={question.id} question={question} />
               ))
-            )
           }
-          <button type="button" className={styles['more-button']}>Ещё</button>
+          {
+            nextLink.current && <button onClick={handleMoreClick} type="button" className={styles['more-button']}>Ещё</button>
+          }
         </section>
         {
           loggedIn && <QuestionForm />
