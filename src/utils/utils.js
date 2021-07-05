@@ -20,7 +20,7 @@ export function declOfNum(n, textForm) {
 }
 
 export function useAuth(setUserData, setLoginState) {
-  if (localStorage.getItem('bbbs-token')) {
+  if (localStorage.getItem('bbbs-token') !== 'undefined' && localStorage.getItem('bbbs-token') !== null) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
     const parsedAccess = jwt.decode(tokenData.access);
     const parsedRefresh = jwt.decode(tokenData.refresh);
@@ -47,7 +47,7 @@ export function useAuth(setUserData, setLoginState) {
 }
 
 export function getAccessToken() {
-  if (localStorage.getItem('bbbs-token')) {
+  if ((localStorage.getItem('bbbs-token') !== 'undefined' && localStorage.getItem('bbbs-token') !== null)) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
     const accessToken = jwt.decode(tokenData.access);
     const refreshToken = jwt.decode(tokenData.refresh);

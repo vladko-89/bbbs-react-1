@@ -294,6 +294,7 @@ function App() {
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
+                  calendarData={calendarData}
                 />
               </Route>
               <Route exact path="/place">

@@ -8,8 +8,7 @@ class Api {
     this._baseUrl = paramBaseUrl;
   }
 
-  getMain() {
-    const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
+  getMain(accessToken) {
     return axios
       .get(
         `${this._baseUrl}/main/`,
