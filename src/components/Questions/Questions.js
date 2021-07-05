@@ -12,6 +12,7 @@ import { toggleTag } from '../../utils/utils';
 import styles from './Questions.module.scss';
 
 const requestDelay = 2000;
+const limit = 4;
 
 export default function Questions({ loggedIn }) {
   const [isLoadingTags, setIsLoadingTags] = React.useState(true);
@@ -31,6 +32,7 @@ export default function Questions({ loggedIn }) {
     selectedTags.current.forEach((item) => {
       searchParams.append('tag', item.slug);
     });
+    searchParams.append('limit', limit);
 
     requestTimer.current = setTimeout(() => {
       api.getQuestions(searchParams.toString())
@@ -46,9 +48,12 @@ export default function Questions({ loggedIn }) {
   }
 
   React.useEffect(() => {
+    const searchParams = new URLSearchParams();
+    searchParams.append('limit', limit);
+
     Promise.all([
       api.getQuestionsTags(),
-      api.getQuestions(),
+      api.getQuestions(searchParams.toString()),
     ])
       .then(([resTags, resQuestions]) => {
         setTags([{
@@ -92,8 +97,8 @@ export default function Questions({ loggedIn }) {
               ))
             )
           }
+          <button type="button" className={styles['more-button']}>Ещё</button>
         </section>
-        <button type="button" className={styles['more-button']}>Ещё</button>
         {
           loggedIn && <QuestionForm />
         }
