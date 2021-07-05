@@ -105,7 +105,7 @@ export default function Questions({ loggedIn }) {
               ))
           }
           {
-            nextLink && <button onClick={handleMoreClick} type="button" className={styles['more-button']}>Ещё</button>
+            nextLink && <button onClick={handleMoreClick} type="button" className={`${styles.button} ${styles.button_theme_light}`}>Ещё</button>
           }
         </section>
         {
