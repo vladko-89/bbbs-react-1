@@ -34,7 +34,7 @@ function CalendarEvent({
         <ul className="calendar__info-list">
           <li className="calendar__info-item">
             <p className="calendar__time">
-              {`${format(new Date(startAt), 'H:mm')}–${format(new Date(endAt), 'H:mm')}
+              {`${format(new Date(startAt), 'HH:mm')}–${format(new Date(endAt), 'HH:mm')}
               `}
             </p>
           </li>

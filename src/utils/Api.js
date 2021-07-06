@@ -65,6 +65,20 @@ class Api {
       .catch((error) => console.log(error));
   }
 
+  addPlace(accessToken, place) {
+    return fetch(`${this._baseUrl}/places/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(place),
+    })
+      .then((res) => { console.log(res); return res.json(); });
+
+    // .then((data) => (res.ok ? data : Promise.reject(data)));
+  }
+
   signIn(login, password) {
     const errorMessage = {};
     return (
@@ -95,13 +109,6 @@ class Api {
         })
         .catch((error) => console.log(error))
     );
-    // return axios
-    //   .post(`${this._baseUrl}/token/`, {
-    //     username: login,
-    //     password,
-    //   })
-    //   .then((res) => { console.log(res); return res.data; })
-    //   .catch((error) => console.log(error));
   }
 
   updateToken(refreshToken) {
