@@ -15,7 +15,7 @@ function CalendarConfirmation({
           {`Подтвердить запись на мероприятие
           "${currentEvent.title}"
           ${format(new Date(currentEvent.startAt), 'd', { locale: ruLocale })} ${format(new Date(currentEvent.startAt), 'MMMM', { locale: ruLocale })}
-          с ${format(new Date(currentEvent.startAt), 'H:mm')}–${format(new Date(currentEvent.endAt), 'H:mm')}`}
+          с ${format(new Date(currentEvent.startAt), 'HH:mm')}–${format(new Date(currentEvent.endAt), 'HH:mm')}`}
         </h2>
         <div className="calendar__buttons">
           <button className="button button_theme_light calendar__confirm" type="button" onClick={handleSuccessRegClick}>Подтвердить запись</button>

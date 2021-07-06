@@ -5,7 +5,7 @@ import { useFormWithValidation } from '../Validation/Validation';
 import api from '../../utils/Api';
 import { getAccessToken } from '../../utils/utils';
 
-function PopupLogin({ onClose, onSubmit, isOpen }) {
+function PopupLogin({ onClose, onSubmit }) {
   const loginFormValidation = useFormWithValidation();
   const [actionError, setActionError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -17,9 +17,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
     onClose(evt);
   }
   React.useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', onClose);
-    }
+    document.addEventListener('keydown', onClose);
     return () => {
       document.removeEventListener('keydown', onClose);
     };
@@ -79,6 +77,5 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
 PopupLogin.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
 };
 export default PopupLogin;
