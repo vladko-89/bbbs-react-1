@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Navigation from '../Navigation/Navigation';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 function Header({
   loggedIn,
@@ -26,21 +27,23 @@ function Header({
     setMobMenu(!mobMenu);
   };
   return (
-    <header
-      className={`header ${isFixed ? 'header_fixed' : ''} page__section ${
-        mobMenu ? 'header_displayed ' : ''
-      }`}
-    >
-      <Navigation
-        mobMenu={mobMenu}
-        handleClickMobMenu={handleClickMobMenu}
-        loggedIn={loggedIn}
-        onLoginPopup={onLoginPopup}
-        userInfo={user}
-        onLogOutClick={onLogOutClick}
-        onChangeCityClick={onChangeCityClick}
-      />
-    </header>
+    <ErrorBoundary>
+      <header
+        className={`header ${isFixed ? 'header_fixed' : ''} page__section ${
+          mobMenu ? 'header_displayed ' : ''
+        }`}
+      >
+        <Navigation
+          mobMenu={mobMenu}
+          handleClickMobMenu={handleClickMobMenu}
+          loggedIn={loggedIn}
+          onLoginPopup={onLoginPopup}
+          userInfo={user}
+          onLogOutClick={onLogOutClick}
+          onChangeCityClick={onChangeCityClick}
+        />
+      </header>
+    </ErrorBoundary>
   );
 }
 

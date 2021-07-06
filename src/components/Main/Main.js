@@ -14,8 +14,9 @@ import CalendarDescription from '../CalendarDescription/CalendarDescription';
 import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import api from '../../utils/Api';
-import { cardsOnMain } from '../../utils/Constants';
+import { cardsOnMain } from '../../utils/constants';
 import './Main.scss';
 import { getAccessToken } from '../../utils/utils';
 
@@ -59,26 +60,28 @@ function Main({
         <section className="lead page__section">
           <article className="card-container card-container_type_identical">
             {loggedIn ? (
-              <CalendarEvent
-                calendar={mainState.event}
-                key={mainState.event.id}
-                booked={mainState.event.booked}
-                title={mainState.event.title}
-                address={mainState.event.address}
-                contact={mainState.event.contact}
-                startAt={mainState.event.startAt}
-                endAt={mainState.event.endAt}
-                seats={mainState.event.seats}
-                takenSeats={mainState.event.takenSeats}
-                onBooking={onBooking}
-                onDescription={onDescription}
-                onCancel={onCancel}
-                activeRubrics={activeRubrics}
-                tags={[{
-                  name: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
-                  slug: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
-                }]}
-              />
+              <ErrorBoundary>
+                <CalendarEvent
+                  calendar={mainState?.event}
+                  key={mainState?.event.id}
+                  booked={mainState?.event.booked}
+                  title={mainState?.event.title}
+                  address={mainState?.event.address}
+                  contact={mainState?.event.contact}
+                  startAt={mainState?.event.startAt}
+                  endAt={mainState?.event.endAt}
+                  seats={mainState?.event.seats}
+                  takenSeats={mainState?.event.takenSeats}
+                  onBooking={onBooking}
+                  onDescription={onDescription}
+                  onCancel={onCancel}
+                  activeRubrics={activeRubrics}
+                  tags={[{
+                    name: format(new Date(mainState?.event?.startAt), 'LLLL', { locale: ruLocale }),
+                    slug: format(new Date(mainState?.event?.startAt), 'LLLL', { locale: ruLocale }),
+                  }]}
+                />
+              </ErrorBoundary>
             ) : <MainLead />}
             <MainStory
               title={mainState?.history?.title}
@@ -88,25 +91,25 @@ function Main({
         </section>
 
         <MainMentor
-          id={mainState.place.id}
-          chosen={mainState.place.chosen}
-          title={mainState.place.title}
-          address={mainState.place.address}
-          link={mainState.place.link}
-          imageUrl={mainState.place.imageUrl}
-          info={mainState.place.info}
-          description={mainState.place.description}
+          id={mainState?.place?.id}
+          chosen={mainState?.place?.chosen}
+          title={mainState?.place?.title}
+          address={mainState?.place?.address}
+          link={mainState?.place?.link}
+          imageUrl={mainState?.place?.imageUrl}
+          info={mainState?.place?.info}
+          description={mainState?.place?.description}
         />
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[0]?.title}
-            color={mainState.articles[0]?.color}
+            title={mainState?.articles[0]?.title}
+            color={mainState?.articles[0]?.color}
           />
         </section>
 
         <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {mainState.movies.slice(0, cardsOnMain).map((movie) => (
+          {mainState?.movies.slice(0, cardsOnMain).map((movie) => (
             <MainVideoPreview
               link={movie.link}
               key={movie.id}
@@ -122,11 +125,11 @@ function Main({
 
         <section className="main-section page__section">
           <MainVideo
-            title={mainState.video.title}
-            info={mainState.video.info}
-            link={mainState.video.link}
-            imageUrl={mainState.video.imageUrl}
-            duration={mainState.video.duration}
+            title={mainState?.video.title}
+            info={mainState?.video.info}
+            link={mainState?.video.link}
+            imageUrl={mainState?.video.imageUrl}
+            duration={mainState?.video.duration}
           />
         </section>
 
@@ -136,7 +139,7 @@ function Main({
               <iframe className="card__iframe" title="iframe" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=630&height=630&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" scrolling="no" allowFullScreen allow="clipboard-write; encrypted-media; picture-in-picture; web-share" />
             </div>
             <div className="main-questions">
-              {mainState.questions.map((q) => (
+              {mainState?.questions.map((q) => (
                 <MainQuestion
                   key={q.id}
                   question={q.question}
@@ -149,24 +152,24 @@ function Main({
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[1].title}
-            color={mainState.articles[1].color}
+            title={mainState?.articles[1].title}
+            color={mainState?.articles[1].color}
           />
         </section>
         <CalendarConfirmation
           isOpen={isConfirmationPopupOpen}
           handleSuccessRegClick={handleSuccessRegPopup}
           onClose={onClose}
-          currentEvent={mainState.event}
+          currentEvent={mainState?.event}
         />
         <CalendarDescription
           isOpen={isDescriptionPopupOpen}
           onClose={onClose}
-          currentEvent={mainState.event}
+          currentEvent={mainState?.event}
           onActionClick={handleImmidiateBooking}
         />
         <CalendarSuccessRegistration
-          currentEvent={mainState.event}
+          currentEvent={mainState?.event}
           isOpen={isSuccessRegPopupOpen}
           handleCloseSuccessRegPopup={onClose}
           onClose={onClose}

@@ -9,7 +9,7 @@ import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import { getAccessToken } from '../../utils/utils';
-import { placesPerPage } from '../../utils/Constants';
+import { placesPerPage } from '../../utils/constants';
 
 function Places({
   loggedIn, openChangeCity, activeRubrics, selectRubric,

@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
-import { placesTextForms } from '../../utils/Constants';
+import { placesTextForms } from '../../utils/constants';
 import { declOfNum } from '../../utils/utils';
 
 function CalendarDescription({
   isOpen, onClose, onActionClick, currentEvent,
 }) {
-  const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
+  const availablePlaces = currentEvent?.seats - currentEvent?.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
   React.useEffect(() => {
     if (isOpen) {

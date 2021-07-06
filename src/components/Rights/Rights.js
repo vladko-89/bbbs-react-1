@@ -6,7 +6,7 @@ import RightsCard from '../RightsCard/RightsCard';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
 import { formingCards } from '../../utils/utils';
-import { figures, colors } from '../../utils/Constants';
+import { figures, colors } from '../../utils/constants';
 
 function Rights({
   activeRubrics,

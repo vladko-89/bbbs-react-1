@@ -1,5 +1,3 @@
-/* eslint-disable quotes */
-/* eslint-disable react/jsx-curly-brace-presence */
 import React from 'react';
 import api from '../../../utils/Api';
 
@@ -27,10 +25,11 @@ export default function QuestionForm() {
         messageElement.current.classList.add(styles['question-form__message_success']);
         messageElement.current.textContent = 'Спасибо! Мы приняли ваш вопрос.';
       })
-      .catch(() => {
+      .catch((err) => {
         messageElement.current.classList.remove(styles['question-form__message_success']);
         messageElement.current.classList.add(styles['question-form__message_denied']);
-        messageElement.current.textContent = 'Что-то пошло не так ...';
+        // eslint-disable-next-line prefer-destructuring
+        messageElement.current.textContent = err.details.question[0]; // temp hardcode
         submitButton.current.disabled = false;
       });
   }

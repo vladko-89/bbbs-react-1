@@ -13,7 +13,7 @@ function CalendarConfirmation({
         <button aria-label="close" className="popup__close popup__cancel" type="button" onClick={onClose} />
         <h2 className="section-title calendar__title_type_popup calendar__title_type_confirmation">
           {`Подтвердить запись на мероприятие
-          "${currentEvent.title}"
+          "${currentEvent?.title}"
           ${format(new Date(currentEvent.startAt), 'd', { locale: ruLocale })} ${format(new Date(currentEvent.startAt), 'MMMM', { locale: ruLocale })}
           с ${format(new Date(currentEvent.startAt), 'H:mm')}–${format(new Date(currentEvent.endAt), 'H:mm')}`}
         </h2>

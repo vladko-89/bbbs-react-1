@@ -2,7 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import PropTypes from 'prop-types';
-import { placesTextForms } from '../../utils/Constants';
+import { placesTextForms } from '../../utils/constants';
 import { declOfNum } from '../../utils/utils';
 
 function CalendarEvent({

@@ -25,6 +25,7 @@ import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
 import PopupCities from '../PopupCities/PopupCities';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -266,24 +267,60 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <HelmetProvider>
-        <div className="app page">
-          <Helmet>
-            <title>Старшие братья и сестры</title>
-          </Helmet>
-          <Header
-            loggedIn={loggedIn}
-            onLoginPopup={handleLoginOpen}
-            user={currentUser}
-            onLogOutClick={handleOutClick}
-            onChangeCityClick={handleChangeCityClick}
-          />
-          <div className="page__content">
-            <Switch>
-              <Route exact path="/">
-                <Main
+        <ErrorBoundary>
+          <div className="app page">
+            <Helmet>
+              <title>Старшие братья и сестры</title>
+            </Helmet>
+            <Header
+              loggedIn={loggedIn}
+              onLoginPopup={handleLoginOpen}
+              user={currentUser}
+              onLogOutClick={handleOutClick}
+              onChangeCityClick={handleChangeCityClick}
+            />
+            <div className="page__content">
+              <Switch>
+                <Route exact path="/">
+                  <ErrorBoundary>
+                    <Main
+                      loggedIn={loggedIn}
+                      activeRubrics={activeRubrics}
+                      selectRubric={changeActiveRubric}
+                      onBooking={handleBooking}
+                      onDescription={handleDescription}
+                      onCancel={handleCancelBooking}
+                      onClose={closeAllPopups}
+                      currentEvent={currentEvent}
+                      isConfirmationPopupOpen={isConfirmationPopupOpen}
+                      isDescriptionPopupOpen={isDescriptionPopupOpen}
+                      isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                      handleSuccessRegPopup={handleSuccessRegPopup}
+                      handleImmidiateBooking={handleImmidiateBooking}
+                      calendarData={calendarData}
+                    />
+                  </ErrorBoundary>
+                </Route>
+                <Route exact path="/place">
+                  <Places
+                    loggedIn={loggedIn}
+                    openChangeCity={handleChangeCityClick}
+                    activeRubrics={activeRubrics}
+                    selectRubric={changeActiveRubric}
+                  />
+                </Route>
+                <Route exact path="/about">
+                  <AboutUs />
+                </Route>
+
+                <ProtectedRoute
+                  exact
+                  path="/calendar"
                   loggedIn={loggedIn}
+                  currentUser={currentUser}
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                  component={Calendar}
                   onBooking={handleBooking}
                   onDescription={handleDescription}
                   onCancel={handleCancelBooking}
@@ -292,107 +329,74 @@ function App() {
                   isConfirmationPopupOpen={isConfirmationPopupOpen}
                   isDescriptionPopupOpen={isDescriptionPopupOpen}
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
+                  calendarData={calendarData}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
-                  calendarData={calendarData}
                 />
-              </Route>
-              <Route exact path="/place">
-                <Places
+                <Route exact path="/questions">
+                  <Questions
+                    loggedIn={loggedIn}
+                    activeRubrics={activeRubrics}
+                    selectRubric={changeActiveRubric}
+                  />
+                </Route>
+                <ProtectedRoute
+                  exact
+                  path="/profile"
+                  onOutClick={handleOutClick}
                   loggedIn={loggedIn}
-                  openChangeCity={handleChangeCityClick}
-                  activeRubrics={activeRubrics}
-                  selectRubric={changeActiveRubric}
+                  component={Profile}
+                  openEventDescription={handleDescription}
+                  user={currentUser}
                 />
-              </Route>
-              <Route exact path="/about">
-                <AboutUs />
-              </Route>
-
-              <ProtectedRoute
-                exact
-                path="/calendar"
-                loggedIn={loggedIn}
-                currentUser={currentUser}
-                activeRubrics={activeRubrics}
-                selectRubric={changeActiveRubric}
-                component={Calendar}
-                onBooking={handleBooking}
-                onDescription={handleDescription}
-                onCancel={handleCancelBooking}
-                onClose={closeAllPopups}
-                currentEvent={currentEvent}
-                isConfirmationPopupOpen={isConfirmationPopupOpen}
-                isDescriptionPopupOpen={isDescriptionPopupOpen}
-                isSuccessRegPopupOpen={isSuccessRegPopupOpen}
-                calendarData={calendarData}
-                handleSuccessRegPopup={handleSuccessRegPopup}
-                handleImmidiateBooking={handleImmidiateBooking}
+                <Route exact path="/video">
+                  <Video
+                    activeRubrics={activeRubrics}
+                    selectRubric={changeActiveRubric}
+                  />
+                </Route>
+                <Route exact path="/read-watch-main">
+                  <ReadAndWatch
+                    activeRubrics={activeRubrics}
+                  />
+                </Route>
+                <Route exact path="/catalog">
+                  <Catalog />
+                </Route>
+                <Route exact path="/rights">
+                  <Rights
+                    activeRubrics={activeRubrics}
+                    selectRubric={changeActiveRubric}
+                  />
+                </Route>
+                <Route exact path="/articles">
+                  <Articles />
+                </Route>
+                <Route exact path="/films">
+                  <Films />
+                </Route>
+                <Route exact path="/books">
+                  <Books />
+                </Route>
+                <Route exact path="/stories">
+                  <Stories />
+                </Route>
+                <Route exact path="*">
+                  <PageNotFound />
+                </Route>
+              </Switch>
+            </div>
+            <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
+            {isPopupLoginOpened ? (
+              <PopupLogin
+                onClose={handleLoginClose}
+                onSubmit={handleLoginSubmit}
+                isOpen={isPopupLoginOpened}
               />
-              <Route exact path="/questions">
-                <Questions
-                  loggedIn={loggedIn}
-                  activeRubrics={activeRubrics}
-                  selectRubric={changeActiveRubric}
-                />
-              </Route>
-              <ProtectedRoute
-                exact
-                path="/profile"
-                onOutClick={handleOutClick}
-                loggedIn={loggedIn}
-                component={Profile}
-                openEventDescription={handleDescription}
-                user={currentUser}
-              />
-              <Route exact path="/video">
-                <Video
-                  activeRubrics={activeRubrics}
-                  selectRubric={changeActiveRubric}
-                />
-              </Route>
-              <Route exact path="/read-watch-main">
-                <ReadAndWatch
-                  activeRubrics={activeRubrics}
-                />
-              </Route>
-              <Route exact path="/catalog">
-                <Catalog />
-              </Route>
-              <Route exact path="/rights">
-                <Rights
-                  activeRubrics={activeRubrics}
-                  selectRubric={changeActiveRubric}
-                />
-              </Route>
-              <Route exact path="/articles">
-                <Articles />
-              </Route>
-              <Route exact path="/films">
-                <Films />
-              </Route>
-              <Route exact path="/books">
-                <Books />
-              </Route>
-              <Route exact path="/stories">
-                <Stories />
-              </Route>
-              <Route exact path="*">
-                <PageNotFound />
-              </Route>
-            </Switch>
-          </div>
-          <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
-          {isPopupLoginOpened ? (
-            <PopupLogin
-              onClose={handleLoginClose}
-              onSubmit={handleLoginSubmit}
-              isOpen={isPopupLoginOpened}
-            />
-          ) : (
-            ''
-          )}
-          {{ isOpenPopupCities } && (
+            ) : (
+              ''
+            )}
+            {{ isOpenPopupCities } && (
             <PopupCities
               onChangeCities={
                 loggedIn ? handleChangeCity : handleChangeCityNotAuth
@@ -402,8 +406,9 @@ function App() {
               isCity={loggedIn ? currentUser.city.name : 'Москва'}
               citiesList={citiesList}
             />
-          )}
-        </div>
+            )}
+          </div>
+        </ErrorBoundary>
       </HelmetProvider>
     </CurrentUserContext.Provider>
   );
