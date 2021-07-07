@@ -8,6 +8,8 @@ import PlacesCards from '../PlacesCards/PlacesCards';
 import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
 import PopupRecommend from '../PopupRecommend/PopupRecommend';
+import PopupRecommendSuccess from '../PopupRecommendSuccess/PopupRecommendSuccess';
+
 import api from '../../utils/Api';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import { getAccessToken } from '../../utils/utils';
@@ -19,9 +21,13 @@ function Places({
 }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [popupRecommendOpened, setPopupRecommendOpened] = React.useState(false);
+  const [popupRecommendSuccessOpened, setPopupRecommendSuccessOpened] = React.useState(false);
 
-  const togglePopup = () => {
+  const toggleRecommendPopup = () => {
     setPopupRecommendOpened(!popupRecommendOpened);
+  };
+  const toggleRecommendSuccessPopup = () => {
+    setPopupRecommendSuccessOpened(!popupRecommendSuccessOpened);
   };
   React.useEffect(() => {
     if (!loggedIn && !localStorage.getItem('bbbs-user')) {
@@ -48,7 +54,10 @@ function Places({
 
   React.useEffect(() => {
     Promise.all([
-      api.getPlacesTags(),
+      api.getPlacesTags({
+        token: getAccessToken(),
+        cityId: currentUser.city.id,
+      }),
       api.getPlaces({
         token: getAccessToken(),
         cityId: currentUser.city.id,
@@ -101,7 +110,7 @@ function Places({
       <div className="card place-card">
         <h2 className="section-title place-card__text">
           Если вы были в интересном месте и хотите порекомендовать его другим наставникам –
-          <span role="button" tabIndex="0" onClick={togglePopup} className="place-card__span-accent">заполните форму</span>
+          <span role="button" tabIndex="0" onClick={toggleRecommendPopup} className="place-card__span-accent">заполните форму</span>
           , и мы добавим вашу
           рекомендацию.
         </h2>
@@ -125,7 +134,18 @@ function Places({
           onPageChange={onPageChange}
         />
       ) }
-      { popupRecommendOpened && <PopupRecommend onClose={togglePopup} />}
+      { popupRecommendOpened && (
+      <PopupRecommend
+        onSuccess={toggleRecommendSuccessPopup}
+        onClose={toggleRecommendPopup}
+      />
+      )}
+      { popupRecommendSuccessOpened
+      && (
+      <PopupRecommendSuccess
+        onClose={toggleRecommendSuccessPopup}
+      />
+      )}
     </div>
   );
 }

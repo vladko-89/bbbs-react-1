@@ -7,6 +7,23 @@ import ruLocale from 'date-fns/locale/ru';
 function CalendarConfirmation({
   isOpen, onClose, handleSuccessRegClick, currentEvent,
 }) {
+  const handleClose = React.useCallback(
+    (e) => {
+      if (e.code !== 'Escape' && e.type === 'keydown') {
+        return;
+      }
+      onClose();
+    },
+    [onClose],
+  );
+  React.useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleClose);
+    }
+    return (() => {
+      document.removeEventListener('keydown', handleClose);
+    });
+  });
   return (
     <div className={`popup popup_type_confirmation ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_confirmation">

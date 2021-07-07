@@ -11,12 +11,21 @@ function CalendarDescription({
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
+  const handleClose = React.useCallback(
+    (e) => {
+      if (e.code !== 'Escape' && e.type === 'keydown') {
+        return;
+      }
+      onClose();
+    },
+    [onClose],
+  );
   React.useEffect(() => {
     if (isOpen) {
-      document.addEventListener('keydown', onClose);
+      document.addEventListener('keydown', handleClose);
     }
     return (() => {
-      document.removeEventListener('keydown', onClose);
+      document.removeEventListener('keydown', handleClose);
     });
   });
   return (
