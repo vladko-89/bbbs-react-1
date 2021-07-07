@@ -78,8 +78,8 @@ function App() {
 
   function unSubscribes(calendar) {
     setIsQuery(true);
-    const event = myEvents.filter((item) => item.event === calendar.id);
-    api.signOutOnEvent(getAccessToken(), event[0].id)
+    const event = myEvents.find((item) => item.event === calendar.id);
+    api.signOutOnEvent(getAccessToken(), event.id)
       .then((res) => console.log(res))
       .catch((error) => console.log(error))
       .finally(() => setIsQuery(false));
@@ -154,6 +154,7 @@ function App() {
   }
   /* rename func */
   function handleImmidiateBooking(calendar) {
+    console.log('calendar', calendar);
     if (calendar.booked) {
       handleCancelBooking(calendar);
       setIsDescriptionPopupOpen(false);

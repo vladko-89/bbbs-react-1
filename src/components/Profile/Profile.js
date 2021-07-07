@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
@@ -11,8 +11,6 @@ import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 import { getAccessToken } from '../../utils/utils';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 
-// eslint-disable-next-line no-unused-vars
-// eslint-disable-next-line react/prop-types
 function Profile({ user, handleImmidiateBooking }) {
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
@@ -30,7 +28,10 @@ function Profile({ user, handleImmidiateBooking }) {
     handleImmidiateBooking(currentEvent);
     api
       .getEvents(getAccessToken())
-      .then((res) => setUserEvents(res.results.filter((el) => el.booked === true)));
+      .then((res) => {
+        console.log('res', res);
+        setUserEvents(res.results.filter((el) => el.booked === true));
+      });
     setIsDescriptionPopupOpen(false);
   };
   React.useEffect(() => {
@@ -187,3 +188,16 @@ Profile.propTypes = {
 };
 
 export default Profile;
+
+Profile.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    user: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      isPrimary: PropTypes.bool.isRequired,
+    }),
+  }).isRequired,
+  handleImmidiateBooking: PropTypes.func.isRequired,
+};
