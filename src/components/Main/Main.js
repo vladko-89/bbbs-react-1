@@ -149,8 +149,8 @@ function Main({
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[1].title}
-            color={mainState.articles[1].color}
+            title={mainState.articles[1]?.title}
+            color={mainState.articles[1]?.color}
           />
         </section>
         <CalendarConfirmation

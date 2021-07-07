@@ -36,9 +36,17 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getPlacesTags() {
+  getPlacesTags({ token, cityId }) {
+    const params = new URLSearchParams();
+    if (!token) { params.append('city', cityId); }
     return axios
-      .get(`${this._baseUrl}/places/tags/`)
+      .get(`${this._baseUrl}/places/tags/`,
+        token ? {
+          headers: { Authorization: `Bearer ${token}` },
+          params,
+        } : {
+          params,
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -63,6 +71,19 @@ class Api {
         })
       .then((res) => res.data)
       .catch((error) => console.log(error));
+  }
+
+  addPlace(accessToken, place) {
+    return fetch(`${this._baseUrl}/places/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(place),
+    })
+      .then((res) => res.json()
+        .then((data) => (res.ok ? data : { message: data.message, details: data.details })));
   }
 
   signIn(login, password) {
@@ -95,13 +116,6 @@ class Api {
         })
         .catch((error) => console.log(error))
     );
-    // return axios
-    //   .post(`${this._baseUrl}/token/`, {
-    //     username: login,
-    //     password,
-    //   })
-    //   .then((res) => { console.log(res); return res.data; })
-    //   .catch((error) => console.log(error));
   }
 
   updateToken(refreshToken) {

@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import api from '../../utils/Api';
 import MeetingDeletePopup from '../MeetingDeletePopup/MeetingDeletePopup';
@@ -11,11 +11,7 @@ import MeetingStoryArticle from '../MeetingStoryArticle/MeetingStoryArticle';
 import { getAccessToken } from '../../utils/utils';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 
-// eslint-disable-next-line no-unused-vars
-function Profile(user) {
-  // eslint-disable-next-line no-console
-  // console.log(user);
-  // eslint-disable-next-line no-unused-vars
+function Profile({ user, handleImmidiateBooking }) {
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
   const [selectedMeetings, setSelectedMeetings] = React.useState({});
@@ -28,6 +24,16 @@ function Profile(user) {
   const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
+  const handleUnsubscribe = () => {
+    handleImmidiateBooking(currentEvent);
+    api
+      .getEvents(getAccessToken())
+      .then((res) => {
+        console.log('res', res);
+        setUserEvents(res.results.filter((el) => el.booked === true));
+      });
+    setIsDescriptionPopupOpen(false);
+  };
   React.useEffect(() => {
     api
       .getEvents(getAccessToken())
@@ -171,7 +177,7 @@ function Profile(user) {
           currentEvent={currentEvent}
           onClose={handleClose}
           isOpen={isDescriptionPopupOpen}
-          onActionClick={() => console.log('No function')}
+          onActionClick={handleUnsubscribe}
         />
       )}
     </>
@@ -182,3 +188,16 @@ Profile.propTypes = {
 };
 
 export default Profile;
+
+Profile.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    user: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      isPrimary: PropTypes.bool.isRequired,
+    }),
+  }).isRequired,
+  handleImmidiateBooking: PropTypes.func.isRequired,
+};

@@ -5,10 +5,11 @@ import { useFormWithValidation } from '../Validation/Validation';
 import api from '../../utils/Api';
 import { getAccessToken } from '../../utils/utils';
 
-function PopupLogin({ onClose, onSubmit, isOpen }) {
+function PopupLogin({ onClose, onSubmit }) {
   const loginFormValidation = useFormWithValidation();
   const [actionError, setActionError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const userRef = React.useRef(null);
 
   function closePopup(evt) {
     evt.target.closest('form').reset();
@@ -17,13 +18,12 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
     onClose(evt);
   }
   React.useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', onClose);
-    }
+    userRef.current.focus();
+    document.addEventListener('keydown', onClose);
     return () => {
       document.removeEventListener('keydown', onClose);
     };
-  });
+  }, []);
   function submitHandler(e) {
     e.preventDefault();
     setLoading(true);
@@ -65,7 +65,7 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
         <h2 className="section-title popup__title_type_sign-in">Вход</h2>
         <p className="paragraph popup__sign-in">Вход в личный кабинет доступен наставникам программы «Старшие Братья Старшие Сёстры».</p>
         <p className="paragraph popup__sign-in">Пожалуйста, введите логин и пароль из письма. Если вам не приходило письмо, свяжитесь с вашим куратором.</p>
-        <input type="text" className="popup__input" id="login" name="login" minLength={2} onChange={loginFormValidation.handleChange} required placeholder="Логин" />
+        <input ref={userRef} type="text" className="popup__input" id="login" name="login" minLength={2} onChange={loginFormValidation.handleChange} required placeholder="Логин" />
         <p className="popup__input-error" name="login-error">{loginFormValidation.errors.login}</p>
         <input type="password" className="popup__input" id="password" name="password" minLength={8} onChange={loginFormValidation.handleChange} required placeholder="Пароль" />
         <p className="popup__input-error" name="password-error">{loginFormValidation.errors.password}</p>
@@ -79,6 +79,5 @@ function PopupLogin({ onClose, onSubmit, isOpen }) {
 PopupLogin.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
 };
 export default PopupLogin;
