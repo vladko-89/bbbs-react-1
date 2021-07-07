@@ -1,5 +1,4 @@
 import React from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Tag from './Tag/Tag';
 import Question from './Question/Question';
@@ -99,28 +98,11 @@ export default function Questions({ loggedIn }) {
           </div>
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
-          <CSSTransitionGroup
-            name="questions"
-            transitionName={{
-              enter: styles['transition-group-enter'],
-              enterActive: styles['transition-group-enter-active'],
-              leave: styles['transition-group-leave'],
-              leaveActive: styles['transition-group-leave-active'],
-              appear: styles['transition-group-appear'],
-              appearActive: styles['transition-group-appear-active'],
-            }}
-            transitionAppear
-            transitionAppearTimeout={500}
-            transitionEnter
-            transitionEnterTimeout={0}
-            transitionLeave={false}
-          >
-            {
-              isLoading ? <Preloader key={0} /> : questions.map((question) => (
-                <Question key={question.id} question={question} />
-              ))
-            }
-          </CSSTransitionGroup>
+          {
+            isLoading ? <Preloader key={0} /> : questions.map((question) => (
+              <Question key={question.id} question={question} />
+            ))
+          }
           {
             nextLink && <button onClick={handleMoreClick} type="button" className={`${styles.button} ${styles.button_theme_light}`}>Ещё</button>
           }
