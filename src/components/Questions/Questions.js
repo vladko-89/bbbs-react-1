@@ -1,7 +1,6 @@
 import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import MainTitle from '../MainTitle/MainTitle';
 import Tag from './Tag/Tag';
 import Question from './Question/Question';
 import QuestionForm from './QuestionForm/QuestionForm';
@@ -88,7 +87,7 @@ export default function Questions({ loggedIn }) {
     return (
       <main className={styles.main}>
         <section className={`${styles.lead} ${styles.page__section}`}>
-          <MainTitle title="Ответы на вопросы" />
+          <h1 className={styles['main-title']}>Ответы на вопросы</h1>
           <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
             <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
               {
@@ -101,6 +100,7 @@ export default function Questions({ loggedIn }) {
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
           <CSSTransitionGroup
+            name="questions"
             transitionName={{
               enter: styles['transition-group-enter'],
               enterActive: styles['transition-group-enter-active'],
@@ -111,13 +111,14 @@ export default function Questions({ loggedIn }) {
             }}
             transitionAppear
             transitionAppearTimeout={500}
-            transitionEnter={300}
+            transitionEnter
+            transitionEnterTimeout={0}
             transitionLeave={false}
           >
             {
-                isLoading ? <Preloader /> : questions.map((question) => (
-                  <Question key={question.id} question={question} />
-                ))
+              isLoading ? <Preloader key={0} /> : questions.map((question) => (
+                <Question key={question.id} question={question} />
+              ))
             }
           </CSSTransitionGroup>
           {
@@ -134,7 +135,7 @@ export default function Questions({ loggedIn }) {
     return (
       <main className={styles.main}>
         <section className={`${styles.lead} ${styles.page__section}`}>
-          <MainTitle title="Ответы на вопросы" />
+          <h1 className={styles['main-title']}>Ответы на вопросы</h1>
         </section>
       </main>
     );
