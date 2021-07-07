@@ -5,6 +5,8 @@ import api from '../../../utils/Api';
 
 import styles from './QuestionForm.module.scss';
 
+const minQuestionLength = 30;
+
 export default function QuestionForm() {
   const [question, setQuestion] = React.useState('');
   const messageElement = React.useRef(null);
@@ -12,7 +14,7 @@ export default function QuestionForm() {
 
   function onInput(event) {
     if (messageElement.current.textContent) messageElement.current.textContent = '';
-    submitButton.current.disabled = event.target.value.length < 1;
+    submitButton.current.disabled = event.target.value.length < minQuestionLength;
     setQuestion(event.target.value);
   }
 
@@ -27,10 +29,10 @@ export default function QuestionForm() {
         messageElement.current.classList.add(styles['question-form__message_success']);
         messageElement.current.textContent = 'Спасибо! Мы приняли ваш вопрос.';
       })
-      .catch(() => {
+      .catch((err) => {
         messageElement.current.classList.remove(styles['question-form__message_success']);
         messageElement.current.classList.add(styles['question-form__message_denied']);
-        messageElement.current.textContent = 'Что-то пошло не так ...';
+        messageElement.current.textContent = err.message;
         submitButton.current.disabled = false;
       });
   }
@@ -40,7 +42,7 @@ export default function QuestionForm() {
       <h2 className={`${styles['section-title']} ${styles['add-question__title']}`}>Если вы не нашли ответ на свой вопрос — напишите нам, и мы включим его в список</h2>
       <form onSubmit={onSubmit} className={styles['question-form']} name="add-question">
         <fieldset className={styles['question-form__add-question']}>
-          <input onInput={onInput} className={styles['question-form__input']} type="text" name="question" placeholder="Введите вопрос" required />
+          <input onInput={onInput} className={styles['question-form__input']} type="text" name="question" placeholder="Введите вопрос" minLength={`${minQuestionLength}`} required />
           <button ref={submitButton} className={`${styles.button} ${styles.button_theme_light} ${styles['question-form__button']}`} type="submit" name="submit" disabled>Отправить</button>
         </fieldset>
       </form>

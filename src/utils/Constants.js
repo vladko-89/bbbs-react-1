@@ -3,7 +3,7 @@ const delayResponse = 500;
 const scrollDelay = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
-const placesPerPage = 3;
+const placesPerPage = 6;
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
   'Москва',

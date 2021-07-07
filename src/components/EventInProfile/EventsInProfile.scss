@@ -29,7 +29,7 @@ overflow-x: auto;
   transition: all 0.3s;
 }
 .coming-events__event:hover {
-  transform: scale(1.02);
+  box-shadow:inset 0px -3px 10px 4px rgba(89, 104, 165, 0.20);
 }
 .coming-events__title {
   font-family: 'ProtoGrotesk';

@@ -20,7 +20,7 @@ export function declOfNum(n, textForm) {
 }
 
 export function useAuth(setUserData, setLoginState) {
-  if (localStorage.getItem('bbbs-token')) {
+  if (localStorage.getItem('bbbs-token') !== 'undefined' && localStorage.getItem('bbbs-token') !== null) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
     const parsedAccess = jwt.decode(tokenData.access);
     const parsedRefresh = jwt.decode(tokenData.refresh);
@@ -47,7 +47,7 @@ export function useAuth(setUserData, setLoginState) {
 }
 
 export function getAccessToken() {
-  if (localStorage.getItem('bbbs-token')) {
+  if ((localStorage.getItem('bbbs-token') !== 'undefined' && localStorage.getItem('bbbs-token') !== null)) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));
     const accessToken = jwt.decode(tokenData.access);
     const refreshToken = jwt.decode(tokenData.refresh);
@@ -76,6 +76,15 @@ export function colorizeCards(cardsArr, colorsArr) {
   }
   return cardsArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
 }
+
+export function prepareDetails(details) {
+  const arr = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(details)) {
+    arr.push(`${key}: ${value}`);
+  }
+  return arr;
+}
 export function filterByTags(tags, data) {
   return (!tags.length)
     ? data
@@ -93,6 +102,17 @@ export function toggleTagId(tagId, tagIdArray) {
     return tagIdArray.filter((tag) => tag !== tagId);
   }
   return [...tagIdArray, tagId];
+}
+
+export function toggleTag(tag, tagArray) {
+  if (tag.id === 0) {
+    return [];
+  }
+  const index = tagArray.findIndex((item) => item.id === tag.id);
+  if (index >= 0) {
+    return tagArray.filter((item) => item.id !== tag.id);
+  }
+  return [...tagArray, tag];
 }
 
 export function formingCards(cardsArr, formsArr, colorsArr) {
