@@ -229,12 +229,11 @@ function App() {
     setIsPoupLoginOpened(true);
     // setPath(path);
   };
-  const handleLoginClose = (evt) => {
-    if (
-      evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')
-    ) {
-      setIsPoupLoginOpened(false);
+  const handleLoginClose = (e) => {
+    if (e.code !== 'Escape' && e.type === 'keydown') {
+      return;
     }
+    setIsPoupLoginOpened(false);
   };
 
   const handleLoginSubmit = (evt, userName) => {

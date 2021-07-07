@@ -36,9 +36,17 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getPlacesTags() {
+  getPlacesTags({ token, cityId }) {
+    const params = new URLSearchParams();
+    if (!token) { params.append('city', cityId); }
     return axios
-      .get(`${this._baseUrl}/places/tags/`)
+      .get(`${this._baseUrl}/places/tags/`,
+        token ? {
+          headers: { Authorization: `Bearer ${token}` },
+          params,
+        } : {
+          params,
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -74,9 +82,8 @@ class Api {
       },
       body: JSON.stringify(place),
     })
-      .then((res) => { console.log(res); return res.json(); });
-
-    // .then((data) => (res.ok ? data : Promise.reject(data)));
+      .then((res) => res.json()
+        .then((data) => (res.ok ? data : { message: data.message, details: data.details })));
   }
 
   signIn(login, password) {
