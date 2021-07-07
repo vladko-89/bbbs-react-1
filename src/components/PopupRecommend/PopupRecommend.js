@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import CitiesListContext from '../../contexts/CitiesListContext';
 import api from '../../utils/Api';
-import { getAccessToken } from '../../utils/utils';
+import { getAccessToken, prepareDetails } from '../../utils/utils';
 import styles from './PopupRecommend.module.scss';
 
 const modalRoot = document.getElementById('modal-root');
@@ -18,13 +18,7 @@ function PopupRecommend({ onSuccess, onClose }) {
     api.addPlace(getAccessToken(), data)
       .then((res) => {
         if (res.message) {
-          console.log(res);
-          const arrDetail = [];
-          // eslint-disable-next-line no-restricted-syntax
-          for (const [key, value] of Object.entries(res.details)) {
-            arrDetail.push(`${key}: ${value}`);
-          }
-          return setErr({ message: res.message, details: arrDetail });
+          return setErr({ message: res.message, details: prepareDetails(res.details) });
         } onSuccess(); return onClose();
       });
   };

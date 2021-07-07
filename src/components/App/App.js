@@ -152,20 +152,25 @@ function App() {
     unSubscribes(calendar);
     getSubscribes();
   }
-
+  /* rename func */
   function handleImmidiateBooking(calendar) {
-    api.signUpOnEvent(getAccessToken(), calendar.id)
-      .then((res) => {
-        console.log(res);
-        setIsSuccessRegPopupOpen(true);
-        openConfirmationPopup();
-        getCalendarEvents();
-        getSubscribes();
-      })
-      .catch((error) => {
+    if (calendar.booked) {
+      handleCancelBooking(calendar);
+      setIsDescriptionPopupOpen(false);
+    } else {
+      api.signUpOnEvent(getAccessToken(), calendar.id)
+        .then((res) => {
+          console.log(res);
+          setIsSuccessRegPopupOpen(true);
+          openConfirmationPopup();
+          getCalendarEvents();
+          getSubscribes();
+        })
+        .catch((error) => {
         // eslint-disable-next-line no-console
-        console.log(error);
-      });
+          console.log(error);
+        });
+    }
   }
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
@@ -342,6 +347,7 @@ function App() {
                   loggedIn={loggedIn}
                   component={Profile}
                   openEventDescription={handleDescription}
+                  handleImmidiateBooking={handleImmidiateBooking}
                   user={currentUser}
                 />
                 <Route exact path="/video">
