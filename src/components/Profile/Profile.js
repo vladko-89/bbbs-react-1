@@ -12,10 +12,8 @@ import { getAccessToken } from '../../utils/utils';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 
 // eslint-disable-next-line no-unused-vars
-function Profile(user) {
-  // eslint-disable-next-line no-console
-  // console.log(user);
-  // eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line react/prop-types
+function Profile({ user, handleImmidiateBooking }) {
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
   const [selectedMeetings, setSelectedMeetings] = React.useState({});
@@ -28,6 +26,13 @@ function Profile(user) {
   const [meetTitle, setMeetTitle] = React.useState(''); // тут переделать на выбор встречи и получать данные встречи из выбранного компонента
   const [meetTime, setMeetTime] = React.useState('');
 
+  const handleUnsubscribe = () => {
+    handleImmidiateBooking(currentEvent);
+    api
+      .getEvents(getAccessToken())
+      .then((res) => setUserEvents(res.results.filter((el) => el.booked === true)));
+    setIsDescriptionPopupOpen(false);
+  };
   React.useEffect(() => {
     api
       .getEvents(getAccessToken())
@@ -171,7 +176,7 @@ function Profile(user) {
           currentEvent={currentEvent}
           onClose={handleClose}
           isOpen={isDescriptionPopupOpen}
-          onActionClick={() => console.log('No function')}
+          onActionClick={handleUnsubscribe}
         />
       )}
     </>

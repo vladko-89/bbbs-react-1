@@ -77,6 +77,14 @@ export function colorizeCards(cardsArr, colorsArr) {
   return cardsArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
 }
 
+export function prepareDetails(details) {
+  const arr = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(details)) {
+    arr.push(`${key}: ${value}`);
+  }
+  return arr;
+}
 export function filterByTags(tags, data) {
   return (!tags.length)
     ? data

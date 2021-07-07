@@ -11,6 +11,7 @@ function CalendarDescription({
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
+  console.log(currentEvent);
   const handleClose = React.useCallback(
     (e) => {
       if (e.code !== 'Escape' && e.type === 'keydown') {
@@ -69,14 +70,26 @@ function CalendarDescription({
             </p>
           </div>
           <div className="calendar__submit">
-            <button
-              className="button button_theme_light button_action_confirm"
-              disabled={!availablePlaces || currentEvent.booked}
-              type="button"
-              onClick={() => onActionClick(currentEvent)}
-            >
-              Записаться
-            </button>
+            {currentEvent.booked ? (
+              <button
+                className="button button_theme_light calendar__button calendar__button_selected calendar__button_action_sign-up"
+                disabled={!availablePlaces}
+                type="button"
+                onClick={() => onActionClick(currentEvent)}
+              >
+                Отменить запись
+              </button>
+            ) : (
+              <button
+                className="button button_theme_light button_action_confirm"
+                disabled={!availablePlaces}
+                type="button"
+                onClick={() => onActionClick(currentEvent)}
+              >
+                Записаться
+              </button>
+            )}
+
             <p className="calendar__place-left">
               {' '}
               {availablePlaces ? `Осталось ${availablePlaces} ${declPlaces}` : 'Запись закрыта'}
