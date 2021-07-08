@@ -22,6 +22,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
+import RightArticle from '../RightArticle/RightArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
@@ -50,8 +51,14 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+  const [currentCard, setCurrentCard] = React.useState({});
 
   // const [path, setPath] = React.useState('');
+
+  function clickOnCard(card) {
+    setCurrentCard(card);
+    console.log('current', currentCard);
+  }
 
   React.useEffect(() => {
     useAuth(setCurrentUser, setLoggedIn);
@@ -362,6 +369,7 @@ function App() {
                 <Rights
                   activeRubrics={activeRubrics}
                   selectRubric={changeActiveRubric}
+                  clickOnCard={clickOnCard}
                 />
               </Route>
               <Route exact path="/articles">
@@ -375,6 +383,9 @@ function App() {
               </Route>
               <Route exact path="/stories">
                 <Stories />
+              </Route>
+              <Route exact path="/rights_article">
+                <RightArticle card={currentCard} />
               </Route>
               <Route exact path="*">
                 <PageNotFound />

@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 function MainVideo({
   title, info, link, imageUrl, duration,
 }) {
-  function parseDuration(dur) {
-    const hours = Math.floor((dur / 3600));
-    const minutes = Math.floor((dur - hours * 3600) / 60);
-    const seconds = dur - hours * 3600 - minutes * 60;
+  function parseDuration(str) {
+    const hours = str.slice(0, 2);
+    const minutes = str.slice(3, 5);
+    const seconds = str.slice(6);
     if (hours > 0) { return `${hours}:${minutes}:${seconds}`; }
     return `${minutes}:${seconds}`;
   }
