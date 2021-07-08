@@ -39,7 +39,8 @@ function MeetingStoryForm({
     const editedData = { ...data };
     if (document.getElementById('userImage').files.length === 0) {
       delete editedData.image;
-    }
+      // eslint-disable-next-line prefer-destructuring
+    } else { editedData.image = data.image[0]; }
     onSubmit(editedData);
   };
   const handleLoadImage = (e) => {

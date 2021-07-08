@@ -151,15 +151,25 @@ class Api {
   }
 
   postMeetingStories(accessToken, data) {
-    return axios
-      .post(`${this._baseUrl}/meetings/`, {
-        data,
-      }, {
-        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-
+    // return axios
+    //   .post(`${this._baseUrl}/meetings/`,
+    //     {
+    //       data,
+    //     }, {
+    //     headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    //
+    //     })
+    return (
+      fetch(`${this._baseUrl}/meetings/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       })
-      .then((res) => res.data)
-      .catch((error) => console.log(error));
+        .then((res) => res)
+        .catch((error) => console.log(error)));
   }
 
   deleteMeetingStory(accessToken, id) {
@@ -171,13 +181,29 @@ class Api {
   }
 
   editMeetingStory(accessToken, data) {
+    const newData = JSON.stringify(data);
     return axios
       .put(`${this._baseUrl}/meetings/${data.id}`,
-        { data }, {
+        { ...newData }, {
           headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         })
       .then((res) => (res.ok ? res.data : Promise.reject(res)))
       .catch((error) => console.log(error));
+  }
+
+  shareMeetingStoryTo(accessToken, story) {
+    return (
+      fetch(`${this._baseUrl}/meetings/send_to_curator/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(story),
+      })
+        .then((res) => (res.ok ? res : Promise.reject(res)))
+        .catch((error) => console.log(error))
+    );
   }
 
   getCitiesList() {
