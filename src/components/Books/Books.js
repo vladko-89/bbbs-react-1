@@ -1,36 +1,83 @@
 import React from 'react';
 import Tag from './Tag/Tag';
 import BookCard from './BookCard/BookCard';
-import Pagination from '../Pagination/Pagination';
+// import Pagination from '../Pagination/Pagination';
+import Preloader from '../Preloader/Preloader';
 
-import { books, tags } from '../../utils/booksData';
-import { filterByTags, toggleTagId } from '../../utils/utils';
+import { toggleTagId } from '../../utils/utils';
+
+import api from '../../utils/Api';
+
+// const requestDelay = 2000;
+
+const breakpoints = {
+  desktopHigh: 1920,
+  desktopLow: 1440,
+  mobileHigh: 1024,
+  mobileLow: 320,
+};
+
+const limitDesktopHighRes = 16;
+const limitDesktopLowRes = 12;
+const limitMobile = 2;
+
+function getLimit() {
+  const currentWidth = document.documentElement.clientWidth;
+  let limit;
+
+  if (currentWidth > breakpoints.desktopLow) {
+    limit = limitDesktopHighRes;
+  } else if (currentWidth <= breakpoints.desktopLow && currentWidth > breakpoints.mobileHigh) {
+    limit = limitDesktopLowRes;
+  } else {
+    limit = limitMobile;
+  }
+
+  return limit;
+}
 
 export default function Books() {
-  const cardsPerPage = 12;
-  const [tagIdArray, setTagIdArray] = React.useState([]);
-  const [filteredBooks, setFilteredBooks] = React.useState(books);
-  const [shownBooks, setShownBooks] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [tags, setTags] = React.useState([]);
+  const [books, setBooks] = React.useState([]);
+  // const [shownBooks, setShownBooks] = React.useState([]);
 
-  function onPageChange(currPage) {
-    const begin = currPage * cardsPerPage - cardsPerPage;
-    const end = begin + cardsPerPage;
-    setShownBooks(
-      filteredBooks.slice(begin, end < filteredBooks.length ? end : filteredBooks.length),
-    );
-  }
+  // function onPageChange(currPage) {
+  //   const begin = currPage * cardsPerPage - cardsPerPage;
+  //   const end = begin + cardsPerPage;
+  //   setShownBooks(
+  //     filteredBooks.slice(begin, end < filteredBooks.length ? end : filteredBooks.length),
+  //   );
+  // }
 
   function handleTagClick(tagId) {
-    setTagIdArray(toggleTagId(tagId, tagIdArray));
+    setTags(toggleTagId(tagId, tags));
   }
 
-  React.useEffect(() => {
-    setFilteredBooks(filterByTags(tagIdArray, books));
-  }, [tagIdArray]);
+  // React.useEffect(() => {
+  //   setFilteredBooks(filterByTags(tagIdArray, books));
+  // }, [tagIdArray]);
+
+  // React.useEffect(() => {
+  //   onPageChange(1);
+  // }, [filteredBooks]);
 
   React.useEffect(() => {
-    onPageChange(1);
-  }, [filteredBooks]);
+    Promise.all([
+      api.getBookTags(),
+      api.getBooks(new URLSearchParams({ limit: getLimit() })),
+    ])
+      .then(([resTags, resBooks]) => {
+        setTags([{
+          id: 0,
+          name: 'Все',
+          slug: 'all',
+        }, ...resTags.results]);
+        setBooks(resBooks.results);
+      })
+      .catch((err) => console.log('Ошибка загрузки данных: ', err))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <main className="main">
@@ -47,15 +94,15 @@ export default function Books() {
 
       <section className="cards-grid cards-grid_content_small-cards page__section">
         {
-          shownBooks.map((book) => <BookCard key={book.id} book={book} />)
+          isLoading ? <Preloader /> : books.map((book) => <BookCard key={book.id} book={book} />)
         }
       </section>
 
-      <Pagination
+      {/* <Pagination
         cardsLength={filteredBooks.length}
         onPageChange={onPageChange}
         cardsPerPage={cardsPerPage}
-      />
+      /> */}
     </main>
   );
 }
