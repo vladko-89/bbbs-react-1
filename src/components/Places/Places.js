@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
@@ -6,15 +7,28 @@ import MainMentor from '../MainMentor/MainMentor';
 import PlacesCards from '../PlacesCards/PlacesCards';
 import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
+import PopupRecommend from '../PopupRecommend/PopupRecommend';
+import PopupRecommendSuccess from '../PopupRecommendSuccess/PopupRecommendSuccess';
+
 import api from '../../utils/Api';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import { getAccessToken } from '../../utils/utils';
 import { placesPerPage } from '../../utils/Constants';
+import './Places.scss';
 
 function Places({
   loggedIn, openChangeCity, activeRubrics, selectRubric,
 }) {
   const currentUser = React.useContext(CurrentUserContext);
+  const [popupRecommendOpened, setPopupRecommendOpened] = React.useState(false);
+  const [popupRecommendSuccessOpened, setPopupRecommendSuccessOpened] = React.useState(false);
+
+  const toggleRecommendPopup = () => {
+    setPopupRecommendOpened(!popupRecommendOpened);
+  };
+  const toggleRecommendSuccessPopup = () => {
+    setPopupRecommendSuccessOpened(!popupRecommendSuccessOpened);
+  };
   React.useEffect(() => {
     if (!loggedIn && !localStorage.getItem('bbbs-user')) {
       openChangeCity(true);
@@ -40,7 +54,10 @@ function Places({
 
   React.useEffect(() => {
     Promise.all([
-      api.getPlacesTags(),
+      api.getPlacesTags({
+        token: getAccessToken(),
+        cityId: currentUser.city.id,
+      }),
       api.getPlaces({
         token: getAccessToken(),
         cityId: currentUser.city.id,
@@ -89,6 +106,16 @@ function Places({
         <MainTitle title="Куда пойти" />
         <Filter array={tags} selectRubric={selectRubric} />
       </section>
+      {loggedIn && (
+      <div className="card place-card">
+        <h2 className="section-title place-card__text">
+          Если вы были в интересном месте и хотите порекомендовать его другим наставникам –
+          <span role="button" tabIndex="0" onClick={toggleRecommendPopup} className="place-card__span-accent">заполните форму</span>
+          , и мы добавим вашу
+          рекомендацию.
+        </h2>
+      </div>
+      )}
       <MainMentor
         id={places.results[0]?.id}
         title={places.results[0]?.title}
@@ -100,13 +127,25 @@ function Places({
         description={places.results[0]?.description}
       />
       <PlacesCards places={places.results} />
-      {places.count > placesPerPage ? (
+      {(places.count > placesPerPage) && (
         <Pagination
           cardsLength={places.count}
           cardsPerPage={placesPerPage}
           onPageChange={onPageChange}
         />
-      ) : ''}
+      ) }
+      { popupRecommendOpened && (
+      <PopupRecommend
+        onSuccess={toggleRecommendSuccessPopup}
+        onClose={toggleRecommendPopup}
+      />
+      )}
+      { popupRecommendSuccessOpened
+      && (
+      <PopupRecommendSuccess
+        onClose={toggleRecommendSuccessPopup}
+      />
+      )}
     </div>
   );
 }

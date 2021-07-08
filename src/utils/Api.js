@@ -8,8 +8,7 @@ class Api {
     this._baseUrl = paramBaseUrl;
   }
 
-  getMain() {
-    const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
+  getMain(accessToken) {
     return axios
       .get(
         `${this._baseUrl}/main/`,
@@ -37,9 +36,17 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getPlacesTags() {
+  getPlacesTags({ token, cityId }) {
+    const params = new URLSearchParams();
+    if (!token) { params.append('city', cityId); }
     return axios
-      .get(`${this._baseUrl}/places/tags/`)
+      .get(`${this._baseUrl}/places/tags/`,
+        token ? {
+          headers: { Authorization: `Bearer ${token}` },
+          params,
+        } : {
+          params,
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -48,7 +55,7 @@ class Api {
     token, cityId, limit, offset, tags,
   }) {
     const params = new URLSearchParams();
-    params.append('city', cityId);
+    if (!token) { params.append('city', cityId); }
     if (limit) {
       params.append('limit', limit);
       params.append('offset', offset);
@@ -58,11 +65,25 @@ class Api {
       .get(`${this._baseUrl}/places/`,
         token ? {
           headers: { Authorization: `Bearer ${token}` },
+          params,
         } : {
           params,
         })
       .then((res) => res.data)
       .catch((error) => console.log(error));
+  }
+
+  addPlace(accessToken, place) {
+    return fetch(`${this._baseUrl}/places/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(place),
+    })
+      .then((res) => res.json()
+        .then((data) => (res.ok ? data : { message: data.message, details: data.details })));
   }
 
   signIn(login, password) {
@@ -84,26 +105,17 @@ class Api {
           if (res.ok) {
             return res.json();
           }
-          errorMessage.status = res.status;
-          errorMessage.statusText = res.statusText;
           return res.json();
         })
         .then((res) => {
           if (!res.access) {
-            errorMessage.text = res.non_field_errors;
+            errorMessage.text = res.message;
             return errorMessage;
           }
           return res;
         })
         .catch((error) => console.log(error))
     );
-    // return axios
-    //   .post(`${this._baseUrl}/token/`, {
-    //     username: login,
-    //     password,
-    //   })
-    //   .then((res) => { console.log(res); return res.data; })
-    //   .catch((error) => console.log(error));
   }
 
   updateToken(refreshToken) {
@@ -143,36 +155,39 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getQuestionsTags() {
+  async getQuestionsTags() {
     return fetch(`${this._baseUrl}/questions/tags/`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
-  getQuestions() {
-    return fetch(`${this._baseUrl}/questions/`, {
+  async getQuestions(searchParams = '') {
+    return fetch(`${this._baseUrl}/questions/?${searchParams}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
-  sendQuestion(question) {
-    const accessToken = JSON.parse(localStorage.getItem('bbbs-token')).access;
+  // eslint-disable-next-line class-methods-use-this
+  async getMoreQuestions(url) {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
+  }
+
+  async sendQuestion(question) {
+    const accessToken = JSON.parse(localStorage.getItem('bbbs-token'))?.access;
 
     return fetch(`${this._baseUrl}/questions/`, {
       method: 'POST',
@@ -182,11 +197,7 @@ class Api {
       },
       body: JSON.stringify({ question }),
     })
-      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))))
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
   // СОБЫТИЯ КАЛЕНДАРЬ
