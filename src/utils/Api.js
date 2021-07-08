@@ -141,6 +141,45 @@ class Api {
       .catch((error) => console.log(error));
   }
 
+  getMeetingStories(accessToken) {
+    return axios
+      .get(`${this._baseUrl}/meetings/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  postMeetingStories(accessToken, data) {
+    return axios
+      .post(`${this._baseUrl}/meetings/`, {
+        data,
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  deleteMeetingStory(accessToken, id) {
+    return axios
+      .delete(`${this._baseUrl}/meetings/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+      }).then((res) => (res.ok ? res : Promise.reject(res)))
+      .catch((error) => console.log(error));
+  }
+
+  editMeetingStory(accessToken, data) {
+    return axios
+      .put(`${this._baseUrl}/meetings/${data.id}`,
+        { data }, {
+          headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        })
+      .then((res) => (res.ok ? res.data : Promise.reject(res)))
+      .catch((error) => console.log(error));
+  }
+
   getCitiesList() {
     return axios
       .get(`${this._baseUrl}/cities/`)

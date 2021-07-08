@@ -5,16 +5,19 @@ import { useForm } from 'react-hook-form';
 function MeetingStoryForm({
   onSubmit, onDelete, values, isExample,
 }) {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    reValidateMode: 'onBlur',
+    mode: 'onTouched',
+  });
   const [place, setPlace] = React.useState(
-    isExample ? 'Парк горького' : values.title, // пример или данные из пропса
+    isExample ? 'Парк горького' : values.place, // пример или данные из пропса
   );
   const [description, setDescription] = React.useState(
     isExample ? 'Опишите встречу' : values.description,
   );
   const [time, setTime] = React.useState(values.date.slice(0, 10));
-  const [mood, setMood] = React.useState(isExample ? 'good' : values.mood);
-
+  const [smile, setSmile] = React.useState(isExample ? 'good' : values.smile);
+  const [photoSrc, setPhotoSrc] = React.useState(values.image);
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
   };
@@ -25,45 +28,51 @@ function MeetingStoryForm({
   const handleTimeChange = (e) => {
     setTime(e.target.value);
     // eslint-disable-next-line no-console
-    console.log(mood);
+    console.log(smile);
     // eslint-disable-next-line no-console
     console.log(time);
   };
-  const handleMoodChange = (e) => {
-    setMood(e.target.value);
+  const handleSmileChange = (e) => {
+    setSmile(e.target.value);
   };
   const onSubmitForm = (data) => {
-    onSubmit(data);
+    const editedData = { ...data };
+    if (document.getElementById('userImage').files.length === 0) {
+      delete editedData.image;
+    }
+    onSubmit(editedData);
   };
   const handleLoadImage = (e) => {
-    const container = document.querySelector(
-      '.personal-area__card_type_add-photo',
-    );
-    const img = document.createElement('img');
-    img.src = window.URL.createObjectURL(e.target.files[0]);
-    img.width = 400;
+    // const img = document.querySelector(
+    //   '.personal-area__card_photo',
+    // );
+    setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+    // img.src = window.URL.createObjectURL(e.target.files[0]);
+    // img.width = 400;
     // eslint-disable-next-line
-    img.onload = function () {
-      window.URL.revokeObjectURL(img.src);
-    };
-    container.appendChild(img);
+    // img.onload = function () {
+    //   window.URL.revokeObjectURL(img.src);
+    // };
   };
+  const nowDate = new Date().toISOString().substring(0, 10);
+  const oldDate = new Date(2010, 12, 31).toISOString().substring(0, 10);
   // установка реакции при редактировании
   React.useEffect(() => {
-    if (values.mood !== '') {
+    if (values.smile !== '') {
       const reactionLists = Array.from(
-        document.querySelectorAll('.personal-area__radioBtn-mood'),
+        document.querySelectorAll('.personal-area__radioBtn-smile'),
       );
       reactionLists.forEach((input) => {
         /* eslint no-param-reassign:
       ["error", { "props": true, "ignorePropertyModificationsForRegex": ["^input"] }] */
-        if (input.id === values.mood) input.checked = true;
+        if (input.id === values.smile) input.checked = true;
       });
     }
     if (values.image === null) {
       setPhotoSrc('');
     } else { setPhotoSrc(values.image); }
   }, []);
+  console.log(oldDate);
   return (
     <form
       className="card-container card-container_type_personal-area"
@@ -71,6 +80,13 @@ function MeetingStoryForm({
       onSubmit={handleSubmit(onSubmitForm)}
     >
       <div className="card personal-area__card personal-area__card_type_add-photo">
+        {photoSrc !== '' && (
+        <img
+          src={photoSrc}
+          alt={photoSrc?.substring(photoSrc.lastIndexOf('/') + 1, photoSrc.lastIndexOf('.')) || '#'}
+          className="personal-area__card_photo"
+        />
+        )}
         <input
           className="personal-area__add-photo-button"
           type="file"
@@ -88,50 +104,65 @@ function MeetingStoryForm({
       </div>
       <div className="card personal-area__card personal-area__card_type_content">
         <div className="personal-area__form">
-          <input
-            type="text"
-            placeholder="Место встречи"
-            required
-            className="personal-area__form-input"
-            id="place"
+          <div className="personal-area__form-input_wrap">
+            <input
+              type="text"
+              placeholder="Место встречи"
+              className="personal-area__form-input personal-area__form-input_type_place"
+              id="place"
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('title')}
-            value={place}
-            onChange={handlePlaceChange}
-          />
-          <input
-            type="date" // здесь выбор даты
-            placeholder=""
-            required
-            className="personal-area__form-input"
-            onInput={handleTimeChange}
-            id="date"
+              {...register('place', { required: true, maxLength: 35, minLength: 2 })}
+              value={place}
+              onChange={handlePlaceChange}
+            />
+            {errors.place && errors.place.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
+            {errors.place && errors.place.type === 'maxLength' && <p className="personal-area__form-input_error">Максимум 35 символов</p> }
+            {errors.place && errors.place.type === 'minLength' && <p className="personal-area__form-input_error">Минимум 2 символа</p> }
+          </div>
+          <div className="personal-area__form-input_wrap_data">
+            <input
+              type="date" // здесь выбор даты
+              placeholder=""
+              className="personal-area__form-input personal-area__form-input_type_data"
+              onInput={handleTimeChange}
+              id="date"
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('date')}
-            value={time}
-          />
-          <textarea
-            className="personal-area__form-input personal-area__form-input_type_textarea"
-            placeholder="Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось"
-            required
-            id="description"
+              {...register('date', {
+                required: true,
+                min: oldDate,
+                max: nowDate,
+              })}
+              value={time}
+            />
+            {errors.date && errors.date.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
+            {errors.date && errors.date.type === 'min' && <p className="personal-area__form-input_error">Нужна правильная дата</p> }
+            {errors.date && errors.date.type === 'max' && <p className="personal-area__form-input_error">Нужна правильная дата</p> }
+          </div>
+          <div className=" personal-area__form-input_wrap_type_textarea">
+            <textarea
+              className="personal-area__form-input personal-area__form-input_type_textarea"
+              placeholder="Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось"
+              maxLength={5000}
+              id="description"
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('description')}
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-
+              {...register('description', { required: true, maxLength: 5000, minLength: 2 })}
+              value={description}
+              onChange={handleDescriptionChange}
+            />
+            {errors.description && errors.description.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
+            {errors.description && errors.description.type === 'minLength' && <p className="personal-area__form-input_error">Минимум 2 символа</p> }
+          </div>
           <div className="personal-area__rating">
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <input
               // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('mood')}
+              {...register('smile', { required: true })}
               type="radio"
               id="good"
               value="good"
-              className="personal-area__radioBtn-mood"
-              onChange={handleMoodChange}
-              required
+              className="personal-area__radioBtn-smile"
+              onChange={handleSmileChange}
+
             />
             <label
               htmlFor="good"
@@ -141,15 +172,15 @@ function MeetingStoryForm({
             />
             <input
               // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('mood')}
+              {...register('smile', { required: true })}
               type="radio"
-              name="mood"
+              name="smile"
               id="neutral"
               value="neutral"
-              className="personal-area__radioBtn-mood"
+              className="personal-area__radioBtn-smile"
               // onChange={handleChangeReaction}
-              onChange={handleMoodChange}
-              required
+              onChange={handleSmileChange}
+
             />
             <label
               htmlFor="neutral"
@@ -159,14 +190,14 @@ function MeetingStoryForm({
             />
             <input
               // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('mood')}
+              {...register('smile', { required: true })}
               type="radio"
-              name="mood"
+              name="smile"
               id="bad"
               value="bad"
-              className="personal-area__radioBtn-mood"
-              onChange={handleMoodChange}
-              required
+              className="personal-area__radioBtn-smile"
+              onChange={handleSmileChange}
+
             />
             <label
               className="personal-area__rate personal-area__rate_type_bad"
@@ -176,7 +207,10 @@ function MeetingStoryForm({
             />
             <p className="caption personal-area__rating-label">
               Оцените проведенное время
+              {' '}
+              {errors.smile && errors.smile.type === 'required' && <span className="personal-area__form-input_error">***</span>}
             </p>
+
           </div>
 
           <div className="personal-area__buttons">
@@ -201,10 +235,10 @@ MeetingStoryForm.defaultProps = {
   isExample: false,
   values: {
     id: 0,
-    title: '',
+    place: '',
     description: '',
     date: '',
-    mood: '',
+    smile: '',
     shared: false,
     image: '',
   },
@@ -216,12 +250,13 @@ MeetingStoryForm.propTypes = {
   onDelete: PropTypes.func.isRequired,
   values: PropTypes.PropTypes.shape({
     id: PropTypes.number,
-    title: PropTypes.string,
+    place: PropTypes.string,
     description: PropTypes.string,
     date: PropTypes.string,
-    mood: PropTypes.string,
-    shared: PropTypes.bool,
+    smile: PropTypes.string,
     image: PropTypes.string,
+    send_to_curator: PropTypes.bool,
+    name: PropTypes.string,
   }),
 };
 
