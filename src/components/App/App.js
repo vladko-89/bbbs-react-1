@@ -24,6 +24,7 @@ import CurrentUserContext from '../../contexts/CurrentUser';
 import CitiesListContext from '../../contexts/CitiesListContext';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
+import RightArticle from '../RightArticle/RightArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
@@ -53,8 +54,14 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+  const [currentCard, setCurrentCard] = React.useState({});
 
   // const [path, setPath] = React.useState('');
+
+  function clickOnCard(card) {
+    setCurrentCard(card);
+    console.log('current', currentCard);
+  }
 
   React.useEffect(() => {
     useAuth(setCurrentUser, setLoggedIn);
@@ -395,10 +402,60 @@ function App() {
                 onSubmit={handleLoginSubmit}
                 isOpen={isPopupLoginOpened}
               />
-            ) : (
-              ''
-            )}
-            {{ isOpenPopupCities } && (
+
+              <Route exact path="/video">
+                <Video
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                />
+              </Route>
+              <Route exact path="/read-watch-main">
+                <ReadAndWatch
+                  activeRubrics={activeRubrics}
+                />
+              </Route>
+              <Route exact path="/catalog">
+                <Catalog />
+              </Route>
+              <Route exact path="/rights">
+                <Rights
+                  activeRubrics={activeRubrics}
+                  selectRubric={changeActiveRubric}
+                  clickOnCard={clickOnCard}
+                />
+              </Route>
+              <Route exact path="/articles">
+                <Articles />
+              </Route>
+              <Route exact path="/films">
+                <Films />
+              </Route>
+              <Route exact path="/books">
+                <Books />
+              </Route>
+              <Route exact path="/stories">
+                <Stories />
+              </Route>
+              <Route exact path="/rights_article">
+                <RightArticle card={currentCard} />
+              </Route>
+              <Route exact path="*">
+                <PageNotFound />
+              </Route>
+            </Switch>
+          </div>
+          <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
+          {isPopupLoginOpened ? (
+            <PopupLogin
+              onClose={handleLoginClose}
+              onSubmit={handleLoginSubmit}
+              isOpen={isPopupLoginOpened}
+            />
+          ) : (
+            ''
+          )}
+          {{ isOpenPopupCities } && (
+
             <PopupCities
               onChangeCities={
                 loggedIn ? handleChangeCity : handleChangeCityNotAuth

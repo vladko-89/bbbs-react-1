@@ -122,11 +122,13 @@ function Main({
 
         <section className="main-section page__section">
           <MainVideo
-            title={mainState?.video?.title}
-            info={mainState?.video?.info}
-            link={mainState?.video?.link}
-            imageUrl={mainState?.video?.imageUrl}
-            duration={mainState?.video?.duration}
+
+            title={mainState.video.title}
+            info={mainState.video.info}
+            link={mainState.video.link}
+            imageUrl={mainState.video.preview}
+            duration={mainState.video.duration}
+
           />
         </section>
 

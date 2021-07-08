@@ -45,7 +45,7 @@ function Calendar({
           { filterArray.length > 1 ? <Filter array={filterArray} selectRubric={selectRubric} /> : ''}
         </section>
         <section className="calendar-container page__section">
-          {calendarData.map((calendar) => (
+          {calendarData.length > 0 && calendarData.map((calendar) => (
             <CalendarEvent
               calendar={calendar}
               key={calendar.id}

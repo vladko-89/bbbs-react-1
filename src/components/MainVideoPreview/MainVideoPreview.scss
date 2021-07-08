@@ -44,6 +44,7 @@
 
 .video__rubric-list {
   margin: 0;
+  width: 94%;
   padding: 0;
   list-style-type: none;
   position: absolute;
@@ -52,6 +53,7 @@
   transform: translateX(-50%);
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .video__rubric {
