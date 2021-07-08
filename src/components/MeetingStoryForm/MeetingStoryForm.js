@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import img from '../../images/personal-area/lk.png';
 
 function MeetingStoryForm({
   onSubmit, onDelete, values, isExample,
@@ -81,6 +82,13 @@ function MeetingStoryForm({
       onSubmit={handleSubmit(onSubmitForm)}
     >
       <div className="card personal-area__card personal-area__card_type_add-photo">
+        {isExample && (
+          <img
+            src={img}
+            alt="Катя"
+            className="personal-area__card_photo"
+          />
+        )}
         {photoSrc !== '' && (
         <img
           src={photoSrc}
@@ -240,7 +248,7 @@ MeetingStoryForm.defaultProps = {
     description: '',
     date: '',
     smile: '',
-    shared: false,
+    sendToCurator: false,
     image: '',
   },
 };
@@ -256,7 +264,7 @@ MeetingStoryForm.propTypes = {
     date: PropTypes.string,
     smile: PropTypes.string,
     image: PropTypes.string,
-    send_to_curator: PropTypes.bool,
+    sendToCurator: PropTypes.bool,
     name: PropTypes.string,
   }),
 };

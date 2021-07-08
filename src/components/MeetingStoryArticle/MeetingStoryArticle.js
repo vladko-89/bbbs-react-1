@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MeetingStoryForm from '../MeetingStoryForm/MeetingStoryForm';
+import { getAccessToken } from '../../utils/utils';
+import api from '../../utils/Api';
 // import img from '../../images/personal-area/lk.png';
 
 function MeetingStoryArticle({
@@ -10,7 +12,15 @@ function MeetingStoryArticle({
   onEditSubmit,
 }) {
   const [isEdit, setIsEdit] = React.useState(false);
-  const [dataStory, setDataStory] = React.useState({ ...story });
+  const [dataStory, setDataStory] = React.useState({});
+  const [isOpenTo, setIsOpenTo] = React.useState(false);
+  const [reaction, setReaction] = React.useState('');
+
+  React.useEffect(() => {
+    setDataStory({ ...story });
+    setIsOpenTo(story.sendToCurator);
+  }, []);
+
   const handleEditClick = (e) => {
     onEdit(dataStory);
     setIsEdit(true);
@@ -25,8 +35,8 @@ function MeetingStoryArticle({
     const arrKey = Object.keys(data);
     console.log(arrKey);
     for (let i = 0; i < arrKey.length; i += 1) {
-      if (arrKey[i] === 'smile' && data.smile === null) {
-        editedFildForRequest.smile = dataStory.smile;
+      if (arrKey[i] === 'smile') {
+        editedFildForRequest.smile = data.smile === null ? dataStory.smile : data.smile;
       } else
       if (data[arrKey[i]] !== dataStory[arrKey[i]]) {
         editedFildForRequest[arrKey[i]] = data[arrKey[i]];
@@ -41,35 +51,54 @@ function MeetingStoryArticle({
   };
 
   const handleShareToClick = () => {
-    console.log(dataStory.id);
+    api.shareMeetingStoryTo(getAccessToken(), dataStory)
+      .then(() => {
+        setIsOpenTo(true);
+      })
+      .catch((err) => console.log(err));
   };
   // даты
   const date = new Date(dataStory.date);
   const month = date.toLocaleString('default', { month: 'long' });
   const day = date.getDate();
   const year = date.getFullYear();
+
   // название картинки из строки
   const altImage = dataStory.image?.substring(dataStory.image.lastIndexOf('/') + 1, dataStory.image.lastIndexOf('.')) || '';
+
   // установка реакций
-  const setReaction = () => {
-    switch (dataStory.smile) {
-      case 'bad':
-        return 'Бывает и лучше';
-      case 'neutral':
-        return 'Хорошо';
-      case 'good':
-        return 'Было классно';
-      default:
-        return '';
-    }
-  };
-  const reaction = setReaction();
+  // const setReaction = () => {
+  //   switch (dataStory.smile) {
+  //     case 'bad':
+  //       return 'Бывает и лучше';
+  //     case 'neutral':
+  //       return 'Хорошо';
+  //     case 'good':
+  //       return 'Было классно';
+  //     default:
+  //       return '';
+  //   }
+  // };
+  // const reaction = setReaction();
 
   const handleDelete = () => {
     const time = `${month}, ${year}`;
     onDelete(time, dataStory);
   };
-
+  React.useEffect(() => {
+    setReaction(() => {
+      switch (dataStory.smile) {
+        case 'bad':
+          return 'Бывает и лучше';
+        case 'neutral':
+          return 'Хорошо';
+        case 'good':
+          return 'Было классно';
+        default:
+          return '';
+      }
+    });
+  }, [dataStory]);
   return (
     <>
       {!isEdit && (
@@ -103,8 +132,13 @@ function MeetingStoryArticle({
                   {reaction}
                 </p>
               </div>
-              <button className="personal-area__curator-select" onClick={handleShareToClick} type="button" disabled={!!dataStory.send_to_curator}>
-                {dataStory?.send_to_curator ? `Открыто ${dataStory.name}` : 'Поделиться с куратором'}
+              <button
+                className="personal-area__curator-select"
+                onClick={handleShareToClick}
+                type="button"
+                disabled={!!isOpenTo}
+              >
+                {isOpenTo ? `Открыто ${dataStory.name}` : 'Поделиться с куратором'}
               </button>
               <div className="personal-area__action-elements">
                 <button
@@ -147,7 +181,7 @@ MeetingStoryArticle.propTypes = {
     date: PropTypes.string,
     smile: PropTypes.string,
     image: PropTypes.string,
-    send_to_curator: PropTypes.bool,
+    sendToCurator: PropTypes.bool,
     name: PropTypes.string,
   }).isRequired,
   onEdit: PropTypes.func.isRequired,

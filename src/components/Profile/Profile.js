@@ -13,8 +13,6 @@ import CalendarDescription from '../CalendarDescription/CalendarDescription';
 
 // eslint-disable-next-line no-unused-vars
 function Profile(user) {
-  // eslint-disable-next-line no-console
-  // console.log(user);
   // eslint-disable-next-line no-unused-vars
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
   const [userMeetings, setUserMeetings] = React.useState([]);
@@ -96,6 +94,10 @@ function Profile(user) {
     setIsDescriptionPopupOpen(true);
     console.log(item);
   };
+
+  React.useEffect(() => {
+    if (userMeetings.length === 0) setIsHidden(false);
+  }, [userMeetings]);
   return (
     <>
       <main className="main">
