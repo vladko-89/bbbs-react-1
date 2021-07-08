@@ -60,6 +60,9 @@ function MeetingStoryForm({
         if (input.id === values.mood) input.checked = true;
       });
     }
+    if (values.image === null) {
+      setPhotoSrc('');
+    } else { setPhotoSrc(values.image); }
   }, []);
   return (
     <form
