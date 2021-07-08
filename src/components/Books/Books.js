@@ -1,10 +1,8 @@
 import React from 'react';
 import Tag from './Tag/Tag';
 import BookCard from './BookCard/BookCard';
-// import Pagination from '../Pagination/Pagination';
 import Preloader from '../Preloader/Preloader';
-
-import { toggleTagId } from '../../utils/utils';
+import Pagination from '../Pagination/Pagination';
 
 import api from '../../utils/Api';
 
@@ -40,9 +38,22 @@ export default function Books() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [books, setBooks] = React.useState([]);
+  const cardCount = React.useRef(0);
+  const bookContainer = React.useRef(null);
 
-  function handleTagClick(tagId) {
-    setTags(toggleTagId(tagId, tags));
+  // function handleTagClick(tagId) {
+  //   setTags(toggleTagId(tagId, tags));
+  // }
+
+  function onPageChange(page) {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      api.getBooks(new URLSearchParams({ limit: getLimit(), offset: getLimit() * (page - 1) }))
+        .then((resBooks) => setBooks(resBooks.results))
+        .catch((err) => console.log('Ошибка загрузки данных: ', err))
+        .finally(() => setIsLoading(false));
+    }, 2000);
   }
 
   React.useEffect(() => {
@@ -57,9 +68,13 @@ export default function Books() {
           slug: 'all',
         }, ...resTags.results]);
         setBooks(resBooks.results);
+        cardCount.current = resBooks.count;
       })
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        bookContainer.current.style.height = `${bookContainer.current.clientHeight}px`;
+      });
   }, []);
 
   return (
@@ -75,17 +90,17 @@ export default function Books() {
         </div>
       </section>
 
-      <section className="cards-grid cards-grid_content_small-cards page__section">
+      <section ref={bookContainer} className="cards-grid cards-grid_content_small-cards page__section">
         {
           isLoading ? <Preloader /> : books.map((book) => <BookCard key={book.id} book={book} />)
         }
       </section>
 
-      {/* <Pagination
-        cardsLength={filteredBooks.length}
+      <Pagination
+        cardsLength={cardCount.current}
         onPageChange={onPageChange}
-        cardsPerPage={cardsPerPage}
-      /> */}
+        cardsPerPage={getLimit()}
+      />
     </main>
   );
 }
