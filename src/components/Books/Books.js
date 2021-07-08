@@ -40,27 +40,10 @@ export default function Books() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [books, setBooks] = React.useState([]);
-  // const [shownBooks, setShownBooks] = React.useState([]);
-
-  // function onPageChange(currPage) {
-  //   const begin = currPage * cardsPerPage - cardsPerPage;
-  //   const end = begin + cardsPerPage;
-  //   setShownBooks(
-  //     filteredBooks.slice(begin, end < filteredBooks.length ? end : filteredBooks.length),
-  //   );
-  // }
 
   function handleTagClick(tagId) {
     setTags(toggleTagId(tagId, tags));
   }
-
-  // React.useEffect(() => {
-  //   setFilteredBooks(filterByTags(tagIdArray, books));
-  // }, [tagIdArray]);
-
-  // React.useEffect(() => {
-  //   onPageChange(1);
-  // }, [filteredBooks]);
 
   React.useEffect(() => {
     Promise.all([
@@ -86,7 +69,7 @@ export default function Books() {
         <div className="tags">
           <ul className="tags__list">
             {
-              tags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={handleTagClick} />)
+              tags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={() => {}} />)
             }
           </ul>
         </div>
