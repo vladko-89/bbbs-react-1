@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import Tag from './Tag/Tag';
 import BookCard from './BookCard/BookCard';
@@ -5,6 +6,8 @@ import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
 
 import api from '../../utils/Api';
+
+import './Books.scss';
 
 // const requestDelay = 2000;
 
@@ -73,7 +76,7 @@ export default function Books() {
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
       .finally(() => {
         setIsLoading(false);
-        bookContainer.current.style.height = `${bookContainer.current.clientHeight}px`;
+        // bookContainer.current.style.height = `${bookContainer.current.clientHeight}px`;
       });
   }, []);
 
@@ -92,7 +95,10 @@ export default function Books() {
 
       <section ref={bookContainer} className="cards-grid cards-grid_content_small-cards page__section">
         {
-          isLoading ? <Preloader /> : books.map((book) => <BookCard key={book.id} book={book} />)
+          isLoading && <div className="books-preloader"><Preloader /></div>
+        }
+        {
+          books.map((book) => <BookCard key={book.id} book={book} />)
         }
       </section>
 
@@ -100,6 +106,7 @@ export default function Books() {
         cardsLength={cardCount.current}
         onPageChange={onPageChange}
         cardsPerPage={getLimit()}
+        disableInitialCallback
       />
     </main>
   );

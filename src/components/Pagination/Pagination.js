@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import './Pagination.scss';
 
-function Pagination({ cardsLength, onPageChange, cardsPerPage }) {
+function Pagination({
+  cardsLength, onPageChange, cardsPerPage, disableInitialCallback,
+}) {
   const totalPages = Math.ceil(cardsLength / cardsPerPage);
   return (
     <section
@@ -30,15 +32,21 @@ function Pagination({ cardsLength, onPageChange, cardsPerPage }) {
           nextClassName="pagination__list-item"
           nextLinkClassName="pagination__arrow-right"
           disabledClassName="pagination__arrow_disabled"
+          disableInitialCallback={disableInitialCallback}
         />
       </nav>
     </section>
   );
 }
 
+Pagination.defaultProps = {
+  disableInitialCallback: false,
+};
+
 Pagination.propTypes = {
   cardsLength: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   cardsPerPage: PropTypes.number.isRequired,
+  disableInitialCallback: PropTypes.bool,
 };
 export default Pagination;
