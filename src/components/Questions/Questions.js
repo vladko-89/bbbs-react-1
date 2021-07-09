@@ -1,5 +1,5 @@
 import React from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
+import { TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
 import Tag from './Tag/Tag';
@@ -100,7 +100,7 @@ export default function Questions({ loggedIn }) {
           </div>
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
-          <CSSTransitionGroup
+          <TransitionGroup
             transitionName={{
               enter: styles['transition-group-enter'],
               enterActive: styles['transition-group-enter-active'],
@@ -119,7 +119,7 @@ export default function Questions({ loggedIn }) {
                   <Question key={question.id} question={question} />
                 ))
             }
-          </CSSTransitionGroup>
+          </TransitionGroup>
           {
             nextLink && <button onClick={handleMoreClick} type="button" className={`${styles.button} ${styles.button_theme_light}`}>Ещё</button>
           }
