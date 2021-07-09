@@ -14,12 +14,12 @@ function MeetingStoryArticle({
   const [isEdit, setIsEdit] = React.useState(false);
   const [dataStory, setDataStory] = React.useState({});
   const [isOpenTo, setIsOpenTo] = React.useState(false);
-  const [reaction, setReaction] = React.useState('');
+  // const [reaction, setReaction] = React.useState('');
 
   React.useEffect(() => {
     setDataStory({ ...story });
     setIsOpenTo(story.sendToCurator);
-  }, []);
+  }, [story]);
 
   const handleEditClick = (e) => {
     onEdit(dataStory);
@@ -44,7 +44,7 @@ function MeetingStoryArticle({
     }
     console.log(editedFildForRequest);
     onEditSubmit(editedFildForRequest)
-      .then((res) => setDataStory({ ...res }))
+      .then(() => setDataStory({ ...data }))
       .catch((err) => console.log(err));
 
     setIsEdit(false);
@@ -67,38 +67,38 @@ function MeetingStoryArticle({
   const altImage = dataStory.image?.substring(dataStory.image.lastIndexOf('/') + 1, dataStory.image.lastIndexOf('.')) || '';
 
   // установка реакций
-  // const setReaction = () => {
-  //   switch (dataStory.smile) {
-  //     case 'bad':
-  //       return 'Бывает и лучше';
-  //     case 'neutral':
-  //       return 'Хорошо';
-  //     case 'good':
-  //       return 'Было классно';
-  //     default:
-  //       return '';
-  //   }
-  // };
-  // const reaction = setReaction();
+  const setReaction = () => {
+    switch (dataStory.smile) {
+      case 'bad':
+        return 'Бывает и лучше';
+      case 'neutral':
+        return 'Хорошо';
+      case 'good':
+        return 'Было классно';
+      default:
+        return '';
+    }
+  };
+  const reaction = setReaction();
 
   const handleDelete = () => {
     const time = `${month}, ${year}`;
     onDelete(time, dataStory);
   };
-  React.useEffect(() => {
-    setReaction(() => {
-      switch (dataStory.smile) {
-        case 'bad':
-          return 'Бывает и лучше';
-        case 'neutral':
-          return 'Хорошо';
-        case 'good':
-          return 'Было классно';
-        default:
-          return '';
-      }
-    });
-  }, [dataStory]);
+  // React.useEffect(() => {
+  //   setReaction(() => {
+  //     switch (dataStory.smile) {
+  //       case 'bad':
+  //         return 'Бывает и лучше';
+  //       case 'neutral':
+  //         return 'Хорошо';
+  //       case 'good':
+  //         return 'Было классно';
+  //       default:
+  //         return '';
+  //     }
+  //   });
+  // }, []);
   return (
     <>
       {!isEdit && (

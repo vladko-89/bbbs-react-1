@@ -4,16 +4,29 @@
 }
 .coming-events__list {
   overflow-y: hidden;
-overflow-x: auto;
+overflow-x: hidden;
   display: flex;
   list-style: none;
-  padding: 0;
+  padding: 5px 0;
   margin: 0 ;
-  scrollbar-width: 3px;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
-    scrollbar-width: 3px;
+    width: 5px;
   }
-
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    //background-color: rgba(220, 219, 219, 0.99);
+    background: linear-gradient(180deg, #f0f2f3, rgba(210, 210, 212, 0.89));
+   // -webkit-box-shadow: 0 0 1px rgb(242, 241, 241);
+  }
+  &:hover {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -ms-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
 }
 .coming-events__event {
   cursor: pointer;
