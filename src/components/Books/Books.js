@@ -74,10 +74,7 @@ export default function Books() {
         cardCount.current = resBooks.count;
       })
       .catch((err) => console.log('Ошибка загрузки данных: ', err))
-      .finally(() => {
-        setIsLoading(false);
-        // bookContainer.current.style.height = `${bookContainer.current.clientHeight}px`;
-      });
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
