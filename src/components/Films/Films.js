@@ -7,7 +7,7 @@ import { films, filmTags } from '../../utils/filmsData';
 import { filterByTags, toggleTagId } from '../../utils/utils';
 
 export default function Films() {
-  const cardsPerPage = 16;
+  const cardsPerPage = 1;
   const [tagIdArray, setTagIdArray] = React.useState([]);
   const [filteredFilms, setFilteredFilms] = React.useState(films);
   const [shownCards, setShownCards] = React.useState([]);

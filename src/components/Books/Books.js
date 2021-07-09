@@ -1,15 +1,17 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import React from 'react';
+import ReactPaginate from 'react-paginate';
 import Tag from './Tag/Tag';
 import BookCard from './BookCard/BookCard';
 import Preloader from '../Preloader/Preloader';
-import Pagination from '../Pagination/Pagination';
 
 import api from '../../utils/Api';
+import { toggleTag } from '../../utils/utils';
 
 import './Books.scss';
 
-// const requestDelay = 2000;
+const requestDelay = 1000;
+const filterDelay = 2000;
 
 const breakpoints = {
   desktopHigh: 1920,
@@ -43,20 +45,34 @@ export default function Books() {
   const [books, setBooks] = React.useState([]);
   const cardCount = React.useRef(0);
   const bookContainer = React.useRef(null);
+  const paginationTimer = React.useRef(null);
+  const selectedTags = React.useRef([]);
+  const currentPage = React.useRef(0);
 
-  // function handleTagClick(tagId) {
-  //   setTags(toggleTagId(tagId, tags));
-  // }
-
-  function onPageChange(page) {
+  function onPageChange(page, delay = requestDelay) {
+    clearTimeout(paginationTimer.current);
     setIsLoading(true);
 
-    setTimeout(() => {
-      api.getBooks(new URLSearchParams({ limit: getLimit(), offset: getLimit() * (page - 1) }))
-        .then((resBooks) => setBooks(resBooks.results))
+    const params = new URLSearchParams({ limit: getLimit(), offset: getLimit() * page.selected });
+    selectedTags.current.forEach((item) => {
+      params.append('tag', item.slug);
+    });
+
+    paginationTimer.current = setTimeout(() => {
+      api.getBooks(params)
+        .then((resBooks) => {
+          setBooks(resBooks.results);
+          cardCount.current = resBooks.count;
+          currentPage.current = page.selected;
+        })
         .catch((err) => console.log('Ошибка загрузки данных: ', err))
         .finally(() => setIsLoading(false));
-    }, 2000);
+    }, delay);
+  }
+
+  function onTagClick(tag) {
+    selectedTags.current = toggleTag(tag, selectedTags.current);
+    onPageChange({ selected: 0 }, filterDelay);
   }
 
   React.useEffect(() => {
@@ -84,7 +100,7 @@ export default function Books() {
         <div className="tags">
           <ul className="tags__list">
             {
-              tags.map((tag) => <Tag key={tag.id} tag={tag} handleTagClick={() => {}} />)
+              tags.map((tag) => <Tag key={tag.id} tag={tag} onTagClick={onTagClick} />)
             }
           </ul>
         </div>
@@ -99,12 +115,31 @@ export default function Books() {
         }
       </section>
 
-      <Pagination
-        cardsLength={cardCount.current}
-        onPageChange={onPageChange}
-        cardsPerPage={getLimit()}
-        disableInitialCallback
-      />
+      <section className="pagination page__section">
+        <nav className="pagination__nav" aria-label="Навигация по страницам">
+          <ReactPaginate
+            initialPage={0}
+            onPageChange={onPageChange}
+            pageCount={Math.ceil(cardCount.current / getLimit())}
+            forcePage={currentPage.current}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={3}
+            breakClassName="pagination__list-item section-title"
+            breakLinkClassName="pagination__link"
+            containerClassName="pagination__list"
+            activeClassName="pagination__link_active"
+            pageClassName="pagination__list-item section-title"
+            pageLinkClassName="pagination__link"
+            previousClassName="pagination__list-item"
+            previousLinkClassName="pagination__arrow-left"
+            nextClassName="pagination__list-item"
+            nextLinkClassName="pagination__arrow-right"
+            disabledClassName="pagination__arrow_disabled"
+            previousLabel=""
+            nextLabel=""
+          />
+        </nav>
+      </section>
     </main>
   );
 }

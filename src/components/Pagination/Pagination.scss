@@ -45,7 +45,6 @@
   display: block;
   width: 30px;
   height: 30px;
-  margin-left: 55px;
   cursor: pointer;
   background-image: url('../../images/svg/arrow-right-black.svg');
   background-position: center;
@@ -60,7 +59,6 @@
   display: block;
   width: 30px;
   height: 30px;
-  margin-left: 55px;
   cursor: pointer;
   background-image: url('../../images/svg/arrow-left-black.svg');
   background-position: center;
@@ -82,10 +80,6 @@
 
   .pagination__list-item {
     margin-right: 20px;
-
-    &:nth-child(5) {
-      display: none;
-    }
   }
 
   .pagination__link {
@@ -106,10 +100,6 @@
 @include atMobile {
   .pagination {
     padding-top: 30px;
-  }
-
-  .pagination__nav {
-    justify-content: flex-end;
   }
 
   .pagination__arrow {
