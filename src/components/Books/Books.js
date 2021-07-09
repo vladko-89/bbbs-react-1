@@ -93,53 +93,69 @@ export default function Books() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  return (
-    <main className="main">
-      <section className="lead page__section">
-        <h1 className="main-title">Книги</h1>
-        <div className="tags">
-          <ul className="tags__list">
-            {
-              tags.map((tag) => <Tag key={tag.id} tag={tag} onTagClick={onTagClick} />)
-            }
-          </ul>
-        </div>
-      </section>
+  try {
+    return (
+      <main className="main">
+        <section className="lead page__section">
+          <h1 className="main-title">Книги</h1>
+          <div className="tags">
+            <ul className="tags__list">
+              {
+                tags.map((tag) => <Tag key={tag.id} tag={tag} onTagClick={onTagClick} />)
+              }
+            </ul>
+          </div>
+        </section>
 
-      <section ref={bookContainer} className="cards-grid cards-grid_content_small-cards page__section">
-        {
-          isLoading && <div className="books-preloader"><Preloader /></div>
-        }
-        {
-          books.map((book) => <BookCard key={book.id} book={book} />)
-        }
-      </section>
+        <section ref={bookContainer} className="cards-grid cards-grid_content_small-cards page__section">
+          {
+            isLoading && <div className="books-preloader"><Preloader /></div>
+          }
+          {
+            books.map((book) => <BookCard key={book.id} book={book} />)
+          }
+        </section>
 
-      <section className="pagination page__section">
-        <nav className="pagination__nav" aria-label="Навигация по страницам">
-          <ReactPaginate
-            initialPage={0}
-            onPageChange={onPageChange}
-            pageCount={Math.ceil(cardCount.current / getLimit())}
-            forcePage={currentPage.current}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={3}
-            breakClassName="pagination__list-item section-title"
-            breakLinkClassName="pagination__link"
-            containerClassName="pagination__list"
-            activeClassName="pagination__link_active"
-            pageClassName="pagination__list-item section-title"
-            pageLinkClassName="pagination__link"
-            previousClassName="pagination__list-item"
-            previousLinkClassName="pagination__arrow-left"
-            nextClassName="pagination__list-item"
-            nextLinkClassName="pagination__arrow-right"
-            disabledClassName="pagination__arrow_disabled"
-            previousLabel=""
-            nextLabel=""
-          />
-        </nav>
-      </section>
-    </main>
-  );
+        <section className="pagination page__section">
+          <nav className="pagination__nav" aria-label="Навигация по страницам">
+            <ReactPaginate
+              initialPage={0}
+              onPageChange={onPageChange}
+              pageCount={Math.ceil(cardCount.current / getLimit())}
+              forcePage={currentPage.current}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={3}
+              breakClassName="pagination__list-item section-title"
+              breakLinkClassName="pagination__link"
+              containerClassName="pagination__list"
+              activeClassName="pagination__link_active"
+              pageClassName="pagination__list-item section-title"
+              pageLinkClassName="pagination__link"
+              previousClassName="pagination__list-item"
+              previousLinkClassName="pagination__arrow-left"
+              nextClassName="pagination__list-item"
+              nextLinkClassName="pagination__arrow-right"
+              disabledClassName="pagination__arrow_disabled"
+              previousLabel=""
+              nextLabel=""
+            />
+          </nav>
+        </section>
+      </main>
+    );
+  } catch (error) {
+    console.log('Ошибка рендеринга книг: ', error);
+
+    return (
+      <main className="main">
+        <section className="lead page__section">
+          <h1 className="main-title">Книги</h1>
+          <div className="tags">
+            <ul className="tags__list" />
+          </div>
+        </section>
+        <section ref={bookContainer} className="cards-grid cards-grid_content_small-cards page__section" />
+      </main>
+    );
+  }
 }
