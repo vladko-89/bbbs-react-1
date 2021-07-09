@@ -100,9 +100,10 @@ export default function Questions({ loggedIn }) {
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
           {
-            isLoading ? <Preloader key={0} /> : questions.map((question) => (
-              <Question key={question.id} question={question} />
-            ))
+            isLoading && <div className={styles.preloader}><Preloader /></div>
+          }
+          {
+            questions.map((question) => (<Question key={question.id} question={question} />))
           }
           {
             nextLink && <button onClick={handleMoreClick} type="button" className={`${styles.button} ${styles.button_theme_light}`}>Ещё</button>

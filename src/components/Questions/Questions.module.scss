@@ -28,6 +28,20 @@
   transition: opacity .5s ease-in;
 }
 
+.preloader {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #f3f2f2d2;
+}
+
 .button {
   display: flex;
   justify-content: center;
@@ -286,6 +300,7 @@
 }
 
 .questions {
+  position: relative;
   max-width: 970px;
   margin: 0 auto;
 }
