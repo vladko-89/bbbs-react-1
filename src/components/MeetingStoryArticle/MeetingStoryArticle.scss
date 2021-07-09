@@ -96,6 +96,8 @@ overflow: auto;
   cursor: pointer;
   color: $lightGray;
 background-color: transparent;
+  text-align: start;
+  padding-left: 0px;
 }
 .personal-area__curator-select:disabled {
   cursor: inherit;

@@ -122,7 +122,6 @@ function Main({
 
         <section className="main-section page__section">
           <MainVideo
-
             title={mainState.video.title}
             info={mainState.video.info}
             link={mainState.video.link}
