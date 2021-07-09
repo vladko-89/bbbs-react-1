@@ -120,12 +120,12 @@ function MeetingStoryForm({
               className="personal-area__form-input personal-area__form-input_type_place"
               id="place"
             // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('place', { required: true, maxLength: 35, minLength: 2 })}
+              {...register('place', { required: true, maxLength: 50, minLength: 2 })}
               value={place}
               onChange={handlePlaceChange}
             />
             {errors.place && errors.place.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
-            {errors.place && errors.place.type === 'maxLength' && <p className="personal-area__form-input_error">Максимум 35 символов</p> }
+            {errors.place && errors.place.type === 'maxLength' && <p className="personal-area__form-input_error">Максимум 50 символов</p> }
             {errors.place && errors.place.type === 'minLength' && <p className="personal-area__form-input_error">Минимум 2 символа</p> }
           </div>
           <div className="personal-area__form-input_wrap_data">

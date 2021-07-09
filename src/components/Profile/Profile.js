@@ -45,6 +45,7 @@ function Profile(user) {
   console.log(selectedMeetings);
   const handleEditClick = (meeting) => {
     setSelectedMeetings(meeting);
+    setIsHidden(true);
   };
   const handleDeleteMeetClick = (time, meeting) => {
     setSelectedMeetings(meeting);
