@@ -4,16 +4,29 @@
 }
 .coming-events__list {
   overflow-y: hidden;
-overflow-x: auto;
+overflow-x: hidden;
   display: flex;
   list-style: none;
-  padding: 0;
+  padding: 5px 0;
   margin: 0 ;
-  scrollbar-width: 3px;
+  scrollbar-width: 5px;
   &::-webkit-scrollbar {
-    scrollbar-width: 3px;
+    width: 5px;
   }
-
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    //background-color: rgba(220, 219, 219, 0.99);
+    background: linear-gradient(180deg, #f0f2f3, rgba(210, 210, 212, 0.89));
+   // -webkit-box-shadow: 0 0 1px rgb(242, 241, 241);
+  }
+  &:hover {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -ms-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
 }
 .coming-events__event {
   cursor: pointer;
@@ -29,7 +42,7 @@ overflow-x: auto;
   transition: all 0.3s;
 }
 .coming-events__event:hover {
-  box-shadow:inset 0px -3px 10px 4px rgba(89, 104, 165, 0.20);
+  box-shadow:inset 0px -3px 8px 2px rgba(76, 83, 109, .2);
 }
 .coming-events__title {
   font-family: 'ProtoGrotesk';
