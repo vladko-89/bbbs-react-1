@@ -1,23 +1,26 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import CitiesListContext from '../../contexts/CitiesListContext';
 import api from '../../utils/Api';
-// import PropTypes from 'prop-types';
-import { getAccessToken } from '../../utils/utils';
+import { getAccessToken, prepareDetails } from '../../utils/utils';
 import styles from './PopupRecommend.module.scss';
 
 const modalRoot = document.getElementById('modal-root');
 
-function PopupRecommend({ onClose }) {
+function PopupRecommend({ onSuccess, onClose }) {
   const citiesList = React.useContext(CitiesListContext);
+  const [err, setErr] = React.useState(null);
   const { register, formState: { errors }, handleSubmit } = useForm();
-  // eslint-disable-next-line no-alert
   const onSubmit = (data) => {
-    console.log(JSON.stringify(data));
     api.addPlace(getAccessToken(), data)
-      .then((res) => console.log(res));
+      .then((res) => {
+        if (res.message) {
+          return setErr({ message: res.message, details: prepareDetails(res.details) });
+        } onSuccess(); return onClose();
+      });
   };
 
   const handleClose = React.useCallback(
@@ -94,7 +97,7 @@ function PopupRecommend({ onClose }) {
                       {...register('gender')}
                       type="radio"
                       name="gender"
-                      value="boy"
+                      value="M"
                       className={styles.recommendation__radio}
                       required
                     />
@@ -106,7 +109,7 @@ function PopupRecommend({ onClose }) {
                       {...register('gender')}
                       type="radio"
                       name="gender"
-                      value="girl"
+                      value="F"
                       className={styles.recommendation__radio}
                       required
                     />
@@ -163,6 +166,10 @@ function PopupRecommend({ onClose }) {
                 <button className={`${styles.button} ${styles.button_theme_light} ${styles.recommendation__submit}`} type="submit">
                   Отправить
                 </button>
+                <div className={styles.error_backend}>
+                  <p className={styles.error}>{err?.message}</p>
+                  {err?.details && <p className={styles.error}>{err?.details}</p> }
+                </div>
               </div>
             </fieldset>
           </form>
@@ -175,3 +182,7 @@ function PopupRecommend({ onClose }) {
 }
 
 export default PopupRecommend;
+PopupRecommend.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};

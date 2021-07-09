@@ -111,7 +111,7 @@ function Main({
               link={movie.link}
               key={movie.id}
               title={movie.title}
-              imageUrl={movie.imageUrl}
+              imageUrl={movie.preview}
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
@@ -122,11 +122,13 @@ function Main({
 
         <section className="main-section page__section">
           <MainVideo
+
             title={mainState.video.title}
             info={mainState.video.info}
             link={mainState.video.link}
-            imageUrl={mainState.video.imageUrl}
+            imageUrl={mainState.video.preview}
             duration={mainState.video.duration}
+
           />
         </section>
 
@@ -149,8 +151,8 @@ function Main({
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[1].title}
-            color={mainState.articles[1].color}
+            title={mainState.articles[1]?.title}
+            color={mainState.articles[1]?.color}
           />
         </section>
         <CalendarConfirmation

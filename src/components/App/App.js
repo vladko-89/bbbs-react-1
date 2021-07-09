@@ -24,6 +24,7 @@ import CurrentUserContext from '../../contexts/CurrentUser';
 import CitiesListContext from '../../contexts/CitiesListContext';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
+import RightArticle from '../RightArticle/RightArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
@@ -53,8 +54,14 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+  const [currentCard, setCurrentCard] = React.useState({});
 
   // const [path, setPath] = React.useState('');
+
+  function clickOnCard(card) {
+    setCurrentCard(card);
+    console.log('current', currentCard);
+  }
 
   React.useEffect(() => {
     useAuth(setCurrentUser, setLoggedIn);
@@ -78,8 +85,8 @@ function App() {
 
   function unSubscribes(calendar) {
     setIsQuery(true);
-    const event = myEvents.filter((item) => item.event === calendar.id);
-    api.signOutOnEvent(getAccessToken(), event[0].id)
+    const event = myEvents.find((item) => item.event === calendar.id);
+    api.signOutOnEvent(getAccessToken(), event.id)
       .then((res) => console.log(res))
       .catch((error) => console.log(error))
       .finally(() => setIsQuery(false));
@@ -152,20 +159,26 @@ function App() {
     unSubscribes(calendar);
     getSubscribes();
   }
-
+  /* rename func */
   function handleImmidiateBooking(calendar) {
-    api.signUpOnEvent(getAccessToken(), calendar.id)
-      .then((res) => {
-        console.log(res);
-        setIsSuccessRegPopupOpen(true);
-        openConfirmationPopup();
-        getCalendarEvents();
-        getSubscribes();
-      })
-      .catch((error) => {
+    console.log('calendar', calendar);
+    if (calendar.booked) {
+      handleCancelBooking(calendar);
+      setIsDescriptionPopupOpen(false);
+    } else {
+      api.signUpOnEvent(getAccessToken(), calendar.id)
+        .then((res) => {
+          console.log(res);
+          setIsSuccessRegPopupOpen(true);
+          openConfirmationPopup();
+          getCalendarEvents();
+          getSubscribes();
+        })
+        .catch((error) => {
         // eslint-disable-next-line no-console
-        console.log(error);
-      });
+          console.log(error);
+        });
+    }
   }
   // Отслеживаем активные фильтры в компонентах
   function changeActiveRubric(rubric, active) {
@@ -229,12 +242,11 @@ function App() {
     setIsPoupLoginOpened(true);
     // setPath(path);
   };
-  const handleLoginClose = (evt) => {
-    if (
-      evt.key === 'Escape' || evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup__enter')
-    ) {
-      setIsPoupLoginOpened(false);
+  const handleLoginClose = (e) => {
+    if (e.code !== 'Escape' && e.type === 'keydown') {
+      return;
     }
+    setIsPoupLoginOpened(false);
   };
 
   const handleLoginSubmit = (evt, userName) => {
@@ -343,6 +355,7 @@ function App() {
                   loggedIn={loggedIn}
                   component={Profile}
                   openEventDescription={handleDescription}
+                  handleImmidiateBooking={handleImmidiateBooking}
                   user={currentUser}
                 />
                 <Route exact path="/video">
@@ -393,15 +406,16 @@ function App() {
               ''
             )}
             {{ isOpenPopupCities } && (
-            <PopupCities
-              onChangeCities={
-                loggedIn ? handleChangeCity : handleChangeCityNotAuth
-              }
-              onCloseClick={handleClose}
-              isOpen={isOpenPopupCities}
-              isCity={loggedIn ? currentUser.city.name : 'Москва'}
-              citiesList={citiesList}
-            />
+
+              <PopupCities
+                onChangeCities={
+                  loggedIn ? handleChangeCity : handleChangeCityNotAuth
+                }
+                onCloseClick={handleClose}
+                isOpen={isOpenPopupCities}
+                isCity={loggedIn ? currentUser.city.name : 'Москва'}
+                citiesList={citiesList}
+              />
             )}
           </div>
         </HelmetProvider>
