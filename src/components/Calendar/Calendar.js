@@ -85,6 +85,7 @@ function Calendar({
         isOpen={isSuccessRegPopupOpen}
         handleCloseSuccessRegPopup={onClose}
         currentEvent={currentEvent}
+        textPopupButton="Вернуться к календарю"
       />
     </>
   );
