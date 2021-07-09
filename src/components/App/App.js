@@ -24,6 +24,7 @@ import CurrentUserContext from '../../contexts/CurrentUser';
 import CitiesListContext from '../../contexts/CitiesListContext';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
+import RightArticle from '../RightArticle/RightArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
@@ -53,8 +54,14 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+  const [currentCard, setCurrentCard] = React.useState({});
 
   // const [path, setPath] = React.useState('');
+
+  function clickOnCard(card) {
+    setCurrentCard(card);
+    console.log('current', currentCard);
+  }
 
   React.useEffect(() => {
     useAuth(setCurrentUser, setLoggedIn);
@@ -399,15 +406,16 @@ function App() {
               ''
             )}
             {{ isOpenPopupCities } && (
-            <PopupCities
-              onChangeCities={
-                loggedIn ? handleChangeCity : handleChangeCityNotAuth
-              }
-              onCloseClick={handleClose}
-              isOpen={isOpenPopupCities}
-              isCity={loggedIn ? currentUser.city.name : 'Москва'}
-              citiesList={citiesList}
-            />
+
+              <PopupCities
+                onChangeCities={
+                  loggedIn ? handleChangeCity : handleChangeCityNotAuth
+                }
+                onCloseClick={handleClose}
+                isOpen={isOpenPopupCities}
+                isCity={loggedIn ? currentUser.city.name : 'Москва'}
+                citiesList={citiesList}
+              />
             )}
           </div>
         </HelmetProvider>

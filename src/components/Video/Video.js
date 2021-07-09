@@ -14,50 +14,48 @@ function Video({
   activeRubrics,
   selectRubric,
 }) {
-  const [mainState, setMainState] = React.useState({});
+  const [mainVideo, setMainVideo] = React.useState({});
+  const [moviesLoad, setMoviesLoad] = React.useState([]);
   const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);
+  const [tags, setTags] = React.useState([]);
   const currentIndex = React.useRef(0);
-  const filterArray = [
-    {
-      name: 'Все',
-      slug: 'All',
-    },
-    {
-      name: 'Ресурсная группа',
-      slug: 'Ресурсная группа',
-    },
-    {
-      name: 'Эксперт',
-      slug: 'Эксперт',
-    },
-    {
-      name: 'Пары',
-      slug: 'Пары',
-    },
-    {
-      name: 'События',
-      slug: 'События',
-    },
-    {
-      name: 'Медиа о нас',
-      slug: 'Медиа о нас',
-    },
-  ];
+
+  React.useEffect(() => {
+    Promise.all([api.getMain(), api.getVideosTags(), api.getVideos()])
+      .then(([resMain, resTags, resVideos]) => {
+        setMainVideo(resMain.video);
+        setTags([
+          {
+            id: 0,
+            name: 'Все',
+            slug: 'all',
+          },
+          ...resTags.results,
+        ]);
+        console.log('videos:', resVideos);
+        setMoviesLoad(resVideos.results);
+        setMoviesToShow(resVideos.results);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      })
+      .finally(() => setIsDataReady(true));
+  }, []);
+
+  React.useEffect(() => {
+    api
+      .getVideos(activeRubrics)
+      .then((res) => {
+        setMoviesToShow(res.result.slice(currentIndex.current, cardsPerPage));
+      })
+      .catch((err) => console.log(err));
+  }, [activeRubrics]);
 
   React.useEffect(() => {
     selectRubric('All', true);
   }, []);
-
-  React.useEffect(() => {
-    api.getMain().then((res) => {
-      setMainState(res);
-      setMoviesToShow(res.movies.slice(currentIndex.current, cardsPerPage));
-    })
-      .then(() => setIsDataReady(true))
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log(err));
-  }, [setMainState]);
 
   function onPageChange(page) {
     if (page !== 1) {
@@ -65,7 +63,7 @@ function Video({
     } else {
       currentIndex.current = 0;
     }
-    setMoviesToShow(mainState.movies.slice(currentIndex.current, page * cardsPerPage));
+    setMoviesToShow(moviesToShow.slice(currentIndex.current, page * cardsPerPage));
   }
 
   if (isDataReady) {
@@ -73,16 +71,16 @@ function Video({
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Видео" />
-          <Filter array={filterArray} selectRubric={selectRubric} />
+          <Filter array={tags} selectRubric={selectRubric} />
         </section>
         <section className="main-card page__section">
           <MainVideo
-            title={mainState.video.title}
-            info={mainState.video.info}
-            link={mainState.video.link}
-            imageUrl={mainState.video.imageUrl}
-            duration={mainState.video.duration}
-            tags={mainState.video.tags}
+            title={mainVideo.title}
+            info={mainVideo.info}
+            link={mainVideo.link}
+            imageUrl={mainVideo.preview}
+            duration={mainVideo.duration}
+            tags={mainVideo.tags}
             activeRubrics={activeRubrics}
           />
         </section>
@@ -92,7 +90,7 @@ function Video({
               link={movie.link}
               key={movie.id}
               title={movie.title}
-              imageUrl={movie.imageUrl}
+              imageUrl={movie.preview}
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
@@ -101,7 +99,7 @@ function Video({
           ))}
         </section>
         <Pagination
-          cardsLength={mainState.movies.length}
+          cardsLength={moviesLoad.length}
           onPageChange={onPageChange}
           cardsPerPage={cardsPerPage}
         />

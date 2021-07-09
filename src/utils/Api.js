@@ -237,9 +237,13 @@ class Api {
   // ПРАВА ДЕТЕЙ
 
   // Получаю карточки прав
-  getRights(tags) {
+  getRights(tags, limit, offset) {
     const params = new URLSearchParams();
     if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
     return axios
       .get(`${this._baseUrl}/rights/`, {
         params,
@@ -252,6 +256,45 @@ class Api {
   getRightsTags() {
     return axios
       .get(`${this._baseUrl}/rights/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getRightArticle(_id) {
+    return axios
+      .get(`${this._baseUrl}/rights/${_id}/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // КАРТОЧКИ ВИДЕО
+  // Получаю карточки видео
+  getVideos(tags, limit, offset) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    return axios
+      .get(`${this._baseUrl}/entertainment/videos/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Получаю теги видео
+  getVideosTags() {
+    return axios
+      .get(`${this._baseUrl}/entertainment/videos/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getVideoCard(_id) {
+    return axios
+      .get(`${this._baseUrl}/entertainment/videos/${_id}/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
