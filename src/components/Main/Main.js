@@ -171,6 +171,7 @@ function Main({
           isOpen={isSuccessRegPopupOpen}
           handleCloseSuccessRegPopup={onClose}
           onClose={onClose}
+          textPopupButton="Вернуться"
         />
       </main>
     );
