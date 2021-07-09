@@ -252,6 +252,7 @@ function Navigation({
               aria-label="Войти"
               className="menu__button menu__button_type_user"
               onClick={onLoginPopup}
+              onKeyPress={handleClickMobMenu}
             />
           )}
         </li>
