@@ -123,7 +123,7 @@ function Profile({ user, handleImmidiateBooking }) {
     setIsDataReady(false);
     api.editMeetingStory(getAccessToken(), data)
       .then((res) => {
-        setUserMeetings([res, ...userMeetings.filter((el) => el.id !== res.id)]);
+        setUserMeetings([...userMeetings.map((el) => (el.id !== res.id ? el : res))]);
         return res;
       })
       .catch((err) => console.log(err))

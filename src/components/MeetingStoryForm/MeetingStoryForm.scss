@@ -250,3 +250,15 @@
     width: 100%;
   }
 }
+
+@media screen and (max-width: 580px) {
+  .personal-area__card-title {
+    max-width: 70%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .personal-area__card-title {
+    max-width: 240px;
+  }
+}

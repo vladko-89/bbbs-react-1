@@ -40,24 +40,18 @@ function MeetingStoryForm({
     const editedData = { ...data };
     if (document.getElementById('userImage').files.length === 0) {
       delete editedData.image;
-      // eslint-disable-next-line prefer-destructuring
-    } else { editedData.image = data.image[0]; }
+      // eslint-disable-next-line prefer-destructuring,max-len
+    } else { editedData.image = data.image[0]; }// т к фото одно грузим- сразу выставляем первый эл-т из массива FileList
     onSubmit(editedData);
   };
+
   const handleLoadImage = (e) => {
-    // const img = document.querySelector(
-    //   '.personal-area__card_photo',
-    // );
     setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
-    // img.src = window.URL.createObjectURL(e.target.files[0]);
-    // img.width = 400;
-    // eslint-disable-next-line
-    // img.onload = function () {
-    //   window.URL.revokeObjectURL(img.src);
-    // };
   };
+  // граничные значения для инпута даты
   const nowDate = new Date().toISOString().substring(0, 10);
   const oldDate = new Date(2010, 12, 31).toISOString().substring(0, 10);
+
   // установка реакции при редактировании
   React.useEffect(() => {
     if (values.smile !== '') {
@@ -74,7 +68,7 @@ function MeetingStoryForm({
       setPhotoSrc('');
     } else { setPhotoSrc(values.image); }
   }, []);
-  console.log(oldDate);
+
   return (
     <form
       className="card-container card-container_type_personal-area"
@@ -250,6 +244,7 @@ MeetingStoryForm.defaultProps = {
     smile: '',
     sendToCurator: false,
     image: '',
+    name: '',
   },
 };
 
