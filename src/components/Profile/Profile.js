@@ -30,7 +30,7 @@ function Profile({ user, handleImmidiateBooking }) {
   const handleUnsubscribe = () => {
     handleImmidiateBooking(currentEvent);
     api
-      .getEvents(getAccessToken())
+      .getEvents({ token: getAccessToken() })
       .then((res) => {
         console.log('res', res);
         setUserEvents(userEvents.filter((el) => el.id !== currentEvent.id));
@@ -41,7 +41,7 @@ function Profile({ user, handleImmidiateBooking }) {
   React.useEffect(() => {
     const accessToken = getAccessToken();
     api
-      .getEvents(accessToken)
+      .getEvents({ token: getAccessToken() })
       .then((res) => setUserEvents(res.results.filter((el) => el.booked === true)))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
