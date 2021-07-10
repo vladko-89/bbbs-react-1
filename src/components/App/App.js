@@ -376,6 +376,7 @@ function App() {
                   <Rights
                     activeRubrics={activeRubrics}
                     selectRubric={changeActiveRubric}
+                    onClickCard={clickOnCard}
                   />
                 </Route>
                 <Route exact path="/articles">
@@ -389,6 +390,9 @@ function App() {
                 </Route>
                 <Route exact path="/stories">
                   <Stories />
+                </Route>
+                <Route exact path={`/rights/${currentCard.id}`}>
+                  <RightArticle card={currentCard} />
                 </Route>
                 <Route exact path="*">
                   <PageNotFound />
