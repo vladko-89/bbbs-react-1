@@ -18,7 +18,7 @@ const breakpoints = {
   desktopHigh: 1920,
   desktopLow: 1440,
   mobileHigh: 1024,
-  mobileLow: 320,
+  mobileLow: 425,
 };
 
 const limitDesktopHighRes = 12;

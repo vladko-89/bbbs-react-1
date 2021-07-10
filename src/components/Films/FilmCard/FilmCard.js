@@ -1,16 +1,24 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 import PropTypes, { arrayOf, number, string } from 'prop-types';
 
 import './FilmCard.scss';
 
-export default function FilmCard({ film }) {
+export default function FilmCard({ film, showPopup }) {
+  function openPopup() {
+    showPopup({ title: film.title, info: film.info, link: 'https://www.youtube.com/embed/f0hQOVfZoIA' });
+  }
+
   try {
     return (
       <article className="card-container card-pagination">
         <div className="card card_content_video">
           <div className="video filmcard__preview">
-            <img src={`https://picsum.photos/300/200/?${film.id}`} alt="Превью видео" className="video__img" />
+            {/* PICSUM - временно */}
+            <img onClick={openPopup} src={`https://picsum.photos/300/200/?${film.id}`} alt="Превью видео" className="video__img" />
             <ul className="video__rubric-list">
               {
                 film.tags.map((tag) => <li key={tag}><p className="rubric video__rubric">{tag}</p></li>)
@@ -19,12 +27,12 @@ export default function FilmCard({ film }) {
           </div>
           <div className="card__video-info">
             <div className="card__title-wrap">
-              <h2 className="section-title card__title">{film.title}</h2>
-              <p className="caption card__title-caption">
+              <h2 className="section-titl film-card__title">{film.title}</h2>
+              <p className="caption film-card__caption">
                 {film.info}
               </p>
             </div>
-            <a href={film.link} className="link card__link link_action_open-video">смотреть трейлер</a>
+            <button onClick={openPopup} className="link card__link link_action_open-video film-card__button" type="button">смотреть трейлер</button>
           </div>
         </div>
         <div className="card card_content_annotation">

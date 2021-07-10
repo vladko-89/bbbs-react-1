@@ -1,8 +1,11 @@
+/* eslint-disable max-len */
+/* eslint-disable no-console */
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 import Tag from './Tag/Tag';
 import FilmCard from './FilmCard/FilmCard';
 import Preloader from '../Preloader/Preloader';
+import PopupVideo from './PopupVideo/PopupVideo';
 
 import { toggleTag } from '../../utils/utils';
 import api from '../../utils/Api';
@@ -49,6 +52,8 @@ export default function Films() {
   const paginationTimer = React.useRef(null);
   const currentPage = React.useRef(0);
   const selectedTags = React.useRef([]);
+  const [isPopupOpened, setIsPopupOpened] = React.useState(false);
+  const currentFilm = React.useRef({});
 
   function onPageChange(page, delay = requestDelay) {
     clearTimeout(paginationTimer.current);
@@ -74,6 +79,11 @@ export default function Films() {
   function onTagClick(tag) {
     selectedTags.current = toggleTag(tag, selectedTags.current);
     onPageChange({ selected: 0 }, filterDelay);
+  }
+
+  function showPopup(film) {
+    currentFilm.current = film;
+    setIsPopupOpened(true);
   }
 
   try {
@@ -113,7 +123,7 @@ export default function Films() {
             isLoading && <div className="films-preloader"><Preloader /></div>
           }
           {
-            films.map((film) => <FilmCard key={film.id} film={film} />)
+            films.map((item) => <FilmCard key={item.id} film={item} showPopup={showPopup} />)
           }
         </section>
 
@@ -143,6 +153,7 @@ export default function Films() {
             />
           </nav>
         </section>
+        <PopupVideo isOpened={isPopupOpened} setOpened={setIsPopupOpened} video={currentFilm.current} />
       </main>
     );
   } catch (error) {
