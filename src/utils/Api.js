@@ -164,6 +164,7 @@ class Api {
     formdata.append('date', data.date);
     formdata.append('description', data.description);
     formdata.append('smile', data.smile);
+    console.log(formdata);
     return (
       fetch(`${this._baseUrl}/meetings/`, {
         method: 'POST',
