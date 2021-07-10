@@ -132,3 +132,21 @@
     max-width: 504px;
     text-align: center;
   }
+  
+  .popup__close {
+    padding: 0;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-image: url('../../images/popup_close.svg');
+    width: 40px;
+    height: 40px;
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: $blue;
+    cursor: pointer;
+    z-index: 3;
+  }

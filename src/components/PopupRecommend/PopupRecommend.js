@@ -92,21 +92,24 @@ function PopupRecommend({ onSuccess, onClose }) {
                   <p className={styles.error}>{errors.address?.type === 'required' && 'Поле не заполнено'}</p>
                 </div>
                 <div className={styles['recommendation__box-inputs']}>
+                  <div className={styles.input__wrapper}>
+                    <label className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_radio}`}>
+                      <input
+                        {...register('gender', { required: true })}
+                        type="radio"
+                        name="gender"
+                        value="M"
+                        className={styles.recommendation__radio}
+                        required
+                      />
+                      <span className={styles['recommendation__visible-radio']} />
+                      Мальчик
+                    </label>
+                    <p className={styles.error}>{errors.gender?.type === 'required' && 'Выберите пол'}</p>
+                  </div>
                   <label className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_radio}`}>
                     <input
-                      {...register('gender')}
-                      type="radio"
-                      name="gender"
-                      value="M"
-                      className={styles.recommendation__radio}
-                      required
-                    />
-                    <span className={styles['recommendation__visible-radio']} />
-                    Мальчик
-                  </label>
-                  <label className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_radio}`}>
-                    <input
-                      {...register('gender')}
+                      {...register('gender', { required: true })}
                       type="radio"
                       name="gender"
                       value="F"
@@ -121,6 +124,8 @@ function PopupRecommend({ onSuccess, onClose }) {
                       {...register('age', { required: true })}
                       type="number"
                       name="age"
+                      min="1"
+                      max="40"
                       className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_age}`}
                       required
                       placeholder="Возраст*"
@@ -145,7 +150,7 @@ function PopupRecommend({ onSuccess, onClose }) {
                   <p className={styles.error}>{errors.activity_type?.type === 'required' && 'Поле не заполнено'}</p>
                 </div>
                 <div className={styles.input__wrapper_large}>
-                  <textarea
+                  <input
                     {...register('description', { required: true })}
                     className={`${styles.form__input} ${styles.recommendation__input}  ${styles.recommendation__input_type_textarea}`}
                     required
@@ -153,16 +158,19 @@ function PopupRecommend({ onSuccess, onClose }) {
                   />
                   <p className={styles.error}>{errors.description?.type === 'required' && 'Поле не заполнено'}</p>
                 </div>
-                <label className={`${styles.caption} ${styles['recommendation__add-photo']}`}>
-                  <input
-                    {...register('photo')}
-                    type="file"
-                    name="photo"
-                    className={styles['recommendation__file-input']}
-                  />
-                  <span className={styles['recommendation__add-photo-button']} />
-                  Загрузить фото
-                </label>
+                <div className={styles.input__wrapper}>
+                  <label className={`${styles.caption} ${styles['recommendation__add-photo']}`}>
+                    <input
+                      {...register('photo', { required: true })}
+                      type="file"
+                      name="photo"
+                      className={styles['recommendation__file-input']}
+                    />
+                    <span className={styles['recommendation__add-photo-button']} />
+                    Добавить фото
+                  </label>
+                  <p className={styles.error}>{errors.photo?.type === 'required' && 'Добавьте фотографию'}</p>
+                </div>
                 <button className={`${styles.button} ${styles.button_theme_light} ${styles.recommendation__submit}`} type="submit">
                   Отправить
                 </button>
