@@ -266,6 +266,7 @@ function App() {
         isPrimary: false,
       },
     });
+    localStorage.removeItem('user');
     localStorage.setItem('bbbs-user', JSON.stringify({
       id: 0,
       user: 0,
