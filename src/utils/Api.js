@@ -18,11 +18,32 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getEvents(accessToken) {
+  getEvents({
+    token, months, limit, offset,
+  }) {
+    const params = new URLSearchParams();
+    if (months && months.length > 0) {
+      params.append('month', months.join(','));
+    }
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
     return axios
       .get(`${this._baseUrl}/afisha/events/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${token}` },
+        params,
       })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getEventMonths({ token }) {
+    return axios
+      .get(`${this._baseUrl}/afisha/events/months/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
