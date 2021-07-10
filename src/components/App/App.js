@@ -29,6 +29,7 @@ import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
+import { eventsPerPage } from '../../utils/Constants';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -55,12 +56,25 @@ function App() {
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
   const [currentCard, setCurrentCard] = React.useState({});
-
+  const [currentPage, setCurrentPage] = React.useState(1);
   // const [path, setPath] = React.useState('');
 
   function clickOnCard(card) {
     setCurrentCard(card);
     console.log('current', currentCard);
+  }
+
+  function onPageChange(page) {
+    setCurrentPage(page);
+    const offset = page !== 1 ? page * eventsPerPage - eventsPerPage : 0;
+    api
+      .getEvents({
+        token: getAccessToken(),
+        limit: eventsPerPage,
+        offset,
+        months: activeRubrics,
+      })
+      .then((res) => { setCalendarData(res); });
   }
 
   React.useEffect(() => {
@@ -93,10 +107,13 @@ function App() {
   }
 
   function getCalendarEvents() {
-    api.getEvents(getAccessToken())
+    const offset = currentPage !== 1 ? currentPage * eventsPerPage - eventsPerPage : 0;
+    api.getEvents({
+      token: getAccessToken(), limit: eventsPerPage, offset, months: activeRubrics,
+    })
       .then((res) => {
         console.log('events', res);
-        setCalendarData(res.results);
+        setCalendarData(res);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -311,7 +328,7 @@ function App() {
                     isSuccessRegPopupOpen={isSuccessRegPopupOpen}
                     handleSuccessRegPopup={handleSuccessRegPopup}
                     handleImmidiateBooking={handleImmidiateBooking}
-                    calendarData={calendarData}
+                    calendarData={calendarData.results}
                   />
                 </Route>
                 <Route exact path="/place">
@@ -343,6 +360,8 @@ function App() {
                   isDescriptionPopupOpen={isDescriptionPopupOpen}
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
                   calendarData={calendarData}
+                  setCalendarData={setCalendarData}
+                  onPageChange={onPageChange}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
                 />

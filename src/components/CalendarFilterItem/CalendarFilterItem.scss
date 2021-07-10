@@ -1,0 +1,22 @@
+.tags__list-item {
+  margin-top: 15px;
+}
+
+.tags__button {
+  &_active {
+    background-color: $black;
+    color: $background;
+
+    &:hover {
+      background-color: $darkBlue;
+      color: $background;
+      border-color: $darkBlue;
+    }
+  }
+}
+
+@include atDesktop1024 {
+  .tags__list-item {
+    margin-top: 10px;
+  }
+}

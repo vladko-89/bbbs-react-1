@@ -1,15 +1,17 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 import React from 'react';
-import { format } from 'date-fns';
-import ruLocale from 'date-fns/locale/ru';
 import PropTypes from 'prop-types';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import CalendarEvent from '../CalendarEvent/CalendarEvent';
 import MainTitle from '../MainTitle/MainTitle';
-import Filter from '../Filter/Filter';
-// import { CalendarContext } from "../../contexts/CalendarContext";
+import CalendarFilter from '../CalendarFilter/CalendarFilter';
+import Pagination from '../Pagination/Pagination';
+import api from '../../utils/Api';
+import { getAccessToken } from '../../utils/utils';
+import { eventsPerPage } from '../../utils/Constants';
 
 function Calendar({
   activeRubrics,
@@ -23,29 +25,44 @@ function Calendar({
   isDescriptionPopupOpen,
   isSuccessRegPopupOpen,
   calendarData,
+  setCalendarData,
+  onPageChange,
   handleSuccessRegPopup,
   handleImmidiateBooking,
 }) {
-  const filterArray = [];
-  const parsedCalendarData = calendarData.map((el) => ({
-    name: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }),
-    slug: format(new Date(el.startAt), 'LLLL', { locale: ruLocale }),
-  }));
-  parsedCalendarData.forEach((el) => { if (!filterArray.some((item) => item.name === el.name)) { filterArray.push(el); } });
+  const [months, setMonths] = React.useState([]);
+  React.useEffect(() => {
+    api.getEventMonths({
+      token: getAccessToken(),
+    })
+      .then((res) => {
+        setMonths(res);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  }, []);
 
   React.useEffect(() => {
-    selectRubric('all', true);
-  }, []);
+    api.getEvents({
+      token: getAccessToken(),
+      months: activeRubrics,
+      limit: eventsPerPage,
+      offset: 0,
+    })
+      .then((res) => { setCalendarData(res); });
+  }, [activeRubrics]);
 
   return (
     <>
       <main className="main">
         <section className="lead page__section">
           <MainTitle title="Календарь" />
-          { filterArray.length > 1 ? <Filter array={filterArray} selectRubric={selectRubric} /> : ''}
+          { months.length > 1 && <CalendarFilter array={months} selectRubric={selectRubric} />}
         </section>
         <section className="calendar-container page__section">
-          {calendarData.length > 0 && calendarData.map((calendar) => (
+          {calendarData?.results?.length > 0 && calendarData.results.map((calendar) => (
             <CalendarEvent
               calendar={calendar}
               key={calendar.id}
@@ -61,13 +78,16 @@ function Calendar({
               onDescription={onDescription}
               onCancel={onCancel}
               activeRubrics={activeRubrics}
-              tags={[{
-                name: format(new Date(calendar.startAt), 'LLLL', { locale: ruLocale }),
-                slug: format(new Date(calendar.startAt), 'LLLL', { locale: ruLocale }),
-              }]}
             />
           ))}
         </section>
+        {(calendarData.count > eventsPerPage) && (
+        <Pagination
+          cardsLength={calendarData.count}
+          cardsPerPage={eventsPerPage}
+          onPageChange={onPageChange}
+        />
+        )}
       </main>
       <CalendarConfirmation
         isOpen={isConfirmationPopupOpen}
@@ -102,6 +122,7 @@ Calendar.propTypes = {
     address: PropTypes.string,
     contact: PropTypes.string,
   })).isRequired,
+  setCalendarData: PropTypes.func.isRequired,
   handleImmidiateBooking: PropTypes.func.isRequired,
   handleSuccessRegPopup: PropTypes.func.isRequired,
   isConfirmationPopupOpen: PropTypes.bool.isRequired,
@@ -109,7 +130,6 @@ Calendar.propTypes = {
   isSuccessRegPopupOpen: PropTypes.bool.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   onBooking: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onDescription: PropTypes.func.isRequired,

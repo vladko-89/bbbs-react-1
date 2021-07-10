@@ -4,6 +4,7 @@ const scrollDelay = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
 const placesPerPage = 6;
+const eventsPerPage = 4;
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
   'Москва',
@@ -55,6 +56,7 @@ export {
   cardsPerPage,
   cardsOnMain,
   placesPerPage,
+  eventsPerPage,
   placesTextForms,
   citiesList,
   figures,
