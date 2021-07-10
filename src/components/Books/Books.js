@@ -125,6 +125,7 @@ export default function Books() {
               forcePage={currentPage.current}
               marginPagesDisplayed={1}
               pageRangeDisplayed={3}
+              disableInitialCallback
               breakClassName="pagination__list-item section-title"
               breakLinkClassName="pagination__link"
               containerClassName="pagination__list"

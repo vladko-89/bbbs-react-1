@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import ReactPaginate from 'react-paginate';
@@ -64,50 +65,72 @@ export default function Articles() {
     }, delay);
   }
 
-  return (
-    <main className="main">
-      <section className="lead page__section">
-        <h1 className="main-title">Статьи</h1>
-      </section>
+  try {
+    return (
+      <main className="main">
+        <section className="lead page__section">
+          <h1 className="main-title">Статьи</h1>
+        </section>
 
-      <section className="main-card page__section">
-        <MainArticle {...mainArticle} />
-      </section>
+        <section className="main-card page__section">
+          <MainArticle {...mainArticle} />
+        </section>
 
-      <section className="cards-grid page__section">
-        {
-          isLoading && <div className="articles-preloader"><Preloader /></div>
-        }
-        {
-          articles.map((article) => <ArticleCard key={article.id} article={article} />)
-        }
-      </section>
+        <section className="cards-grid page__section">
+          {
+            isLoading && <div className="articles-preloader"><Preloader /></div>
+          }
+          {
+            articles.map((article) => <ArticleCard key={article.id} article={article} />)
+          }
+        </section>
 
-      <section className="pagination page__section">
-        <nav className="pagination__nav" aria-label="Навигация по страницам">
-          <ReactPaginate
-            initialPage={0}
-            onPageChange={onPageChange}
-            pageCount={Math.ceil(cardCount.current / getLimit())}
-            forcePage={currentPage.current}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={3}
-            breakClassName="pagination__list-item section-title"
-            breakLinkClassName="pagination__link"
-            containerClassName="pagination__list"
-            activeClassName="pagination__link_active"
-            pageClassName="pagination__list-item section-title"
-            pageLinkClassName="pagination__link"
-            previousClassName="pagination__list-item"
-            previousLinkClassName="pagination__arrow-left"
-            nextClassName="pagination__list-item"
-            nextLinkClassName="pagination__arrow-right"
-            disabledClassName="pagination__arrow_disabled"
-            previousLabel=""
-            nextLabel=""
-          />
-        </nav>
-      </section>
-    </main>
-  );
+        <section className="pagination page__section">
+          <nav className="pagination__nav" aria-label="Навигация по страницам">
+            <ReactPaginate
+              initialPage={0}
+              onPageChange={onPageChange}
+              pageCount={Math.ceil(cardCount.current / getLimit())}
+              forcePage={currentPage.current}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={3}
+              breakClassName="pagination__list-item section-title"
+              breakLinkClassName="pagination__link"
+              containerClassName="pagination__list"
+              activeClassName="pagination__link_active"
+              pageClassName="pagination__list-item section-title"
+              pageLinkClassName="pagination__link"
+              previousClassName="pagination__list-item"
+              previousLinkClassName="pagination__arrow-left"
+              nextClassName="pagination__list-item"
+              nextLinkClassName="pagination__arrow-right"
+              disabledClassName="pagination__arrow_disabled"
+              previousLabel=""
+              nextLabel=""
+            />
+          </nav>
+        </section>
+      </main>
+    );
+  } catch (error) {
+    console.log('Ошибка рендеринга статей: ', error);
+
+    return (
+      <main className="main">
+        <section className="lead page__section">
+          <h1 className="main-title">Статьи</h1>
+        </section>
+
+        <section className="main-card page__section">
+          { error.message }
+        </section>
+
+        <section className="cards-grid page__section">
+          {
+            isLoading && <div className="articles-preloader"><Preloader /></div>
+          }
+        </section>
+      </main>
+    );
+  }
 }

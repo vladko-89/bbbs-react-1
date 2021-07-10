@@ -230,6 +230,26 @@ class Api {
       .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
+  async getFilmTags() {
+    return fetch(`${this._baseUrl}/entertainment/movies/tags/`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
+  }
+
+  async getFilms(searchParams = new URLSearchParams()) {
+    return fetch(`${this._baseUrl}/entertainment/movies/?${searchParams.toString()}`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
+  }
+
   // СОБЫТИЯ КАЛЕНДАРЬ
 
   // Запись на встречу
