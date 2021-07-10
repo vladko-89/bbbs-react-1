@@ -5,7 +5,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1170px;
+  width: 100%
+}
+
+.article__wrapper {
+  width: 100%;
+  height: 90vh;
+  margin-top: 30vh;
+  border-radius: 3px 400px 400px 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.article__wrapper_reverse {
+  position: absolute;
+  transform: rotate(180deg);
+  left: 16%;
+  bottom: 55vh;
 }
 
 .article__main-title {
@@ -32,6 +50,7 @@
 }
 
 .article__container {
+  margin: 0 auto;
   margin-top: 50px;
   max-width: 770px;
 }
@@ -151,7 +170,7 @@
   margin-right: auto;
   padding-top: 80px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 }
 

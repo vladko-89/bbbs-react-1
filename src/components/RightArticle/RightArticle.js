@@ -2,18 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './RightArticle.module.scss';
 import api from '../../utils/Api';
+import arrow from '../../images/svg/arrow-right.svg';
+import circle from '../../images/article/small-image.jpg';
 
 function RightArticle(card) {
   const [isLoad, setIsLoad] = React.useState(false);
   const [content, setContent] = React.useState({});
-
+  // eslint-disable-next-line react/destructuring-assignment
+  const { color } = card.card;
   function getContentArticle() {
     setIsLoad(true);
     console.log('RA', card.card);
     api.getRightArticle(card.card.id)
       .then((res) => setContent(res))
       .catch((error) => console.log(error))
-      .finally(() => console.log(content, isLoad));
+      .finally(() => console.log(content, color, isLoad));
   }
 
   React.useEffect(() => {
@@ -21,19 +24,17 @@ function RightArticle(card) {
   }, [setContent]);
   return (
     <main className="main">
-      <section className={`${styles.article} page__section`}>
-        <h1 className={`chapter-title ${styles['article__main-title']}`}>Психологические особенности детей-сирот</h1>
-        <p className={`section-title ${styles.article__description}`}>Развитие детей-сирот отличается от развития детей, живущих в семьях. Все  этапы развития у детей-сирот проходят с искажениями и имеют ряд негативных  особенностей: замедленный темп психического развития, низкий уровень  интеллектуального развития, позднее формирование навыков саморегуляции и правил  поведения, бедную эмоциональную сферу и воображение.</p>
-        <figure className={`${styles.article__figure}`}>
-          <img src="./images/article/main-image.jpg" alt="Психологические особенности детей-сирот" className={`${styles.article__image}`} />
-          <figcaption className={`caption ${styles.article__figcaption}`}>Возможно подпись к фотографии. Автор фото.</figcaption>
-        </figure>
+      <div className={`${styles.article__wrapper} ${styles.article__wrapper_reverse} card_color_${color}`} />
+      <section className={`${styles.article}`}>
+        <div className={`${styles.article__wrapper} card_color_${color}`}>
+          <h1 className={`chapter-title ${styles['article__main-title']}`}>{content.title}</h1>
+          <p className={`section-title ${styles.article__description}`}>{content.description}</p>
+        </div>
+        <div className={`${styles.article__container} `}>
+          <h2 className={`section-title ${styles.article__subtitle}`}>{content.heading1}</h2>
+          <p className={`${styles.paragraph}`}>{content.text1}</p>
 
-        <div className={`${styles.article__container}`}>
-          <h2 className={`section-title ${styles.article__subtitle}`}>Отрицательный образ себя</h2>
-          <p className={`${styles.paragraph}`}>У таких детей возникает ощущение отверженности. Оно приводит к напряженности и  недоверию к людям и, как итог, к реальному неприятию себя и окружающих. В ходе дальнейших взаимоотношений с окружающими негативное отношение к себе  усиливается. Причиной формирования отрицательного образа себя, является также и  недостаток безусловной любви, т. е. любви не за что-то, а просто, потому что он,  ребенок, есть. И домашний ребенок может быть заброшен на няню, а в старшем  возрасте безнадзорен.</p>
-
-          <h2 className={`section-title ${styles.article__subtitle}`}>Особенности психофизического развития и эмоциональной сферы детей-сирот</h2>
+          <h2 className={`section-title ${styles.article__subtitle}`}>{content.heading2}</h2>
           <ul className={`card ${styles.article__card}`}>
             <li className={`${styles['article__card-list-item']}`}>
               <p className={`${styles.paragraph}`}>замедленное развитие познавательной деятельности (мало интересуются  окружающим миром).</p>
@@ -64,19 +65,19 @@ function RightArticle(card) {
             </li>
           </ul>
 
-          <h2 className={`section-title ${styles.article__subtitle}`}>Младший школьный возраст</h2>
-          <p className={`${styles.paragraph}`}>Для воспитанников младшего школьного возраста характерны ярко выраженные  мотивы, непосредственно связанные с их повседневной деятельностью в детском доме:  выполнением режима проживания в детском доме, правил поведения в детском доме и  в школе, тогда как у семейных детей этой возрастной группы мотивы их деятельности  и общения значительно богаче и разнообразнее. Такая ограниченность и бедность  мотивационной сферы связаны с условиями проживания детей в детском доме и их  недостаточно полным общением со взрослыми.</p>
+          <h2 className={`section-title ${styles.article__subtitle}`}>{content.heading3}</h2>
+          <p className={`${styles.paragraph}`}>{content.text2}</p>
 
-          <h2 className={`section-title ${styles.article__subtitle}`}>Заголовок в одну строку</h2>
-          <div className={`card card_color_yellow ${styles.article__card}`}>
-            <p className={`${styles.paragraph}`}>Для воспитанников младшего школьного возраста характерны ярко выраженные  мотивы, непосредственно связанные с их повседневной деятельностью в детском доме:  выполнением режима проживания в детском доме, правил поведения в детском доме и  в школе, тогда как у семейных детей этой возрастной группы мотивы их деятельности  и общения значительно богаче и разнообразнее. Такая ограниченность и бедность  мотивационной сферы связаны с условиями проживания детей в детском доме и их  недостаточно полным общением со взрослыми.</p>
+          <h2 className={`section-title ${styles.article__subtitle}`}>{content.heading4}</h2>
+          <div className={`card card_color_${color} ${styles.article__card}`}>
+            <p className={`${styles.paragraph}`}>{content.text3}</p>
           </div>
 
           <div className={`${styles['next-page']}`}>
-            <img src="./images/article/small-image.jpg" alt="Особенности социально дезадаптивных детей" className={`${styles['next-page__img']}`} />
+            <img src={circle} alt="Особенности социально дезадаптивных детей" className={`${styles['next-page__img']}`} />
             <a href="#" className={`${styles['next-page__link']}`} target="_self">
-              <h2 className={`section-title ${styles['next-page__title']}`}>Особенности социально дезадаптивных детей</h2>
-              <img src="./images/svg/arrow-right.svg" alt="Стрелка" className={`${styles['next-page__arrow-icon']}`} />
+              <h2 className={`section-title ${styles['next-page__title']}`}>{content.heading5}</h2>
+              <img src={arrow} alt="Стрелка" className={`${styles['next-page__arrow-icon']}`} />
             </a>
           </div>
         </div>
