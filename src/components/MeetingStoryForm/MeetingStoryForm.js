@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import img from '../../images/personal-area/lk.png';
 
 function MeetingStoryForm({
-  onSubmit, onDelete, values, isExample,
+  onSubmit, onDelete, values, isExample, isEdit,
 }) {
   const { register, handleSubmit, formState: { errors } } = useForm({
     reValidateMode: 'onBlur',
@@ -211,7 +211,7 @@ function MeetingStoryForm({
             <p className="caption personal-area__rating-label">
               Оцените проведенное время
               {' '}
-              {errors.smile && errors.smile.type === 'required' && <span className="personal-area__form-input_error">***</span>}
+              {errors.smile && errors.smile.type === 'required' && <span className="personal-area__form-input_error">&lt;--------------</span>}
             </p>
 
           </div>
@@ -221,11 +221,12 @@ function MeetingStoryForm({
               className="button personal-area__delete"
               type="button"
               onClick={onDelete}
+              disabled={!!isExample}
             >
               Отменить
             </button>
-            <button className="button" type="submit">
-              Добавить
+            <button className="button" type="submit" disabled={!!isExample}>
+              {isEdit ? 'Сохранить' : 'Добавить'}
             </button>
           </div>
         </div>
@@ -246,6 +247,7 @@ MeetingStoryForm.defaultProps = {
     image: '',
     name: '',
   },
+  isEdit: false,
 };
 
 MeetingStoryForm.propTypes = {
@@ -262,6 +264,7 @@ MeetingStoryForm.propTypes = {
     sendToCurator: PropTypes.bool,
     name: PropTypes.string,
   }),
+  isEdit: PropTypes.bool,
 };
 
 export default MeetingStoryForm;

@@ -114,7 +114,7 @@ function Profile({ user, handleImmidiateBooking }) {
         setIsHidden(true);
       })
       .catch((err) => console.log(err))
-      .finally(setIsDataReady(true));
+      .finally(setTimeout(setIsDataReady(true), 300));
     // eslint-disable-next-line no-console
     console.log('handle submite in profile', data);
   };
@@ -127,7 +127,7 @@ function Profile({ user, handleImmidiateBooking }) {
         return res;
       })
       .catch((err) => console.log(err))
-      .finally(setIsDataReady(true));
+      .finally(setTimeout(setIsDataReady(true), 3000));
     setIsHidden(true);
     // eslint-disable-next-line no-console
     console.log('handle submite in profile', data);
