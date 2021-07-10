@@ -9,15 +9,15 @@ const modalRoot = document.getElementById('modal-root');
 
 function PopupRecommendSuccess({ onClose }) {
   return ReactDOM.createPortal(
-    <div className={`${styles.popup} ${['popup_type_recommendation-finish']}`}>
+    <div onClick={onClose} className={`${styles.popup} ${['popup_type_recommendation-finish']}`}>
       <div className={styles.popup__container}>
-        <button aria-label="close" className={`${styles.popup__close} ${styles.popup__cancel}`} type="button" onClick={onClose} />
         <div className={`${styles.popup__content} ${styles['popup__content_type_recommendation-finish']}`}>
           <img src={image} alt="Старшие Братья Старшие Сестры" className={styles.popup__img} />
           <p className={`${styles['section-title']} ${styles['popup__finish-text']}`}>
             Спасибо, мы проверим информацию, и скоро все пользователи смогут увидеть вашу
             рекомендацию
           </p>
+          <button className={styles.button} type="button" onClick={onClose}>Вернуться к рекомендациям</button>
         </div>
       </div>
     </div>, modalRoot,
