@@ -131,7 +131,7 @@ function PopupRecommend({ onSuccess, onClose }) {
                   </label>
                   <div className={styles.input__wrapper}>
                     <input
-                      {...register('age', { required: true, min: 1, max: 10 })}
+                      {...register('age', { required: true, min: 1, max: 40 })}
                       type="number"
                       name="age"
                       className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_age}`}
@@ -171,11 +171,11 @@ function PopupRecommend({ onSuccess, onClose }) {
                 <div className={styles.input__wrapper}>
                   <label className={`${styles.caption} ${styles['recommendation__add-photo']}`}>
                     <input
-                      {...register('photo', { required: true })}
+                      {...register('imageUrl', { required: true })}
                       type="file"
                       accept="image/jpeg, image/png, image/gif"
-                      name="photo"
-                      id="photo"
+                      name="imageUrl"
+                      id="imageUrl"
                       onChange={handleLoadImage}
                       className={styles['recommendation__file-input']}
                     />
@@ -191,7 +191,7 @@ function PopupRecommend({ onSuccess, onClose }) {
                     Добавить фото
                   </label>
 
-                  <p className={styles.error}>{errors.photo?.type === 'required' && 'Добавьте фотографию'}</p>
+                  <p className={styles.error}>{errors.imageUrl?.type === 'required' && 'Добавьте фотографию'}</p>
                 </div>
                 <button className={`${styles.button} ${styles.button_theme_light} ${styles.recommendation__submit}`} type="submit">
                   Отправить
