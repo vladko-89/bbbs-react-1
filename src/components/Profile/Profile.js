@@ -109,6 +109,7 @@ function Profile({ user, handleImmidiateBooking }) {
     setIsDataReady(false);
     api.postMeetingStories(getAccessToken(), data)
       .then((res) => {
+        console.log(res);
         setUserMeetings([res, ...userMeetings]);
         setIsHidden(true);
       })

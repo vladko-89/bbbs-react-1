@@ -33,7 +33,6 @@ function MeetingStoryArticle({
     // проверка какие поля изменились и только их отправлять на бэк
     const editedFildForRequest = { id: dataStory.id };
     const arrKey = Object.keys(data);
-    console.log(arrKey);
     for (let i = 0; i < arrKey.length; i += 1) {
       if (arrKey[i] === 'smile') {
         editedFildForRequest.smile = data.smile === null ? dataStory.smile : data.smile;
