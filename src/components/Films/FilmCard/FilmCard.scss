@@ -40,10 +40,15 @@
   text-align: center;
 }
 
+.film-card__text {
+  white-space: pre-line;
+}
+
 .film-card__button {
   align-self: center;
   border: none;
   background-color: transparent;
+  outline: none;
   cursor: pointer;
 }
 

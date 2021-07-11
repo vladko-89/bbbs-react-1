@@ -16,7 +16,7 @@ export default function ArticleCard({ article }) {
       <div className="card card_content_annotation">
         <div className="card__content">
           <div className="card__annotation">
-            <p className="paragraph card__paragraph">{article.text}</p>
+            <p className="paragraph card__paragraph article-card__text">{article.text}</p>
           </div>
         </div>
       </div>

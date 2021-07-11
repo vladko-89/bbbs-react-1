@@ -5,8 +5,7 @@ import ReactPaginate from 'react-paginate';
 import MainArticle from './MainArticle/MainArticle';
 import ArticleCard from './ArticleCard/ArticleCard';
 import Preloader from '../Preloader/Preloader';
-
-import { mainArticle } from '../../utils/articlesData';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 import api from '../../utils/Api';
 
@@ -43,6 +42,7 @@ function getLimit() {
 export default function Articles() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [articles, setArticles] = React.useState([]);
+  const [mainArticle, setMainArticle] = React.useState(null);
   const cardCount = React.useRef(0);
   const paginationTimer = React.useRef(null);
   const currentPage = React.useRef(0);
@@ -66,51 +66,65 @@ export default function Articles() {
   }
 
   try {
+    React.useEffect(() => {
+      api.getArticles(new URLSearchParams({ isMain: true }))
+        .then((resArticle) => {
+          setMainArticle(resArticle.results[0] || null);
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err));
+    }, []);
+
     return (
-      <main className="main">
-        <section className="lead page__section">
-          <h1 className="main-title">Статьи</h1>
-        </section>
+      <ErrorBoundary>
+        <main className="main">
+          <section className="lead page__section">
+            <h1 className="main-title">Статьи</h1>
+          </section>
 
-        <section className="main-card page__section">
-          <MainArticle {...mainArticle} />
-        </section>
-
-        <section className="cards-grid page__section">
           {
-            isLoading && <div className="articles-preloader"><Preloader /></div>
+            mainArticle && (
+              <section className="main-card page__section">
+                <MainArticle mainArticle={mainArticle} />
+              </section>
+            )
           }
-          {
-            articles.map((article) => <ArticleCard key={article.id} article={article} />)
-          }
-        </section>
 
-        <section className="pagination page__section">
-          <nav className="pagination__nav" aria-label="Навигация по страницам">
-            <ReactPaginate
-              initialPage={0}
-              onPageChange={onPageChange}
-              pageCount={Math.ceil(cardCount.current / getLimit())}
-              forcePage={currentPage.current}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={3}
-              breakClassName="pagination__list-item section-title"
-              breakLinkClassName="pagination__link"
-              containerClassName="pagination__list"
-              activeClassName="pagination__link_active"
-              pageClassName="pagination__list-item section-title"
-              pageLinkClassName="pagination__link"
-              previousClassName="pagination__list-item"
-              previousLinkClassName="pagination__arrow-left"
-              nextClassName="pagination__list-item"
-              nextLinkClassName="pagination__arrow-right"
-              disabledClassName="pagination__arrow_disabled"
-              previousLabel=""
-              nextLabel=""
-            />
-          </nav>
-        </section>
-      </main>
+          <section className="cards-grid page__section">
+            {
+              isLoading && <div className="articles-preloader"><Preloader /></div>
+            }
+            {
+              articles.map((article) => <ArticleCard key={article.id} article={article} />)
+            }
+          </section>
+
+          <section className="pagination page__section">
+            <nav className="pagination__nav" aria-label="Навигация по страницам">
+              <ReactPaginate
+                initialPage={0}
+                onPageChange={onPageChange}
+                pageCount={Math.ceil(cardCount.current / getLimit())}
+                forcePage={currentPage.current}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={3}
+                breakClassName="pagination__list-item section-title"
+                breakLinkClassName="pagination__link"
+                containerClassName="pagination__list"
+                activeClassName="pagination__link_active"
+                pageClassName="pagination__list-item section-title"
+                pageLinkClassName="pagination__link"
+                previousClassName="pagination__list-item"
+                previousLinkClassName="pagination__arrow-left"
+                nextClassName="pagination__list-item"
+                nextLinkClassName="pagination__arrow-right"
+                disabledClassName="pagination__arrow_disabled"
+                previousLabel=""
+                nextLabel=""
+              />
+            </nav>
+          </section>
+        </main>
+      </ErrorBoundary>
     );
   } catch (error) {
     console.log('Ошибка рендеринга статей: ', error);

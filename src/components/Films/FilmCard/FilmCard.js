@@ -1,15 +1,15 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-console */
-/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import PropTypes, { arrayOf, number, string } from 'prop-types';
+import PropTypes, { arrayOf, number, shape, string } from 'prop-types';
 
 import './FilmCard.scss';
 
 export default function FilmCard({ film, showPopup }) {
   function openPopup() {
-    showPopup({ title: film.title, info: film.info, link: 'https://www.youtube.com/embed/f0hQOVfZoIA' });
+    showPopup(film);
   }
 
   try {
@@ -21,7 +21,7 @@ export default function FilmCard({ film, showPopup }) {
             <img onClick={openPopup} src={`https://picsum.photos/300/200/?${film.id}`} alt="Превью видео" className="video__img" />
             <ul className="video__rubric-list">
               {
-                film.tags.map((tag) => <li key={tag}><p className="rubric video__rubric">{tag}</p></li>)
+                film.tags.map((tag) => <li key={tag.id}><p className="rubric video__rubric">{tag.name}</p></li>)
               }
             </ul>
           </div>
@@ -38,7 +38,7 @@ export default function FilmCard({ film, showPopup }) {
         <div className="card card_content_annotation">
           <div className="card__content">
             <div className="card__annotation">
-              <p className="paragraph card__paragraph">{film.description}</p>
+              <p className="paragraph card__paragraph film-card__text">{film.description}</p>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@ FilmCard.defaultProps = {
   film: PropTypes.shape({
     id: null,
     title: 'Нет названия',
-    preview: '',
+    imageUrl: '',
     info: 'Отсутствует информация о фильме',
     description: 'Нет описания',
     link: '',
@@ -89,11 +89,15 @@ FilmCard.propTypes = {
   film: PropTypes.shape({
     id: number,
     title: string,
-    preview: string,
+    imageUrl: string,
     info: string,
     description: string,
     link: string,
     duration: string,
-    tags: arrayOf(number),
+    tags: arrayOf(shape({
+      id: number,
+      name: string,
+      slug: string,
+    })),
   }),
 };

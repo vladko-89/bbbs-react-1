@@ -6,6 +6,7 @@ import Tag from './Tag/Tag';
 import FilmCard from './FilmCard/FilmCard';
 import Preloader from '../Preloader/Preloader';
 import PopupVideo from './PopupVideo/PopupVideo';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 import { toggleTag } from '../../utils/utils';
 import api from '../../utils/Api';
@@ -106,55 +107,57 @@ export default function Films() {
     }, []);
 
     return (
-      <main className="main">
-        <section className="lead page__section">
-          <h1 className="main-title">Фильмы</h1>
-          <div className="tags">
-            <ul className="tags__list">
-              {
-                tags.map((tag) => <Tag key={tag.id} tag={tag} onTagClick={onTagClick} />)
-              }
-            </ul>
-          </div>
-        </section>
+      <ErrorBoundary>
+        <main className="main">
+          <section className="lead page__section">
+            <h1 className="main-title">Фильмы</h1>
+            <div className="tags">
+              <ul className="tags__list">
+                {
+                  tags.map((tag) => <Tag key={tag.id} tag={tag} onTagClick={onTagClick} />)
+                }
+              </ul>
+            </div>
+          </section>
 
-        <section className="cards-grid cards-grid_content_small-cards page__section">
-          {
-            isLoading && <div className="films-preloader"><Preloader /></div>
-          }
-          {
-            films.map((item) => <FilmCard key={item.id} film={item} showPopup={showPopup} />)
-          }
-        </section>
+          <section className="cards-grid cards-grid_content_small-cards page__section">
+            {
+              isLoading && <div className="films-preloader"><Preloader /></div>
+            }
+            {
+              films.map((item) => <FilmCard key={item.id} film={item} showPopup={showPopup} />)
+            }
+          </section>
 
-        <section className="pagination page__section">
-          <nav className="pagination__nav" aria-label="Навигация по страницам">
-            <ReactPaginate
-              initialPage={0}
-              onPageChange={onPageChange}
-              pageCount={Math.ceil(cardCount.current / getLimit())}
-              forcePage={currentPage.current}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={3}
-              disableInitialCallback
-              breakClassName="pagination__list-item section-title"
-              breakLinkClassName="pagination__link"
-              containerClassName="pagination__list"
-              activeClassName="pagination__link_active"
-              pageClassName="pagination__list-item section-title"
-              pageLinkClassName="pagination__link"
-              previousClassName="pagination__list-item"
-              previousLinkClassName="pagination__arrow-left"
-              nextClassName="pagination__list-item"
-              nextLinkClassName="pagination__arrow-right"
-              disabledClassName="pagination__arrow_disabled"
-              previousLabel=""
-              nextLabel=""
-            />
-          </nav>
-        </section>
-        <PopupVideo isOpened={isPopupOpened} setOpened={setIsPopupOpened} video={currentFilm.current} />
-      </main>
+          <section className="pagination page__section">
+            <nav className="pagination__nav" aria-label="Навигация по страницам">
+              <ReactPaginate
+                initialPage={0}
+                onPageChange={onPageChange}
+                pageCount={Math.ceil(cardCount.current / getLimit())}
+                forcePage={currentPage.current}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={3}
+                disableInitialCallback
+                breakClassName="pagination__list-item section-title"
+                breakLinkClassName="pagination__link"
+                containerClassName="pagination__list"
+                activeClassName="pagination__link_active"
+                pageClassName="pagination__list-item section-title"
+                pageLinkClassName="pagination__link"
+                previousClassName="pagination__list-item"
+                previousLinkClassName="pagination__arrow-left"
+                nextClassName="pagination__list-item"
+                nextLinkClassName="pagination__arrow-right"
+                disabledClassName="pagination__arrow_disabled"
+                previousLabel=""
+                nextLabel=""
+              />
+            </nav>
+          </section>
+          <PopupVideo isOpened={isPopupOpened} setOpened={setIsPopupOpened} video={currentFilm.current} />
+        </main>
+      </ErrorBoundary>
     );
   } catch (error) {
     console.log('Ошибка рендеринга фильмов: ', error);

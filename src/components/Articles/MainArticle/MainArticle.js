@@ -1,27 +1,37 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import PropTypes, { bool, number, string } from 'prop-types';
 import defaultImage from '../../../images/where-to-go/img-xl.jpg';
 
-export default function MainArticle({
-  title, author, image, link, annotation,
-}) {
+import './MainArticle.scss';
+
+const defaultMain = {
+  id: null,
+  isMain: false,
+  title: 'Заголовок не указан',
+  author: 'Автор не указан',
+  profession: '',
+  text: 'Нет текста статьи.',
+  color: '#f8d162',
+  imageUrl: defaultImage,
+};
+
+export default function MainArticle({ mainArticle = defaultMain }) {
   return (
     <article className="card-container card-container_type_main-article">
-      <div className="card card_type_main card_color_yellow">
+      <div className="card card_type_main" style={{ backgroundColor: mainArticle.color || defaultMain.color }}>
         <div className="card__title-wrap">
-          <h2 className="section-title card__title">{title}</h2>
-          <p className="caption card__title-caption">{author}</p>
+          <h2 className="section-title card__title">{mainArticle.title || defaultMain.title}</h2>
+          <p className="caption card__title-caption">{mainArticle.author || defaultMain.author}, {mainArticle.profession || defaultMain.profession}</p>
         </div>
-        <img src={image} alt="Картинка основной статьи" className="card__img card__img_position_main-article" />
-        <Link to={link} className="link card__link">читать на сайте</Link>
+        <img src={mainArticle.imageUrl || defaultMain.imageUrl} alt="Картинка основной статьи" className="card__img card__img_position_main-article" />
+        <Link to="/article" className="link card__link">читать на сайте</Link>
       </div>
       <div className="card card_content_annotation card_type_main">
         <div className="card__content">
           <div className="card__annotation card__annotation_position_main-card card__annotation_type_main-article">
-            {
-              annotation.map((paragraph, i) => <p key={i.toString()} className="paragraph card__paragraph">{paragraph}</p>)
-            }
+            <p className="paragraph card__paragraph main-article__text">{mainArticle.text || defaultMain.text}</p>
           </div>
         </div>
       </div>
@@ -30,17 +40,18 @@ export default function MainArticle({
 }
 
 MainArticle.defaultProps = {
-  title: 'Нет заголовка',
-  author: 'Автор не указан',
-  image: defaultImage,
-  link: '/article',
-  annotation: [],
+  mainArticle: PropTypes.shape(defaultMain),
 };
 
 MainArticle.propTypes = {
-  title: PropTypes.string,
-  author: PropTypes.string,
-  image: PropTypes.string,
-  link: PropTypes.string,
-  annotation: PropTypes.arrayOf(PropTypes.string),
+  mainArticle: PropTypes.shape({
+    id: number,
+    isMain: bool,
+    title: string,
+    author: string,
+    profession: string,
+    text: string,
+    color: string,
+    imageUrl: string,
+  }),
 };

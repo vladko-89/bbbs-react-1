@@ -1,5 +1,9 @@
-@import '../../scss/variables.scss';
-@import '../../scss/mixins.scss';
+@import '../../../scss/variables.scss';
+@import '../../../scss/mixins.scss';
+
+.main-article__text {
+  white-space: pre-line;
+}
 
 // .card-container {
 //   margin: 0 auto;
