@@ -17,13 +17,10 @@ function Rights({
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [rights, setRights] = React.useState([]);
-  const cardsInBlock = 4;
-  console.log(cardsInBlock);
-
+  const [cardsInBlock, setCardsInBlock] = React.useState(4);
   const blocks = splitOnBlocks(rights.results, cardsInBlock);
-  console.log('blocks', blocks);
+
   function onPageChange(page) {
-    console.log(page);
     const offset = page !== 1 ? page * RIGHTS_PER_PAGE - RIGHTS_PER_PAGE : 0;
     api
       .getRights({
@@ -37,6 +34,25 @@ function Rights({
       });
   }
 
+  React.useEffect(() => {
+    function checkRes() {
+      switch (true) {
+        case (window.innerWidth < 1200 && window.innerWidth >= 768): {
+          setCardsInBlock(3); break;
+        }
+        case (window.innerWidth < 768): {
+          setCardsInBlock(1); break;
+        }
+        default: {
+          setCardsInBlock(4);
+          break;
+        }
+      }
+    }
+    checkRes();
+    window.addEventListener('resize', checkRes);
+    return () => window.removeEventListener('resize', checkRes);
+  }, []);
   React.useEffect(() => {
     Promise.all([api.getRightsTags(),
       api.getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })])
