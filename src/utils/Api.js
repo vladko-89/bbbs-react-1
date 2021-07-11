@@ -18,11 +18,32 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getEvents(accessToken) {
+  getEvents({
+    token, months, limit, offset,
+  }) {
+    const params = new URLSearchParams();
+    if (months && months.length > 0) {
+      params.append('month', months.join(','));
+    }
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
     return axios
       .get(`${this._baseUrl}/afisha/events/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${token}` },
+        params,
       })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getEventMonths({ token }) {
+    return axios
+      .get(`${this._baseUrl}/afisha/events/months/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -74,16 +95,28 @@ class Api {
   }
 
   addPlace(accessToken, place) {
-    return fetch(`${this._baseUrl}/places/`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(place),
-    })
-      .then((res) => res.json()
-        .then((data) => (res.ok ? data : { message: data.message, details: data.details })));
+    console.log(place);
+    const formData = new FormData();
+    formData.append('imageUrl', place.imageUrl[0], place.imageUrl[0].name);
+    formData.append('title', place.title);
+    formData.append('link', place.link);
+    formData.append('address', place.address);
+    formData.append('activity_type', place.activity_type);
+    formData.append('gender', place.gender);
+    formData.append('age', place.age);
+    formData.append('city', place.city);
+    formData.append('description', place.description);
+    return (
+      fetch(`${this._baseUrl}/places/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      })
+        .then((res) => res.json()
+          .then((data) => (res.ok ? data : { message: data.message, details: data.details })))
+        .catch((error) => console.log(error)));
   }
 
   signIn(login, password) {
@@ -158,6 +191,7 @@ class Api {
   }
 
   postMeetingStories(accessToken, data) {
+    console.log(data);
     const formdata = new FormData();
     formdata.append('image', data.image, data.image.name);
     formdata.append('place', data.place);
@@ -366,6 +400,13 @@ class Api {
   getVideoCard(_id) {
     return axios
       .get(`${this._baseUrl}/entertainment/videos/${_id}/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getStories() {
+    return axios
+      .get(`${this._baseUrl}/story/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }

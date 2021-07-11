@@ -11,7 +11,7 @@ import { figures, colors } from '../../utils/Constants';
 function Rights({
   activeRubrics,
   selectRubric,
-  clickOnCard,
+  onClickCard,
 }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
@@ -68,7 +68,7 @@ function Rights({
             <RightsCard
               key={card.id}
               activeRubrics={activeRubrics}
-              clickOnCard={clickOnCard}
+              onClickCard={onClickCard}
               card={card}
             />
           ))}
@@ -81,7 +81,7 @@ function Rights({
 Rights.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
-  clickOnCard: PropTypes.func.isRequired,
+  onClickCard: PropTypes.func.isRequired,
 };
 
 export default Rights;

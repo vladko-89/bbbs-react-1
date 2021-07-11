@@ -4,13 +4,23 @@ import ReactPaginate from 'react-paginate';
 import './Pagination.scss';
 
 function Pagination({ cardsLength, onPageChange, cardsPerPage }) {
+  const prevTotalPages = React.useRef(null);
+  const paginationRef = React.useRef(null);
   const totalPages = Math.ceil(cardsLength / cardsPerPage);
+  React.useEffect(() => {
+    if (prevTotalPages.current !== totalPages) {
+      paginationRef.current.state.selected = 0;
+      onPageChange(1);
+    }
+    prevTotalPages.current = totalPages;
+  });
   return (
     <section
       className="pagination page__section"
     >
       <nav className="pagination__nav" aria-label="Навигация по страницам">
         <ReactPaginate
+          ref={paginationRef}
           previousLabel=""
           nextLabel=""
           breakLabel="..."

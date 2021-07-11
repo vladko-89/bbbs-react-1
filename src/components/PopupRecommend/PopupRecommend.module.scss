@@ -121,6 +121,7 @@
     }
   }
   
+
   .recommendation__box-inputs {
     grid-column: 1 / 3;
     width: 100%;
@@ -174,7 +175,7 @@
       }
     }
   
-    &:focus + .recommendation__visible-radio {
+    & .recommendation__visible-radio {
       background-color: $white;
       &::after {
         content: '';
@@ -527,4 +528,19 @@
   color: red;
   grid-column: 1 / 3;
   margin: 0 0 5px 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.card_photo{
+  width: 48px;
+  height: 48px;
 }

@@ -4,6 +4,7 @@ const scrollDelay = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
 const placesPerPage = 6;
+const eventsPerPage = 4;
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
   'Москва',
@@ -48,6 +49,24 @@ const figures = [
   'circle',
 ];
 
+const MONTH_NUMBERS = {
+  '01': 'Января',
+  '02': 'Февраля',
+  '03': 'Марта',
+  '04': 'Апреля',
+  '05': 'Мая',
+  '06': 'Июня',
+  '07': 'Июля',
+  '08': 'Августа',
+  '09': 'Сентября',
+  // eslint-disable-next-line quote-props
+  '10': 'Октября',
+  // eslint-disable-next-line quote-props
+  '11': 'Ноября',
+  // eslint-disable-next-line quote-props
+  '12': 'Декабря',
+};
+
 export {
   baseUrl,
   delayResponse,
@@ -55,8 +74,10 @@ export {
   cardsPerPage,
   cardsOnMain,
   placesPerPage,
+  eventsPerPage,
   placesTextForms,
   citiesList,
   figures,
   colors,
+  MONTH_NUMBERS,
 };

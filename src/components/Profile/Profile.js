@@ -30,7 +30,7 @@ function Profile({ user, handleImmidiateBooking }) {
   const handleUnsubscribe = () => {
     handleImmidiateBooking(currentEvent);
     api
-      .getEvents(getAccessToken())
+      .getEvents({ token: getAccessToken() })
       .then((res) => {
         console.log('res', res);
         setUserEvents(userEvents.filter((el) => el.id !== currentEvent.id));
@@ -41,7 +41,7 @@ function Profile({ user, handleImmidiateBooking }) {
   React.useEffect(() => {
     const accessToken = getAccessToken();
     api
-      .getEvents(accessToken)
+      .getEvents({ token: getAccessToken() })
       .then((res) => setUserEvents(res.results.filter((el) => el.booked === true)))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
@@ -114,7 +114,7 @@ function Profile({ user, handleImmidiateBooking }) {
         setIsHidden(true);
       })
       .catch((err) => console.log(err))
-      .finally(setIsDataReady(true));
+      .finally(setTimeout(setIsDataReady(true), 300));
     // eslint-disable-next-line no-console
     console.log('handle submite in profile', data);
   };
@@ -127,7 +127,7 @@ function Profile({ user, handleImmidiateBooking }) {
         return res;
       })
       .catch((err) => console.log(err))
-      .finally(setIsDataReady(true));
+      .finally(setTimeout(setIsDataReady(true), 3000));
     setIsHidden(true);
     // eslint-disable-next-line no-console
     console.log('handle submite in profile', data);

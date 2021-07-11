@@ -17,6 +17,7 @@ function PopupRecommendSuccess({ onClose }) {
             Спасибо, мы проверим информацию, и скоро все пользователи смогут увидеть вашу
             рекомендацию
           </p>
+          <button className={styles.button} type="button" onClick={onClose}>Вернуться к рекомендациям</button>
         </div>
       </div>
     </div>, modalRoot,

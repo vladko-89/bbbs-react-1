@@ -11,7 +11,6 @@ function CalendarDescription({
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
-  console.log(currentEvent);
   const handleClose = React.useCallback(
     (e) => {
       if (e.code !== 'Escape' && e.type === 'keydown') {

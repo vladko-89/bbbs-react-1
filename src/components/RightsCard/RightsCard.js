@@ -1,17 +1,17 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function RightsCard({
   card,
-  clickOnCard,
+  onClickCard,
 }) {
   function handleClick() {
-    clickOnCard(card);
+    onClickCard(card);
   }
   return (
     <>
-      <NavLink to="/rights_article" onClick={handleClick}>
+      <Link to={`/rights/${card.id}`} onClick={handleClick} className="rights__link">
         <article className="catalog-card card-pagination card-pagination_type_shapes">
           <div className={`card card_color_${card.color} card_form_${card.form} rights__card`}>
             <a href="./rights-article.html" className="rights__link">
@@ -24,7 +24,7 @@ function RightsCard({
             </a>
           </div>
         </article>
-      </NavLink>
+      </Link>
     </>
   );
 }
@@ -37,7 +37,7 @@ RightsCard.propTypes = {
     form: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, slug: PropTypes.string })),
   }).isRequired,
-  clickOnCard: PropTypes.func.isRequired,
+  onClickCard: PropTypes.func.isRequired,
 };
 
 export default RightsCard;

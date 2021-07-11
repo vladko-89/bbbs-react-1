@@ -38,6 +38,10 @@
   }
 }
 
+.card_content_video {
+  max-height: 675px;
+}
+
 .card__video-img {
   width: 100%;
 }
@@ -69,6 +73,11 @@
     }
   }
 
+  .card_content_video {
+    max-height: 451px;
+  }
+  
+
   .video__duration {
     &_position_main-video {
       bottom: 8px;
@@ -83,6 +92,11 @@
       font-size: 18px;
     }
   }
+
+  .card_content_video {
+    max-height: 438px;
+  }
+  
 }
 
 @include atMobile {
@@ -93,6 +107,11 @@
       font-size: 14px;
     }
   }
+
+  .card_content_video {
+    max-height: 165px;
+  }
+  
 
   .video__img {
     height: 163px;
