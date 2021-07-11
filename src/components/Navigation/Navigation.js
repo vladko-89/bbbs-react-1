@@ -36,7 +36,7 @@ function Navigation({
           <li className="menu__list-item">
             {loggedIn ? (
               <NavLink
-                to="./calendar"
+                to="/calendar"
                 className="menu__link"
                 onClick={handleClickMobMenu}
               >
@@ -46,7 +46,7 @@ function Navigation({
               <button
                 type="button"
                 className="menu__link"
-                onClick={onLoginPopup}
+                onClick={() => onLoginPopup('/calendar')}
               >
                 Календарь
               </button>
@@ -251,7 +251,7 @@ function Navigation({
               type="button"
               aria-label="Войти"
               className="menu__button menu__button_type_user"
-              onClick={onLoginPopup}
+              onClick={() => onLoginPopup('/profile')}
               onKeyPress={handleClickMobMenu}
             />
           )}
