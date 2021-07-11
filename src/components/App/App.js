@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -46,6 +46,7 @@ function App() {
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
+  const history = useHistory();
 
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
@@ -57,7 +58,7 @@ function App() {
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
   const [currentCard, setCurrentCard] = React.useState({});
   const [currentPage, setCurrentPage] = React.useState(1);
-  // const [path, setPath] = React.useState('');
+  const [path, setPath] = React.useState('');
 
   function clickOnCard(card) {
     setCurrentCard(card);
@@ -255,9 +256,9 @@ function App() {
     setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
-  const handleLoginOpen = (path) => {
+  const handleLoginOpen = (str) => {
     setIsPoupLoginOpened(true);
-    // setPath(path);
+    setPath(str);
   };
   const handleLoginClose = (e) => {
     if (e.code !== 'Escape' && e.type === 'keydown') {
@@ -270,6 +271,7 @@ function App() {
     evt.preventDefault();
     setLoggedIn(true);
     setCurrentUser(userName);
+    history.push(path);
   };
 
   const handleOutClick = () => {
