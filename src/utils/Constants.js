@@ -5,6 +5,7 @@ const cardsPerPage = 16;
 const cardsOnMain = 4;
 const placesPerPage = 6;
 const eventsPerPage = 4;
+export const RIGHTS_PER_PAGE = 8; 
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
   'Москва',

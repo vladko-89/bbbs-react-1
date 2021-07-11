@@ -6,7 +6,7 @@ import RightsCard from '../RightsCard/RightsCard';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
 import { formingCards } from '../../utils/utils';
-import { figures, colors } from '../../utils/Constants';
+import { figures, colors, RIGHTS_PER_PAGE } from '../../utils/Constants';
 
 function Rights({
   activeRubrics,
@@ -16,6 +16,19 @@ function Rights({
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [rights, setRights] = React.useState([]);
+
+  function onPageChange(page) {
+    console.log(page);
+    const offset = page !== 1 ? page * RIGHTS_PER_PAGE - RIGHTS_PER_PAGE : 0;
+    api
+      .getRights({
+        token: getAccessToken(),
+        limit: placesPerPage,
+        offset,
+        tags: activeRubrics,
+      })
+      .then((res) => setRights(res.results));
+  }
 
   React.useEffect(() => {
     Promise.all([api.getRightsTags(), api.getRights()])
@@ -73,6 +86,13 @@ function Rights({
             />
           ))}
         </section>
+        {(places.count > RIGHTS_PER_PAGE) && (
+        <Pagination
+          cardsLength={places.count}
+          cardsPerPage={RIGHTS_PER_PAGE}
+          onPageChange={onPageChange}
+        />
+        ) }
       </section>
     </main>
   );
