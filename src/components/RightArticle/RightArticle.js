@@ -5,15 +5,15 @@ import api from '../../utils/Api';
 import arrow from '../../images/svg/arrow-right.svg';
 import circle from '../../images/article/small-image.jpg';
 
-function RightArticle(card) {
+function RightArticle({ card }) {
   const [isLoad, setIsLoad] = React.useState(false);
   const [content, setContent] = React.useState({});
   // eslint-disable-next-line react/destructuring-assignment
-  const { color } = card.card;
+  const { color } = card;
   function getContentArticle() {
     setIsLoad(true);
-    console.log('RA', card.card);
-    api.getRightArticle(card.card.id)
+    console.log('RA', card);
+    api.getRightArticle(card.id)
       .then((res) => setContent(res))
       .catch((error) => console.log(error))
       .finally(() => console.log(content, color, isLoad));

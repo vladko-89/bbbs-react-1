@@ -78,7 +78,7 @@ function Video({
             title={mainVideo.title}
             info={mainVideo.info}
             link={mainVideo.link}
-            imageUrl={mainVideo.preview}
+            imageUrl={mainVideo.imageUrl}
             duration={mainVideo.duration}
             tags={mainVideo.tags}
             activeRubrics={activeRubrics}
@@ -90,7 +90,7 @@ function Video({
               link={movie.link}
               key={movie.id}
               title={movie.title}
-              imageUrl={movie.preview}
+              imageUrl={movie.imageUrl}
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
