@@ -2,6 +2,7 @@
 import { fromUnixTime, compareAsc } from 'date-fns';
 import jwt from 'jsonwebtoken';
 import api from './Api';
+import { MONTH_NUMBERS } from './Constants';
 
 export function declOfNum(n, textForm) {
   // eslint-disable-next-line no-param-reassign
@@ -17,6 +18,9 @@ export function declOfNum(n, textForm) {
     return textForm[0];
   }
   return textForm[2];
+}
+export function getMonthPrescription(str) {
+  return MONTH_NUMBERS[str];
 }
 
 export function useAuth(setUserData, setLoginState) {

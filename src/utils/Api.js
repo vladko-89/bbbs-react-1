@@ -403,6 +403,13 @@ class Api {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
+  getStories() {
+    return axios
+      .get(`${this._baseUrl}/story/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
 }
 
 const api = new Api(baseUrl);
