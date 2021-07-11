@@ -21,9 +21,21 @@
 
 .rights {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-template-rows: 1fr [first-line] 1px 1fr [second-line] 1px 1fr [third-line] 1px 1fr;
+  grid-template-columns: repeat(auto-fit, 350px);
+  // grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  // grid-template-rows: 1fr [first-line] 1px 1fr [second-line] 1px 1fr [third-line] 1px 1fr;
   gap: 80px 30px;
+}
+
+.rights__divider{
+  border-bottom: 1px solid black;
+  height: 1px;
+  width: 100%;
+  margin: 30px 0;
+}
+
+.rights__divider:last-of-type{
+  border-bottom:unset;
 }
 
 .rights__rubric {
@@ -50,14 +62,14 @@
 
 @include atDesktop1440 {
   .rights {
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    grid-template-columns: repeat(auto-fit, 290px);
   }
 }
 
 @include atDesktop1199 {
   .rights {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr [third-line] 1px 1fr;
+  //  grid-template-rows: 1fr [third-line] 1px 1fr;
   }
 
   .rights__line {
@@ -70,7 +82,7 @@
 @include atDesktop1024 {
   .rights {
     padding-top: 50px;
-    grid-template-rows: 1fr [third-line] 1px 1fr;
+  //  grid-template-rows: 1fr [third-line] 1px 1fr;
     gap: 30px;
   }
 }
@@ -78,7 +90,7 @@
 @include atTablet {
   .rights {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr [first-line] 1px 1fr [second-line] 1px 1fr [third-line] 1px 1fr;
+  //  grid-template-rows: 1fr [first-line] 1px 1fr [second-line] 1px 1fr [third-line] 1px 1fr;
     gap: 30px;
   }
 
