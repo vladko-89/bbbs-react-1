@@ -4,9 +4,10 @@ import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import RightsCard from '../RightsCard/RightsCard';
 import Preloader from '../Preloader/Preloader';
+import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
-import { formingCards } from '../../utils/utils';
-import { figures, colors } from '../../utils/Constants';
+import { formingCards, splitOnBlocks } from '../../utils/utils';
+import { figures, colors, RIGHTS_PER_PAGE } from '../../utils/Constants';
 
 function Rights({
   activeRubrics,
@@ -16,9 +17,45 @@ function Rights({
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [rights, setRights] = React.useState([]);
+  const [cardsInBlock, setCardsInBlock] = React.useState(4);
+  const blocks = splitOnBlocks(rights.results, cardsInBlock);
+
+  function onPageChange(page) {
+    const offset = page !== 1 ? page * RIGHTS_PER_PAGE - RIGHTS_PER_PAGE : 0;
+    api
+      .getRights({
+        limit: RIGHTS_PER_PAGE,
+        offset,
+        tags: activeRubrics,
+      })
+      .then((res) => {
+        const result = formingCards(res.results, figures, colors);
+        setRights({ ...res, results: result });
+      });
+  }
 
   React.useEffect(() => {
-    Promise.all([api.getRightsTags(), api.getRights()])
+    function checkRes() {
+      switch (true) {
+        case (window.innerWidth < 1200 && window.innerWidth >= 768): {
+          setCardsInBlock(3); break;
+        }
+        case (window.innerWidth < 768): {
+          setCardsInBlock(1); break;
+        }
+        default: {
+          setCardsInBlock(4);
+          break;
+        }
+      }
+    }
+    checkRes();
+    window.addEventListener('resize', checkRes);
+    return () => window.removeEventListener('resize', checkRes);
+  }, []);
+  React.useEffect(() => {
+    Promise.all([api.getRightsTags(),
+      api.getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })])
       .then(([resTags, resRights]) => {
         setTags([
           {
@@ -28,9 +65,9 @@ function Rights({
           },
           ...resTags.results,
         ]);
-        console.log(resRights.results);
+        // console.log(resRights);
         const result = formingCards(resRights.results, figures, colors);
-        setRights(result);
+        setRights({ ...resRights, results: result });
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -41,10 +78,10 @@ function Rights({
 
   React.useEffect(() => {
     api
-      .getRights(activeRubrics)
+      .getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })
       .then((res) => {
         const result = formingCards(res.results, figures, colors);
-        setRights(result);
+        setRights({ ...res, results: result });
       })
       .catch((err) => console.log(err));
   }, [activeRubrics]);
@@ -60,19 +97,30 @@ function Rights({
         // eslint-disable-next-line no-console
           selectRubric={selectRubric}
         />
-        <section className="rights page__section">
-          <div className="rights__line rights__line_stage_first" />
-          <div className="rights__line rights__line_stage_second" />
-          <div className="rights__line rights__line_stage_third" />
-          {rights.map((card) => (
-            <RightsCard
-              key={card.id}
-              activeRubrics={activeRubrics}
-              onClickCard={onClickCard}
-              card={card}
-            />
-          ))}
+        <section className="page__section">
+          {blocks.map((block) => (
+            <>
+              <div className="rights">
+                {block.map((card) => (
+                  <RightsCard
+                    key={card.id}
+                    activeRubrics={activeRubrics}
+                    onClickCard={onClickCard}
+                    card={card}
+                  />
+                ))}
+              </div>
+              <div className="rights__divider " />
+            </>
+          )) }
         </section>
+        {(rights.count > RIGHTS_PER_PAGE) && (
+        <Pagination
+          cardsLength={rights.count}
+          cardsPerPage={RIGHTS_PER_PAGE}
+          onPageChange={onPageChange}
+        />
+        ) }
       </section>
     </main>
   );

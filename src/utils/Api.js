@@ -342,9 +342,9 @@ class Api {
   // ПРАВА ДЕТЕЙ
 
   // Получаю карточки прав
-  getRights(tags, limit, offset) {
+  getRights({ tags, limit, offset }) {
     const params = new URLSearchParams();
-    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (tags.length > 0) tags.forEach((tag) => params.append('tag', tag));
     if (limit) {
       params.append('limit', limit);
       params.append('offset', offset);

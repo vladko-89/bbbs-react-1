@@ -39,7 +39,6 @@ function Places({
   const [places, setPlaces] = React.useState([]);
 
   function onPageChange(page) {
-    console.log(page);
     const offset = page !== 1 ? page * placesPerPage - placesPerPage : 0;
     api
       .getPlaces({
