@@ -21,7 +21,7 @@ export default function ReadAndWatch(activeRubrics) {
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
     // eslint-disable-next-line max-len
-    Promise.all([api.getVideos(), api.getGuide(), api.getArticle(), api.getMovies(), api.getBooks()])
+    Promise.all([api.getVideos(), api.getGuide(), api.getArticles(), api.getFilms(), api.getBooks()])
       .then(([resVideos, resGuides, resArticles, resMovies, resBooks]) => {
         setVideoToShow(resVideos.results);
         setGuidesToShow(resGuides.results);
