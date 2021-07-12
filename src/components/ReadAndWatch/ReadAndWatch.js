@@ -11,7 +11,7 @@ import api from '../../utils/Api';
 import ArticleCard from '../Articles/ArticleCard/ArticleCard';
 // import { mainArticle as leadArticle, articleCards } from '../../utils/articlesData';
 import { mainArticle as leadArticle } from '../../utils/articlesData';
-import { films } from '../../utils/filmsData';
+// import { films } from '../../utils/filmsData';
 import FilmCard from '../Films/FilmCard/FilmCard';
 import BookCard from '../Books/BookCard/BookCard';
 import { books } from '../../utils/booksData';
@@ -20,13 +20,15 @@ export default function ReadAndWatch(activeRubrics) {
   const [videoToShow, setVideoToShow] = React.useState([]);
   const [guidesToShow, setGuidesToShow] = React.useState([]);
   const [articlesToShow, setArticlesToShow] = React.useState([]);
+  const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
-    Promise.all([api.getVideos(), api.getGuide(), api.getArticle()])
-      .then(([resVideos, resGuides, resArticles]) => {
+    Promise.all([api.getVideos(), api.getGuide(), api.getArticle(), api.getMovies()])
+      .then(([resVideos, resGuides, resArticles, resMovies]) => {
         setVideoToShow(resVideos.results);
         setGuidesToShow(resGuides.results);
         setArticlesToShow(resArticles.results);
+        setMoviesToShow(resMovies.results);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -42,7 +44,7 @@ export default function ReadAndWatch(activeRubrics) {
   //     .catch((err) => console.log(err));
   // }, []);
   // console.log('guidesToShow:', guidesToShow);
-  console.log('articlesToShow', articlesToShow);
+  console.log('articlesToShow', moviesToShow);
   const isAnnotation = false;
   return (
     <main className="main">
@@ -231,7 +233,7 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {// eslint-disable-next-line max-len
-              films.map((film, i) => (
+              moviesToShow.map((film, i) => (
                 <SwiperSlide>
                   <FilmCard key={i.toString()} film={film} isAnnotation={isAnnotation} />
                   {' '}
