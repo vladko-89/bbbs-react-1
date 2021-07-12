@@ -460,6 +460,37 @@ class Api {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
+  // get guides
+  getGuide(tags, limit, offset) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    return axios
+      .get(`${this._baseUrl}/entertainment/guides/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getArticle(tags, limit, offset) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    return axios
+      .get(`${this._baseUrl}/entertainment/articles/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
 }
 
 const api = new Api(baseUrl);

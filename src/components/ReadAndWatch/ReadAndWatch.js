@@ -3,26 +3,46 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import PropTypes from 'prop-types';
-import cards from '../../utils/catalogData';
+// import cards from '../../utils/catalogData';
 import CatalogCard, { shapes } from '../Catalog/CatalogCard/CatalogCard';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import './ReadAndWatch.scss';
 import api from '../../utils/Api';
 import ArticleCard from '../Articles/ArticleCard/ArticleCard';
-import { mainArticle as leadArticle, articleCards } from '../../utils/articlesData';
+// import { mainArticle as leadArticle, articleCards } from '../../utils/articlesData';
+import { mainArticle as leadArticle } from '../../utils/articlesData';
 import { films } from '../../utils/filmsData';
 import FilmCard from '../Films/FilmCard/FilmCard';
 import BookCard from '../Books/BookCard/BookCard';
 import { books } from '../../utils/booksData';
 
 export default function ReadAndWatch(activeRubrics) {
-  const [moviesToShow, setMoviesToShow] = React.useState([]);
+  const [videoToShow, setVideoToShow] = React.useState([]);
+  const [guidesToShow, setGuidesToShow] = React.useState([]);
+  const [articlesToShow, setArticlesToShow] = React.useState([]);
+  const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
-    api.getMain().then((res) => {
-      setMoviesToShow(res.movies);
-    })
-      .catch((err) => console.log(err));
+    Promise.all([api.getVideos(), api.getGuide(), api.getArticle()])
+      .then(([resVideos, resGuides, resArticles]) => {
+        setVideoToShow(resVideos.results);
+        setGuidesToShow(resGuides.results);
+        setArticlesToShow(resArticles.results);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+        console.log(isDataReady);
+      })
+      .finally(() => setIsDataReady(true));
   }, []);
+  // React.useEffect(() => {
+  //   api.getMain().then((res) => {
+  //     setVideoToShow(res.movies);
+  //   })
+  //     .catch((err) => console.log(err));
+  // }, []);
+  // console.log('guidesToShow:', guidesToShow);
+  console.log('articlesToShow', articlesToShow);
   const isAnnotation = false;
   return (
     <main className="main">
@@ -62,13 +82,13 @@ export default function ReadAndWatch(activeRubrics) {
           }}
         >
           {
-            cards.map((card, i) => (
+            guidesToShow.map((card, i) => (
               <SwiperSlide>
                 <CatalogCard
                   key={i.toString()}
                   shape={shapes[Math.floor(Math.random() * 3)]}
                   title={card.title}
-                  image={card.image}
+                  image={card.imageUrl}
                   path={card.path}
                 />
               </SwiperSlide>
@@ -116,7 +136,7 @@ export default function ReadAndWatch(activeRubrics) {
               disabledClass: 'swiper__button_disabled',
             }}
           >
-            {moviesToShow.map((movie) => (
+            {videoToShow.map((movie) => (
               <SwiperSlide>
                 <MainVideoPreview
                   link={movie.link}
@@ -170,7 +190,7 @@ export default function ReadAndWatch(activeRubrics) {
           >
             {
             // eslint-disable-next-line max-len
-            articleCards.map((card, i) => <SwiperSlide><ArticleCard key={i.toString()} {...card} /></SwiperSlide>)
+              articlesToShow.map((card, i) => <SwiperSlide><ArticleCard key={i.toString()} {...card} /></SwiperSlide>)
             }
           </Swiper>
         </div>
