@@ -189,8 +189,8 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {
-            // eslint-disable-next-line max-len
-              articlesToShow.map((card, i) => <SwiperSlide><ArticleCard key={i.toString()} {...card} /></SwiperSlide>)
+              // eslint-disable-next-line max-len
+              articlesToShow.map((article) => <SwiperSlide><ArticleCard key={article.id} article={article} /></SwiperSlide>)
             }
           </Swiper>
         </div>

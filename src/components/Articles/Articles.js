@@ -65,6 +65,7 @@ export default function Articles() {
     }, delay);
   }
 
+  console.log('articlesAlexander:', articles);
   try {
     React.useEffect(() => {
       api.getArticles(new URLSearchParams({ isMain: true }))
