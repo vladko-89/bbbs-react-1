@@ -1,59 +1,15 @@
-@import '../../scss/variables.scss';
-@import '../../scss/mixins.scss';
-
-.transition-group-enter {
-  opacity: 0.01;
-}
-
-.transition-group-enter.transition-group-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
-
-.transition-group-leave {
-  opacity: 1;
-}
-
-.transition-group-leave.transition-group-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}
-
-.transition-group-appear {
-  opacity: 0.01;
-}
-
-.transition-group-appear.transition-group-appear-active {
-  opacity: 1;
-  transition: opacity .5s ease-in;
-}
-
-.preloader {
-  z-index: 1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #f3f2f2d2;
-}
+@import '../../../scss/variables.scss';
+@import '../../../scss/mixins.scss';
 
 .button {
+  height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  margin: 60px auto 80px;
   padding: 0 20px;
   border: 1px solid $black;
+  outline: none;
   border-radius: 100px;
-  width: 100%;
-  height: 48px;
-
   font-family: $protoGrotesk;
   font-size: 15px;
   line-height: 1.3;
@@ -61,8 +17,6 @@
   color: $black;
   white-space: nowrap;
   background-color: transparent;
-
-  outline: none;
   cursor: pointer;
   transition: 0.2s linear;
 
@@ -109,101 +63,12 @@
   }
 }
 
-@include atMobile {
-  .button {
-    margin-top: 20px;
-    width: 100%;
-  }
-}
-
 @include atDesktop1024 {
   .button {
     height: 40px;
     padding: 0 15px;
     font-size: 12px;
     line-height: 1.4;
-  }
-}
-
-.main-title {
-  margin: 0;
-  font-family: $protoGrotesk;
-  font-weight: 300;
-  font-size: 74px;
-  line-height: 108%;
-  color: $black;
-  text-align: center;
-}
-
-@include atDesktop1024 {
-  .main-title {
-    font-size: 37px;
-    line-height: 105%;
-  }
-}
-
-.main {
-  padding-bottom: 120px;
-}
-
-@include atDesktop1024 {
-  .main {
-    padding-bottom: 100px;
-  }
-}
-
-@include atMobile {
-  .main {
-    padding-bottom: 50px;
-  }
-}
-
-.lead {
-  margin: 40px auto 0;
-  max-width: 1170px;
-  text-align: center;
-}
-
-@include atDesktop1440 {
-  .lead {
-    max-width: 970px;
-  }
-}
-
-@include atDesktop1024 {
-  .lead {
-    margin-top: 20px;
-  }
-}
-
-.page__section {
-  margin: 0 auto;
-  padding: 80px 75px 0;
-}
-
-@include atDesktop1440 {
-  .page__section {
-    padding-left: 135px;
-    padding-right: 135px;
-  }
-}
-
-@include atDesktop1024 {
-  .page__section {
-    padding: 40px 127px 0;
-  }
-}
-
-@include atTablet {
-  .page__section {
-    padding-left: 60px;
-    padding-right: 60px;
-  }
-}
-
-@include atMobile {
-  .page__section {
-    padding: 20px 15px 0;
   }
 }
 
@@ -231,6 +96,8 @@
 }
 
 .tags__button {
+  cursor: pointer;
+
   &_active {
     background-color: $black;
     color: $background;
@@ -296,23 +163,5 @@
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-}
-
-.questions {
-  position: relative;
-  max-width: 970px;
-  margin: 0 auto;
-}
-
-@include atDesktop1024 {
-  .questions {
-    padding-top: 50px;
-  }
-}
-
-@include atMobile {
-  .questions {
-    padding-top: 30px;
   }
 }

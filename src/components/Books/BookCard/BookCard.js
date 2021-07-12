@@ -7,7 +7,7 @@ export default function BookCard({ book }) {
   return (
     <article className="card-container card-pagination">
       <div className="card card_content_book">
-        <div className={`book book_color_${book.color}`}>
+        <div className="book" style={{ backgroundColor: book.color }}>
           <h2 className="section-title book__title">{book.title}</h2>
           <div className="book__info">
             <p className="caption book__author">{book.author}</p>
@@ -18,9 +18,7 @@ export default function BookCard({ book }) {
       <div className="card card_content_annotation">
         <div className="card__content">
           <div className="card__annotation">
-            {
-              book.annotation.map((p, i) => <p key={i.toString()} className="paragraph card__paragraph">{p}</p>)
-            }
+            <p className="paragraph card__paragraph">{book.description}</p>
           </div>
         </div>
       </div>
@@ -39,7 +37,7 @@ BookCard.propTypes = {
     title: PropTypes.string,
     author: PropTypes.string,
     year: PropTypes.number,
-    annotation: PropTypes.arrayOf(PropTypes.string),
+    description: PropTypes.string,
     color: PropTypes.string,
   }).isRequired,
 };

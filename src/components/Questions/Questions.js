@@ -1,7 +1,6 @@
+/* eslint-disable no-console */
 import React from 'react';
-import { TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import MainTitle from '../MainTitle/MainTitle';
 import Tag from './Tag/Tag';
 import Question from './Question/Question';
 import QuestionForm from './QuestionForm/QuestionForm';
@@ -88,7 +87,7 @@ export default function Questions({ loggedIn }) {
     return (
       <main className={styles.main}>
         <section className={`${styles.lead} ${styles.page__section}`}>
-          <MainTitle title="Ответы на вопросы" />
+          <h1 className={styles['main-title']}>Ответы на вопросы</h1>
           <div className={`${styles.tags} ${styles['tags_content_long-list']}`}>
             <ul className={`${styles.tags__list} ${styles.tags__list_type_long}`}>
               {
@@ -100,26 +99,12 @@ export default function Questions({ loggedIn }) {
           </div>
         </section>
         <section className={`${styles.questions} ${styles.page__section}`}>
-          <TransitionGroup
-            transitionName={{
-              enter: styles['transition-group-enter'],
-              enterActive: styles['transition-group-enter-active'],
-              leave: styles['transition-group-leave'],
-              leaveActive: styles['transition-group-leave-active'],
-              appear: styles['transition-group-appear'],
-              appearActive: styles['transition-group-appear-active'],
-            }}
-            transitionAppear
-            transitionAppearTimeout={500}
-            transitionEnter={300}
-            transitionLeave={false}
-          >
-            {
-                isLoading ? <Preloader /> : questions.map((question) => (
-                  <Question key={question.id} question={question} />
-                ))
-            }
-          </TransitionGroup>
+          {
+            isLoading && <div className={styles.preloader}><Preloader /></div>
+          }
+          {
+            questions.map((question) => (<Question key={question.id} question={question} />))
+          }
           {
             nextLink && <button onClick={handleMoreClick} type="button" className={`${styles.button} ${styles.button_theme_light}`}>Ещё</button>
           }
@@ -134,7 +119,7 @@ export default function Questions({ loggedIn }) {
     return (
       <main className={styles.main}>
         <section className={`${styles.lead} ${styles.page__section}`}>
-          <MainTitle title="Ответы на вопросы" />
+          <h1 className={styles['main-title']}>Ответы на вопросы</h1>
         </section>
       </main>
     );

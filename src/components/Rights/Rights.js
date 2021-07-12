@@ -4,6 +4,7 @@ import MainTitle from '../MainTitle/MainTitle';
 import Filter from '../Filter/Filter';
 import RightsCard from '../RightsCard/RightsCard';
 import Preloader from '../Preloader/Preloader';
+// eslint-disable-next-line import/no-named-as-default-member
 import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
 import { formingCards, splitOnBlocks } from '../../utils/utils';
