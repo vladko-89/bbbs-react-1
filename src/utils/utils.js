@@ -89,6 +89,16 @@ export function prepareDetails(details) {
   }
   return arr;
 }
+
+export const splitOnBlocks = (initialArr, blocks) => {
+  const resultArr = [];
+  if (!(typeof (initialArr) === 'undefined')) {
+    initialArr.forEach((el, index) => {
+      if ((index) % blocks === 0) { resultArr.push(initialArr.slice(index, (blocks + index))); }
+    });
+  }
+  return resultArr;
+};
 export function filterByTags(tags, data) {
   return (!tags.length)
     ? data

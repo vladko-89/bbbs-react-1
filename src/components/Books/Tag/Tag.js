@@ -1,38 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Tag({ tag, handleTagClick }) {
-  const buttonElement = React.useRef(null);
+import styles from './Tag.module.scss';
 
-  function onClick(event) {
-    const button = event.target;
-    const isActive = button.classList.contains('tags__button_active');
-    const firstButton = button.closest('.tags__list').querySelector('.tags__button');
-    const activeButtons = button.closest('.tags__list').querySelectorAll('.tags__button_active');
+export default function Tag({ tag, onTagClick }) {
+  const tagElement = React.useRef(null);
+
+  function onClick() {
+    const isActive = tagElement.current.classList.contains(styles.tags__button_active);
+    const firstTag = tagElement.current.parentNode.parentNode.querySelector(`.${styles.tags__button}`);
+    const activeTags = tagElement.current.parentNode.parentNode.querySelectorAll(`.${styles.tags__button_active}`);
 
     if (tag.id === 0) {
-      if (!button.classList.contains('tags__button_active')) {
-        activeButtons.forEach((b) => b.classList.remove('tags__button_active'));
-        button.classList.toggle('tags__button_active');
+      if (!isActive) {
+        activeTags.forEach((t) => t.classList.remove(styles.tags__button_active));
+        tagElement.current.classList.toggle(styles.tags__button_active);
       }
     } else {
-      if (activeButtons.length === 1 && isActive) {
-        firstButton.classList.add('tags__button_active');
+      if (activeTags.length === 1 && isActive) {
+        firstTag.classList.add(styles.tags__button_active);
       } else {
-        firstButton.classList.remove('tags__button_active');
+        firstTag.classList.remove(styles.tags__button_active);
       }
-      button.classList.toggle('tags__button_active');
+      tagElement.current.classList.toggle(styles.tags__button_active);
     }
-    handleTagClick(tag.id);
+
+    onTagClick(tag);
   }
 
   React.useEffect(() => {
-    if (tag.id === 0) buttonElement.current.classList.add('tags__button_active');
+    if (tag.id === 0) tagElement.current.classList.add(styles.tags__button_active);
   }, []);
 
   return (
-    <li className="tags__list-item">
-      <button ref={buttonElement} onClick={onClick} className="button tags__button" type="button">{tag.name}</button>
+    <li className={styles['tags__list-item']}>
+      <button ref={tagElement} onClick={onClick} className={`${styles.button} ${styles.tags__button}`} type="button">{tag.name}</button>
     </li>
   );
 }
@@ -43,5 +45,5 @@ Tag.propTypes = {
     name: PropTypes.string,
     slug: PropTypes.string,
   }).isRequired,
-  handleTagClick: PropTypes.func.isRequired,
+  onTagClick: PropTypes.func.isRequired,
 };
