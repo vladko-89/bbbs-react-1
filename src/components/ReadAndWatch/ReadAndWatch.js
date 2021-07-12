@@ -3,32 +3,31 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import PropTypes from 'prop-types';
-// import cards from '../../utils/catalogData';
 import CatalogCard, { shapes } from '../Catalog/CatalogCard/CatalogCard';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import './ReadAndWatch.scss';
 import api from '../../utils/Api';
 import ArticleCard from '../Articles/ArticleCard/ArticleCard';
-// import { mainArticle as leadArticle, articleCards } from '../../utils/articlesData';
 import { mainArticle as leadArticle } from '../../utils/articlesData';
-// import { films } from '../../utils/filmsData';
 import FilmCard from '../Films/FilmCard/FilmCard';
 import BookCard from '../Books/BookCard/BookCard';
-import { books } from '../../utils/booksData';
 
 export default function ReadAndWatch(activeRubrics) {
   const [videoToShow, setVideoToShow] = React.useState([]);
   const [guidesToShow, setGuidesToShow] = React.useState([]);
   const [articlesToShow, setArticlesToShow] = React.useState([]);
   const [moviesToShow, setMoviesToShow] = React.useState([]);
+  const [booksToShow, setBooksToShow] = React.useState([]);
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
-    Promise.all([api.getVideos(), api.getGuide(), api.getArticle(), api.getMovies()])
-      .then(([resVideos, resGuides, resArticles, resMovies]) => {
+    // eslint-disable-next-line max-len
+    Promise.all([api.getVideos(), api.getGuide(), api.getArticle(), api.getMovies(), api.getBooks()])
+      .then(([resVideos, resGuides, resArticles, resMovies, resBooks]) => {
         setVideoToShow(resVideos.results);
         setGuidesToShow(resGuides.results);
         setArticlesToShow(resArticles.results);
         setMoviesToShow(resMovies.results);
+        setBooksToShow(resBooks.results);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -37,14 +36,6 @@ export default function ReadAndWatch(activeRubrics) {
       })
       .finally(() => setIsDataReady(true));
   }, []);
-  // React.useEffect(() => {
-  //   api.getMain().then((res) => {
-  //     setVideoToShow(res.movies);
-  //   })
-  //     .catch((err) => console.log(err));
-  // }, []);
-  // console.log('guidesToShow:', guidesToShow);
-  console.log('articlesToShow', moviesToShow);
   const isAnnotation = false;
   return (
     <main className="main">
@@ -278,7 +269,8 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {
-              books.map((book) => <SwiperSlide><BookCard key={book.id} book={book} /></SwiperSlide>)
+              // eslint-disable-next-line max-len
+              booksToShow.map((book) => <SwiperSlide><BookCard key={book.id} book={book} /></SwiperSlide>)
             }
           </Swiper>
         </div>
