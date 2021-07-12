@@ -228,8 +228,7 @@ export default function ReadAndWatch(activeRubrics) {
             className="link"
           >
             <h3 className="chapter-title chapter-title_clickable">Книги</h3>
-          </Link
-          >
+          </Link>
           <div className="preview__bottons">
             <button className="preview__button preview__button_left books__button_left" type="button" aria-label="buttonLeft" disabled />
             <button className="preview__button preview__button_right books__button_right" type="button" aria-label="buttonRight" />

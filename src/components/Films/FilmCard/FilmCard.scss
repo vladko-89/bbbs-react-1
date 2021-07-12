@@ -2,6 +2,11 @@
   display: block;
 }
 
+.filmcard__taglist {
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .filmcard__preview {
   width: 100%;
 }

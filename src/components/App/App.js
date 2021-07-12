@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -24,10 +24,12 @@ import CurrentUserContext from '../../contexts/CurrentUser';
 import CitiesListContext from '../../contexts/CitiesListContext';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
+import RightArticle from '../RightArticle/RightArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
+import { eventsPerPage } from '../../utils/Constants';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -44,6 +46,7 @@ function App() {
   const [isPopupLoginOpened, setIsPoupLoginOpened] = React.useState(false);
   const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const [citiesList, setCitiesList] = React.useState([]);
+  const history = useHistory();
 
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
   const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
@@ -53,8 +56,27 @@ function App() {
   // События на которые подписан
   const [myEvents, setMyEvents] = React.useState([]);
   const [currentEvent, setCurrentEvent] = React.useState({ startAt: '2000-01-01T00:00:00Z', endAt: '2000-01-01T00:00:00Z' });
+  const [currentCard, setCurrentCard] = React.useState({});
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [path, setPath] = React.useState('');
 
-  // const [path, setPath] = React.useState('');
+  function clickOnCard(card) {
+    setCurrentCard(card);
+    console.log('current', currentCard);
+  }
+
+  function onPageChange(page) {
+    setCurrentPage(page);
+    const offset = page !== 1 ? page * eventsPerPage - eventsPerPage : 0;
+    api
+      .getEvents({
+        token: getAccessToken(),
+        limit: eventsPerPage,
+        offset,
+        months: activeRubrics,
+      })
+      .then((res) => { setCalendarData(res); });
+  }
 
   React.useEffect(() => {
     useAuth(setCurrentUser, setLoggedIn);
@@ -86,10 +108,13 @@ function App() {
   }
 
   function getCalendarEvents() {
-    api.getEvents(getAccessToken())
+    const offset = currentPage !== 1 ? currentPage * eventsPerPage - eventsPerPage : 0;
+    api.getEvents({
+      token: getAccessToken(), limit: eventsPerPage, offset, months: activeRubrics,
+    })
       .then((res) => {
         console.log('events', res);
-        setCalendarData(res.results);
+        setCalendarData(res);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -231,9 +256,9 @@ function App() {
     setCurrentUser({ ...currentUser, city: selectedCity });
   };
 
-  const handleLoginOpen = (path) => {
+  const handleLoginOpen = (str) => {
     setIsPoupLoginOpened(true);
-    // setPath(path);
+    setPath(str);
   };
   const handleLoginClose = (e) => {
     if (e.code !== 'Escape' && e.type === 'keydown') {
@@ -246,6 +271,7 @@ function App() {
     evt.preventDefault();
     setLoggedIn(true);
     setCurrentUser(userName);
+    history.push(path);
   };
 
   const handleOutClick = () => {
@@ -259,6 +285,7 @@ function App() {
         isPrimary: false,
       },
     });
+    localStorage.removeItem('user');
     localStorage.setItem('bbbs-user', JSON.stringify({
       id: 0,
       user: 0,
@@ -303,7 +330,7 @@ function App() {
                     isSuccessRegPopupOpen={isSuccessRegPopupOpen}
                     handleSuccessRegPopup={handleSuccessRegPopup}
                     handleImmidiateBooking={handleImmidiateBooking}
-                    calendarData={calendarData}
+                    calendarData={calendarData.results}
                   />
                 </Route>
                 <Route exact path="/place">
@@ -335,6 +362,8 @@ function App() {
                   isDescriptionPopupOpen={isDescriptionPopupOpen}
                   isSuccessRegPopupOpen={isSuccessRegPopupOpen}
                   calendarData={calendarData}
+                  setCalendarData={setCalendarData}
+                  onPageChange={onPageChange}
                   handleSuccessRegPopup={handleSuccessRegPopup}
                   handleImmidiateBooking={handleImmidiateBooking}
                 />
@@ -369,6 +398,7 @@ function App() {
                   <Rights
                     activeRubrics={activeRubrics}
                     selectRubric={changeActiveRubric}
+                    onClickCard={clickOnCard}
                   />
                 </Route>
                 <Route exact path="/articles">
@@ -382,6 +412,9 @@ function App() {
                 </Route>
                 <Route exact path="/stories">
                   <Stories />
+                </Route>
+                <Route exact path={`/rights/${currentCard.id}`}>
+                  <RightArticle card={currentCard} />
                 </Route>
                 <Route exact path="*">
                   <PageNotFound />
@@ -399,15 +432,16 @@ function App() {
               ''
             )}
             {{ isOpenPopupCities } && (
-            <PopupCities
-              onChangeCities={
-                loggedIn ? handleChangeCity : handleChangeCityNotAuth
-              }
-              onCloseClick={handleClose}
-              isOpen={isOpenPopupCities}
-              isCity={loggedIn ? currentUser.city.name : 'Москва'}
-              citiesList={citiesList}
-            />
+
+              <PopupCities
+                onChangeCities={
+                  loggedIn ? handleChangeCity : handleChangeCityNotAuth
+                }
+                onCloseClick={handleClose}
+                isOpen={isOpenPopupCities}
+                isCity={loggedIn ? currentUser.city.name : 'Москва'}
+                citiesList={citiesList}
+              />
             )}
           </div>
         </HelmetProvider>

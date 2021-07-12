@@ -39,7 +39,6 @@ function Places({
   const [places, setPlaces] = React.useState([]);
 
   function onPageChange(page) {
-    console.log(page);
     const offset = page !== 1 ? page * placesPerPage - placesPerPage : 0;
     api
       .getPlaces({
@@ -79,6 +78,7 @@ function Places({
         // eslint-disable-next-line no-console
         console.log(err);
       })
+
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -117,14 +117,14 @@ function Places({
       </div>
       )}
       <MainMentor
-        id={places.results[0]?.id}
-        title={places.results[0]?.title}
-        chosen={places.results[0]?.chosen}
-        address={places.results[0]?.address}
-        imageUrl={places.results[0]?.imageUrl}
-        link={places.results[0]?.link}
-        info={places.results[0]?.info}
-        description={places.results[0]?.description}
+        id={places?.results[0]?.id}
+        title={places?.results[0]?.title}
+        chosen={places?.results[0]?.chosen}
+        address={places?.results[0]?.address}
+        imageUrl={places?.results[0]?.imageUrl}
+        link={places?.results[0]?.link}
+        info={places?.results[0]?.info}
+        description={places?.results[0]?.description}
       />
       <PlacesCards places={places.results} />
       {(places.count > placesPerPage) && (

@@ -95,10 +95,12 @@ overflow: auto;
   outline: none;
   cursor: pointer;
   color: $lightGray;
-
+background-color: transparent;
+  text-align: start;
+  padding-left: 0px;
 }
-.personal-area__curator-option:disabled {
-  color: $lightGray;
+.personal-area__curator-select:disabled {
+  cursor: inherit;
 }
 .personal-area__curator-option {
   font-family: Proto Grotesk Web Light;

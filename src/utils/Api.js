@@ -18,11 +18,32 @@ class Api {
       .catch((error) => console.log(error));
   }
 
-  getEvents(accessToken) {
+  getEvents({
+    token, months, limit, offset,
+  }) {
+    const params = new URLSearchParams();
+    if (months && months.length > 0) {
+      params.append('month', months.join(','));
+    }
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
     return axios
       .get(`${this._baseUrl}/afisha/events/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${token}` },
+        params,
       })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getEventMonths({ token }) {
+    return axios
+      .get(`${this._baseUrl}/afisha/events/months/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        })
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
@@ -74,16 +95,28 @@ class Api {
   }
 
   addPlace(accessToken, place) {
-    return fetch(`${this._baseUrl}/places/`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(place),
-    })
-      .then((res) => res.json()
-        .then((data) => (res.ok ? data : { message: data.message, details: data.details })));
+    console.log(place);
+    const formData = new FormData();
+    formData.append('imageUrl', place.imageUrl[0], place.imageUrl[0].name);
+    formData.append('title', place.title);
+    formData.append('link', place.link);
+    formData.append('address', place.address);
+    formData.append('activity_type', place.activity_type);
+    formData.append('gender', place.gender);
+    formData.append('age', place.age);
+    formData.append('city', place.city);
+    formData.append('description', place.description);
+    return (
+      fetch(`${this._baseUrl}/places/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      })
+        .then((res) => res.json()
+          .then((data) => (res.ok ? data : { message: data.message, details: data.details })))
+        .catch((error) => console.log(error)));
   }
 
   signIn(login, password) {
@@ -146,6 +179,78 @@ class Api {
 
       .then((res) => res.data)
       .catch((error) => console.log(error));
+  }
+
+  getMeetingStories(accessToken) {
+    return axios
+      .get(`${this._baseUrl}/meetings/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  postMeetingStories(accessToken, data) {
+    console.log(data);
+    const formdata = new FormData();
+    formdata.append('image', data.image, data.image.name);
+    formdata.append('place', data.place);
+    formdata.append('date', data.date);
+    formdata.append('description', data.description);
+    formdata.append('smile', data.smile);
+    return (
+      fetch(`${this._baseUrl}/meetings/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          // 'Content-Type': 'application/json',
+        },
+        body: formdata,
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .catch((error) => console.log(error)));
+  }
+
+  deleteMeetingStory(accessToken, id) {
+    return axios
+      .delete(`${this._baseUrl}/meetings/${id}/`, {
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+      }).then((res) => (res.ok ? res : Promise.reject(res)))
+      .catch((error) => console.log(error));
+  }
+
+  editMeetingStory(accessToken, data) {
+    const formdata = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === 'image') { formdata.append('image', value, value.name); } else { formdata.append(key, value); }
+    });
+    return (
+      fetch(`${this._baseUrl}/meetings/${data.id}/`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          // 'Content-Type': 'application/json',
+        },
+        body: formdata,
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .catch((error) => console.log(error))
+    );
+  }
+
+  shareMeetingStoryTo(accessToken, story) {
+    return (
+      fetch(`${this._baseUrl}/meetings/send_to_curator/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(story),
+      })
+        .then((res) => (res.ok ? res : Promise.reject(res)))
+        .catch((error) => console.log(error))
+    );
   }
 
   getCitiesList() {
@@ -287,9 +392,13 @@ class Api {
   // ПРАВА ДЕТЕЙ
 
   // Получаю карточки прав
-  getRights(tags) {
+  getRights({ tags, limit, offset }) {
     const params = new URLSearchParams();
-    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (tags.length > 0) tags.forEach((tag) => params.append('tag', tag));
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
     return axios
       .get(`${this._baseUrl}/rights/`, {
         params,
@@ -302,6 +411,52 @@ class Api {
   getRightsTags() {
     return axios
       .get(`${this._baseUrl}/rights/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getRightArticle(_id) {
+    return axios
+      .get(`${this._baseUrl}/rights/${_id}/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // КАРТОЧКИ ВИДЕО
+  // Получаю карточки видео
+  getVideos(tags, limit, offset) {
+    const params = new URLSearchParams();
+    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (limit) {
+      params.append('limit', limit);
+      params.append('offset', offset);
+    }
+    return axios
+      .get(`${this._baseUrl}/entertainment/videos/`, {
+        params,
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  // Получаю теги видео
+  getVideosTags() {
+    return axios
+      .get(`${this._baseUrl}/entertainment/videos/tags/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getVideoCard(_id) {
+    return axios
+      .get(`${this._baseUrl}/entertainment/videos/${_id}/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
+
+  getStories() {
+    return axios
+      .get(`${this._baseUrl}/story/`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }

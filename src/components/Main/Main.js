@@ -111,7 +111,7 @@ function Main({
               link={movie.link}
               key={movie.id}
               title={movie.title}
-              imageUrl={movie.imageUrl}
+              imageUrl={movie.preview}
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
@@ -125,8 +125,9 @@ function Main({
             title={mainState.video.title}
             info={mainState.video.info}
             link={mainState.video.link}
-            imageUrl={mainState.video.imageUrl}
+            imageUrl={mainState.video.preview}
             duration={mainState.video.duration}
+
           />
         </section>
 
@@ -170,6 +171,7 @@ function Main({
           isOpen={isSuccessRegPopupOpen}
           handleCloseSuccessRegPopup={onClose}
           onClose={onClose}
+          textPopupButton="Вернуться"
         />
       </main>
     );

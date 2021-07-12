@@ -19,7 +19,7 @@ export default function FilmCard({ film, showPopup }) {
           <div className="video filmcard__preview">
             {/* PICSUM - временно */}
             <img onClick={openPopup} src={`https://picsum.photos/300/200/?${film.id}`} alt="Превью видео" className="video__img" />
-            <ul className="video__rubric-list">
+            <ul className="video__rubric-list filmcard__taglist">
               {
                 film.tags.map((tag) => <li key={tag.id}><p className="rubric video__rubric">{tag.name}</p></li>)
               }

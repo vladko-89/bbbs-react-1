@@ -24,7 +24,7 @@ function Navigation({
 
   return (
     <nav className="menu">
-      <Link to="./" target="_self" className="menu__logo">
+      <Link to="/" target="_self" className="menu__logo">
         наставники.про
       </Link>
       <div
@@ -36,7 +36,7 @@ function Navigation({
           <li className="menu__list-item">
             {loggedIn ? (
               <NavLink
-                to="./calendar"
+                to="/calendar"
                 className="menu__link"
                 onClick={handleClickMobMenu}
               >
@@ -46,7 +46,7 @@ function Navigation({
               <button
                 type="button"
                 className="menu__link"
-                onClick={onLoginPopup}
+                onClick={() => onLoginPopup('/calendar')}
               >
                 Календарь
               </button>
@@ -54,7 +54,7 @@ function Navigation({
           </li>
           <li className="menu__list-item">
             <NavLink
-              to="./place"
+              to="/place"
               className="menu__link"
               onClick={handleClickMobMenu}
             >
@@ -63,7 +63,7 @@ function Navigation({
           </li>
           <li className="menu__list-item">
             <NavLink
-              to="./questions"
+              to="/questions"
               className="menu__link"
               onClick={handleClickMobMenu}
             >
@@ -72,7 +72,7 @@ function Navigation({
           </li>
           <li className="menu__list-item menu__dropdown-item">
             <NavLink
-              to="./read-watch-main"
+              to="/read-watch-main"
               className="menu__link"
               onClick={handleClickMobMenu}
             >
@@ -81,7 +81,7 @@ function Navigation({
             <ul className="menu__dropdown-list">
               <li className="menu__dropdown-list-item">
                 <NavLink
-                  to="./catalog"
+                  to="/catalog"
                   className="link menu__dropdown-link"
                   onClick={handleClickMobMenu}
                 >
@@ -90,7 +90,7 @@ function Navigation({
               </li>
               <li className="menu__dropdown-list-item">
                 <NavLink
-                  to="./video"
+                  to="/video"
                   className="link menu__dropdown-link"
                   onClick={handleClickMobMenu}
                 >
@@ -99,7 +99,7 @@ function Navigation({
               </li>
               <li className="menu__dropdown-list-item">
                 <NavLink
-                  to="./articles"
+                  to="/articles"
                   className="link menu__dropdown-link"
                   onClick={handleClickMobMenu}
                 >
@@ -108,7 +108,7 @@ function Navigation({
               </li>
               <li className="menu__dropdown-list-item">
                 <NavLink
-                  to="./films"
+                  to="/films"
                   className="link menu__dropdown-link"
                   onClick={handleClickMobMenu}
                 >
@@ -117,7 +117,7 @@ function Navigation({
               </li>
               <li className="menu__dropdown-list-item">
                 <NavLink
-                  to="./books"
+                  to="/books"
                   className="link menu__dropdown-link"
                   onClick={handleClickMobMenu}
                 >
@@ -128,7 +128,7 @@ function Navigation({
           </li>
           <li className="menu__list-item">
             <NavLink
-              to="./rights"
+              to="/rights"
               className="menu__link"
               onClick={handleClickMobMenu}
             >
@@ -137,7 +137,7 @@ function Navigation({
           </li>
           <li className="menu__list-item">
             <NavLink
-              to="./stories"
+              to="/stories"
               className="menu__link"
               onClick={handleClickMobMenu}
             >
@@ -251,7 +251,8 @@ function Navigation({
               type="button"
               aria-label="Войти"
               className="menu__button menu__button_type_user"
-              onClick={onLoginPopup}
+              onClick={() => onLoginPopup('/profile')}
+              onKeyPress={handleClickMobMenu}
             />
           )}
         </li>
