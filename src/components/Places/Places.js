@@ -13,7 +13,7 @@ import PopupRecommendSuccess from '../PopupRecommendSuccess/PopupRecommendSucces
 import api from '../../utils/Api';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import { getAccessToken } from '../../utils/utils';
-import { PLACES_PER_PAGE } from '../../utils/constants';
+import { PLACES_PER_PAGE } from '../../utils/Constants';
 import './Places.scss';
 
 function Places({

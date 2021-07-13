@@ -11,7 +11,7 @@ import CalendarFilter from '../CalendarFilter/CalendarFilter';
 import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
 import { getAccessToken } from '../../utils/utils';
-import { eventsPerPage } from '../../utils/constants';
+import { eventsPerPage } from '../../utils/Constants';
 
 function Calendar({
   activeRubrics,

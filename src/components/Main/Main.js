@@ -15,7 +15,7 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
-import { cardsOnMain } from '../../utils/constants';
+import { cardsOnMain } from '../../utils/Constants';
 import './Main.scss';
 import { getAccessToken } from '../../utils/utils';
 

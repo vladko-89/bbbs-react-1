@@ -6,7 +6,7 @@ import MainVideo from '../MainVideo/MainVideo';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import Pagination from '../Pagination/Pagination';
 import Preloader from '../Preloader/Preloader';
-import { cardsPerPage } from '../../utils/constants';
+import { cardsPerPage } from '../../utils/Constants';
 
 import api from '../../utils/Api';
 
