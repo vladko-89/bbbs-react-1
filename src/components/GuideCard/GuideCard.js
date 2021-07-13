@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { onLinkNav } from '../../utils/utils';
 import './GuideCard.scss';
 
 export const shapes = [
@@ -16,7 +17,7 @@ export default function GuideCard({
 
     <div className="catalog-card card-pagination card-pagination_type_shapes">
       <div className={`card card_form_${shape} rights__card`}>
-        <Link to={`/guides/${id}`} onClick={() => clickOnCard(card)} className="rights__link">
+        <Link to={`/guides/${id}`} onClick={() => { onLinkNav(); clickOnCard(card); }} className="rights__link">
           <img src={image} alt={title} className="catalog-card__image" />
         </Link>
       </div>

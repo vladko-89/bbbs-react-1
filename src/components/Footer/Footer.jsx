@@ -2,17 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import logo from '../../images/svg/footer-logo.svg';
-import { scrollDelay } from '../../utils/constants';
+import { onLinkNav } from '../../utils/utils';
 
 function Footer({ loggedIn, onLoginPopup }) {
-  function onLinkNav() {
-    setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }, scrollDelay);
-  }
   return (
     <footer className="footer">
       <Link to="/" onClick={onLinkNav} className="footer__logo">

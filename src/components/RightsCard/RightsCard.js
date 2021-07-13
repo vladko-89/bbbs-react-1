@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { onLinkNav } from '../../utils/utils';
 
 function RightsCard({
   card,
@@ -8,6 +9,7 @@ function RightsCard({
 }) {
   function handleClick() {
     onClickCard(card);
+    onLinkNav();
   }
   return (
     <>
