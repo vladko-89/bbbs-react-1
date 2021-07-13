@@ -23,7 +23,7 @@ function PageNotFound() {
         <p className="section-title">К сожалению, запрашиваемая страница не&nbsp;найдена.</p>
         <p className="section-title">Попробуйте перейти на главную&nbsp;страницу</p>
       </div>
-      <Link to="./" className="button button_theme_light error__button button__text">Вернуться на главную</Link>
+      <Link to="/" className="button button_theme_light error__button button__text">Вернуться на главную</Link>
     </section>
   );
 }

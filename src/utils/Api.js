@@ -462,9 +462,9 @@ class Api {
   }
 
   // get guides
-  getGuide(tags, limit, offset) {
+  getGuides({ tags, limit, offset }) {
     const params = new URLSearchParams();
-    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if ((typeof (tags) !== 'undefined') && (Array.isArray(tags))) tags.forEach((tag) => params.append('tag', tag));
     if (limit) {
       params.append('limit', limit);
       params.append('offset', offset);

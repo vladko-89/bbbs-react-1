@@ -18,8 +18,8 @@ function RightsCard({
               <h2 className="section-title">
                 {card.title}
               </h2>
-              {card.tags.map((tag, index) => (
-                <p key={index.toString()} className="rubric rights__rubric">{tag.name}</p>
+              {card.tags.map((tag) => (
+                <p key={tag.id} className="rubric rights__rubric">{tag.name}</p>
               ))}
             </a>
           </div>

@@ -54,6 +54,7 @@ function Rights({
     window.addEventListener('resize', checkRes);
     return () => window.removeEventListener('resize', checkRes);
   }, []);
+
   React.useEffect(() => {
     Promise.all([api.getRightsTags(),
       api.getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })])
