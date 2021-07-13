@@ -1,57 +1,127 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MainTitle from '../MainTitle/MainTitle';
-import { FilterArrayFirst, cards } from '../../utils/RightsData';
 import Filter from '../Filter/Filter';
 import RightsCard from '../RightsCard/RightsCard';
+import Preloader from '../Preloader/Preloader';
+// eslint-disable-next-line import/no-named-as-default-member
 import Pagination from '../Pagination/Pagination';
-import { cardsPerPage } from '../../utils/Constants';
+import api from '../../utils/Api';
+import { formingCards, splitOnBlocks } from '../../utils/utils';
+import { figures, colors, RIGHTS_PER_PAGE } from '../../utils/Constants';
 
 function Rights({
   activeRubrics,
   selectRubric,
+  onClickCard,
 }) {
-  const currentIndex = React.useRef(0);
-  const [cardsToShow, setCardsToShow] = React.useState([]);
-  React.useEffect(() => {
-    selectRubric('All', true);
-  }, []);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [tags, setTags] = React.useState([]);
+  const [rights, setRights] = React.useState([]);
+  const [cardsInBlock, setCardsInBlock] = React.useState(4);
+  const blocks = splitOnBlocks(rights.results, cardsInBlock);
 
   function onPageChange(page) {
-    if (page !== 1) {
-      currentIndex.current = page * cardsPerPage - cardsPerPage;
-    } else {
-      currentIndex.current = 0;
-    }
-    setCardsToShow(cards.slice(currentIndex.current, page * cardsPerPage));
+    const offset = page !== 1 ? page * RIGHTS_PER_PAGE - RIGHTS_PER_PAGE : 0;
+    api
+      .getRights({
+        limit: RIGHTS_PER_PAGE,
+        offset,
+        tags: activeRubrics,
+      })
+      .then((res) => {
+        const result = formingCards(res.results, figures, colors);
+        setRights({ ...res, results: result });
+      });
   }
 
-  return (
+  React.useEffect(() => {
+    function checkRes() {
+      switch (true) {
+        case (window.innerWidth < 1200 && window.innerWidth >= 768): {
+          setCardsInBlock(3); break;
+        }
+        case (window.innerWidth < 768): {
+          setCardsInBlock(1); break;
+        }
+        default: {
+          setCardsInBlock(4);
+          break;
+        }
+      }
+    }
+    checkRes();
+    window.addEventListener('resize', checkRes);
+    return () => window.removeEventListener('resize', checkRes);
+  }, []);
+  React.useEffect(() => {
+    Promise.all([api.getRightsTags(),
+      api.getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })])
+      .then(([resTags, resRights]) => {
+        setTags([
+          {
+            id: 0,
+            name: 'Все',
+            slug: 'all',
+          },
+          ...resTags.results,
+        ]);
+        // console.log(resRights);
+        const result = formingCards(resRights.results, figures, colors);
+        setRights({ ...resRights, results: result });
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  React.useEffect(() => {
+    api
+      .getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })
+      .then((res) => {
+        const result = formingCards(res.results, figures, colors);
+        setRights({ ...res, results: result });
+      })
+      .catch((err) => console.log(err));
+  }, [activeRubrics]);
+
+  return isLoading ? (
+    <Preloader />
+  ) : (
     <main className="main">
       <section className="lead page__section">
         <MainTitle title="Права детей" />
         <Filter
-          array={FilterArrayFirst}
+          array={tags}
         // eslint-disable-next-line no-console
           selectRubric={selectRubric}
         />
-        <section className="rights page__section">
-          <div className="rights__line rights__line_stage_first" />
-          <div className="rights__line rights__line_stage_second" />
-          <div className="rights__line rights__line_stage_third" />
-          {cardsToShow.map((card) => (
-            <RightsCard
-              key={card.id}
-              activeRubrics={activeRubrics}
-              card={card}
-            />
-          ))}
+        <section className="page__section">
+          {blocks.map((block) => (
+            <>
+              <div className="rights">
+                {block.map((card) => (
+                  <RightsCard
+                    key={card.id}
+                    activeRubrics={activeRubrics}
+                    onClickCard={onClickCard}
+                    card={card}
+                  />
+                ))}
+              </div>
+              <div className="rights__divider " />
+            </>
+          )) }
         </section>
+        {(rights.count > RIGHTS_PER_PAGE) && (
         <Pagination
-          cardsLength={cards.length}
+          cardsLength={rights.count}
+          cardsPerPage={RIGHTS_PER_PAGE}
           onPageChange={onPageChange}
-          cardsPerPage={cardsPerPage}
         />
+        ) }
       </section>
     </main>
   );
@@ -60,6 +130,7 @@ function Rights({
 Rights.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
+  onClickCard: PropTypes.func.isRequired,
 };
 
 export default Rights;

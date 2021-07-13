@@ -1,22 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function EventInProfile({ events }) {
+function EventInProfile({ events, openEventDescription }) {
   return (
     <ul className="coming-events__list">
-      {events.map((event) => {
-        const date = new Date(event.startAt);
+      {events.map((item) => {
+        const date = new Date(item.startAt);
         const month = date.toLocaleString('default', { month: 'long' });
         const day = date.getDate();
+        const handleEventClick = () => {
+          openEventDescription(item);
+          console.log(item);
+        };
         return (
-          <li className="coming-events__event" key={event.id}>
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions
+          <li className="coming-events__event" key={item.id} onClick={handleEventClick}>
+
             <p className="coming-events__date">
               <span className="coming-events__number">{day}</span>
               {month}
             </p>
             <p className="coming-events__description">
-              {event.title}
+              {item.title}
             </p>
+
           </li>
         );
       })}
@@ -25,6 +33,7 @@ function EventInProfile({ events }) {
 }
 EventInProfile.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  openEventDescription: PropTypes.func.isRequired,
 };
 
 export default EventInProfile;

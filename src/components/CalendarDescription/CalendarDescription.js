@@ -4,14 +4,30 @@ import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { placesTextForms } from '../../utils/Constants';
-import declOfNum from '../../utils/utils';
+import { declOfNum } from '../../utils/utils';
 
 function CalendarDescription({
   isOpen, onClose, onActionClick, currentEvent,
 }) {
   const availablePlaces = currentEvent.seats - currentEvent.takenSeats;
   const declPlaces = declOfNum(availablePlaces, placesTextForms);
-
+  const handleClose = React.useCallback(
+    (e) => {
+      if (e.code !== 'Escape' && e.type === 'keydown') {
+        return;
+      }
+      onClose();
+    },
+    [onClose],
+  );
+  React.useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleClose);
+    }
+    return (() => {
+      document.removeEventListener('keydown', handleClose);
+    });
+  });
   return (
     <div className={`popup popup_type_description ${isOpen ? 'popup_opened' : ''}`}>
       <form className="popup__container popup__container_type_calendar">
@@ -36,7 +52,7 @@ function CalendarDescription({
           <ul className="calendar__info-list">
             <li className="calendar__info-item">
               <p className="calendar__time">
-                {`${format(new Date(currentEvent.startAt), 'H:mm')}–${format(new Date(currentEvent.endAt), 'H:mm')}
+                {`${format(new Date(currentEvent.startAt), 'HH:mm')}–${format(new Date(currentEvent.endAt), 'HH:mm')}
               `}
               </p>
             </li>
@@ -53,14 +69,26 @@ function CalendarDescription({
             </p>
           </div>
           <div className="calendar__submit">
-            <button
-              className="button button_theme_light button_action_confirm"
-              disabled={!availablePlaces}
-              type="button"
-              onClick={() => onActionClick(currentEvent)}
-            >
-              Записаться
-            </button>
+            {currentEvent.booked ? (
+              <button
+                className="button button_theme_light calendar__button calendar__button_selected calendar__button_action_sign-up"
+                disabled={!availablePlaces}
+                type="button"
+                onClick={() => onActionClick(currentEvent)}
+              >
+                Отменить запись
+              </button>
+            ) : (
+              <button
+                className="button button_theme_light button_action_confirm"
+                disabled={!availablePlaces}
+                type="button"
+                onClick={() => onActionClick(currentEvent)}
+              >
+                Записаться
+              </button>
+            )}
+
             <p className="calendar__place-left">
               {' '}
               {availablePlaces ? `Осталось ${availablePlaces} ${declPlaces}` : 'Запись закрыта'}
@@ -77,6 +105,7 @@ CalendarDescription.propTypes = {
   onClose: PropTypes.func.isRequired,
   onActionClick: PropTypes.func.isRequired,
   currentEvent: PropTypes.shape({
+    booked: PropTypes.bool,
     startAt: PropTypes.string,
     endAt: PropTypes.string,
     title: PropTypes.string,

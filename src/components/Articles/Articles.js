@@ -1,69 +1,151 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import PropTypes from 'prop-types';
-import MainTitle from '../MainTitle/MainTitle';
+import ReactPaginate from 'react-paginate';
 import MainArticle from './MainArticle/MainArticle';
 import ArticleCard from './ArticleCard/ArticleCard';
-import Pagination from '../Pagination/Pagination';
+import Preloader from '../Preloader/Preloader';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-import { mainArticle as leadArticle, articleCards as cards } from '../../utils/articlesData';
+import api from '../../utils/Api';
 
 import './Articles.scss';
 
-export default function Articles({ mainArticle, articleCards }) {
-  const cardsPerPage = 12;
-  const [shownCards, setShownCards] = React.useState([]);
+const requestDelay = 1000;
 
-  function onPageChange(currPage) {
-    const begin = currPage * cardsPerPage - cardsPerPage;
-    const end = begin + cardsPerPage;
-    setShownCards(cards.slice(begin, end < cards.length ? end : cards.length));
+const breakpoints = {
+  desktopHigh: 1920,
+  desktopLow: 1440,
+  mobileHigh: 1024,
+  mobileLow: 425,
+};
+
+const limitDesktopHighRes = 12;
+const limitDesktopLowRes = 12;
+const limitMobile = 2;
+
+function getLimit() {
+  const currentWidth = document.documentElement.clientWidth;
+  let limit;
+
+  if (currentWidth > breakpoints.desktopLow) {
+    limit = limitDesktopHighRes;
+  } else if (currentWidth <= breakpoints.desktopLow && currentWidth > breakpoints.mobileHigh) {
+    limit = limitDesktopLowRes;
+  } else {
+    limit = limitMobile;
   }
 
-  return (
-    <main className="main">
-      <section className="lead page__section">
-        <MainTitle title="Статьи" />
-      </section>
-
-      <section className="main-card page__section">
-        <MainArticle {...mainArticle} />
-      </section>
-
-      <section className="cards-grid page__section">
-        {
-          shownCards.map((card, i) => <ArticleCard key={i.toString()} {...card} />)
-        }
-      </section>
-
-      <Pagination
-        cardsLength={articleCards.length}
-        onPageChange={onPageChange}
-        cardsPerPage={cardsPerPage}
-      />
-    </main>
-  );
+  return limit;
 }
 
-Articles.defaultProps = {
-  mainArticle: leadArticle,
-  articleCards: cards,
-};
+export default function Articles() {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [articles, setArticles] = React.useState([]);
+  const [mainArticle, setMainArticle] = React.useState(null);
+  const cardCount = React.useRef(0);
+  const paginationTimer = React.useRef(null);
+  const currentPage = React.useRef(0);
 
-Articles.propTypes = {
-  mainArticle: PropTypes.shape({
-    title: PropTypes.string,
-    author: PropTypes.string,
-    image: PropTypes.string,
-    link: PropTypes.string,
-    annotation: PropTypes.arrayOf(PropTypes.string),
-  }),
+  function onPageChange(page, delay = requestDelay) {
+    clearTimeout(paginationTimer.current);
+    setIsLoading(true);
 
-  articleCards: PropTypes.arrayOf(PropTypes.shape({
-    color: PropTypes.string,
-    title: PropTypes.string,
-    author: PropTypes.string,
-    link: PropTypes.string,
-    annotation: PropTypes.arrayOf(PropTypes.string),
-  })),
-};
+    const params = new URLSearchParams({ limit: getLimit(), offset: getLimit() * page.selected });
+
+    paginationTimer.current = setTimeout(() => {
+      api.getArticles(params)
+        .then((resArticles) => {
+          setArticles(resArticles.results);
+          cardCount.current = resArticles.count;
+          currentPage.current = page.selected;
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err))
+        .finally(() => setIsLoading(false));
+    }, delay);
+  }
+
+  console.log('articlesAlexander:', articles);
+  try {
+    React.useEffect(() => {
+      api.getArticles(new URLSearchParams({ isMain: true }))
+        .then((resArticle) => {
+          setMainArticle(resArticle.results[0] || null);
+        })
+        .catch((err) => console.log('Ошибка загрузки данных: ', err));
+    }, []);
+
+    return (
+      <ErrorBoundary>
+        <main className="main">
+          <section className="lead page__section">
+            <h1 className="main-title">Статьи</h1>
+          </section>
+
+          {
+            mainArticle && (
+              <section className="main-card page__section">
+                <MainArticle mainArticle={mainArticle} />
+              </section>
+            )
+          }
+
+          <section className="cards-grid page__section">
+            {
+              isLoading && <div className="articles-preloader"><Preloader /></div>
+            }
+            {
+              articles.map((article) => <ArticleCard key={article.id} article={article} />)
+            }
+          </section>
+
+          <section className="pagination page__section">
+            <nav className="pagination__nav" aria-label="Навигация по страницам">
+              <ReactPaginate
+                initialPage={0}
+                onPageChange={onPageChange}
+                pageCount={Math.ceil(cardCount.current / getLimit())}
+                forcePage={currentPage.current}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={3}
+                breakClassName="pagination__list-item section-title"
+                breakLinkClassName="pagination__link"
+                containerClassName="pagination__list"
+                activeClassName="pagination__link_active"
+                pageClassName="pagination__list-item section-title"
+                pageLinkClassName="pagination__link"
+                previousClassName="pagination__list-item"
+                previousLinkClassName="pagination__arrow-left"
+                nextClassName="pagination__list-item"
+                nextLinkClassName="pagination__arrow-right"
+                disabledClassName="pagination__arrow_disabled"
+                previousLabel=""
+                nextLabel=""
+              />
+            </nav>
+          </section>
+        </main>
+      </ErrorBoundary>
+    );
+  } catch (error) {
+    console.log('Ошибка рендеринга статей: ', error);
+
+    return (
+      <main className="main">
+        <section className="lead page__section">
+          <h1 className="main-title">Статьи</h1>
+        </section>
+
+        <section className="main-card page__section">
+          { error.message }
+        </section>
+
+        <section className="cards-grid page__section">
+          {
+            isLoading && <div className="articles-preloader"><Preloader /></div>
+          }
+        </section>
+      </main>
+    );
+  }
+}

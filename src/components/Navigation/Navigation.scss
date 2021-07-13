@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  position: relative;
 }
 
 .menu__logo {
@@ -26,6 +27,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 
   &_hidden {
     display: none;
@@ -155,10 +157,12 @@
 
   &_type_user {
     background-image: url('../../images/svg/user.svg');
+    display: inline-block;
   }
 
   &_type_active-user {
     background-image: url('../../images/svg/user-active.svg');
+    display: inline-block;
   }
 }
 
@@ -194,7 +198,14 @@
     }
   }
 }
-
+.user-info_mobile {
+  height: fit-content;
+  top: 300px;
+  justify-content: space-between;
+}
+.personal-area__user-link:last-of-type.personal-area__user-link_type_exit {
+  margin-left: 30px;
+}
 
 @include atDesktop1380 {
   .menu {
@@ -250,6 +261,7 @@
     &:last-of-type {
       margin: 0;
     }
+
   }
 
   // аткивное состояние кнопки бургера
@@ -297,6 +309,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    margin-bottom: 50px;
 
     &_type_social {
       padding-right: 17px;
@@ -368,4 +381,14 @@
       display: none;
     } */
   }
+}
+
+@media screen and (min-width: 1380px){
+  .menu__list_type_social {
+    display: none;
+  }
+  .user-info_mobile {
+    top: 50px;
+  }
+
 }

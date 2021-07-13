@@ -15,60 +15,44 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
+import { cardsOnMain } from '../../utils/Constants';
 import './Main.scss';
-// TODO create wrapper component
-function Main({ loggedIn, activeRubrics, selectRubric }) {
+import { getAccessToken } from '../../utils/utils';
+
+function Main({
+  loggedIn,
+  activeRubrics,
+  selectRubric,
+  onBooking,
+  onDescription,
+  onCancel,
+  onClose,
+  isConfirmationPopupOpen,
+  isDescriptionPopupOpen,
+  isSuccessRegPopupOpen,
+  handleSuccessRegPopup,
+  handleImmidiateBooking,
+  calendarData,
+}) {
   const [mainState, setMainState] = React.useState({});
   const [isDataReady, setIsDataReady] = React.useState(false);
-  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
-  const [isDescriptionPopupOpen, setIsDescriptionPopupOpen] = React.useState(false);
-  const [isSuccessRegPopupOpen, setIsSuccessRegPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
-    api.getMain(localStorage.getItem('bbbs-access')).then((res) => {
+    api.getMain(getAccessToken()).then((res) => {
+      console.log('main', res);
       setMainState(res);
       localStorage.setItem('mainState', JSON.stringify(res));
     })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, [setMainState]);
+  }, [calendarData]);
 
   // Обнуляем выставленные фильтры при монтировании компонента
   React.useEffect(() => {
-    selectRubric('All', true);
+    selectRubric('all', true);
   }, []);
 
-  function openConfirmationPopup() {
-    setIsConfirmationPopupOpen(true);
-  }
-  function handleSuccessRegPopup() {
-    setIsSuccessRegPopupOpen(true);
-    openConfirmationPopup();
-  }
-  function handleDescription() {
-    setIsDescriptionPopupOpen(true);
-  }
-  function handleBooking() {
-    openConfirmationPopup();
-  }
-
-  function handleCancelBooking(calendar) {
-    // some handle code for backend
-    // eslint-disable-next-line no-console
-    console.log(calendar);
-  }
-
-  function handleImmidiateBooking(calendar) {
-    // eslint-disable-next-line no-console
-    console.log(calendar);
-    setIsSuccessRegPopupOpen(true);
-  }
-  function closeAllPopups() {
-    setIsConfirmationPopupOpen(false);
-    setIsDescriptionPopupOpen(false);
-    setIsSuccessRegPopupOpen(false);
-  }
   if (isDataReady) {
     return (
       <main className="main">
@@ -86,9 +70,9 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
                 endAt={mainState.event.endAt}
                 seats={mainState.event.seats}
                 takenSeats={mainState.event.takenSeats}
-                onBooking={handleBooking}
-                onDescription={handleDescription}
-                onCancel={handleCancelBooking}
+                onBooking={onBooking}
+                onDescription={onDescription}
+                onCancel={onCancel}
                 activeRubrics={activeRubrics}
                 tags={[{
                   name: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
@@ -97,31 +81,32 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
               />
             ) : <MainLead />}
             <MainStory
-              title={mainState.history?.title}
-              imageUrl={mainState.history?.imageUrl}
+              title={mainState?.history?.title}
+              imageUrl={mainState?.history?.imageUrl}
             />
           </article>
         </section>
 
         <MainMentor
-          title={mainState.place.title}
-          name={mainState.place.name}
-          link={mainState.place.link}
-          imageUrl={mainState.place.imageUrl}
-          rubrics={['sport', '8-10', 'chosen']}
-          info={mainState.place.info}
-          description={mainState.place.description}
+          id={mainState?.place.id}
+          chosen={mainState?.place.chosen}
+          title={mainState?.place.title}
+          address={mainState?.place.address}
+          link={mainState?.place.link}
+          imageUrl={mainState?.place.imageUrl}
+          info={mainState?.place.info}
+          description={mainState?.place.description}
         />
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[0].title}
-            color={mainState.articles[0].color}
+            title={mainState?.articles[0]?.title}
+            color={mainState?.articles[0]?.color}
           />
         </section>
 
         <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {mainState.movies.slice(0, 4).map((movie) => (
+          {mainState?.movies.slice(0, cardsOnMain).map((movie) => (
             <MainVideoPreview
               link={movie.link}
               key={movie.id}
@@ -137,13 +122,12 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
 
         <section className="main-section page__section">
           <MainVideo
-            title={mainState.video.title}
-            info={mainState.video.info}
-            link={mainState.video.link}
-            imageUrl={mainState.video.imageUrl}
-            duration={mainState.video.duration}
-            tags={mainState.video.tags}
-            activeRubrics={activeRubrics}
+            title={mainState?.video.title}
+            info={mainState?.video.info}
+            link={mainState?.video.link}
+            imageUrl={mainState?.video.imageUrl}
+            duration={mainState?.video.duration}
+
           />
         </section>
 
@@ -153,11 +137,11 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
               <iframe className="card__iframe" title="iframe" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=630&height=630&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" scrolling="no" allowFullScreen allow="clipboard-write; encrypted-media; picture-in-picture; web-share" />
             </div>
             <div className="main-questions">
-              {mainState.questions.map((question) => (
+              {mainState?.questions.map((q) => (
                 <MainQuestion
-                  key={question.id}
-                  title={question.title}
-                  name={question.tags[0].name}
+                  key={q.id}
+                  question={q.question}
+                  tag={q.tags}
                 />
               ))}
             </div>
@@ -166,27 +150,28 @@ function Main({ loggedIn, activeRubrics, selectRubric }) {
 
         <section className="main-section page__section">
           <MainArticle
-            title={mainState.articles[1].title}
-            color={mainState.articles[1].color}
+            title={mainState?.articles[1]?.title}
+            color={mainState?.articles[1]?.color}
           />
         </section>
         <CalendarConfirmation
           isOpen={isConfirmationPopupOpen}
           handleSuccessRegClick={handleSuccessRegPopup}
-          onClose={closeAllPopups}
-          currentEvent={mainState.event}
+          onClose={onClose}
+          currentEvent={mainState?.event}
         />
         <CalendarDescription
           isOpen={isDescriptionPopupOpen}
-          onClose={closeAllPopups}
-          currentEvent={mainState.event}
+          onClose={onClose}
+          currentEvent={mainState?.event}
           onActionClick={handleImmidiateBooking}
         />
         <CalendarSuccessRegistration
-          currentEvent={mainState.event}
+          currentEvent={mainState?.event}
           isOpen={isSuccessRegPopupOpen}
-          handleCloseSuccessRegPopup={closeAllPopups}
-          onClose={closeAllPopups}
+          handleCloseSuccessRegPopup={onClose}
+          onClose={onClose}
+          textPopupButton="Вернуться"
         />
       </main>
     );
@@ -199,6 +184,39 @@ Main.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectRubric: PropTypes.func.isRequired,
+  onBooking: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onDescription: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  handleImmidiateBooking: PropTypes.func.isRequired,
+  handleSuccessRegPopup: PropTypes.func.isRequired,
+  isConfirmationPopupOpen: PropTypes.bool.isRequired,
+  isDescriptionPopupOpen: PropTypes.bool.isRequired,
+  isSuccessRegPopupOpen: PropTypes.bool.isRequired,
+  calendarData: PropTypes.arrayOf(PropTypes.shape({
+    booked: PropTypes.bool,
+    startAt: PropTypes.string,
+    endAt: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    seats: PropTypes.number,
+    takenSeats: PropTypes.number,
+    address: PropTypes.string,
+    contact: PropTypes.string,
+  })),
 };
 
+Main.defaultProps = {
+  calendarData: PropTypes.arrayOf(PropTypes.shape({
+    booked: false,
+    startAt: '',
+    endAt: '',
+    title: '',
+    description: '',
+    seats: 0,
+    takenSeats: 0,
+    address: '',
+    contact: '',
+  })),
+};
 export default Main;

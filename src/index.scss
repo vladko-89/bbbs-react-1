@@ -26,6 +26,8 @@
 @import './scss/_main-section.scss';
 @import './scss/_tags.scss';
 @import './scss/section-title';
+/** Page not Found*/
+@import './scss/error.scss';
 @import "./components/Filter/Filter.scss";
 @import "./components/MainTitle/MainTitle.scss";
 @import "./components/FilterItem/FilterItem.scss";
@@ -33,11 +35,9 @@
 @import "./components/Footer/Footer.scss";
 @import './components/App/App.scss';
 @import './components/Header/Header';
-@import './components/Navigation/Navigation';
 @import './components/Search/Search';
 @import './components/MainLead/MainLead.scss';
 @import './components/MainVideo/MainVideo.scss';
-@import './components/MainQuestion/MainQuestion.scss';
 @import './components/Profile/Profile';
 @import './components/MeetingDeletePopup/MeetingDeletePopup.scss';
 @import 'components/PopupCities/PopupCities.scss';
@@ -50,6 +50,9 @@
 @import './components/EventInProfile/EventsInProfile.scss';
 @import "./components/MeetingStoryArticle/MeetingStoryArticle.scss";
 @import "./components/MeetingStoryForm/MeetingStoryForm.scss";
+@import './components/Navigation/Navigation';
+/** Read and Watch*/
+@import './scss/_preview.scss';
 
 body {
   margin: 0;

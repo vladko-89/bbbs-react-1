@@ -58,7 +58,6 @@
       align-items: center;
       justify-content: flex-start;
       max-width: 400px;
-      max-height: 547px;
     }
 
     &_type_lk {
@@ -307,6 +306,10 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  position: absolute;
+  right: 0px;
+  top: 50px;
+
 }
 
 .personal-area__user-link {
@@ -343,6 +346,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
   }
 }
 
@@ -538,11 +542,16 @@
   color: $lightGray;
 }
 
+@media screen and (min-width: 1380px)  {
+  .personal-area__user-info {
+    background-color: #f3f2f2c7;
+  }
+}
 
 @include atDesktop1024 {
-  .personal-area__user-info {
-    display: none;
-  }
+  // {
+  //  display: none;
+  //}
 
   .personal-area__sign-up {
     padding-top: 20px;

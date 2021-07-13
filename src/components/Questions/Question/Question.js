@@ -3,40 +3,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Question({ question, activeRubrics }) {
-  function showAnswer(event) {
-    const questionElement = event.target.closest('.question');
-    const questionShowButton = questionElement.querySelector('.question__show-button');
-    const questionAnswer = questionElement.querySelector('.question__answer');
+import styles from './Question.module.scss';
 
-    questionShowButton.classList.toggle('question__show-button_active');
-    questionAnswer.classList.toggle('question__answer_visible');
+export default function Question({ question }) {
+  const questionButton = React.useRef(null);
+  const questionAnswer = React.useRef(null);
+
+  function showAnswer() {
+    questionButton.current.classList.toggle(styles['question__show-button_active']);
+    questionAnswer.current.classList.toggle(styles.question__answer_visible);
   }
 
   return (
-    <article className={`question ${activeRubrics.length > 0 && question.tags.every((tag) => activeRubrics.indexOf(tag.name) === -1) ? 'display_none' : ''}`}>
-      <h2 onClick={showAnswer} className="section-title question__title">{question.title}</h2>
-      <div className="question__wrap">
+    <article className={`${styles.question}`}>
+      <h2 onClick={showAnswer} className={`${styles['section-title']} ${styles.question__title}`}>{question.question}</h2>
+      <div className={styles.question__wrap}>
         {
-          question.tags.map((tag, i) => <p key={i.toString()} className="rubric question__rubric">{tag.name}</p>)
+          question.tags.map((tag) => <p key={tag.id} className={`${styles.rubric} ${styles.question__rubric}`}>{tag.name}</p>)
         }
-        <button onClick={showAnswer} className="question__show-button" type="button" aria-label="Показать ответ" title="Показать ответ" />
+        <button ref={questionButton} onClick={showAnswer} className={styles['question__show-button']} type="button" aria-label="Показать ответ" title="Показать ответ" />
       </div>
-      <div className="question__answer">
+      <div ref={questionAnswer} className={styles.question__answer}>
         {
-          question.answer.map((paragraph, i) => <p key={i.toString()} className="paragraph question__paragraph">{paragraph}</p>)
+          question.answer
         }
       </div>
     </article>
   );
 }
 
-Question.defaultProps = {
-  activeRubrics: [],
-};
-
 Question.propTypes = {
-  activeRubrics: PropTypes.arrayOf(PropTypes.string),
   question: PropTypes.shape({
     id: PropTypes.number,
     tags: PropTypes.arrayOf(PropTypes.shape({
@@ -44,7 +40,7 @@ Question.propTypes = {
       name: PropTypes.string,
       slug: PropTypes.string,
     })),
-    title: PropTypes.string.isRequired,
-    answer: PropTypes.arrayOf(PropTypes.string).isRequired,
+    question: PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired,
   }).isRequired,
 };

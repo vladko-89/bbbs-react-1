@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { citiesList } from '../../utils/Constants';
-//  надо реализовать изменение города пользователя и отправку нового города на бэк
-// ссылки в списке сменить на спаны
+import api from '../../utils/Api';
+
 function PopupCities({
-  onChangeCities, onCloseClick, isOpen, isCity,
+  onChangeCities,
+  onCloseClick,
+  isOpen,
+  isCity,
+  citiesList,
 }) {
   const [selectedCity, setSelectedCity] = React.useState('');
+  const [citiesWithoutCapitals, setCitiesWithoutCapitals] = React.useState([]);
+  // const citiesList = JSON.parse(localStorage.getItem('citiesList'));
+  // const citiesWithoutCapitals = citiesList
+  // .filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва');
   const handleClickCity = (e) => {
     setSelectedCity(e.target.textContent);
     // eslint-disable-next-line no-console
@@ -16,10 +23,27 @@ function PopupCities({
   };
 
   React.useEffect(() => {
+    if (citiesList.length === 0) {
+      api
+        .getCitiesList()
+        .then((res) => {
+          setCitiesWithoutCapitals(
+            res.results.filter(
+              (el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва',
+            ),
+          );
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setCitiesWithoutCapitals(citiesList.filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
+    }
+    console.log(citiesList);
     if (isOpen) {
       document.addEventListener('keydown', onCloseClick);
+      // setCitiesWithoutCapitals(citiesList.
+      // filter((el) => el.name !== 'Санкт-Петербург' && el.name !== 'Москва'));
+      setSelectedCity(citiesList.find((el) => el.name === isCity));
     }
-    setSelectedCity(citiesList[isCity]);
     return () => {
       document.removeEventListener('keydown', onCloseClick);
     };
@@ -58,73 +82,18 @@ function PopupCities({
           </li>
         </ul>
         <ul className="cities__region">
-          {citiesList.slice(2).map((el) => (
-            <li className="cities__name" key={el}>
+          {citiesWithoutCapitals.map((el) => (
+            <li className="cities__name" key={el.id}>
               <a
                 href="#"
                 target="_self"
                 className="cities__link"
                 onClick={handleClickCity}
               >
-                {el}
+                {el.name}
               </a>
             </li>
           ))}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Алексин */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Барнаул */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Екатеринбург */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Зубцов */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Калининград */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Киреевск */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Коломна */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Новомосковск */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Орехово-Зуево */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Тверь */}
-          {/*  </a> */}
-          {/* </li> */}
-          {/* <li className="cities__name"> */}
-          {/*  <a href="#" target="_self" className="cities__link" onClick={handleClickCity}> */}
-          {/*    Тула */}
-          {/*  </a> */}
-          {/* </li> */}
         </ul>
       </div>
     </div>
@@ -136,6 +105,7 @@ PopupCities.propTypes = {
   onCloseClick: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   isCity: PropTypes.string.isRequired,
+  citiesList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PopupCities;

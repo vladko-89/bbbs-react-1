@@ -6,7 +6,7 @@
   opacity: 0;
   position: absolute;
 }
-.personal-area__bottom-caption{
+.personal-area__bottom-caption {
   padding: 0;
   height: 100px;
   width: 100px;
@@ -22,12 +22,12 @@
   background-color: rgba(243, 242, 242, 0.65);
 }
 .personal-area__bottom-caption::after {
-  content: "Загрузить фото";
+  content: 'Загрузить фото';
   padding-top: 5px;
   text-align: center;
   color: $lightGray;
   position: absolute;
-  top: 105%
+  top: 105%;
 }
 
 .personal-area__form {
@@ -37,7 +37,19 @@
   grid-template-columns: 1fr minmax(240px, 290px);
   grid-template-rows: auto;
 }
-
+.personal-area__form-input_wrap  {
+position: relative;
+}
+.personal-area__form-input_wrap_data {
+  text-align: end;
+  position: relative;
+}
+.personal-area__form-input_wrap_type_textarea {
+  grid-column: 1 / -1;
+  min-height: 286px;
+  resize: none;
+  position: relative;
+}
 .personal-area__form-input {
   box-sizing: border-box;
   outline: none;
@@ -55,24 +67,29 @@
   &::placeholder {
     color: $lightGray;
   }
-
+  &_type_place {
+    width: 100%;
+  }
+  &_type_data {
+    width: fit-content;
+  }
   &_type_textarea {
-    grid-column: 1 / -1;
-    min-height: 286px;
-    resize: none;
+   width: 100%;
   }
 
-  &[type="date"]:not(:focus):not(.has-value):before {
-    color:$lightGray;
+  &[type='date']:not(:focus):not(.has-value):before {
+    color: $lightGray;
     content: attr(placeholder);
   }
 }
-
+.personal-area__card_photo {
+  width: 100%;
+}
 .personal-area__rating {
   display: flex;
   align-items: center;
 }
-.personal-area__radioBtn-mood{
+.personal-area__radioBtn-smile {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -129,17 +146,18 @@
     background-image: url('../../images/personal-area/bad-active.svg');
   }
 }
-.personal-area__radioBtn-mood:checked+.personal-area__rate_type_bad {
+.personal-area__radioBtn-smile:checked + .personal-area__rate_type_bad {
   background-image: url('../../images/personal-area/bad-active.svg');
 }
-.personal-area__radioBtn-mood:checked+.personal-area__rate_type_neutral {
+.personal-area__radioBtn-smile:checked + .personal-area__rate_type_neutral {
   background-image: url('../../images/personal-area/neutral-active.svg');
 }
-.personal-area__radioBtn-mood:checked+.personal-area__rate_type_good {
+.personal-area__radioBtn-smile:checked + .personal-area__rate_type_good {
   background-image: url('../../images/personal-area/good-active.svg');
 }
 .personal-area__rating-label {
   color: $lightGray;
+  position: relative;
 
   &_type_good {
     color: $green;
@@ -153,7 +171,23 @@
     color: $error;
   }
 }
-
+.personal-area__form-input:invalid {
+  border: 1px solid $error;
+}
+.personal-area__form-input_error {
+  margin: 0;
+  font-size: 14px;
+  color: $error;
+  position: absolute;
+  bottom: -15px;
+  left: 10px;
+}
+.personal-area__rating-label .personal-area__form-input_error {
+  left: -10px;
+}
+  //.personal-area__form-input_wrap_data .personal-area__form-input_error {
+//  right: 10px;
+//}
 .personal-area__buttons {
   display: flex;
   justify-content: flex-end;
@@ -163,11 +197,11 @@
   border: none;
 }
 
-.personal-area__radioBtn-mood:checked .personal-area__rate_type_neutral {
+.personal-area__radioBtn-smile:checked .personal-area__rate_type_neutral {
   color: $lightGray;
 }
 @include atDesktop1024 {
-    .personal-area__story {
+  .personal-area__story {
     padding-top: 20px;
   }
 
@@ -224,6 +258,30 @@
   .personal-area__button {
     margin: 0;
   }
+  .personal-area__form-input_type_data {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1100px){
+  .personal-area__form-input_error {
+    font-size: 12px;
+    bottom: -9px;
+    left: 10px;
+  }
+}
+@media screen and (min-width: 1100px){
+  .personal-area__form-input_wrap_data .personal-area__form-input_error {
+    right: 10px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .personal-area__card-title {
+    max-width: 70%;
+  }
+}
 
-
+@media screen and (max-width: 320px) {
+  .personal-area__card-title {
+    max-width: 240px;
+  }
 }
