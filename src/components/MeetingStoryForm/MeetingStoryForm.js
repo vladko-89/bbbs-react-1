@@ -6,7 +6,9 @@ import img from '../../images/personal-area/lk.png';
 function MeetingStoryForm({
   onSubmit, onDelete, values, isExample, isEdit,
 }) {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register, handleSubmit, setError, formState: { errors },
+  } = useForm({
     reValidateMode: 'onBlur',
     mode: 'onTouched',
   });
@@ -46,7 +48,15 @@ function MeetingStoryForm({
   };
 
   const handleLoadImage = (e) => {
-    setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+    if (e.target.files[0].size < 10485760) {
+      console.log(e.target.files[0]);
+      setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+    } else {
+      setError('add-story-form.image', {
+        type: 'maxSize',
+        message: `Размер файла не более 10мб, сейчас ${e.target.files[0].size}`,
+      });
+    }
   };
   // граничные значения для инпута даты
   const nowDate = new Date().toISOString().substring(0, 10);
@@ -76,13 +86,6 @@ function MeetingStoryForm({
       onSubmit={handleSubmit(onSubmitForm)}
     >
       <div className="card personal-area__card personal-area__card_type_add-photo">
-        {isExample && (
-          <img
-            src={img}
-            alt="Катя"
-            className="personal-area__card_photo"
-          />
-        )}
         {photoSrc !== '' && (
         <img
           src={photoSrc}
@@ -93,12 +96,14 @@ function MeetingStoryForm({
         <input
           className="personal-area__add-photo-button"
           type="file"
-          accept="image/jpeg, image/png, image/gif"
           id="userImage"
+          accept="image/jpeg, image/png, image/gif"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('image')}
           onChange={handleLoadImage}
         />
+        {errors.image && errors.image.type === 'accept' && <p className="personal-area__form-input_error">Нужен файл в формате image/jpeg/png</p>}
+        {errors.image && errors.image.type === 'maxSize' && <p className="personal-area__form-input_error">{errors.image.message}</p> }
 
         <label
           htmlFor="userImage"
