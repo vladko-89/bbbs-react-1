@@ -1,6 +1,6 @@
-/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { Link } from 'react-router-dom';
 
 import Preloader from '../Preloader/Preloader';
@@ -36,11 +36,16 @@ export default function Stories() {
     setCount(count - 1);
   }
 
+  function slideToStory(id) {
+    const element = document.getElementById(id);
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
+  }
+
   React.useEffect(() => {
     getStories();
   }, []);
 
-  if (stories.length > 0) {
+  if (stories?.length > 0) {
     return (
       <main className="main">
         <section className="page__section stories">
@@ -57,9 +62,12 @@ export default function Stories() {
             <ul className="tags__list stories__list">
               {showButtons.map((tag) => (
                 <li className="tags__list-item" key={tag.id}>
-                  <Link to={`#${tag.id}`} className="button tags__button" type="button">
+                  {/* <Link to={`#${tag.id}`} className="button tags__button" type="button">
                     {tag.title}
-                  </Link>
+                  </Link> */}
+                  <button onClick={() => slideToStory(tag.id)} className="button tags__button" type="button">
+                    {tag.title}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -69,7 +77,7 @@ export default function Stories() {
           </div>
           <ul className="list__stories">
             {stories.map((story) => (
-              <li key={story.id}>
+              <li key={story.id} id={story.id}>
                 <Story
                   card={story}
                   id={story.id}
