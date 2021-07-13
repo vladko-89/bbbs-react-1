@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import logo from '../../images/svg/footer-logo.svg';
-import { scrollDelay } from '../../utils/Constants';
+import { scrollDelay } from '../../utils/constants';
 
 function Footer({ loggedIn, onLoginPopup }) {
   function onLinkNav() {

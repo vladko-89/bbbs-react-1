@@ -3,7 +3,7 @@ const delayResponse = 500;
 const scrollDelay = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
-const placesPerPage = 6;
+export const PLACES_PER_PAGE = 6;
 const eventsPerPage = 6;
 export const GUIDES_PER_PAGE = 16;
 export const RIGHTS_PER_PAGE = 16;
@@ -75,7 +75,6 @@ export {
   scrollDelay,
   cardsPerPage,
   cardsOnMain,
-  placesPerPage,
   eventsPerPage,
   placesTextForms,
   citiesList,

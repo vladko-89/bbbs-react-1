@@ -2,7 +2,7 @@
 import { fromUnixTime, compareAsc } from 'date-fns';
 import jwt from 'jsonwebtoken';
 import api from './Api';
-import { MONTH_NUMBERS } from './Constants';
+import { MONTH_NUMBERS } from './constants';
 
 export function declOfNum(n, textForm) {
   // eslint-disable-next-line no-param-reassign
