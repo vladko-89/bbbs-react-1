@@ -3,25 +3,38 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import PropTypes from 'prop-types';
-import cards from '../../utils/catalogData';
 import CatalogCard, { shapes } from '../Catalog/CatalogCard/CatalogCard';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import './ReadAndWatch.scss';
 import api from '../../utils/Api';
 import ArticleCard from '../Articles/ArticleCard/ArticleCard';
-import { mainArticle as leadArticle, articleCards } from '../../utils/articlesData';
-import { films } from '../../utils/filmsData';
+import { mainArticle as leadArticle } from '../../utils/articlesData';
 import FilmCard from '../Films/FilmCard/FilmCard';
 import BookCard from '../Books/BookCard/BookCard';
-import { books } from '../../utils/booksData';
 
 export default function ReadAndWatch(activeRubrics) {
+  const [videoToShow, setVideoToShow] = React.useState([]);
+  const [guidesToShow, setGuidesToShow] = React.useState([]);
+  const [articlesToShow, setArticlesToShow] = React.useState([]);
   const [moviesToShow, setMoviesToShow] = React.useState([]);
+  const [booksToShow, setBooksToShow] = React.useState([]);
+  const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
-    api.getMain().then((res) => {
-      setMoviesToShow(res.movies);
-    })
-      .catch((err) => console.log(err));
+    // eslint-disable-next-line max-len
+    Promise.all([api.getVideos(), api.getGuide(), api.getArticles(), api.getFilms(), api.getBooks()])
+      .then(([resVideos, resGuides, resArticles, resMovies, resBooks]) => {
+        setVideoToShow(resVideos.results);
+        setGuidesToShow(resGuides.results);
+        setArticlesToShow(resArticles.results);
+        setMoviesToShow(resMovies.results);
+        setBooksToShow(resBooks.results);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+        console.log(isDataReady);
+      })
+      .finally(() => setIsDataReady(true));
   }, []);
   const isAnnotation = false;
   return (
@@ -62,13 +75,13 @@ export default function ReadAndWatch(activeRubrics) {
           }}
         >
           {
-            cards.map((card, i) => (
+            guidesToShow.map((card, i) => (
               <SwiperSlide>
                 <CatalogCard
                   key={i.toString()}
                   shape={shapes[Math.floor(Math.random() * 3)]}
                   title={card.title}
-                  image={card.image}
+                  image={card.imageUrl}
                   path={card.path}
                 />
               </SwiperSlide>
@@ -116,7 +129,7 @@ export default function ReadAndWatch(activeRubrics) {
               disabledClass: 'swiper__button_disabled',
             }}
           >
-            {moviesToShow.map((movie) => (
+            {videoToShow.map((movie) => (
               <SwiperSlide>
                 <MainVideoPreview
                   link={movie.link}
@@ -169,8 +182,8 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {
-            // eslint-disable-next-line max-len
-            articleCards.map((card, i) => <SwiperSlide><ArticleCard key={i.toString()} {...card} /></SwiperSlide>)
+              // eslint-disable-next-line max-len
+              articlesToShow.map((article) => <SwiperSlide><ArticleCard key={article.id} article={article} /></SwiperSlide>)
             }
           </Swiper>
         </div>
@@ -211,7 +224,7 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {// eslint-disable-next-line max-len
-              films.map((film, i) => (
+              moviesToShow.map((film, i) => (
                 <SwiperSlide>
                   <FilmCard key={i.toString()} film={film} isAnnotation={isAnnotation} />
                   {' '}
@@ -256,7 +269,8 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {
-              books.map((book) => <SwiperSlide><BookCard key={book.id} book={book} /></SwiperSlide>)
+              // eslint-disable-next-line max-len
+              booksToShow.map((book) => <SwiperSlide><BookCard key={book.id} book={book} /></SwiperSlide>)
             }
           </Swiper>
         </div>
