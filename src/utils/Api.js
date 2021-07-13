@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-import { baseUrl } from './constants1';
+import { baseUrl } from './constants';
 
 class Api {
   constructor(paramBaseUrl) {
