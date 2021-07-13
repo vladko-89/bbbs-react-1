@@ -7,7 +7,6 @@ export const PLACES_PER_PAGE = 6;
 const eventsPerPage = 6;
 export const GUIDES_PER_PAGE = 16;
 export const RIGHTS_PER_PAGE = 16;
-const tempVar = 1;
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
   'Москва',
