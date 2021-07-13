@@ -111,7 +111,7 @@ function Main({
               link={movie.link}
               key={movie.id}
               title={movie.title}
-              imageUrl={movie.preview}
+              imageUrl={movie.imageUrl}
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
@@ -125,7 +125,7 @@ function Main({
             title={mainState?.video.title}
             info={mainState?.video.info}
             link={mainState?.video.link}
-            imageUrl={mainState?.video.preview}
+            imageUrl={mainState?.video.imageUrl}
             duration={mainState?.video.duration}
 
           />
