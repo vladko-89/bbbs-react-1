@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import PropTypes from 'prop-types';
-import CatalogCard, { shapes } from '../Catalog/CatalogCard/CatalogCard';
+import GuideCard, { shapes } from '../GuideCard/GuideCard';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import './ReadAndWatch.scss';
 import api from '../../utils/Api';
@@ -21,7 +21,7 @@ export default function ReadAndWatch(activeRubrics) {
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
     // eslint-disable-next-line max-len
-    Promise.all([api.getVideos(), api.getGuide(), api.getArticles(), api.getFilms(), api.getBooks()])
+    Promise.all([api.getVideos(), api.getGuides({}), api.getArticles(), api.getFilms(), api.getBooks()])
       .then(([resVideos, resGuides, resArticles, resMovies, resBooks]) => {
         setVideoToShow(resVideos.results);
         setGuidesToShow(resGuides.results);
@@ -75,10 +75,10 @@ export default function ReadAndWatch(activeRubrics) {
           }}
         >
           {
-            guidesToShow.map((card, i) => (
+            guidesToShow.map((card) => (
               <SwiperSlide>
-                <CatalogCard
-                  key={i.toString()}
+                <GuideCard
+                  key={card.id}
                   shape={shapes[Math.floor(Math.random() * 3)]}
                   title={card.title}
                   image={card.imageUrl}
