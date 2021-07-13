@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PlacesCard from '../PlacesCard/PlacesCard';
 import { colorizeCards } from '../../utils/utils';
-import { colors } from '../../utils/Constants';
+import { colors } from '../../utils/constants';
 
 function PlacesCards({ places }) {
   const coloredCards = colorizeCards(places, colors);

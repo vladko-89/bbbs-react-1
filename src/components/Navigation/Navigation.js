@@ -81,7 +81,7 @@ function Navigation({
             <ul className="menu__dropdown-list">
               <li className="menu__dropdown-list-item">
                 <NavLink
-                  to="/catalog"
+                  to="/guides"
                   className="link menu__dropdown-link"
                   onClick={handleClickMobMenu}
                 >

@@ -2,7 +2,7 @@
 import { fromUnixTime, compareAsc } from 'date-fns';
 import jwt from 'jsonwebtoken';
 import api from './Api';
-import { MONTH_NUMBERS } from './Constants';
+import { MONTH_NUMBERS, SCROLL_DELAY } from './constants';
 
 export function declOfNum(n, textForm) {
   // eslint-disable-next-line no-param-reassign
@@ -50,6 +50,14 @@ export function useAuth(setUserData, setLoginState) {
   return null; // means an error
 }
 
+export function onLinkNav() {
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, SCROLL_DELAY);
+}
 export function getAccessToken() {
   if ((localStorage.getItem('bbbs-token') !== 'undefined' && localStorage.getItem('bbbs-token') !== null)) {
     const tokenData = JSON.parse(localStorage.getItem('bbbs-token'));

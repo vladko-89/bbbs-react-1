@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { onLinkNav } from '../../utils/utils';
 
 function RightsCard({
   card,
@@ -8,6 +9,7 @@ function RightsCard({
 }) {
   function handleClick() {
     onClickCard(card);
+    onLinkNav();
   }
   return (
     <>
@@ -18,8 +20,8 @@ function RightsCard({
               <h2 className="section-title">
                 {card.title}
               </h2>
-              {card.tags.map((tag, index) => (
-                <p key={index.toString()} className="rubric rights__rubric">{tag.name}</p>
+              {card.tags.map((tag) => (
+                <p key={tag.id} className="rubric rights__rubric">{tag.name}</p>
               ))}
             </a>
           </div>
