@@ -389,6 +389,7 @@ function App() {
                 <Route exact path="/read-watch-main">
                   <ReadAndWatch
                     activeRubrics={activeRubrics}
+                    clickOnCard={clickOnCard}
                   />
                 </Route>
                 <Route exact path="/guides">
