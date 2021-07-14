@@ -7,10 +7,10 @@ function MeetingStoryForm({
   onSubmit, onDelete, values, isExample, isEdit,
 }) {
   const {
-    register, handleSubmit, formState: { errors },
+    register, handleSubmit, setError, clearErrors, setFocus, formState: { errors, isValid },
   } = useForm({
     reValidateMode: 'onBlur',
-    mode: 'onTouched',
+    mode: 'onBlur',
   });
   const [place, setPlace] = React.useState(
     isExample ? 'Парк горького' : values.place, // пример или данные из пропса
@@ -18,15 +18,27 @@ function MeetingStoryForm({
   const [description, setDescription] = React.useState(
     isExample ? 'Опишите встречу' : values.description,
   );
-  const [time, setTime] = React.useState(values.date.slice(0, 10));
+  const [time, setTime] = React.useState(values.date);
   const [smile, setSmile] = React.useState(isExample ? 'good' : values.smile);
   const [photoSrc, setPhotoSrc] = React.useState(values.image);
-  const [errorMessageForImage, setErrorMessageForImage] = React.useState('11');
+  const [errorMessageForImage, setErrorMessageForImage] = React.useState('');
+  const [disabled, setDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if (isEdit) setFocus('place');
+  }, [setFocus]);
+
+  React.useEffect(() => {
+    if (Object.keys(errors).length === 0 && errorMessageForImage === '' && smile !== '') {
+      setDisabled(false);
+    } else { setDisabled(true); }
+  }, [Object.keys(errors).length, setErrorMessageForImage, place, smile, description, time]);
 
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
   };
   const handleDescriptionChange = (e) => {
+    console.log(errors);
     setDescription(e.target.value);
   };
   // Время
@@ -53,26 +65,37 @@ function MeetingStoryForm({
       setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
       return false;
     }
+    setErrorMessageForImage('');
     return true;
   }
   function checkTypeImage(type) {
     console.log(type);
-    if (type !== ('image/jpeg' || 'image/png' || 'image/gif' || 'image/jpg')) {
+    if (['image/jpeg', 'image/png', 'image/gif', 'image/jpg'].indexOf(type) < 0) {
       setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
       return false;
     }
+    setErrorMessageForImage('');
     return true;
   }
   const handleLoadImage = (e) => {
     // eslint-disable-next-line max-len
-    console.log(e.target.files[0], checkSizeImage(e.target.files[0].size), checkTypeImage(e.target.files[0].type));
-    if (checkSizeImage(e.target.files[0].size)) {
-      if (checkTypeImage(e.target.files[0].type)) {
-        setErrorMessageForImage('');
-        setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0], checkSizeImage(e.target.files[0].size), checkTypeImage(e.target.files[0].type), isValid, errors);
+    setErrorMessageForImage('');
+    clearErrors('image');
+    if (e.target.files[0]) {
+      if (checkSizeImage(e.target.files[0].size)) {
+        if (checkTypeImage(e.target.files[0].type)) {
+          setErrorMessageForImage('');
+          clearErrors('image');
+          setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+        }
+      } else {
+        setError('image', {
+          type: 'manual',
+          message: 'Файл в формате jpeg/png/gif и размером не более 10мб',
+        });
+        setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
       }
-    } else {
-      setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
     }
   };
 
@@ -80,7 +103,7 @@ function MeetingStoryForm({
   const nowDate = new Date().toISOString().substring(0, 10);
   const oldDate = new Date(2010, 12, 31).toISOString().substring(0, 10);
 
-  // установка реакции при редактировании
+  // установка реакции & image при редактировании
   React.useEffect(() => {
     if (values.smile !== '') {
       const reactionLists = Array.from(
@@ -119,6 +142,7 @@ function MeetingStoryForm({
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('image')}
           onChange={handleLoadImage}
+          disabled={!!isExample}
         />
         <label
           htmlFor="userImage"
@@ -134,10 +158,13 @@ function MeetingStoryForm({
               placeholder="Место встречи"
               className="personal-area__form-input personal-area__form-input_type_place"
               id="place"
+              minLength={2}
+              maxLength={50}
             // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('place', { required: true, maxLength: 50, minLength: 2 })}
               value={place}
               onChange={handlePlaceChange}
+              disabled={!!isExample}
             />
             {errors.place && errors.place.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
             {errors.place && errors.place.type === 'maxLength' && <p className="personal-area__form-input_error">Максимум 50 символов</p> }
@@ -150,6 +177,8 @@ function MeetingStoryForm({
               className="personal-area__form-input personal-area__form-input_type_data"
               onInput={handleTimeChange}
               id="date"
+              min={oldDate}
+              max={nowDate}
             // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('date', {
                 required: true,
@@ -157,6 +186,7 @@ function MeetingStoryForm({
                 max: nowDate,
               })}
               value={time}
+              disabled={!!isExample}
             />
             {errors.date && errors.date.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
             {errors.date && errors.date.type === 'min' && <p className="personal-area__form-input_error">Нужна правильная дата</p> }
@@ -167,11 +197,13 @@ function MeetingStoryForm({
               className="personal-area__form-input personal-area__form-input_type_textarea"
               placeholder="Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось"
               maxLength={5000}
+              minLength={2}
               id="description"
             // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('description', { required: true, maxLength: 5000, minLength: 2 })}
               value={description}
               onChange={handleDescriptionChange}
+              disabled={!!isExample}
             />
             {errors.description && errors.description.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
             {errors.description && errors.description.type === 'minLength' && <p className="personal-area__form-input_error">Минимум 2 символа</p> }
@@ -186,7 +218,8 @@ function MeetingStoryForm({
               value="good"
               className="personal-area__radioBtn-smile"
               onChange={handleSmileChange}
-
+              required
+              disabled={!!isExample}
             />
             <label
               htmlFor="good"
@@ -204,7 +237,8 @@ function MeetingStoryForm({
               className="personal-area__radioBtn-smile"
               // onChange={handleChangeReaction}
               onChange={handleSmileChange}
-
+              required
+              disabled={!!isExample}
             />
             <label
               htmlFor="neutral"
@@ -221,7 +255,7 @@ function MeetingStoryForm({
               value="bad"
               className="personal-area__radioBtn-smile"
               onChange={handleSmileChange}
-
+              disabled={!!isExample}
             />
             <label
               className="personal-area__rate personal-area__rate_type_bad"
@@ -231,6 +265,8 @@ function MeetingStoryForm({
             />
             <p className="caption personal-area__rating-label">
               Оцените проведенное время
+              {' '}
+              <span>***</span>
               {' '}
               {errors.smile && errors.smile.type === 'required' && <span className="personal-area__form-input_error">&lt;--------------</span>}
             </p>
@@ -246,7 +282,7 @@ function MeetingStoryForm({
             >
               Отменить
             </button>
-            <button className="button personal-area__save" type="submit" disabled={!!isExample}>
+            <button className="button personal-area__save" type="submit" disabled={isExample || disabled}>
               {isEdit ? 'Сохранить' : 'Добавить'}
             </button>
           </div>

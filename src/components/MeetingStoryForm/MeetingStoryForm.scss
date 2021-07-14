@@ -181,9 +181,14 @@ position: relative;
   position: absolute;
   bottom: -15px;
   left: 10px;
-  &_type-input {
-    bottom: 15px;
-  }
+
+}
+.personal-area__form-input_error_type-input {
+  margin: 0;
+  font-size: 14px;
+  color: $error;
+  position: absolute;
+  bottom: 5px;
 }
 .personal-area__rating-label .personal-area__form-input_error {
   left: -10px;
@@ -207,6 +212,9 @@ position: relative;
 .popup__delete {
   border-color: $lightGray;
   color: $lightGray;
+}
+.popup__delete:hover {
+  color: black;
 }
 .personal-area__radioBtn-smile:checked .personal-area__rate_type_neutral {
   color: $lightGray;
@@ -288,6 +296,11 @@ position: relative;
 @media screen and (max-width: 580px) {
   .personal-area__card-title {
     max-width: 70%;
+  }
+  .personal-area__form-input_error_type-input {
+    max-width: 90%;
+    font-size: 12px;
+text-align: center;
   }
 }
 
