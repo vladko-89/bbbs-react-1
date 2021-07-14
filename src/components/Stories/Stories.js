@@ -86,6 +86,7 @@ export default function Stories() {
                   prolog={story.prolog}
                   imageUrl={story.imageUrl}
                   date={story.beginningOfFriendship}
+                  arrImages={story.imagesUrls}
                 />
               </li>
             ))}
