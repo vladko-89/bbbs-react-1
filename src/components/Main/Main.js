@@ -154,25 +154,29 @@ function Main({
             color={mainState?.articles[1]?.color}
           />
         </section>
-        <CalendarConfirmation
-          isOpen={isConfirmationPopupOpen}
-          handleSuccessRegClick={handleSuccessRegPopup}
-          onClose={onClose}
-          currentEvent={mainState?.event}
-        />
-        <CalendarDescription
-          isOpen={isDescriptionPopupOpen}
-          onClose={onClose}
-          currentEvent={mainState?.event}
-          onActionClick={handleImmidiateBooking}
-        />
-        <CalendarSuccessRegistration
-          currentEvent={mainState?.event}
-          isOpen={isSuccessRegPopupOpen}
-          handleCloseSuccessRegPopup={onClose}
-          onClose={onClose}
-          textPopupButton="Вернуться"
-        />
+        {loggedIn && (
+        <>
+          <CalendarConfirmation
+            isOpen={isConfirmationPopupOpen}
+            handleSuccessRegClick={handleSuccessRegPopup}
+            onClose={onClose}
+            currentEvent={mainState?.event}
+          />
+          <CalendarDescription
+            isOpen={isDescriptionPopupOpen}
+            onClose={onClose}
+            currentEvent={mainState?.event}
+            onActionClick={handleImmidiateBooking}
+          />
+          <CalendarSuccessRegistration
+            currentEvent={mainState?.event}
+            isOpen={isSuccessRegPopupOpen}
+            handleCloseSuccessRegPopup={onClose}
+            onClose={onClose}
+            textPopupButton="Вернуться"
+          />
+        </>
+        )}
       </main>
     );
   }
