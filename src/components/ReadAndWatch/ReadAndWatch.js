@@ -36,8 +36,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
         console.log(err);
       });
   }, []);
-
-  const isAnnotation = false;
   const breakpoints = {
     320: {
       spaceBetween: 15,
@@ -57,7 +55,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
     currentFilm.current = film;
     setIsPopupOpened(true);
   }
-
 
   return (
     <main className="main">
