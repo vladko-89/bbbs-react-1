@@ -5,7 +5,7 @@ import { useFormWithValidation } from '../Validation/Validation';
 import api from '../../utils/Api';
 import { getAccessToken } from '../../utils/utils';
 
-function PopupLogin({ onClose, onSubmit }) {
+function PopupLogin({ onClose, onSubmit, isOpen }) {
   const loginFormValidation = useFormWithValidation();
   const [actionError, setActionError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -59,7 +59,7 @@ function PopupLogin({ onClose, onSubmit }) {
   }
 
   return (
-    <div className="popup popup_type_sign-in popup_opened">
+    <div className={`popup popup_type_sign-in ${isOpen && 'popup_opened'}`}>
       <form className="popup__container popup__container_type_sign-in">
         <button aria-label="close" onClick={closePopup} className="popup__close popup__cancel" type="button" />
         <h2 className="section-title popup__title_type_sign-in">Вход</h2>
@@ -83,5 +83,6 @@ function PopupLogin({ onClose, onSubmit }) {
 PopupLogin.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 };
 export default PopupLogin;

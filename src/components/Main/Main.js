@@ -35,126 +35,124 @@ function Main({
   calendarData,
 }) {
   const [mainState, setMainState] = React.useState({});
-  const [isDataReady, setIsDataReady] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
+    setIsLoading(true);
     api.getMain(getAccessToken()).then((res) => {
       console.log('main', res);
       setMainState(res);
-      localStorage.setItem('mainState', JSON.stringify(res));
     })
-      .then(() => setIsDataReady(true))
+      .then(() => setIsLoading(false))
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
-  }, [calendarData]);
+  }, [calendarData, loggedIn]);
 
   // Обнуляем выставленные фильтры при монтировании компонента
   React.useEffect(() => {
     selectRubric('all', true);
   }, []);
 
-  if (isDataReady) {
-    return (
-      <main className="main">
-        <section className="lead page__section">
-          <article className="card-container card-container_type_identical">
-            {loggedIn ? (
-              <CalendarEvent
-                calendar={mainState.event}
-                key={mainState.event.id}
-                booked={mainState.event.booked}
-                title={mainState.event.title}
-                address={mainState.event.address}
-                contact={mainState.event.contact}
-                startAt={mainState.event.startAt}
-                endAt={mainState.event.endAt}
-                seats={mainState.event.seats}
-                takenSeats={mainState.event.takenSeats}
-                onBooking={onBooking}
-                onDescription={onDescription}
-                onCancel={onCancel}
-                activeRubrics={activeRubrics}
-                tags={[{
-                  name: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
-                  slug: format(new Date(mainState.event.startAt), 'LLLL', { locale: ruLocale }),
-                }]}
-              />
-            ) : <MainLead />}
-            <MainStory
-              title={mainState?.history?.title}
-              imageUrl={mainState?.history?.imageUrl}
-            />
-          </article>
-        </section>
-
-        <MainMentor
-          id={mainState?.place.id}
-          chosen={mainState?.place.chosen}
-          title={mainState?.place.title}
-          address={mainState?.place.address}
-          link={mainState?.place.link}
-          imageUrl={mainState?.place.imageUrl}
-          info={mainState?.place.info}
-          description={mainState?.place.description}
-        />
-
-        <section className="main-section page__section">
-          <MainArticle
-            title={mainState?.articles[0]?.title}
-            color={mainState?.articles[0]?.color}
-          />
-        </section>
-
-        <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {mainState?.movies.slice(0, cardsOnMain).map((movie) => (
-            <MainVideoPreview
-              link={movie.link}
-              key={movie.id}
-              title={movie.title}
-              imageUrl={movie.imageUrl}
-              caption={movie.caption}
-              info={movie.info}
-              tags={movie.tags}
+  return isLoading ? <Preloader /> : (
+    <main className="main">
+      <section className="lead page__section">
+        <article className="card-container card-container_type_identical">
+          {loggedIn && mainState.event ? (
+            <CalendarEvent
+              calendar={mainState?.event}
+              key={mainState?.event?.id}
+              booked={mainState?.event?.booked}
+              title={mainState?.event?.title}
+              address={mainState?.event?.address}
+              contact={mainState?.event?.contact}
+              startAt={mainState?.event?.startAt}
+              endAt={mainState?.event?.endAt}
+              seats={mainState?.event?.seats}
+              takenSeats={mainState?.event?.takenSeats}
+              onBooking={onBooking}
+              onDescription={onDescription}
+              onCancel={onCancel}
               activeRubrics={activeRubrics}
+              tags={[{
+                name: format(new Date(mainState?.event?.startAt), 'LLLL', { locale: ruLocale }),
+                slug: format(new Date(mainState?.event?.startAt), 'LLLL', { locale: ruLocale }),
+              }]}
             />
-          ))}
-        </section>
-
-        <section className="main-section page__section">
-          <MainVideo
-            title={mainState?.video.title}
-            info={mainState?.video.info}
-            link={mainState?.video.link}
-            imageUrl={mainState?.video.imageUrl}
-            duration={mainState?.video.duration}
-
+          ) : <MainLead />}
+          <MainStory
+            title={mainState?.history?.title}
+            imageUrl={mainState?.history?.imageUrl}
           />
-        </section>
+        </article>
+      </section>
 
-        <section className="main-section page__section">
-          <article className="card-container card-container_type_iframe">
-            <div className="card card_color_blue card_content_media">
-              <iframe className="card__iframe" title="iframe" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=630&height=630&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" scrolling="no" allowFullScreen allow="clipboard-write; encrypted-media; picture-in-picture; web-share" />
-            </div>
-            <div className="main-questions">
-              {mainState?.questions.map((q) => (
-                <MainQuestion
-                  key={q.id}
-                  question={q.question}
-                  tag={q.tags}
-                />
-              ))}
-            </div>
-          </article>
-        </section>
+      <MainMentor
+        id={mainState?.place.id}
+        chosen={mainState?.place.chosen}
+        title={mainState?.place.title}
+        address={mainState?.place.address}
+        link={mainState?.place.link}
+        imageUrl={mainState?.place.imageUrl}
+        info={mainState?.place.info}
+        description={mainState?.place.description}
+      />
 
-        <section className="main-section page__section">
-          <MainArticle
-            title={mainState?.articles[1]?.title}
-            color={mainState?.articles[1]?.color}
+      <section className="main-section page__section">
+        <MainArticle
+          title={mainState?.articles[0]?.title}
+          color={mainState?.articles[0]?.color}
+        />
+      </section>
+
+      <section className="main-section page__section cards-grid cards-grid_content_small-cards">
+        {mainState?.movies.slice(0, cardsOnMain).map((movie) => (
+          <MainVideoPreview
+            link={movie.link}
+            key={movie.id}
+            title={movie.title}
+            imageUrl={movie.imageUrl}
+            caption={movie.caption}
+            info={movie.info}
+            tags={movie.tags}
+            activeRubrics={activeRubrics}
           />
-        </section>
-        {loggedIn && (
+        ))}
+      </section>
+
+      <section className="main-section page__section">
+        <MainVideo
+          title={mainState?.video.title}
+          info={mainState?.video.info}
+          link={mainState?.video.link}
+          imageUrl={mainState?.video.imageUrl}
+          duration={mainState?.video.duration}
+        />
+      </section>
+
+      <section className="main-section page__section">
+        <article className="card-container card-container_type_iframe">
+          <div className="card card_color_blue card_content_media">
+            <iframe className="card__iframe" title="iframe" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=630&height=630&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" scrolling="no" allowFullScreen allow="clipboard-write; encrypted-media; picture-in-picture; web-share" />
+          </div>
+          <div className="main-questions">
+            {mainState?.questions.map((q) => (
+              <MainQuestion
+                key={q.id}
+                question={q.question}
+                tag={q.tags}
+              />
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section className="main-section page__section">
+        <MainArticle
+          title={mainState?.articles[1]?.title}
+          color={mainState?.articles[1]?.color}
+        />
+      </section>
+      {loggedIn && mainState.event && (
         <>
           <CalendarConfirmation
             isOpen={isConfirmationPopupOpen}
@@ -176,14 +174,11 @@ function Main({
             textPopupButton="Вернуться"
           />
         </>
-        )}
-      </main>
-    );
-  }
-  return (
-    <Preloader />
+      )}
+    </main>
   );
 }
+
 Main.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
