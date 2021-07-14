@@ -426,15 +426,13 @@ function App() {
               </Switch>
             </div>
             <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
-            {isPopupLoginOpened ? (
-              <PopupLogin
-                onClose={handleLoginClose}
-                onSubmit={handleLoginSubmit}
-                isOpen={isPopupLoginOpened}
-              />
-            ) : (
-              ''
-            )}
+
+            <PopupLogin
+              onClose={handleLoginClose}
+              onSubmit={handleLoginSubmit}
+              isOpen={isPopupLoginOpened}
+            />
+
             {{ isOpenPopupCities } && (
 
               <PopupCities
