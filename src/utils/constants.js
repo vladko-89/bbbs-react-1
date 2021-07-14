@@ -1,10 +1,11 @@
 const baseUrl = `${process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1'}`; // проект бэка запускается на 8000 порту
 const delayResponse = 500;
-const scrollDelay = 100;
+export const SCROLL_DELAY = 100;
 const cardsPerPage = 16;
 const cardsOnMain = 4;
-const placesPerPage = 6;
-const eventsPerPage = 4;
+export const PLACES_PER_PAGE = 6;
+const eventsPerPage = 6;
+export const GUIDES_PER_PAGE = 16;
 export const RIGHTS_PER_PAGE = 16;
 const placesTextForms = ['место', 'места', 'мест'];
 const citiesList = [
@@ -71,10 +72,8 @@ const MONTH_NUMBERS = {
 export {
   baseUrl,
   delayResponse,
-  scrollDelay,
   cardsPerPage,
   cardsOnMain,
-  placesPerPage,
   eventsPerPage,
   placesTextForms,
   citiesList,

@@ -12,7 +12,7 @@ import Calendar from '../Calendar/Calendar';
 import Profile from '../Profile/Profile';
 import Questions from '../Questions/Questions';
 import Video from '../Video/Video';
-import Catalog from '../Catalog/Catalog';
+import Guides from '../Guides/Guides';
 import Articles from '../Articles/Articles';
 import Films from '../Films/Films';
 import Books from '../Books/Books';
@@ -25,11 +25,12 @@ import CitiesListContext from '../../contexts/CitiesListContext';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ReadAndWatch from '../ReadAndWatch/ReadAndWatch';
 import RightArticle from '../RightArticle/RightArticle';
+import GuideArticle from '../GuideArticle/GuideArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
-import { eventsPerPage } from '../../utils/Constants';
+import { eventsPerPage } from '../../utils/constants';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -84,7 +85,6 @@ function App() {
     api
       .getCitiesList()
       .then((data) => {
-        console.log('CitiesList', data.results);
         setCitiesList(data.results);
         localStorage.setItem('citiesList', JSON.stringify(data.results));
       })
@@ -389,10 +389,11 @@ function App() {
                 <Route exact path="/read-watch-main">
                   <ReadAndWatch
                     activeRubrics={activeRubrics}
+                    clickOnCard={clickOnCard}
                   />
                 </Route>
-                <Route exact path="/catalog">
-                  <Catalog />
+                <Route exact path="/guides">
+                  <Guides clickOnCard={clickOnCard} />
                 </Route>
                 <Route exact path="/rights">
                   <Rights
@@ -415,6 +416,9 @@ function App() {
                 </Route>
                 <Route exact path={`/rights/${currentCard.id}`}>
                   <RightArticle card={currentCard} />
+                </Route>
+                <Route exact path={`/guides/${currentCard.id}`}>
+                  <GuideArticle card={currentCard} />
                 </Route>
                 <Route exact path="*">
                   <PageNotFound />

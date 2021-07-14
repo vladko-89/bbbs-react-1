@@ -15,7 +15,7 @@ import CalendarConfirmation from '../CalendarConfirmation/CalendarConfirmation';
 import CalendarSuccessRegistration from '../CalendarSuccessRegistration/CalendarSuccessRegistration';
 import Preloader from '../Preloader/Preloader';
 import api from '../../utils/Api';
-import { cardsOnMain } from '../../utils/Constants';
+import { cardsOnMain } from '../../utils/constants';
 import './Main.scss';
 import { getAccessToken } from '../../utils/utils';
 
@@ -111,7 +111,7 @@ function Main({
               link={movie.link}
               key={movie.id}
               title={movie.title}
-              imageUrl={movie.preview}
+              imageUrl={movie.imageUrl}
               caption={movie.caption}
               info={movie.info}
               tags={movie.tags}
@@ -125,7 +125,7 @@ function Main({
             title={mainState?.video.title}
             info={mainState?.video.info}
             link={mainState?.video.link}
-            imageUrl={mainState?.video.preview}
+            imageUrl={mainState?.video.imageUrl}
             duration={mainState?.video.duration}
 
           />
@@ -154,25 +154,29 @@ function Main({
             color={mainState?.articles[1]?.color}
           />
         </section>
-        <CalendarConfirmation
-          isOpen={isConfirmationPopupOpen}
-          handleSuccessRegClick={handleSuccessRegPopup}
-          onClose={onClose}
-          currentEvent={mainState?.event}
-        />
-        <CalendarDescription
-          isOpen={isDescriptionPopupOpen}
-          onClose={onClose}
-          currentEvent={mainState?.event}
-          onActionClick={handleImmidiateBooking}
-        />
-        <CalendarSuccessRegistration
-          currentEvent={mainState?.event}
-          isOpen={isSuccessRegPopupOpen}
-          handleCloseSuccessRegPopup={onClose}
-          onClose={onClose}
-          textPopupButton="Вернуться"
-        />
+        {loggedIn && (
+        <>
+          <CalendarConfirmation
+            isOpen={isConfirmationPopupOpen}
+            handleSuccessRegClick={handleSuccessRegPopup}
+            onClose={onClose}
+            currentEvent={mainState?.event}
+          />
+          <CalendarDescription
+            isOpen={isDescriptionPopupOpen}
+            onClose={onClose}
+            currentEvent={mainState?.event}
+            onActionClick={handleImmidiateBooking}
+          />
+          <CalendarSuccessRegistration
+            currentEvent={mainState?.event}
+            isOpen={isSuccessRegPopupOpen}
+            handleCloseSuccessRegPopup={onClose}
+            onClose={onClose}
+            textPopupButton="Вернуться"
+          />
+        </>
+        )}
       </main>
     );
   }

@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
-import { placesTextForms } from '../../utils/Constants';
+import { placesTextForms } from '../../utils/constants';
 import { declOfNum } from '../../utils/utils';
 
 function CalendarDescription({
@@ -42,9 +42,9 @@ function CalendarDescription({
             </p>
           </div>
           <div className="calendar__about">
-            <h2 className="section-title calendar__title calendar__title_type_popup">{currentEvent.title}</h2>
+            <h2 className="section-title calendar__title calendar__title_type_popup">{currentEvent?.title}</h2>
             <p className="calendar__date">
-              { format(new Date(currentEvent.startAt), 'dd', { locale: ruLocale }) }
+              { format(new Date(currentEvent?.startAt), 'dd', { locale: ruLocale }) }
             </p>
           </div>
         </div>
@@ -52,24 +52,24 @@ function CalendarDescription({
           <ul className="calendar__info-list">
             <li className="calendar__info-item">
               <p className="calendar__time">
-                {`${format(new Date(currentEvent.startAt), 'HH:mm')}–${format(new Date(currentEvent.endAt), 'HH:mm')}
+                {`${format(new Date(currentEvent?.startAt), 'HH:mm')}–${format(new Date(currentEvent?.endAt), 'HH:mm')}
               `}
               </p>
             </li>
             <li className="calendar__info-item">
-              <p className="calendar__place">{currentEvent.address}</p>
+              <p className="calendar__place">{currentEvent?.address}</p>
             </li>
             <li className="calendar__info-item">
-              <p className="calendar__contact">{currentEvent.contact}</p>
+              <p className="calendar__contact">{currentEvent?.contact}</p>
             </li>
           </ul>
           <div className="calendar__description">
             <p className="paragraph calendar__desc-paragraph">
-              {currentEvent.description}
+              {currentEvent?.description}
             </p>
           </div>
           <div className="calendar__submit">
-            {currentEvent.booked ? (
+            {currentEvent?.booked ? (
               <button
                 className="button button_theme_light calendar__button calendar__button_selected calendar__button_action_sign-up"
                 disabled={!availablePlaces}

@@ -544,3 +544,13 @@ input::-webkit-inner-spin-button {
   width: 48px;
   height: 48px;
 }
+
+.recommendation__input_error{
+  color:red;
+}
+.recommendation__input_error::placeholder{
+  color:red;
+}
+.recommendation__input_error:invalid{
+  color:red;
+}

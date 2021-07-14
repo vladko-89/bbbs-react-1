@@ -8,7 +8,7 @@ import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
 import { formingCards, splitOnBlocks } from '../../utils/utils';
-import { figures, colors, RIGHTS_PER_PAGE } from '../../utils/Constants';
+import { figures, colors, RIGHTS_PER_PAGE } from '../../utils/constants';
 
 function Rights({
   activeRubrics,
@@ -54,6 +54,7 @@ function Rights({
     window.addEventListener('resize', checkRes);
     return () => window.removeEventListener('resize', checkRes);
   }, []);
+
   React.useEffect(() => {
     Promise.all([api.getRightsTags(),
       api.getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })])

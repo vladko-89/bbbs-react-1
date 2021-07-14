@@ -13,7 +13,7 @@ import PopupRecommendSuccess from '../PopupRecommendSuccess/PopupRecommendSucces
 import api from '../../utils/Api';
 import CurrentUserContext from '../../contexts/CurrentUser';
 import { getAccessToken } from '../../utils/utils';
-import { placesPerPage } from '../../utils/Constants';
+import { PLACES_PER_PAGE } from '../../utils/constants';
 import './Places.scss';
 
 function Places({
@@ -39,12 +39,12 @@ function Places({
   const [places, setPlaces] = React.useState([]);
 
   function onPageChange(page) {
-    const offset = page !== 1 ? page * placesPerPage - placesPerPage : 0;
+    const offset = page !== 1 ? page * PLACES_PER_PAGE - PLACES_PER_PAGE : 0;
     api
       .getPlaces({
         token: getAccessToken(),
         cityId: currentUser.city.id,
-        limit: placesPerPage,
+        limit: PLACES_PER_PAGE,
         offset,
         tags: activeRubrics,
       })
@@ -60,7 +60,7 @@ function Places({
       api.getPlaces({
         token: getAccessToken(),
         cityId: currentUser.city.id,
-        limit: placesPerPage,
+        limit: PLACES_PER_PAGE,
       }),
     ])
       .then(([resTags, resPlaces]) => {
@@ -87,7 +87,7 @@ function Places({
       .getPlaces({
         token: getAccessToken(),
         cityId: currentUser.city.id,
-        limit: placesPerPage,
+        limit: PLACES_PER_PAGE,
         offset: 0,
         tags: activeRubrics,
       })
@@ -95,6 +95,7 @@ function Places({
         onPageChange(1);
         setPlaces(res);
       })
+      // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }, [activeRubrics]);
 
@@ -127,10 +128,10 @@ function Places({
         description={places?.results[0]?.description}
       />
       <PlacesCards places={places.results} />
-      {(places.count > placesPerPage) && (
+      {(places.count > PLACES_PER_PAGE) && (
         <Pagination
           cardsLength={places.count}
-          cardsPerPage={placesPerPage}
+          cardsPerPage={PLACES_PER_PAGE}
           onPageChange={onPageChange}
         />
       ) }

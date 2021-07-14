@@ -37,7 +37,7 @@ function PopupLogin({ onClose, onSubmit }) {
         if (res.access) {
           localStorage.setItem('bbbs-token', JSON.stringify(res));
         } else {
-          setActionError(`Произошла обшибка: ${res.text}`);
+          setActionError(`Произошла ошибка: ${res.text}`);
           // eslint-disable-next-line no-debugger
         }
       })
@@ -63,7 +63,11 @@ function PopupLogin({ onClose, onSubmit }) {
       <form className="popup__container popup__container_type_sign-in">
         <button aria-label="close" onClick={closePopup} className="popup__close popup__cancel" type="button" />
         <h2 className="section-title popup__title_type_sign-in">Вход</h2>
-        <p className="paragraph popup__sign-in">Вход в личный кабинет доступен наставникам программы «Старшие Братья Старшие Сёстры».</p>
+        <p className="paragraph popup__sign-in">
+          Вход в личный кабинет доступен наставникам программы
+          <br />
+          «Старшие Братья Старшие Сёстры».
+        </p>
         <p className="paragraph popup__sign-in">Пожалуйста, введите логин и пароль из письма. Если вам не приходило письмо, свяжитесь с вашим куратором.</p>
         <input ref={userRef} type="text" className="popup__input" id="login" name="login" minLength={2} onChange={loginFormValidation.handleChange} required placeholder="Логин" />
         <p className="popup__input-error" name="login-error">{loginFormValidation.errors.login}</p>

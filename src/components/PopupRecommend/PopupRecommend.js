@@ -64,7 +64,10 @@ function PopupRecommend({ onSuccess, onClose }) {
                     {...register('title', { required: true })}
                     type="text"
                     name="title"
-                    className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_place}`}
+                    className={`${styles.form__input}
+                     ${styles.recommendation__input}
+                      ${styles.recommendation__input_type_place}
+                       ${errors.title?.type === 'required' && styles.recommendation__input_error}`}
                     required
                     placeholder="Название*"
                   />
@@ -74,14 +77,20 @@ function PopupRecommend({ onSuccess, onClose }) {
                   {...register('link')}
                   type="text"
                   name="link"
-                  className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_website}`}
+                  className={`${styles.form__input}
+                   ${styles.recommendation__input}
+                    ${styles.recommendation__input_type_website}
+                    ${errors.link?.type === 'required' && styles.recommendation__input_error}`}
                   placeholder="Сайт"
                 />
                 <div className={styles.input__wrapper_large}>
                   <select
                     {...register('city', { required: true })}
                     name="city"
-                    className={`${styles.form__input} ${styles.recommendation__input}  ${styles.recommendation__input_type_select}`}
+                    className={`${styles.form__input}
+                     ${styles.recommendation__input}
+                       ${styles.recommendation__input_type_select}
+                       ${errors.city?.type === 'required' && styles.recommendation__input_error}`}
                     required
                     defaultValue=""
                   >
@@ -95,7 +104,10 @@ function PopupRecommend({ onSuccess, onClose }) {
                     {...register('address', { required: true })}
                     type="text"
                     name="address"
-                    className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_address}`}
+                    className={`${styles.form__input}
+                     ${styles.recommendation__input}
+                      ${styles.recommendation__input_type_address}
+                      ${errors.address?.type === 'required' && styles.recommendation__input_error}`}
                     required
                     placeholder="Адрес*"
                   />
@@ -103,7 +115,11 @@ function PopupRecommend({ onSuccess, onClose }) {
                 </div>
                 <div className={styles['recommendation__box-inputs']}>
                   <div className={styles.input__wrapper}>
-                    <label className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_radio}`}>
+                    <label className={`${styles.form__input}
+                     ${styles.recommendation__input}
+                      ${styles.recommendation__input_type_radio}
+                      ${errors.gender?.type === 'required' && styles.recommendation__input_error}`}
+                    >
                       <input
                         {...register('gender', { required: true })}
                         type="radio"
@@ -117,7 +133,11 @@ function PopupRecommend({ onSuccess, onClose }) {
                     </label>
                     <p className={styles.error}>{errors.gender?.type === 'required' && 'Выберите пол'}</p>
                   </div>
-                  <label className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_radio}`}>
+                  <label className={`${styles.form__input}
+                   ${styles.recommendation__input}
+                    ${styles.recommendation__input_type_radio}
+                    ${errors.gender?.type === 'required' && styles.recommendation__input_error}`}
+                  >
                     <input
                       {...register('gender', { required: true })}
                       type="radio"
@@ -134,7 +154,10 @@ function PopupRecommend({ onSuccess, onClose }) {
                       {...register('age', { required: true, min: 1, max: 40 })}
                       type="number"
                       name="age"
-                      className={`${styles.form__input} ${styles.recommendation__input} ${styles.recommendation__input_type_age}`}
+                      className={`${styles.form__input}
+                       ${styles.recommendation__input}
+                        ${styles.recommendation__input_type_age}
+                        ${errors.age?.type === 'required' && styles.recommendation__input_error}`}
                       required
                       placeholder="Возраст*"
                     />
@@ -148,7 +171,10 @@ function PopupRecommend({ onSuccess, onClose }) {
                   <select
                     {...register('activity_type', { required: true })}
                     name="activity_type"
-                    className={`${styles.form__input} ${styles.recommendation__input}  ${styles.recommendation__input_type_select}`}
+                    className={`${styles.form__input}
+                     ${styles.recommendation__input}
+                      ${styles.recommendation__input_type_select}
+                      ${errors.activity_type?.type === 'required' && styles.recommendation__input_error}`}
                     required
                     defaultValue=""
                   >
@@ -162,14 +188,20 @@ function PopupRecommend({ onSuccess, onClose }) {
                 <div className={styles.input__wrapper_large}>
                   <input
                     {...register('description', { required: true })}
-                    className={`${styles.form__input} ${styles.recommendation__input}  ${styles.recommendation__input_type_textarea}`}
+                    className={`${styles.form__input}
+                     ${styles.recommendation__input}
+                      ${styles.recommendation__input_type_textarea}
+                      ${errors.description?.type === 'required' && styles.recommendation__input_error}`}
                     required
                     placeholder="Комментарий* Поделитесь впечатлениями о проведенном времени"
                   />
                   <p className={styles.error}>{errors.description?.type === 'required' && 'Поле не заполнено'}</p>
                 </div>
                 <div className={styles.input__wrapper}>
-                  <label className={`${styles.caption} ${styles['recommendation__add-photo']}`}>
+                  <label className={`${styles.caption}
+                   ${styles['recommendation__add-photo']}
+                   ${errors.imageUrl?.type === 'required' && styles.recommendation__input_error}`}
+                  >
                     <input
                       {...register('imageUrl', { required: true })}
                       type="file"

@@ -3,25 +3,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import PropTypes from 'prop-types';
-import CatalogCard, { shapes } from '../Catalog/CatalogCard/CatalogCard';
+import GuideCard, { shapes } from '../GuideCard/GuideCard';
 import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import './ReadAndWatch.scss';
 import api from '../../utils/Api';
 import ArticleCard from '../Articles/ArticleCard/ArticleCard';
-import { mainArticle as leadArticle } from '../../utils/articlesData';
 import FilmCard from '../Films/FilmCard/FilmCard';
 import BookCard from '../Books/BookCard/BookCard';
+import PopupVideo from '../Films/PopupVideo/PopupVideo';
 
-export default function ReadAndWatch(activeRubrics) {
+export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
   const [videoToShow, setVideoToShow] = React.useState([]);
   const [guidesToShow, setGuidesToShow] = React.useState([]);
   const [articlesToShow, setArticlesToShow] = React.useState([]);
   const [moviesToShow, setMoviesToShow] = React.useState([]);
   const [booksToShow, setBooksToShow] = React.useState([]);
-  const [isDataReady, setIsDataReady] = React.useState(false);
+  const [isPopupOpened, setIsPopupOpened] = React.useState(false);
+  const currentFilm = React.useRef({});
+  const isAnnotation = false;
   React.useEffect(() => {
     // eslint-disable-next-line max-len
-    Promise.all([api.getVideos(), api.getGuide(), api.getArticles(), api.getFilms(), api.getBooks()])
+    Promise.all([api.getVideos(), api.getGuides({}), api.getArticles(), api.getFilms(), api.getBooks()])
       .then(([resVideos, resGuides, resArticles, resMovies, resBooks]) => {
         setVideoToShow(resVideos.results);
         setGuidesToShow(resGuides.results);
@@ -32,10 +34,9 @@ export default function ReadAndWatch(activeRubrics) {
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-        console.log(isDataReady);
-      })
-      .finally(() => setIsDataReady(true));
+      });
   }, []);
+
   const isAnnotation = false;
   const breakpoints = {
     320: {
@@ -51,17 +52,23 @@ export default function ReadAndWatch(activeRubrics) {
       slidesPerView: 3,
     },
   };
+
+  function showPopup(film) {
+    currentFilm.current = film;
+    setIsPopupOpened(true);
+  }
+
+
   return (
     <main className="main">
       <section className="rights preview page__section">
         <div className="preview__title-wrap">
           <Link
-            to="./catalog"
+            to="/guides"
             className="link"
           >
             <h1 className="chapter-title chapter-title_clickable">Справочник</h1>
-          </Link
-          >
+          </Link>
           <div className="preview__bottons">
             <button className="preview__button preview__button_left catalog__button_left" type="button" aria-label="buttonLeft" disabled />
             <button className="preview__button preview__button_right catalog__button_right" type="button" aria-label="buttonRight" />
@@ -92,14 +99,16 @@ export default function ReadAndWatch(activeRubrics) {
           }}
         >
           {
-            guidesToShow.map((card, i) => (
+            guidesToShow.map((card) => (
               <SwiperSlide>
-                <CatalogCard
-                  key={i.toString()}
+                <GuideCard
+                  key={card.id}
                   shape={shapes[Math.floor(Math.random() * 3)]}
                   title={card.title}
                   image={card.imageUrl}
-                  path={card.path}
+                  id={card.id}
+                  card={card}
+                  clickOnCard={clickOnCard}
                 />
               </SwiperSlide>
             ))
@@ -109,7 +118,7 @@ export default function ReadAndWatch(activeRubrics) {
       <section className="preview page__section">
         <div className="preview__title-wrap">
           <Link
-            to="./video"
+            to="/video"
             className="link"
           >
             <h3
@@ -166,7 +175,7 @@ export default function ReadAndWatch(activeRubrics) {
       <section className="preview page__section">
         <div className="preview__title-wrap">
           <Link
-            to="./articles"
+            to="/articles"
             className="link"
           >
             <h3 className="chapter-title chapter-title_clickable">Статьи</h3>
@@ -209,7 +218,7 @@ export default function ReadAndWatch(activeRubrics) {
       <section className="preview page__section">
         <div className="preview__title-wrap">
           <Link
-            to="./films"
+            to="/films"
             className="link"
           >
             <h3 className="chapter-title chapter-title_clickable">Фильмы</h3>
@@ -242,11 +251,15 @@ export default function ReadAndWatch(activeRubrics) {
               disabledClass: 'swiper__button_disabled',
             }}
           >
-            {// eslint-disable-next-line max-len
-              moviesToShow.map((film, i) => (
+            {
+              moviesToShow.map((film) => (
                 <SwiperSlide>
-                  <FilmCard key={i.toString()} film={film} isAnnotation={isAnnotation} />
-                  {' '}
+                  <FilmCard
+                    key={film.id}
+                    film={film}
+                    isAnnotation={isAnnotation}
+                    showPopup={showPopup}
+                  />
                 </SwiperSlide>
               ))
             }
@@ -256,7 +269,7 @@ export default function ReadAndWatch(activeRubrics) {
       <section className="preview page__section">
         <div className="preview__title-wrap">
           <Link
-            to="./books"
+            to="/books"
             className="link"
           >
             <h3 className="chapter-title chapter-title_clickable">Книги</h3>
@@ -289,17 +302,28 @@ export default function ReadAndWatch(activeRubrics) {
             }}
           >
             {
-              // eslint-disable-next-line max-len
-              booksToShow.map((book) => <SwiperSlide><BookCard key={book.id} book={book} /></SwiperSlide>)
+              booksToShow.map((book) => (
+                <SwiperSlide>
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                  />
+                </SwiperSlide>
+              ))
             }
           </Swiper>
         </div>
       </section>
+      <PopupVideo
+        isOpened={isPopupOpened}
+        setOpened={setIsPopupOpened}
+        video={currentFilm.current}
+      />
     </main>
   );
 }
 
-ReadAndWatch.defaultProps = {
+ReadAndWatch.propTypes = {
   activeRubrics: PropTypes.arrayOf(PropTypes.string).isRequired,
-  mainArticle: leadArticle,
+  clickOnCard: PropTypes.func.isRequired,
 };
