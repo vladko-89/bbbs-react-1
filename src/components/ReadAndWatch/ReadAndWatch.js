@@ -37,6 +37,20 @@ export default function ReadAndWatch(activeRubrics) {
       .finally(() => setIsDataReady(true));
   }, []);
   const isAnnotation = false;
+  const breakpoints = {
+    320: {
+      spaceBetween: 15,
+      slidesPerView: 1,
+    },
+    720: {
+      spaceBetween: 25,
+      slidesPerView: 2,
+    },
+    1024: {
+      spaceBetween: 30,
+      slidesPerView: 3,
+    },
+  };
   return (
     <main className="main">
       <section className="rights preview page__section">
@@ -53,21 +67,24 @@ export default function ReadAndWatch(activeRubrics) {
             <button className="preview__button preview__button_right catalog__button_right" type="button" aria-label="buttonRight" />
           </div>
         </div>
-        {/* <div className="preview__row"> */}
         <Swiper
           className="preview__row preview__card catalog-card"
           slidesPerView="auto"
-          breakpoints={{
-            320: {
-              spaceBetween: 15,
-            },
-            720: {
-              spaceBetween: 25,
-            },
-            1024: {
-              spaceBetween: 30,
-            },
-          }}
+          breakpoints={breakpoints}
+          // breakpoints={{
+          //   320: {
+          //     spaceBetween: 15,
+          //     slidesPerView: 1,
+          //   },
+          //   720: {
+          //     spaceBetween: 25,
+          //     slidesPerView: 2,
+          //   },
+          //   1024: {
+          //     spaceBetween: 30,
+          //     slidesPerView: 3,
+          //   },
+          // }}
           navigation={{
             prevEl: '.catalog__button_left',
             nextEl: '.catalog__button_right',
@@ -88,7 +105,6 @@ export default function ReadAndWatch(activeRubrics) {
             ))
           }
         </Swiper>
-        {/* </div> */}
       </section>
       <section className="preview page__section">
         <div className="preview__title-wrap">
@@ -112,17 +128,18 @@ export default function ReadAndWatch(activeRubrics) {
           <Swiper
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
-            breakpoints={{
-              320: {
-                spaceBetween: 15,
-              },
-              720: {
-                spaceBetween: 25,
-              },
-              1024: {
-                spaceBetween: 30,
-              },
-            }}
+            breakpoints={breakpoints}
+            // breakpoints={{
+            //   320: {
+            //     spaceBetween: 15,
+            //   },
+            //   720: {
+            //     spaceBetween: 25,
+            //   },
+            //   1024: {
+            //     spaceBetween: 30,
+            //   },
+            // }}
             navigation={{
               prevEl: '.video__button_left',
               nextEl: '.video__button_right',
@@ -164,17 +181,18 @@ export default function ReadAndWatch(activeRubrics) {
           <Swiper
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
-            breakpoints={{
-              320: {
-                spaceBetween: 15,
-              },
-              720: {
-                spaceBetween: 25,
-              },
-              1024: {
-                spaceBetween: 30,
-              },
-            }}
+            breakpoints={breakpoints}
+            // breakpoints={{
+            //   320: {
+            //     spaceBetween: 15,
+            //   },
+            //   720: {
+            //     spaceBetween: 25,
+            //   },
+            //   1024: {
+            //     spaceBetween: 30,
+            //   },
+            // }}
             navigation={{
               prevEl: '.articles__button_left',
               nextEl: '.articles__button_right',
@@ -206,17 +224,18 @@ export default function ReadAndWatch(activeRubrics) {
           <Swiper
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
-            breakpoints={{
-              320: {
-                spaceBetween: 15,
-              },
-              720: {
-                spaceBetween: 25,
-              },
-              1024: {
-                spaceBetween: 30,
-              },
-            }}
+            breakpoints={breakpoints}
+            // breakpoints={{
+            //   320: {
+            //     spaceBetween: 15,
+            //   },
+            //   720: {
+            //     spaceBetween: 25,
+            //   },
+            //   1024: {
+            //     spaceBetween: 30,
+            //   },
+            // }}
             navigation={{
               prevEl: '.films__button_left',
               nextEl: '.films__button_right',
@@ -251,17 +270,18 @@ export default function ReadAndWatch(activeRubrics) {
           <Swiper
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
-            breakpoints={{
-              320: {
-                spaceBetween: 15,
-              },
-              720: {
-                spaceBetween: 25,
-              },
-              1024: {
-                spaceBetween: 30,
-              },
-            }}
+            breakpoints={breakpoints}
+            // breakpoints={{
+            //   320: {
+            //     spaceBetween: 15,
+            //   },
+            //   720: {
+            //     spaceBetween: 25,
+            //   },
+            //   1024: {
+            //     spaceBetween: 30,
+            //   },
+            // }}
             navigation={{
               prevEl: '.books__button_left',
               nextEl: '.books__button_right',
