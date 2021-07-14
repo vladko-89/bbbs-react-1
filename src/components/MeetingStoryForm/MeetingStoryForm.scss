@@ -181,6 +181,9 @@ position: relative;
   position: absolute;
   bottom: -15px;
   left: 10px;
+  &_type-input {
+    bottom: 15px;
+  }
 }
 .personal-area__rating-label .personal-area__form-input_error {
   left: -10px;
@@ -196,7 +199,15 @@ position: relative;
 .personal-area__delete {
   border: none;
 }
+.personal-area__save {
+  border-color: $blue;
+  color: $blue;
+}
 
+.popup__delete {
+  border-color: $lightGray;
+  color: $lightGray;
+}
 .personal-area__radioBtn-smile:checked .personal-area__rate_type_neutral {
   color: $lightGray;
 }

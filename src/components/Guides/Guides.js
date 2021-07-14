@@ -5,7 +5,7 @@ import GuideCard, { shapes } from '../GuideCard/GuideCard';
 import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
 import { splitOnBlocks } from '../../utils/utils';
-import { GUIDES_PER_PAGE } from '../../utils/Constants';
+import { GUIDES_PER_PAGE } from '../../utils/constants';
 import api from '../../utils/Api';
 import './Guides.scss';
 

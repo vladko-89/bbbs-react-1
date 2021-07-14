@@ -7,7 +7,7 @@ function MeetingStoryForm({
   onSubmit, onDelete, values, isExample, isEdit,
 }) {
   const {
-    register, handleSubmit, setError, formState: { errors },
+    register, handleSubmit, formState: { errors },
   } = useForm({
     reValidateMode: 'onBlur',
     mode: 'onTouched',
@@ -21,6 +21,8 @@ function MeetingStoryForm({
   const [time, setTime] = React.useState(values.date.slice(0, 10));
   const [smile, setSmile] = React.useState(isExample ? 'good' : values.smile);
   const [photoSrc, setPhotoSrc] = React.useState(values.image);
+  const [errorMessageForImage, setErrorMessageForImage] = React.useState('11');
+
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
   };
@@ -46,18 +48,34 @@ function MeetingStoryForm({
     } else { editedData.image = data.image[0]; }// т к фото одно грузим- сразу выставляем первый эл-т из массива FileList
     onSubmit(editedData);
   };
-
+  function checkSizeImage(size) {
+    if (size > 10485760) {
+      setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
+      return false;
+    }
+    return true;
+  }
+  function checkTypeImage(type) {
+    console.log(type);
+    if (type !== ('image/jpeg' || 'image/png' || 'image/gif' || 'image/jpg')) {
+      setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
+      return false;
+    }
+    return true;
+  }
   const handleLoadImage = (e) => {
-    if (e.target.files[0].size < 10485760) {
-      console.log(e.target.files[0]);
-      setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+    // eslint-disable-next-line max-len
+    console.log(e.target.files[0], checkSizeImage(e.target.files[0].size), checkTypeImage(e.target.files[0].type));
+    if (checkSizeImage(e.target.files[0].size)) {
+      if (checkTypeImage(e.target.files[0].type)) {
+        setErrorMessageForImage('');
+        setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+      }
     } else {
-      setError('add-story-form.image', {
-        type: 'maxSize',
-        message: `Размер файла не более 10мб, сейчас ${e.target.files[0].size}`,
-      });
+      setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
     }
   };
+
   // граничные значения для инпута даты
   const nowDate = new Date().toISOString().substring(0, 10);
   const oldDate = new Date(2010, 12, 31).toISOString().substring(0, 10);
@@ -102,13 +120,11 @@ function MeetingStoryForm({
           {...register('image')}
           onChange={handleLoadImage}
         />
-        {errors.image && errors.image.type === 'accept' && <p className="personal-area__form-input_error">Нужен файл в формате image/jpeg/png</p>}
-        {errors.image && errors.image.type === 'maxSize' && <p className="personal-area__form-input_error">{errors.image.message}</p> }
-
         <label
           htmlFor="userImage"
           className="caption personal-area__bottom-caption"
         />
+        <p className="personal-area__form-input_error_type-input">{errorMessageForImage}</p>
       </div>
       <div className="card personal-area__card personal-area__card_type_content">
         <div className="personal-area__form">
@@ -230,7 +246,7 @@ function MeetingStoryForm({
             >
               Отменить
             </button>
-            <button className="button" type="submit" disabled={!!isExample}>
+            <button className="button personal-area__save" type="submit" disabled={!!isExample}>
               {isEdit ? 'Сохранить' : 'Добавить'}
             </button>
           </div>

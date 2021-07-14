@@ -30,7 +30,7 @@ import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { useAuth, getAccessToken } from '../../utils/utils';
 import api from '../../utils/Api';
-import { eventsPerPage } from '../../utils/Constants';
+import { eventsPerPage } from '../../utils/constants';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
