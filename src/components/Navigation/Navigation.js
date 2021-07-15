@@ -33,7 +33,7 @@ function Navigation({
         } `}
       >
         <ul className="menu__list">
-          {mobMenu && (
+          {!!mobMenu && (
             <li className="menu__list-item">
               <NavLink
                 to="/about"
