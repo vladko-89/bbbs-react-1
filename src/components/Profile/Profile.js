@@ -26,6 +26,7 @@ function Profile({ user, handleImmidiateBooking }) {
   const [meetTitle, setMeetTitle] = React.useState('');
   const [meetTime, setMeetTime] = React.useState('');
   const [isDataReady, setIsDataReady] = React.useState(false);
+  const [arrForRendForm, setArrForRendForm] = React.useState([]);
 
   const handleUnsubscribe = () => {
     handleImmidiateBooking(currentEvent);
@@ -50,7 +51,8 @@ function Profile({ user, handleImmidiateBooking }) {
         setUserMeetings(res.results);
         if (res.results.length > 0) {
           setIsHidden(true);
-        }
+          setArrForRendForm(['empty']);
+        } else { setArrForRendForm(() => (document.documentElement.clientWidth < 1380 ? ['empty'] : ['empty', 'example'])); }
       })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
@@ -102,6 +104,7 @@ function Profile({ user, handleImmidiateBooking }) {
   };
 
   const handleCancelForm = () => {
+    if (userMeetings.length === 0) return;
     setIsHidden(true);
   };
 
@@ -144,6 +147,7 @@ function Profile({ user, handleImmidiateBooking }) {
   React.useEffect(() => {
     if (userMeetings.length === 0) setIsHidden(false);
   }, [userMeetings]);
+  console.log(arrForRendForm);
   return (
     isDataReady
       ? (
@@ -181,21 +185,23 @@ function Profile({ user, handleImmidiateBooking }) {
                     </button>
                   )}
                   {!isHidden && (
-                    <MeetingStoryForm
-                      onSubmit={handleSubmitStory}
-                      onDelete={handleCancelForm}
-                      isExample={false}
-                    />
+                    arrForRendForm.map((el) => {
+                      let example = false;
+                      if (el === 'example') { example = true; }
+                      return (
+                        <MeetingStoryForm
+                          key={el}
+                          onSubmit={handleSubmitStory}
+                          onDelete={handleCancelForm}
+                          isExample={example}
+                        />
+                      );
+                    })
+
                   )}
 
                   <section className="stories-container">
-                    {userMeetings.length === 0 ? (
-                      <MeetingStoryForm
-                        onSubmit={handleSubmitStory}
-                        onDelete={handleCancelForm}
-                        isExample
-                      />
-                    ) : (
+                    {userMeetings.length !== 0 && (
                       userMeetings.map((item) => (
                         <MeetingStoryArticle
                           key={item.id}
