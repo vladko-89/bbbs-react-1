@@ -10,6 +10,7 @@ import './Story.scss';
 SwiperCore.use([Navigation]);
 
 function Story({
+  arrImages,
   imageUrl,
   title,
   date,
@@ -61,6 +62,11 @@ function Story({
           disabledClass: 'swiper__button_disabled',
         }}
       >
+        {arrImages.map((item) => (
+          <SwiperSlide key={item}>
+            <img className="stories__slide" src={item.image} alt="Фото истории" />
+          </SwiperSlide>
+        ))}
         <SwiperSlide>
           <img className="stories__slide" src={imageUrl} alt="Фото истории" />
         </SwiperSlide>
@@ -99,6 +105,7 @@ function Story({
 }
 
 Story.propTypes = {
+  arrImages: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.number.isRequired,
   imageUrl: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

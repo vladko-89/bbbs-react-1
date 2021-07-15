@@ -76,8 +76,12 @@
   object-fit: cover;
   width: 100%;
   height: 100%;
+  transition: ease 0.7s;
 }
-
+.catalog-card__image:hover {
+ // filter: brightness(110%);
+  filter: brightness(115%) contrast(1.08);
+}
 //.catalog-card{
 //  min-width: 420px;
 //  margin-left: 30px;
