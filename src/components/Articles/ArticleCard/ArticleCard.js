@@ -1,17 +1,21 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import PropTypes, { bool, number, string } from 'prop-types';
 
+import './ArticleCard.scss';
+
 export default function ArticleCard({ article }) {
+  const { url } = useRouteMatch();
+
   return (
-    <article className="card-container card-container_type_article">
+    <article className="card-container card-container_type_article article-card__container">
       <div className="card" style={{ backgroundColor: article.color }}>
         <div className="card__title-wrap">
           <h2 className="section-title card__title">{article.title}</h2>
           <p className="caption card__title-caption">{article.author}, {article.profession}</p>
         </div>
-        <Link to="/article" className="link card__link">читать на сайте</Link>
+        <Link to={`${url}/${article.id}`} className="link card__link">читать на сайте</Link>
       </div>
       <div className="card card_content_annotation">
         <div className="card__content">

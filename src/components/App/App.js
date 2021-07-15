@@ -402,7 +402,7 @@ function App() {
                     onClickCard={clickOnCard}
                   />
                 </Route>
-                <Route exact path="/articles">
+                <Route path="/articles">
                   <Articles />
                 </Route>
                 <Route exact path="/films">
@@ -426,15 +426,13 @@ function App() {
               </Switch>
             </div>
             <Footer loggedIn={loggedIn} onLoginPopup={handleLoginOpen} />
-            {isPopupLoginOpened ? (
-              <PopupLogin
-                onClose={handleLoginClose}
-                onSubmit={handleLoginSubmit}
-                isOpen={isPopupLoginOpened}
-              />
-            ) : (
-              ''
-            )}
+
+            <PopupLogin
+              onClose={handleLoginClose}
+              onSubmit={handleLoginSubmit}
+              isOpen={isPopupLoginOpened}
+            />
+
             {{ isOpenPopupCities } && (
 
               <PopupCities

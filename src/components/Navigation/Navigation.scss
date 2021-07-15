@@ -199,9 +199,10 @@
   }
 }
 .user-info_mobile {
+  width: 100%;
   height: fit-content;
-  top: 300px;
-  justify-content: space-between;
+  top: 320px;
+  justify-content: center;
 }
 .personal-area__user-link:last-of-type.personal-area__user-link_type_exit {
   margin-left: 30px;
@@ -296,7 +297,7 @@
     padding-top: 35px;
     padding-bottom: 50px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 
 
     &_hidden {
@@ -389,6 +390,13 @@
   }
   .user-info_mobile {
     top: 50px;
+    justify-content: flex-end;
   }
 
+}
+
+@media screen and (max-width: 1430px) and (min-width: 1380px) {
+  .menu__list-item {
+    margin-left: 15px;
+  }
 }

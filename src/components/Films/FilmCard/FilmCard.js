@@ -4,6 +4,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes, { arrayOf, number, shape, string } from 'prop-types';
+import ErrorBoundary from '../../ErrorBoundary/ErrorBoundary';
 
 import './FilmCard.scss';
 
@@ -14,35 +15,34 @@ export default function FilmCard({ film, showPopup }) {
 
   try {
     return (
-      <article className="card-container card-pagination">
-        <div className="card card_content_video">
-          <div className="video filmcard__preview">
-            {/* PICSUM - временно */}
-            <img onClick={openPopup} src={`https://picsum.photos/300/200/?${film.id}`} alt="Превью видео" className="video__img" />
-            <ul className="video__rubric-list filmcard__taglist">
-              {
-                film.tags.map((tag) => <li key={tag.id}><p className="rubric video__rubric">{tag.name}</p></li>)
-              }
-            </ul>
-          </div>
-          <div className="card__video-info">
-            <div className="card__title-wrap">
-              <h2 className="section-titl film-card__title">{film.title}</h2>
-              <p className="caption film-card__caption">
-                {film.info}
-              </p>
+      <ErrorBoundary>
+        <article className="card-container card-pagination">
+          <div className="card card_content_video">
+            <div className="video filmcard__preview">
+              <img onClick={openPopup} src={film.imageUrl} alt="Превью видео" className="video__img" />
+              <ul className="video__rubric-list filmcard__taglist">
+                {
+                  film.tags.map((tag) => <li key={tag.id}><p className="rubric video__rubric">{tag.name}</p></li>)
+                }
+              </ul>
             </div>
-            <button onClick={openPopup} className="link card__link link_action_open-video film-card__button" type="button">смотреть трейлер</button>
-          </div>
-        </div>
-        <div className="card card_content_annotation">
-          <div className="card__content">
-            <div className="card__annotation">
-              <p className="paragraph card__paragraph film-card__text">{film.description}</p>
+            <div className="card__video-info">
+              <div className="card__title-wrap">
+                <h2 className="section-titl film-card__title" title={film.title}>{film.title}</h2>
+                <p className="caption film-card__caption" title={film.info}>{film.info}</p>
+              </div>
+              <button onClick={openPopup} className="link card__link link_action_open-video film-card__button" type="button">смотреть трейлер</button>
             </div>
           </div>
-        </div>
-      </article>
+          <div className="card card_content_annotation">
+            <div className="card__content film-card__content">
+              <div className="card__annotation">
+                <p className="paragraph card__paragraph film-card__text">{film.description}</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </ErrorBoundary>
     );
   } catch (error) {
     console.log('Ошибка рендера карточки фильма: ', error.message);

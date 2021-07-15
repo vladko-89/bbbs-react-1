@@ -193,11 +193,9 @@ class Api {
   postMeetingStories(accessToken, data) {
     console.log(data);
     const formdata = new FormData();
-    formdata.append('image', data.image, data.image.name);
-    formdata.append('place', data.place);
-    formdata.append('date', data.date);
-    formdata.append('description', data.description);
-    formdata.append('smile', data.smile);
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === 'image') { formdata.append('image', value, value.name); } else { formdata.append(key, value); }
+    });
     return (
       fetch(`${this._baseUrl}/meetings/`, {
         method: 'POST',
@@ -327,6 +325,16 @@ class Api {
 
   async getArticles(searchParams = new URLSearchParams()) {
     return fetch(`${this._baseUrl}/entertainment/articles/?${searchParams.toString()}`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
+  }
+
+  async getArticle(id = 0) {
+    return fetch(`${this._baseUrl}/entertainment/articles/${id}/`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',

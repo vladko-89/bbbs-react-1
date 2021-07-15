@@ -12,6 +12,7 @@ import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
 import { getAccessToken } from '../../utils/utils';
 import { eventsPerPage } from '../../utils/constants';
+import Preloader from '../Preloader/Preloader';
 
 function Calendar({
   activeRubrics,
@@ -31,6 +32,8 @@ function Calendar({
   handleImmidiateBooking,
 }) {
   const [months, setMonths] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
   React.useEffect(() => {
     api.getEventMonths({
       token: getAccessToken(),
@@ -41,7 +44,8 @@ function Calendar({
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   React.useEffect(() => {
@@ -54,7 +58,7 @@ function Calendar({
       .then((res) => { setCalendarData(res); });
   }, [activeRubrics]);
 
-  return (
+  return isLoading ? <Preloader /> : (
     <>
       <main className="main">
         <section className="lead page__section">
