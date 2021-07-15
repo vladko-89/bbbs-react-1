@@ -9,7 +9,7 @@ function MeetingStoryForm({
   const {
     register, handleSubmit, setError, clearErrors, setFocus, formState: { errors, isValid },
   } = useForm({
-    reValidateMode: 'onBlur',
+    reValidateMode: 'onChange',
     mode: 'onBlur',
   });
   const [place, setPlace] = React.useState(
@@ -266,9 +266,9 @@ function MeetingStoryForm({
             <p className="caption personal-area__rating-label">
               Оцените проведенное время
               {' '}
-              <span>***</span>
+              <span className="required-field">***</span>
               {' '}
-              {errors.smile && errors.smile.type === 'required' && <span className="personal-area__form-input_error">&lt;--------------</span>}
+              {(errors.smile && smile === undefined) && <span className="personal-area__form-input_error">&lt;--------------</span>}
             </p>
 
           </div>
@@ -299,7 +299,7 @@ MeetingStoryForm.defaultProps = {
     place: '',
     description: '',
     date: '',
-    smile: '',
+    smile: undefined,
     sendToCurator: false,
     image: '',
     name: '',

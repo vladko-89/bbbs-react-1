@@ -193,6 +193,9 @@ position: relative;
 .personal-area__rating-label .personal-area__form-input_error {
   left: -10px;
 }
+.required-field {
+  color: $error;
+}
   //.personal-area__form-input_wrap_data .personal-area__form-input_error {
 //  right: 10px;
 //}
