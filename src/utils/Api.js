@@ -333,6 +333,16 @@ class Api {
       .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
   }
 
+  async getArticle(id = 0) {
+    return fetch(`${this._baseUrl}/entertainment/articles/${id}/`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json().then((data) => (res.ok ? data : Promise.reject(data))));
+  }
+
   async getFilmTags() {
     return fetch(`${this._baseUrl}/entertainment/movies/tags/`, {
       method: 'GET',

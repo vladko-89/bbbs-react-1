@@ -155,6 +155,7 @@ export default function Films() {
               />
             </nav>
           </section>
+
           <PopupVideo isOpened={isPopupOpened} setOpened={setIsPopupOpened} video={currentFilm.current} />
         </main>
       </ErrorBoundary>
