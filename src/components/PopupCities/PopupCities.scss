@@ -16,6 +16,8 @@
   }
 
   &__region {
+    overflow-y: auto;
+    width: 100%;
     margin: 0;
     padding: 15px 0;
     font-family: $protoGrotesk;

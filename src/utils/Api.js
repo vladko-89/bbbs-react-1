@@ -193,11 +193,9 @@ class Api {
   postMeetingStories(accessToken, data) {
     console.log(data);
     const formdata = new FormData();
-    formdata.append('image', data.image, data.image.name);
-    formdata.append('place', data.place);
-    formdata.append('date', data.date);
-    formdata.append('description', data.description);
-    formdata.append('smile', data.smile);
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === 'image') { formdata.append('image', value, value.name); } else { formdata.append(key, value); }
+    });
     return (
       fetch(`${this._baseUrl}/meetings/`, {
         method: 'POST',

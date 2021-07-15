@@ -29,7 +29,7 @@ function MeetingDeletePopup({
             Удалить
           </button>
           <button
-            className="button popup__delete"
+            className="button popup__cancel"
             onClick={(event) => onCloseClick(event)}
             type="button"
           >
