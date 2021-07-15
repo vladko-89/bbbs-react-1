@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import PropTypes, { bool, number, string } from 'prop-types';
 import defaultImage from '../../../images/where-to-go/img-xl.jpg';
 
@@ -18,6 +18,8 @@ const defaultMain = {
 };
 
 export default function MainArticle({ mainArticle = defaultMain }) {
+  const { url } = useRouteMatch();
+
   return (
     <article className="card-container card-container_type_main-article">
       <div className="card card_type_main" style={{ backgroundColor: mainArticle.color || defaultMain.color }}>
@@ -26,7 +28,7 @@ export default function MainArticle({ mainArticle = defaultMain }) {
           <p className="caption card__title-caption">{mainArticle.author || defaultMain.author}, {mainArticle.profession || defaultMain.profession}</p>
         </div>
         <img src={mainArticle.imageUrl || defaultMain.imageUrl} alt="Картинка основной статьи" className="card__img card__img_position_main-article" />
-        <Link to="/article" className="link card__link">читать на сайте</Link>
+        <Link to={`${url}/${mainArticle.id}`} className="link card__link">читать на сайте</Link>
       </div>
       <div className="card card_content_annotation card_type_main">
         <div className="card__content">

@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import MainArticle from './MainArticle/MainArticle';
 import ArticleCard from './ArticleCard/ArticleCard';
+import Article from './Article/Article';
 import Preloader from '../Preloader/Preloader';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
@@ -40,6 +42,7 @@ function getLimit() {
 }
 
 export default function Articles() {
+  const { path } = useRouteMatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [articles, setArticles] = React.useState([]);
   const [mainArticle, setMainArticle] = React.useState(null);
@@ -76,54 +79,61 @@ export default function Articles() {
 
     return (
       <ErrorBoundary>
-        <main className="main">
-          <section className="lead page__section">
-            <h1 className="main-title">Статьи</h1>
-          </section>
-
-          {
-            mainArticle && (
-              <section className="main-card page__section">
-                <MainArticle mainArticle={mainArticle} />
+        <Switch>
+          <Route exact path={path}>
+            <main className="main">
+              <section className="lead page__section">
+                <h1 className="main-title">Статьи</h1>
               </section>
-            )
-          }
 
-          <section className="cards-grid page__section">
-            {
-              isLoading && <div className="articles-preloader"><Preloader /></div>
-            }
-            {
-              articles.map((article) => <ArticleCard key={article.id} article={article} />)
-            }
-          </section>
+              {
+                mainArticle && (
+                  <section className="main-card page__section">
+                    <MainArticle mainArticle={mainArticle} />
+                  </section>
+                )
+              }
 
-          <section className="pagination page__section">
-            <nav className="pagination__nav" aria-label="Навигация по страницам">
-              <ReactPaginate
-                initialPage={0}
-                onPageChange={onPageChange}
-                pageCount={Math.ceil(cardCount.current / getLimit())}
-                forcePage={currentPage.current}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={3}
-                breakClassName="pagination__list-item section-title"
-                breakLinkClassName="pagination__link"
-                containerClassName="pagination__list"
-                activeClassName="pagination__link_active"
-                pageClassName="pagination__list-item section-title"
-                pageLinkClassName="pagination__link"
-                previousClassName="pagination__list-item"
-                previousLinkClassName="pagination__arrow-left"
-                nextClassName="pagination__list-item"
-                nextLinkClassName="pagination__arrow-right"
-                disabledClassName="pagination__arrow_disabled"
-                previousLabel=""
-                nextLabel=""
-              />
-            </nav>
-          </section>
-        </main>
+              <section className="cards-grid page__section">
+                {
+                  isLoading && <div className="articles-preloader"><Preloader /></div>
+                }
+                {
+                  articles.map((article) => <ArticleCard key={article.id} article={article} />)
+                }
+              </section>
+
+              <section className="pagination page__section">
+                <nav className="pagination__nav" aria-label="Навигация по страницам">
+                  <ReactPaginate
+                    initialPage={0}
+                    onPageChange={onPageChange}
+                    pageCount={Math.ceil(cardCount.current / getLimit())}
+                    forcePage={currentPage.current}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={3}
+                    breakClassName="pagination__list-item section-title"
+                    breakLinkClassName="pagination__link"
+                    containerClassName="pagination__list"
+                    activeClassName="pagination__link_active"
+                    pageClassName="pagination__list-item section-title"
+                    pageLinkClassName="pagination__link"
+                    previousClassName="pagination__list-item"
+                    previousLinkClassName="pagination__arrow-left"
+                    nextClassName="pagination__list-item"
+                    nextLinkClassName="pagination__arrow-right"
+                    disabledClassName="pagination__arrow_disabled"
+                    previousLabel=""
+                    nextLabel=""
+                  />
+                </nav>
+              </section>
+            </main>
+          </Route>
+          <Route path={`${path}/:id`}>
+            <Article />
+          </Route>
+        </Switch>
       </ErrorBoundary>
     );
   } catch (error) {

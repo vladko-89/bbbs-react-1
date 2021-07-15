@@ -402,7 +402,7 @@ function App() {
                     onClickCard={clickOnCard}
                   />
                 </Route>
-                <Route exact path="/articles">
+                <Route path="/articles">
                   <Articles />
                 </Route>
                 <Route exact path="/films">
