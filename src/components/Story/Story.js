@@ -10,6 +10,7 @@ import './Story.scss';
 SwiperCore.use([Navigation]);
 
 function Story({
+  quote,
   arrImages,
   imageUrl,
   title,
@@ -35,8 +36,7 @@ function Story({
       </p>
       <blockquote className="stories__quote">
         <p className="chapter-title stories__quote-text">
-          Первые месяцы дружбы с Никитой были непростыми – мы привыкали друг к другу. Никита не
-          верил, что я надолго в его жизни
+          {quote}
         </p>
       </blockquote>
       <Swiper
@@ -107,6 +107,7 @@ function Story({
 Story.propTypes = {
   arrImages: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.number.isRequired,
+  quote: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,

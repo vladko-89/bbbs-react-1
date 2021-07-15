@@ -16,12 +16,14 @@ function RightsCard({
       <Link to={`/rights/${card.id}`} onClick={handleClick} className="rights__link">
         <article className="catalog-card card-pagination card-pagination_type_shapes">
           <div className={`card card_color_${card.color} card_form_${card.form} rights__card`}>
-            <h2 className="section-title">
-              {card.title}
-            </h2>
-            {card.tags.map((tag) => (
-              <p key={tag.id} className="rubric rights__rubric">{tag.name}</p>
-            ))}
+            <a className="rights__link">
+              <h2 className="section-title">
+                {card.title}
+              </h2>
+              {card.tags.map((tag) => (
+                <p key={tag.id} className="rubric rights__rubric">{tag.name}</p>
+              ))}
+            </a>
           </div>
         </article>
       </Link>

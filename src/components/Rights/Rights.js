@@ -82,7 +82,7 @@ function Rights({
     api
       .getRights({ limit: RIGHTS_PER_PAGE, tags: activeRubrics })
       .then((res) => {
-        const result = formingCards(res.results, figures, colors);
+        const result = formingCards(res.results, figures);
         setRights({ ...res, results: result });
       })
       .catch((err) => console.log(err));

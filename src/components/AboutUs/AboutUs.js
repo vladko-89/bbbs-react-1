@@ -55,6 +55,7 @@ function AboutUs() {
 
         <div className="about__cards">
           <CardAboutUs
+            link="https://www.nastavniki.org/campaign/pomoch-dengami"
             title="Пожертвования"
             linkText="сделать пожертвование"
             color="blue"
@@ -71,6 +72,7 @@ function AboutUs() {
           </CardAboutUs>
 
           <CardAboutUs
+            link="https://www.nastavniki.org/volontyorstvo/kak-stat-volonterom"
             title="Наставничество"
             linkText="подробнее"
             color="pink"
@@ -88,6 +90,7 @@ function AboutUs() {
           </CardAboutUs>
 
           <CardAboutUs
+            link="https://www.nastavniki.org/oficzialno/korporativnyim-partnyoram"
             title="Партнерство"
             linkText="подробнее"
             color="green"
