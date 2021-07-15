@@ -52,7 +52,7 @@ function Profile({ user, handleImmidiateBooking }) {
         if (res.results.length > 0) {
           setIsHidden(true);
           setArrForRendForm(['empty']);
-        } else { setArrForRendForm(window.innerHeight < 1166 ? ['empty'] : ['empty', 'example']); }
+        } else { setArrForRendForm(() => (document.documentElement.clientWidth < 1380 ? ['empty'] : ['empty', 'example'])); }
       })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
@@ -104,6 +104,7 @@ function Profile({ user, handleImmidiateBooking }) {
   };
 
   const handleCancelForm = () => {
+    if (userMeetings.length === 0) return;
     setIsHidden(true);
   };
 
@@ -146,6 +147,7 @@ function Profile({ user, handleImmidiateBooking }) {
   React.useEffect(() => {
     if (userMeetings.length === 0) setIsHidden(false);
   }, [userMeetings]);
+  console.log(arrForRendForm);
   return (
     isDataReady
       ? (
@@ -182,22 +184,24 @@ function Profile({ user, handleImmidiateBooking }) {
                       Добавить встречу
                     </button>
                   )}
-                  {!isHidden && userMeetings.length === 0 (
-                    <MeetingStoryForm
-                      onSubmit={handleSubmitStory}
-                      onDelete={handleCancelForm}
-                      isExample={false}
-                    />
+                  {!isHidden && (
+                    arrForRendForm.map((el) => {
+                      let example = false;
+                      if (el === 'example') { example = true; }
+                      return (
+                        <MeetingStoryForm
+                          key={el}
+                          onSubmit={handleSubmitStory}
+                          onDelete={handleCancelForm}
+                          isExample={example}
+                        />
+                      );
+                    })
+
                   )}
 
                   <section className="stories-container">
-                    {userMeetings.length === 0 ? (
-                      <MeetingStoryForm
-                        onSubmit={handleSubmitStory}
-                        onDelete={handleCancelForm}
-                        isExample
-                      />
-                    ) : (
+                    {userMeetings.length !== 0 && (
                       userMeetings.map((item) => (
                         <MeetingStoryArticle
                           key={item.id}
