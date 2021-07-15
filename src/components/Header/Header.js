@@ -28,7 +28,7 @@ function Header({
   return (
     <header
       className={`header ${isFixed ? 'header_fixed' : ''} page__section ${
-        mobMenu ? 'header_displayed ' : ''
+        (mobMenu && document.documentElement.clientWidth < 1380) ? 'header_displayed ' : ''
       }`}
     >
       <Navigation
