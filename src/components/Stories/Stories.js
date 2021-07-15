@@ -87,6 +87,7 @@ export default function Stories() {
                   imageUrl={story.imageUrl}
                   date={story.beginningOfFriendship}
                   arrImages={story.imagesUrls}
+                  quote={story.passage}
                 />
               </li>
             ))}

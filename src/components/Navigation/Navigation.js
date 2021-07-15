@@ -46,7 +46,10 @@ function Navigation({
               <button
                 type="button"
                 className="menu__link"
-                onClick={() => onLoginPopup('/calendar')}
+                onClick={() => {
+                  onLoginPopup('/calendar');
+                  handleClickMobMenu();
+                }}
               >
                 Календарь
               </button>
@@ -251,7 +254,10 @@ function Navigation({
               type="button"
               aria-label="Войти"
               className="menu__button menu__button_type_user"
-              onClick={() => onLoginPopup('/profile')}
+              onClick={() => {
+                onLoginPopup('/profile');
+                handleClickMobMenu();
+              }}
               onKeyPress={handleClickMobMenu}
             />
           )}

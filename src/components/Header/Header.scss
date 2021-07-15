@@ -7,7 +7,7 @@
 }
 
 .header_displayed {
-  background-color: transparent;
+  background-color: #a7a6a6;
   border-radius: 0 0 30px 30px;
 }
 
@@ -17,7 +17,7 @@
   left:0;
   top:0;
   z-index: 2;
-  background-color: transparent;
+  background-color:  #f3f2f2;
   padding-top: 10px;
   padding-bottom: 10px;
   transition: .5s ease;
@@ -45,7 +45,7 @@
 
 @media screen and (min-width: 1380px){
   .header_displayed {
-    background-color: transparent;
+    background-color: #ffffff;
 
   }
 }
