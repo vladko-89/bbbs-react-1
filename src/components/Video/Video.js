@@ -33,7 +33,7 @@ function Video({
           },
           ...resTags.results,
         ]);
-        console.log('videos:', resVideos);
+        // console.log('videos:', resVideos);
         setMoviesLoad(resVideos.results);
         setMoviesToShow(resVideos.results);
       })
@@ -48,7 +48,7 @@ function Video({
     api
       .getVideos(activeRubrics)
       .then((res) => {
-        setMoviesToShow(res.result.slice(currentIndex.current, cardsPerPage));
+        setMoviesToShow(res.results.slice(currentIndex.current, cardsPerPage));
       })
       .catch((err) => console.log(err));
   }, [activeRubrics]);
@@ -63,9 +63,9 @@ function Video({
     } else {
       currentIndex.current = 0;
     }
-    setMoviesToShow(moviesToShow.slice(currentIndex.current, page * cardsPerPage));
+    // setMoviesToShow(moviesToShow.slice(currentIndex.current, page * cardsPerPage));
+    setMoviesToShow(moviesLoad.slice(currentIndex.current, page * cardsPerPage));
   }
-
   if (isDataReady) {
     return (
       <main className="main">
