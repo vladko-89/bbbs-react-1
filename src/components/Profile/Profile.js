@@ -26,6 +26,7 @@ function Profile({ user, handleImmidiateBooking }) {
   const [meetTitle, setMeetTitle] = React.useState('');
   const [meetTime, setMeetTime] = React.useState('');
   const [isDataReady, setIsDataReady] = React.useState(false);
+  const [arrForRendForm, setArrForRendForm] = React.useState([]);
 
   const handleUnsubscribe = () => {
     handleImmidiateBooking(currentEvent);
@@ -50,7 +51,8 @@ function Profile({ user, handleImmidiateBooking }) {
         setUserMeetings(res.results);
         if (res.results.length > 0) {
           setIsHidden(true);
-        }
+          setArrForRendForm(['empty']);
+        } else { setArrForRendForm(window.innerHeight < 1166 ? ['empty'] : ['empty', 'example']); }
       })
       .then(() => setIsDataReady(true))
       // eslint-disable-next-line no-console
@@ -180,7 +182,7 @@ function Profile({ user, handleImmidiateBooking }) {
                       Добавить встречу
                     </button>
                   )}
-                  {!isHidden && (
+                  {!isHidden && userMeetings.length === 0 (
                     <MeetingStoryForm
                       onSubmit={handleSubmitStory}
                       onDelete={handleCancelForm}
