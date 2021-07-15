@@ -12,7 +12,7 @@ export default function NextArticleLink({ nextArticle = null }) {
     <div className="next-article-link__next-page">
       <img
         src={nextArticle.imageUrl}
-        alt="Особенности социально дезадаптивных детей"
+        alt={nextArticle.title}
         className="next-article-link__next-page__img"
       />
       <Link to={`${nextArticle.id}`} className="next-article-link__next-page__link">

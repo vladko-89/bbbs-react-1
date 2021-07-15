@@ -53,7 +53,7 @@ export default function Article() {
             </figure>
 
             {/* TEXT BLOCK */}
-            <div className="article__container">
+            <div className="article__container article__article__container">
               <h2 className="section-title article__subtitle">
                 {article.current.profession}
               </h2>
