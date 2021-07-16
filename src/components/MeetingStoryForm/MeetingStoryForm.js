@@ -24,6 +24,7 @@ function MeetingStoryForm({
   const [errorMessageForImage, setErrorMessageForImage] = React.useState('');
   const [disabled, setDisabled] = React.useState(true);
   const fileLoad = React.useRef();
+
   React.useEffect(() => {
     if (isEdit) setFocus('place');
   }, [setFocus]);
@@ -35,11 +36,11 @@ function MeetingStoryForm({
   }, [Object.keys(errors).length, setErrorMessageForImage, place, smile, description, time]);
 
   const handlePlaceChange = (e) => {
-    setPlace(e.target.value);
+    setPlace(e.target.value.trim());
   };
   const handleDescriptionChange = (e) => {
     console.log(errors);
-    setDescription(e.target.value);
+    setDescription(e.target.value.trim());
   };
   // Время
   const handleTimeChange = (e) => {
