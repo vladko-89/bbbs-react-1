@@ -160,15 +160,15 @@ position: relative;
   position: relative;
 
   &_type_good {
-    color: $green;
+    color: $green !important;
   }
 
   &_type_neutral {
-    color: $lightGray;
+    color: $lightGray !important;
   }
 
   &_type_bad {
-    color: $error;
+    color: $error !important;
   }
 }
 

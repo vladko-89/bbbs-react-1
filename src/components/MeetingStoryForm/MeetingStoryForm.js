@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import img from '../../images/personal-area/lk.png';
 
 function MeetingStoryForm({
-  onSubmit, onDelete, values, isExample, isEdit,
+  onSubmit, onDelete, values, isEdit,
 }) {
   const {
     register, handleSubmit, setError, clearErrors, setFocus, formState: { errors, isValid },
@@ -12,17 +12,14 @@ function MeetingStoryForm({
     reValidateMode: 'onChange',
     mode: 'onBlur',
   });
-  const [place, setPlace] = React.useState(
-    isExample ? 'Парк горького' : values.place, // пример или данные из пропса
-  );
-  const [description, setDescription] = React.useState(
-    isExample ? 'Опишите встречу' : values.description,
-  );
+  const [place, setPlace] = React.useState(values.place);
+  const [description, setDescription] = React.useState(values.description);
   const [time, setTime] = React.useState(values.date);
-  const [smile, setSmile] = React.useState(isExample ? 'good' : values.smile);
+  const [smile, setSmile] = React.useState(values.smile);
   const [photoSrc, setPhotoSrc] = React.useState(values.image);
   const [errorMessageForImage, setErrorMessageForImage] = React.useState('');
   const [disabled, setDisabled] = React.useState(true);
+  const [textReaction, setTextReaction] = React.useState('');
   const fileLoad = React.useRef();
 
   React.useEffect(() => {
@@ -59,7 +56,20 @@ function MeetingStoryForm({
       delete editedData.image;
       // eslint-disable-next-line prefer-destructuring,max-len
     } else { editedData.image = data.image[0]; }// т к фото одно грузим- сразу выставляем первый эл-т из массива FileList
-    onSubmit(editedData);
+
+    try {
+      onSubmit(editedData);
+      setTime('');
+      setPlace('');
+      setErrorMessageForImage('');
+      setPhotoSrc('');
+      setDescription('');
+      setSmile('');
+      clearErrors();
+    } catch (err) {
+      setErrorMessageForImage('Что-то пошло не так');
+      console.log(err);
+    }
   };
 
   const handleCancelClick = () => {
@@ -91,7 +101,6 @@ function MeetingStoryForm({
     return true;
   }
   const handleLoadImage = (e) => {
-    if (isExample) return;
     // eslint-disable-next-line max-len
     console.log(e.target.files[0], checkSizeImage(e.target.files[0].size), checkTypeImage(e.target.files[0].type), isValid, errors);
     setErrorMessageForImage('');
@@ -134,10 +143,25 @@ function MeetingStoryForm({
     } else { setPhotoSrc(values.image); }
   }, []);
 
+  React.useEffect(() => {
+    setTextReaction(() => {
+      switch (smile) {
+        case 'bad':
+          return 'Бывает и лучше';
+        case 'neutral':
+          return 'Хорошо';
+        case 'good':
+          return 'Было классно';
+        default:
+          return 'Оцените проведенное время';
+      }
+    });
+  }, [smile]);
+
   return (
     <form
       className="card-container card-container_type_personal-area"
-      name={`add-story-form${isExample ? 'Example' : ''}`}
+      name="add-story-form"
       onSubmit={handleSubmit(onSubmitForm)}
     >
       <div className="card personal-area__card personal-area__card_type_add-photo">
@@ -156,8 +180,6 @@ function MeetingStoryForm({
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('image')}
           onChange={handleLoadImage}
-          disabled={isExample}
-
         />
         <label
           htmlFor="userImage"
@@ -180,7 +202,6 @@ function MeetingStoryForm({
               {...register('place', { required: true, maxLength: 50, minLength: 2 })}
               value={place}
               onChange={handlePlaceChange}
-              disabled={isExample}
             />
             {errors.place && errors.place.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
             {errors.place && errors.place.type === 'maxLength' && <p className="personal-area__form-input_error">Максимум 50 символов</p> }
@@ -202,7 +223,6 @@ function MeetingStoryForm({
                 max: nowDate,
               })}
               value={time}
-              disabled={isExample}
             />
             {errors.date && errors.date.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
             {errors.date && errors.date.type === 'min' && <p className="personal-area__form-input_error">Нужна правильная дата</p> }
@@ -219,7 +239,6 @@ function MeetingStoryForm({
               {...register('description', { required: true, maxLength: 5000, minLength: 2 })}
               value={description}
               onChange={handleDescriptionChange}
-              disabled={isExample}
             />
             {errors.description && errors.description.type === 'required' && <p className="personal-area__form-input_error">Поле необходимо заполнить</p>}
             {errors.description && errors.description.type === 'minLength' && <p className="personal-area__form-input_error">Минимум 2 символа</p> }
@@ -235,7 +254,6 @@ function MeetingStoryForm({
               className="personal-area__radioBtn-smile"
               onChange={handleSmileChange}
               required
-              disabled={isExample}
             />
             <label
               htmlFor="good"
@@ -254,7 +272,7 @@ function MeetingStoryForm({
               // onChange={handleChangeReaction}
               onChange={handleSmileChange}
               required
-              disabled={isExample}
+
             />
             <label
               htmlFor="neutral"
@@ -271,7 +289,7 @@ function MeetingStoryForm({
               value="bad"
               className="personal-area__radioBtn-smile"
               onChange={handleSmileChange}
-              disabled={isExample}
+
             />
             <label
               className="personal-area__rate personal-area__rate_type_bad"
@@ -279,11 +297,9 @@ function MeetingStoryForm({
               aria-label="bad"
               title="Бывает и лучше"
             />
-            <p className="caption personal-area__rating-label">
-              Оцените проведенное время
-              {' '}
-              <span className="required-field">***</span>
-              {' '}
+            <p className={`caption personal-area__rating-label personal-area__rating-label_type_${smile}`}>
+              {textReaction}
+
               {(errors.smile && smile === undefined) && <span className="personal-area__form-input_error">&lt;--------------</span>}
             </p>
 
@@ -308,7 +324,7 @@ function MeetingStoryForm({
 }
 
 MeetingStoryForm.defaultProps = {
-  isExample: false,
+
   values: {
     id: 0,
     place: '',
@@ -323,7 +339,7 @@ MeetingStoryForm.defaultProps = {
 };
 
 MeetingStoryForm.propTypes = {
-  isExample: PropTypes.bool,
+
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   values: PropTypes.PropTypes.shape({
