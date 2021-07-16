@@ -62,10 +62,12 @@ function Profile({ user, handleImmidiateBooking }) {
   console.log(userMeetings);
   // eslint-disable-next-line no-console
   console.log(selectedMeetings);
+
   const handleEditClick = (meeting) => {
     setSelectedMeetings(meeting);
     setIsHidden(true);
   };
+
   const handleDeleteMeetClick = (time, meeting) => {
     setSelectedMeetings(meeting);
     setMeetTitle(
