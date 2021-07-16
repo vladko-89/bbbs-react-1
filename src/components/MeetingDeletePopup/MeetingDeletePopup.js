@@ -23,7 +23,7 @@ function MeetingDeletePopup({
       onKeyDown={(event) => onCloseClick(event)}
     >
       <div className="popup__container popup__container_type_lk">
-        <h2 className="section-title personal__title">{title}</h2>
+        <h2 className="section-title personal__title">{`Удалить встречу ${title} ?`}</h2>
         <div className="popup__buttons">
           <button className="button popup__delete" onClick={onDeleteClick} type="button">
             Удалить
