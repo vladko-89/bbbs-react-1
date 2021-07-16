@@ -11,6 +11,7 @@ import ArticleCard from '../Articles/ArticleCard/ArticleCard';
 import FilmCard from '../Films/FilmCard/FilmCard';
 import BookCard from '../Books/BookCard/BookCard';
 import PopupVideo from '../Films/PopupVideo/PopupVideo';
+import Preloader from '../Preloader/Preloader';
 
 export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
   const [videoToShow, setVideoToShow] = React.useState([]);
@@ -21,6 +22,7 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
   const [isPopupOpened, setIsPopupOpened] = React.useState(false);
   const currentFilm = React.useRef({});
   const isAnnotation = false;
+  const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     // eslint-disable-next-line max-len
     Promise.all([api.getVideos(), api.getGuides({}), api.getArticles(), api.getFilms(), api.getBooks()])
@@ -34,7 +36,8 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
   const breakpoints = {
     320: {
@@ -56,7 +59,9 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
     setIsPopupOpened(true);
   }
 
-  return (
+  return isLoading ? (
+    <Preloader />
+  ) : (
     <main className="main">
       <section className="rights preview page__section">
         <div className="preview__title-wrap">
@@ -75,20 +80,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
           className="preview__row preview__card catalog-card"
           slidesPerView="auto"
           breakpoints={breakpoints}
-          // breakpoints={{
-          //   320: {
-          //     spaceBetween: 15,
-          //     slidesPerView: 1,
-          //   },
-          //   720: {
-          //     spaceBetween: 25,
-          //     slidesPerView: 2,
-          //   },
-          //   1024: {
-          //     spaceBetween: 30,
-          //     slidesPerView: 3,
-          //   },
-          // }}
           navigation={{
             prevEl: '.catalog__button_left',
             nextEl: '.catalog__button_right',
@@ -135,17 +126,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
             breakpoints={breakpoints}
-            // breakpoints={{
-            //   320: {
-            //     spaceBetween: 15,
-            //   },
-            //   720: {
-            //     spaceBetween: 25,
-            //   },
-            //   1024: {
-            //     spaceBetween: 30,
-            //   },
-            // }}
             navigation={{
               prevEl: '.video__button_left',
               nextEl: '.video__button_right',
@@ -188,17 +168,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
             breakpoints={breakpoints}
-            // breakpoints={{
-            //   320: {
-            //     spaceBetween: 15,
-            //   },
-            //   720: {
-            //     spaceBetween: 25,
-            //   },
-            //   1024: {
-            //     spaceBetween: 30,
-            //   },
-            // }}
             navigation={{
               prevEl: '.articles__button_left',
               nextEl: '.articles__button_right',
@@ -231,17 +200,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
             breakpoints={breakpoints}
-            // breakpoints={{
-            //   320: {
-            //     spaceBetween: 15,
-            //   },
-            //   720: {
-            //     spaceBetween: 25,
-            //   },
-            //   1024: {
-            //     spaceBetween: 30,
-            //   },
-            // }}
             navigation={{
               prevEl: '.films__button_left',
               nextEl: '.films__button_right',
@@ -281,17 +239,6 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
             className="preview__row preview__card catalog-card"
             slidesPerView="auto"
             breakpoints={breakpoints}
-            // breakpoints={{
-            //   320: {
-            //     spaceBetween: 15,
-            //   },
-            //   720: {
-            //     spaceBetween: 25,
-            //   },
-            //   1024: {
-            //     spaceBetween: 30,
-            //   },
-            // }}
             navigation={{
               prevEl: '.books__button_left',
               nextEl: '.books__button_right',
