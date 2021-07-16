@@ -55,12 +55,14 @@
   border: 0;
   background-color: transparent;
   cursor: pointer;
-
+white-space: nowrap;
   &:hover {
     color: $blue;
   }
 }
-
+.menu__link-calendar-for-nologin {
+  padding: 0;
+}
 .menu__dropdown-list {
   visibility: hidden;
   opacity: 0;
@@ -392,7 +394,9 @@
     top: 50px;
     justify-content: flex-end;
   }
-
+.menu__list-item_about {
+  display: none;
+}
 }
 
 @media screen and (max-width: 1430px) and (min-width: 1380px) {

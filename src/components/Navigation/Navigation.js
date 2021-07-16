@@ -33,17 +33,16 @@ function Navigation({
         } `}
       >
         <ul className="menu__list">
-          {!!mobMenu && (
-            <li className="menu__list-item">
-              <NavLink
-                to="/about"
-                className="menu__link"
-                onClick={handleClickMobMenu}
-              >
-                о проекте
-              </NavLink>
-            </li>
-          )}
+
+          <li className="menu__list-item menu__list-item_about">
+            <NavLink
+              to="/about"
+              className="menu__link"
+              onClick={handleClickMobMenu}
+            >
+              о проекте
+            </NavLink>
+          </li>
           <li className="menu__list-item">
             {loggedIn ? (
               <NavLink
@@ -56,7 +55,7 @@ function Navigation({
             ) : (
               <button
                 type="button"
-                className="menu__link"
+                className="menu__link menu__link-calendar-for-nologin"
                 onClick={() => {
                   onLoginPopup('/calendar');
                   handleClickMobMenu();
