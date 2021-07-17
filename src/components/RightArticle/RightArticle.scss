@@ -19,6 +19,9 @@
     }
   }
 }
+.container {
+  width: 52%;
+}
 
 .pagination__nav {
   display: flex;
@@ -310,10 +313,8 @@
 }
 
 .next-page {
-  margin-right: auto;
   padding-top: 80px;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -321,6 +322,7 @@
   width: 70px;
   height: 70px;
   border-radius: 100%;
+  background-color: #8cdd94;
 }
 
 .next-page__link {

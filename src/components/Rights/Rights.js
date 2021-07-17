@@ -8,7 +8,7 @@ import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
 import { formingCards, splitOnBlocks } from '../../utils/utils';
-import { figures, colors, RIGHTS_PER_PAGE } from '../../utils/constants';
+import { figures, RIGHTS_PER_PAGE } from '../../utils/constants';
 
 function Rights({
   activeRubrics,
@@ -30,7 +30,7 @@ function Rights({
         tags: activeRubrics,
       })
       .then((res) => {
-        const result = formingCards(res.results, figures, colors);
+        const result = formingCards(res.results, figures);
         setRights({ ...res, results: result });
       });
   }
@@ -68,7 +68,7 @@ function Rights({
           ...resTags.results,
         ]);
         // console.log(resRights);
-        const result = formingCards(resRights.results, figures, colors);
+        const result = formingCards(resRights.results, figures);
         setRights({ ...resRights, results: result });
       })
       .catch((err) => {
