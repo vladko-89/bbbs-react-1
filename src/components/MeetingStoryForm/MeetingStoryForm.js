@@ -33,12 +33,21 @@ function MeetingStoryForm({
   }, [Object.keys(errors).length, setErrorMessageForImage, place, smile, description, time]);
 
   const handlePlaceChange = (e) => {
-    setPlace(e.target.value.trim());
+    if (e.target.value.split('').every((el) => el === ' ')) {
+      setPlace('');
+    } else {
+      setPlace(e.target.value);
+    }
   };
   const handleDescriptionChange = (e) => {
-    console.log(errors);
-    setDescription(e.target.value.trim());
+    if (e.target.value.split('')
+      .every((el) => el === ' ')) {
+      setDescription('');
+    } else {
+      setDescription(e.target.value);
+    }
   };
+
   // Время
   const handleTimeChange = (e) => {
     setTime(e.target.value);
