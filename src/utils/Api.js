@@ -95,7 +95,6 @@ class Api {
   }
 
   addPlace(accessToken, place) {
-    console.log(place);
     const formData = new FormData();
     formData.append('imageUrl', place.imageUrl[0], place.imageUrl[0].name);
     formData.append('title', place.title);
@@ -432,7 +431,7 @@ class Api {
 
   // КАРТОЧКИ ВИДЕО
   // Получаю карточки видео
-  getVideos(tags, limit, offset) {
+  getVideos({ tags, limit, offset }) {
     const params = new URLSearchParams();
     if (tags) tags.forEach((tag) => params.append('tag', tag));
     if (limit) {

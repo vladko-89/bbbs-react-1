@@ -14,16 +14,33 @@ function Video({
   activeRubrics,
   selectRubric,
 }) {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [mainVideo, setMainVideo] = React.useState({});
-  const [moviesLoad, setMoviesLoad] = React.useState([]);
-  const [moviesToShow, setMoviesToShow] = React.useState([]);
-  const [isDataReady, setIsDataReady] = React.useState(false);
+  const [movies, setMovies] = React.useState([]);
   const [tags, setTags] = React.useState([]);
-  const currentIndex = React.useRef(0);
+
+  function onPageChange(page) {
+    const offset = page !== 1 ? page * cardsPerPage - cardsPerPage : 0;
+    api
+      .getVideos({
+        limit: cardsPerPage,
+        offset,
+        tags: activeRubrics,
+      })
+      .then((res) => setMovies(res));
+  }
 
   React.useEffect(() => {
-    Promise.all([api.getMain(), api.getVideosTags(), api.getVideos()])
-      .then(([resMain, resTags, resVideos]) => {
+    Promise.all([api.getMain(),
+      api.getVideosTags(),
+      api.getVideos({
+        limit: cardsPerPage,
+        offset: 0,
+        tags: activeRubrics,
+      })])
+      .then(([resMain,
+        resTags,
+        resVideos]) => {
         setMainVideo(resMain.video);
         setTags([
           {
@@ -34,81 +51,68 @@ function Video({
           ...resTags.results,
         ]);
         // console.log('videos:', resVideos);
-        setMoviesLoad(resVideos.results);
-        setMoviesToShow(resVideos.results);
+        setMovies(resVideos);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
       })
-      .finally(() => setIsDataReady(true));
+      .finally(() => setIsLoading(false));
   }, []);
 
   React.useEffect(() => {
     api
-      .getVideos(activeRubrics)
-      .then((res) => {
-        setMoviesToShow(res.results.slice(currentIndex.current, cardsPerPage));
+      .getVideos({
+        limit: cardsPerPage,
+        tags: activeRubrics,
       })
-      .catch((err) => console.log(err));
+      .then((res) => setMovies(res));
   }, [activeRubrics]);
 
   React.useEffect(() => {
     selectRubric('All', true);
   }, []);
 
-  function onPageChange(page) {
-    if (page !== 1) {
-      currentIndex.current = page * cardsPerPage - cardsPerPage;
-    } else {
-      currentIndex.current = 0;
-    }
-    // setMoviesToShow(moviesToShow.slice(currentIndex.current, page * cardsPerPage));
-    setMoviesToShow(moviesLoad.slice(currentIndex.current, page * cardsPerPage));
-  }
-  if (isDataReady) {
-    return (
-      <main className="main">
-        <section className="lead page__section">
-          <MainTitle title="Видео" />
-          <Filter array={tags} selectRubric={selectRubric} />
-        </section>
-        <section className="main-card page__section">
-          <MainVideo
-            title={mainVideo.title}
-            info={mainVideo.info}
-            link={mainVideo.link}
-            imageUrl={mainVideo.imageUrl}
-            duration={mainVideo.duration}
-            tags={mainVideo.tags}
+  return isLoading ? <Preloader /> : (
+    <main className="main">
+      <section className="lead page__section">
+        <MainTitle title="Видео" />
+        <Filter array={tags} selectRubric={selectRubric} />
+      </section>
+      <section className="main-card page__section">
+        <MainVideo
+          title={mainVideo.title}
+          info={mainVideo.info}
+          link={mainVideo.link}
+          imageUrl={mainVideo.imageUrl}
+          duration={mainVideo.duration}
+          tags={mainVideo.tags}
+          activeRubrics={activeRubrics}
+        />
+      </section>
+      <section className="main-section page__section cards-grid cards-grid_content_small-cards">
+        {movies.results.map((movie) => (
+          <MainVideoPreview
+            link={movie.link}
+            key={movie.id}
+            title={movie.title}
+            imageUrl={movie.imageUrl}
+            caption={movie.caption}
+            info={movie.info}
+            tags={movie.tags}
             activeRubrics={activeRubrics}
           />
-        </section>
-        <section className="main-section page__section cards-grid cards-grid_content_small-cards">
-          {moviesToShow.map((movie) => (
-            <MainVideoPreview
-              link={movie.link}
-              key={movie.id}
-              title={movie.title}
-              imageUrl={movie.imageUrl}
-              caption={movie.caption}
-              info={movie.info}
-              tags={movie.tags}
-              activeRubrics={activeRubrics}
-            />
-          ))}
-        </section>
-        <Pagination
-          cardsLength={moviesLoad.length}
-          onPageChange={onPageChange}
-          cardsPerPage={cardsPerPage}
-        />
-      </main>
+        ))}
+      </section>
+      {(movies.count > cardsPerPage) && (
+      <Pagination
+        cardsLength={movies.count}
+        onPageChange={onPageChange}
+        cardsPerPage={cardsPerPage}
+      />
+      )}
+    </main>
 
-    );
-  }
-  return (
-    <Preloader />
   );
 }
 
