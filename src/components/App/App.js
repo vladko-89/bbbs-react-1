@@ -413,11 +413,11 @@ function App() {
                 <Route exact path="/stories">
                   <Stories />
                 </Route>
-                <Route exact path={`/rights/${currentCard.id}`}>
+                <Route exact path="/rights/:id">
                   <RightArticle card={currentCard} />
                 </Route>
-                <Route exact path={`/guides/${currentCard.id}`}>
-                  <GuideArticle card={currentCard} />
+                <Route exact path="/guides/:id">
+                  <GuideArticle />
                 </Route>
                 <Route exact path="*">
                   <PageNotFound />

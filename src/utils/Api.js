@@ -483,6 +483,13 @@ class Api {
       .then((res) => res.data)
       .catch((error) => console.log(error));
   }
+
+  getGuideArticle(id) {
+    return axios
+      .get(`${this._baseUrl}/entertainment/guides/${id}/`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+  }
 }
 
 const api = new Api(baseUrl);
