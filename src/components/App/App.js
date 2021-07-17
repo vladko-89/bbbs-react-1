@@ -63,7 +63,6 @@ function App() {
 
   function clickOnCard(card) {
     setCurrentCard(card);
-    console.log('current', currentCard);
   }
 
   function onPageChange(page) {
