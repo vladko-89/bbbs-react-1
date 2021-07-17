@@ -90,11 +90,11 @@ white-space: nowrap;
 }
 
 .menu__dropdown-link {
-  color: $black;
+  color: $black !important;
   transition: .2s linear;
 
   &:hover {
-    color: $blue;
+    color: $blue !important;
   }
 }
 
