@@ -127,7 +127,7 @@ function Places({
         info={places?.results[0]?.info}
         description={places?.results[0]?.description}
       />
-      <PlacesCards places={places.results} />
+      <PlacesCards places={places.results.slice(1)} />
       {(places.count > PLACES_PER_PAGE) && (
         <Pagination
           cardsLength={places.count}
