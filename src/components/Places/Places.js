@@ -80,7 +80,7 @@ function Places({
       })
 
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [currentUser]);
 
   React.useEffect(() => {
     api

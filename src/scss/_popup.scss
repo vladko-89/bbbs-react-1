@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    z-index: 2;
+    z-index: 11;
     margin: 75px auto 0;
     padding: 50px 100px;
     border-radius: 30px;
@@ -59,6 +59,7 @@
       justify-content: flex-start;
       max-width: 400px;
       max-height: 547px;
+      z-index: 2;
     }
 
     &_type_lk {

@@ -7,13 +7,15 @@ export default function BookCard({ book }) {
   return (
     <article className="card-container card-pagination">
       <div className="card card_content_book">
-        <div className="book" style={{ backgroundColor: book.color }}>
-          <h2 className="section-title book__title">{book.title}</h2>
-          <div className="book__info">
-            <p className="caption book__author">{book.author}</p>
-            <p className="caption book__year">{book.year}</p>
+        <a className="book__link" href={book.link} target="_blank" rel="noreferrer">
+          <div className="book" style={{ backgroundColor: book.color }}>
+            <h2 className="section-title book__title">{book.title}</h2>
+            <div className="book__info">
+              <p className="caption book__author">{book.author}</p>
+              <p className="caption book__year">{book.year}</p>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
       <div className="card card_content_annotation">
         <div className="card__content">
@@ -39,5 +41,6 @@ BookCard.propTypes = {
     year: PropTypes.number,
     description: PropTypes.string,
     color: PropTypes.string,
+    link: PropTypes.string,
   }).isRequired,
 };

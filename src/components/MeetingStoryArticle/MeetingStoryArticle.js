@@ -59,7 +59,7 @@ function MeetingStoryArticle({
   };
   // даты
   const date = new Date(dataStory.date);
-  const month = date.toLocaleString('default', { month: 'long' });
+  const month = date.toLocaleString('ru-RU', { month: 'long' });
   const day = date.getDate();
   const year = date.getFullYear();
 
@@ -82,7 +82,7 @@ function MeetingStoryArticle({
   const reaction = setReaction();
 
   const handleDelete = () => {
-    const time = `${month}, ${year}`;
+    const time = `${day} ${month} ${year}`;
     onDelete(time, dataStory);
   };
 

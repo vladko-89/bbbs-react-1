@@ -33,6 +33,16 @@ function Navigation({
         } `}
       >
         <ul className="menu__list">
+
+          <li className="menu__list-item menu__list-item_about">
+            <NavLink
+              to="/about"
+              className="menu__link"
+              onClick={handleClickMobMenu}
+            >
+              о проекте
+            </NavLink>
+          </li>
           <li className="menu__list-item">
             {loggedIn ? (
               <NavLink
@@ -45,8 +55,11 @@ function Navigation({
             ) : (
               <button
                 type="button"
-                className="menu__link"
-                onClick={() => onLoginPopup('/calendar')}
+                className="menu__link menu__link-calendar-for-nologin"
+                onClick={() => {
+                  onLoginPopup('/calendar');
+                  handleClickMobMenu();
+                }}
               >
                 Календарь
               </button>
@@ -209,15 +222,16 @@ function Navigation({
               {loggedIn ? `${currentUser.city.name}.  Изменить город` : `${currentUser.city.name}. Изменить ваш город`}
             </button>
 
-            <Route path="/profile">
-              <Link
-                to="/"
-                className="personal-area__user-link personal-area__user-link_type_exit"
-                onClick={onLogOutClick}
-              >
-                Выйти
-              </Link>
-            </Route>
+            {loggedIn && mobMenu && (
+            <Link
+              to="/"
+              className="personal-area__user-link personal-area__user-link_type_exit"
+              onClick={onLogOutClick}
+            >
+              Выйти
+            </Link>
+            )}
+
           </div>
         </Route>
       </div>
@@ -251,7 +265,10 @@ function Navigation({
               type="button"
               aria-label="Войти"
               className="menu__button menu__button_type_user"
-              onClick={() => onLoginPopup('/profile')}
+              onClick={() => {
+                onLoginPopup('/profile');
+                handleClickMobMenu();
+              }}
               onKeyPress={handleClickMobMenu}
             />
           )}

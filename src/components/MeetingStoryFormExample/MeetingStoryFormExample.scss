@@ -1,0 +1,23 @@
+@import '../../scss/variables.scss';
+@import '../../scss/mixins.scss';
+
+.personal-area__rate_type_good-example {
+  background-image: url('../../images/personal-area/good-active.svg');
+}
+
+.personal-area__rating-label-example {
+  color: $green;
+  font-family: "PTRootUIWebRegular", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+
+}
+
+@media screen and (max-width: 1380px) {
+
+  .example-form {
+    display: none !important;
+  }
+}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 function CardAboutUs(
   {
+    link,
     color,
     title,
     children,
@@ -19,7 +20,7 @@ function CardAboutUs(
           {children}
         </div>
         <a
-          href="https://yandex.ru"
+          href={link}
           rel="noreferrer"
           target="_blank"
           className="link card__link about__card-link"
@@ -32,6 +33,7 @@ function CardAboutUs(
 }
 
 CardAboutUs.propTypes = {
+  link: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,

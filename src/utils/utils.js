@@ -137,17 +137,13 @@ export function toggleTag(tag, tagArray) {
   return [...tagArray, tag];
 }
 
-export function formingCards(cardsArr, formsArr, colorsArr) {
+export function formingCards(cardsArr, formsArr) {
   function getForm(count, forms) {
     if (count >= forms.length) { return forms[count % forms.length]; }
     return forms[count];
   }
-  function getColor(count, colors) {
-    if (count >= colors.length) { return colors[count % colors.length]; }
-    return colors[count];
-  }
   const NewArr = cardsArr.map((card, index) => ({ ...card, form: getForm(index, formsArr) }));
-  const result = NewArr.map((card, index) => ({ ...card, color: getColor(index, colorsArr) }));
-  console.log('NewArr', result);
-  return result;
+
+  console.log('NewArr', NewArr);
+  return NewArr;
 }

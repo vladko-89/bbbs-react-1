@@ -12,6 +12,7 @@ import { getAccessToken } from '../../utils/utils';
 import CalendarDescription from '../CalendarDescription/CalendarDescription';
 import Preloader from '../Preloader/Preloader';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import MeetingStoryFormExample from '../MeetingStoryFormExample/MeetingStoryFormExample';
 
 function Profile({ user, handleImmidiateBooking }) {
   const [userEvents, setUserEvents] = React.useState([]);// события календаря
@@ -60,10 +61,12 @@ function Profile({ user, handleImmidiateBooking }) {
   console.log(userMeetings);
   // eslint-disable-next-line no-console
   console.log(selectedMeetings);
+
   const handleEditClick = (meeting) => {
     setSelectedMeetings(meeting);
     setIsHidden(true);
   };
+
   const handleDeleteMeetClick = (time, meeting) => {
     setSelectedMeetings(meeting);
     setMeetTitle(
@@ -102,6 +105,7 @@ function Profile({ user, handleImmidiateBooking }) {
   };
 
   const handleCancelForm = () => {
+    if (userMeetings.length === 0) return;
     setIsHidden(true);
   };
 
@@ -144,6 +148,7 @@ function Profile({ user, handleImmidiateBooking }) {
   React.useEffect(() => {
     if (userMeetings.length === 0) setIsHidden(false);
   }, [userMeetings]);
+
   return (
     isDataReady
       ? (
@@ -181,21 +186,17 @@ function Profile({ user, handleImmidiateBooking }) {
                     </button>
                   )}
                   {!isHidden && (
-                    <MeetingStoryForm
-                      onSubmit={handleSubmitStory}
-                      onDelete={handleCancelForm}
-                      isExample={false}
-                    />
+                  <MeetingStoryForm
+                    onSubmit={handleSubmitStory}
+                    onDelete={handleCancelForm}
+                    isExample={false}
+                  />
                   )}
-
+                  {userMeetings.length === 0 && (
+                  <MeetingStoryFormExample />
+                  )}
                   <section className="stories-container">
-                    {userMeetings.length === 0 ? (
-                      <MeetingStoryForm
-                        onSubmit={handleSubmitStory}
-                        onDelete={handleCancelForm}
-                        isExample
-                      />
-                    ) : (
+                    {userMeetings.length !== 0 && (
                       userMeetings.map((item) => (
                         <MeetingStoryArticle
                           key={item.id}

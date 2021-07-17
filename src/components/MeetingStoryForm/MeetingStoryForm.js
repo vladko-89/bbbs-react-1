@@ -4,27 +4,50 @@ import { useForm } from 'react-hook-form';
 import img from '../../images/personal-area/lk.png';
 
 function MeetingStoryForm({
-  onSubmit, onDelete, values, isExample, isEdit,
+  onSubmit, onDelete, values, isEdit,
 }) {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    reValidateMode: 'onBlur',
-    mode: 'onTouched',
+  const {
+    register, handleSubmit, setError, clearErrors, setFocus, formState: { errors, isValid },
+  } = useForm({
+    reValidateMode: 'onChange',
+    mode: 'onBlur',
   });
-  const [place, setPlace] = React.useState(
-    isExample ? 'Парк горького' : values.place, // пример или данные из пропса
-  );
-  const [description, setDescription] = React.useState(
-    isExample ? 'Опишите встречу' : values.description,
-  );
-  const [time, setTime] = React.useState(values.date.slice(0, 10));
-  const [smile, setSmile] = React.useState(isExample ? 'good' : values.smile);
+  const [place, setPlace] = React.useState(values.place);
+  const [description, setDescription] = React.useState(values.description);
+  const [time, setTime] = React.useState(values.date);
+  const [smile, setSmile] = React.useState(values.smile);
   const [photoSrc, setPhotoSrc] = React.useState(values.image);
+  const [errorMessageForImage, setErrorMessageForImage] = React.useState('');
+  const [disabled, setDisabled] = React.useState(true);
+  const [textReaction, setTextReaction] = React.useState('');
+  const fileLoad = React.useRef();
+
+  React.useEffect(() => {
+    if (isEdit) setFocus('place');
+  }, [setFocus]);
+
+  React.useEffect(() => {
+    if (Object.keys(errors).length === 0 && errorMessageForImage === '' && smile !== '') {
+      setDisabled(false);
+    } else { setDisabled(true); }
+  }, [Object.keys(errors).length, setErrorMessageForImage, place, smile, description, time]);
+
   const handlePlaceChange = (e) => {
-    setPlace(e.target.value);
+    if (e.target.value.split('').every((el) => el === ' ')) {
+      setPlace('');
+    } else {
+      setPlace(e.target.value);
+    }
   };
   const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
+    if (e.target.value.split('')
+      .every((el) => el === ' ')) {
+      setDescription('');
+    } else {
+      setDescription(e.target.value);
+    }
   };
+
   // Время
   const handleTimeChange = (e) => {
     setTime(e.target.value);
@@ -42,17 +65,77 @@ function MeetingStoryForm({
       delete editedData.image;
       // eslint-disable-next-line prefer-destructuring,max-len
     } else { editedData.image = data.image[0]; }// т к фото одно грузим- сразу выставляем первый эл-т из массива FileList
-    onSubmit(editedData);
+
+    try {
+      onSubmit(editedData);
+      setTime('');
+      setPlace('');
+      setErrorMessageForImage('');
+      setPhotoSrc('');
+      setDescription('');
+      setSmile('');
+      clearErrors();
+    } catch (err) {
+      setErrorMessageForImage('Что-то пошло не так');
+      console.log(err);
+    }
   };
 
-  const handleLoadImage = (e) => {
-    setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+  const handleCancelClick = () => {
+    setTime('');
+    setPlace('');
+    setErrorMessageForImage('');
+    setPhotoSrc('');
+    setDescription('');
+    setSmile('');
+    clearErrors();
+    onDelete();
   };
+
+  function checkSizeImage(size) {
+    if (size > 10485760) {
+      setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
+      return false;
+    }
+    setErrorMessageForImage('');
+    return true;
+  }
+  function checkTypeImage(type) {
+    console.log(type);
+    if (['image/jpeg', 'image/png', 'image/gif', 'image/jpg'].indexOf(type) < 0) {
+      setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
+      return false;
+    }
+    setErrorMessageForImage('');
+    return true;
+  }
+  const handleLoadImage = (e) => {
+    // eslint-disable-next-line max-len
+    console.log(e.target.files[0], checkSizeImage(e.target.files[0].size), checkTypeImage(e.target.files[0].type), isValid, errors);
+    setErrorMessageForImage('');
+    clearErrors('image');
+    if (e.target.files[0]) {
+      if (checkSizeImage(e.target.files[0].size)) {
+        if (checkTypeImage(e.target.files[0].type)) {
+          setErrorMessageForImage('');
+          clearErrors('image');
+          setPhotoSrc(window.URL.createObjectURL(e.target.files[0]));
+        }
+      } else {
+        setError('image', {
+          type: 'manual',
+          message: 'Файл в формате jpeg/png/gif и размером не более 10мб',
+        });
+        setErrorMessageForImage('Файл в формате jpeg/png/gif и размером не более 10мб');
+      }
+    }
+  };
+
   // граничные значения для инпута даты
   const nowDate = new Date().toISOString().substring(0, 10);
   const oldDate = new Date(2010, 12, 31).toISOString().substring(0, 10);
 
-  // установка реакции при редактировании
+  // установка реакции & image при редактировании
   React.useEffect(() => {
     if (values.smile !== '') {
       const reactionLists = Array.from(
@@ -69,6 +152,21 @@ function MeetingStoryForm({
     } else { setPhotoSrc(values.image); }
   }, []);
 
+  React.useEffect(() => {
+    setTextReaction(() => {
+      switch (smile) {
+        case 'bad':
+          return 'Бывает и лучше';
+        case 'neutral':
+          return 'Хорошо';
+        case 'good':
+          return 'Было классно';
+        default:
+          return 'Оцените проведенное время';
+      }
+    });
+  }, [smile]);
+
   return (
     <form
       className="card-container card-container_type_personal-area"
@@ -76,13 +174,6 @@ function MeetingStoryForm({
       onSubmit={handleSubmit(onSubmitForm)}
     >
       <div className="card personal-area__card personal-area__card_type_add-photo">
-        {isExample && (
-          <img
-            src={img}
-            alt="Катя"
-            className="personal-area__card_photo"
-          />
-        )}
         {photoSrc !== '' && (
         <img
           src={photoSrc}
@@ -93,17 +184,18 @@ function MeetingStoryForm({
         <input
           className="personal-area__add-photo-button"
           type="file"
-          accept="image/jpeg, image/png, image/gif"
           id="userImage"
+          accept="image/jpeg, image/png, image/gif"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('image')}
           onChange={handleLoadImage}
         />
-
         <label
           htmlFor="userImage"
           className="caption personal-area__bottom-caption"
+          ref={fileLoad}
         />
+        <p className="personal-area__form-input_error_type-input">{errorMessageForImage}</p>
       </div>
       <div className="card personal-area__card personal-area__card_type_content">
         <div className="personal-area__form">
@@ -113,6 +205,8 @@ function MeetingStoryForm({
               placeholder="Место встречи"
               className="personal-area__form-input personal-area__form-input_type_place"
               id="place"
+              minLength={2}
+              maxLength={50}
             // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('place', { required: true, maxLength: 50, minLength: 2 })}
               value={place}
@@ -129,6 +223,8 @@ function MeetingStoryForm({
               className="personal-area__form-input personal-area__form-input_type_data"
               onInput={handleTimeChange}
               id="date"
+              min={oldDate}
+              max={nowDate}
             // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('date', {
                 required: true,
@@ -146,6 +242,7 @@ function MeetingStoryForm({
               className="personal-area__form-input personal-area__form-input_type_textarea"
               placeholder="Опишите вашу встречу, какие чувства вы испытывали, что понравилось / не понравилось"
               maxLength={5000}
+              minLength={2}
               id="description"
             // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('description', { required: true, maxLength: 5000, minLength: 2 })}
@@ -165,7 +262,7 @@ function MeetingStoryForm({
               value="good"
               className="personal-area__radioBtn-smile"
               onChange={handleSmileChange}
-
+              required
             />
             <label
               htmlFor="good"
@@ -183,6 +280,7 @@ function MeetingStoryForm({
               className="personal-area__radioBtn-smile"
               // onChange={handleChangeReaction}
               onChange={handleSmileChange}
+              required
 
             />
             <label
@@ -208,10 +306,10 @@ function MeetingStoryForm({
               aria-label="bad"
               title="Бывает и лучше"
             />
-            <p className="caption personal-area__rating-label">
-              Оцените проведенное время
-              {' '}
-              {errors.smile && errors.smile.type === 'required' && <span className="personal-area__form-input_error">&lt;--------------</span>}
+            <p className={`caption personal-area__rating-label personal-area__rating-label_type_${smile}`}>
+              {textReaction}
+
+              {(errors.smile && smile === undefined) && <span className="personal-area__form-input_error">&lt;--------------</span>}
             </p>
 
           </div>
@@ -220,12 +318,11 @@ function MeetingStoryForm({
             <button
               className="button personal-area__delete"
               type="button"
-              onClick={onDelete}
-              disabled={!!isExample}
+              onClick={handleCancelClick}
             >
               Отменить
             </button>
-            <button className="button" type="submit" disabled={!!isExample}>
+            <button className="button personal-area__save" type="submit" disabled={disabled}>
               {isEdit ? 'Сохранить' : 'Добавить'}
             </button>
           </div>
@@ -236,13 +333,13 @@ function MeetingStoryForm({
 }
 
 MeetingStoryForm.defaultProps = {
-  isExample: false,
+
   values: {
     id: 0,
     place: '',
     description: '',
     date: '',
-    smile: '',
+    smile: undefined,
     sendToCurator: false,
     image: '',
     name: '',
@@ -251,7 +348,7 @@ MeetingStoryForm.defaultProps = {
 };
 
 MeetingStoryForm.propTypes = {
-  isExample: PropTypes.bool,
+
   onSubmit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   values: PropTypes.PropTypes.shape({

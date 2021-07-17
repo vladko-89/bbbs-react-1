@@ -160,17 +160,18 @@ position: relative;
   position: relative;
 
   &_type_good {
-    color: $green;
+    color: $green !important;
   }
 
   &_type_neutral {
-    color: $lightGray;
+    color: $lightGray !important;
   }
 
   &_type_bad {
-    color: $error;
+    color: $error !important;
   }
 }
+
 .personal-area__form-input:invalid {
   border: 1px solid $error;
 }
@@ -181,9 +182,20 @@ position: relative;
   position: absolute;
   bottom: -15px;
   left: 10px;
+
+}
+.personal-area__form-input_error_type-input {
+  margin: 0;
+  font-size: 14px;
+  color: $error;
+  position: absolute;
+  bottom: 5px;
 }
 .personal-area__rating-label .personal-area__form-input_error {
   left: -10px;
+}
+.required-field {
+  color: $error;
 }
   //.personal-area__form-input_wrap_data .personal-area__form-input_error {
 //  right: 10px;
@@ -196,7 +208,18 @@ position: relative;
 .personal-area__delete {
   border: none;
 }
+.personal-area__save {
+  border-color: $blue;
+  color: $blue;
+}
 
+.popup__delete {
+  border-color: $lightGray;
+  color: $lightGray;
+}
+.popup__delete:hover {
+  color: black;
+}
 .personal-area__radioBtn-smile:checked .personal-area__rate_type_neutral {
   color: $lightGray;
 }
@@ -277,6 +300,11 @@ position: relative;
 @media screen and (max-width: 580px) {
   .personal-area__card-title {
     max-width: 70%;
+  }
+  .personal-area__form-input_error_type-input {
+    max-width: 90%;
+    font-size: 12px;
+text-align: center;
   }
 }
 
