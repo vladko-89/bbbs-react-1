@@ -6,11 +6,10 @@ import api from '../../utils/Api';
 import arrow from '../../images/svg/arrow-right-blue.svg';
 import Preloader from '../Preloader/Preloader';
 
-function RightArticle({ card }) {
+function RightArticle() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [content, setContent] = React.useState({});
   const { id } = useParams();
-  const { color = 'yellow' } = card; // default color for direct links
 
   React.useEffect(() => {
     api.getRightArticle(id)
@@ -20,9 +19,9 @@ function RightArticle({ card }) {
   }, []);
   return isLoading ? <Preloader /> : (
     <main className="main">
-      <div className={`article__wrapper article__wrapper_reverse card_color_${color}`} />
+      <div className={`article__wrapper article__wrapper_reverse card_color_${content.color}`} />
       <section className="articles">
-        <div className={`article__wrapper card_color_${color}`}>
+        <div className={`article__wrapper card_color_${content.color}`}>
           <h1 className="chapter-title article__main-title">{content.title}</h1>
           <p className="section-title article__description">{content.description}</p>
         </div>
