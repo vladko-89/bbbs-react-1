@@ -16,7 +16,7 @@ function RightArticle() {
       .then((res) => setContent(res))
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [id]);
   return isLoading ? <Preloader /> : (
     <main className="main">
       <div className={`article__wrapper article__wrapper_reverse card_color_${content.color}`} />
