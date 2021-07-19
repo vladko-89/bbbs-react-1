@@ -11,7 +11,6 @@ function RightArticle() {
   const [content, setContent] = React.useState({});
   const [isNext, setIsNext] = React.useState(true);
   const { id } = useParams();
-  // console.log(setIsNext);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -32,18 +31,17 @@ function RightArticle() {
         </div>
         { /* eslint-disable-next-line react/no-danger */}
         <div className="articles" dangerouslySetInnerHTML={{ __html: content.text }} />
+        {isNext && (
         <div className="container">
           <div className="next-page">
             <div className="next-page__img" />
-            {isNext && (
             <Link to={`/rights/${parseInt(id, 10) + 1}`} className="next-page__link" target="_self">
               <h2 className="section-title next-page__title">Следующая статья</h2>
               <img src={arrow} alt="Стрелка" className="next-page__arrow-icon" />
             </Link>
-            ) }
-
           </div>
         </div>
+        ) }
       </section>
     </main>
   );
