@@ -4,7 +4,7 @@ import MainTitle from '../MainTitle/MainTitle';
 import GuideCard, { shapes } from '../GuideCard/GuideCard';
 import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
-import { splitOnBlocks } from '../../utils/utils';
+import { splitOnBlocks, onLinkNav } from '../../utils/utils';
 import { GUIDES_PER_PAGE } from '../../utils/constants';
 import api from '../../utils/Api';
 import './Guides.scss';
@@ -25,6 +25,7 @@ export default function Guides({ clickOnCard }) {
       .then((res) => {
         setGuides(res);
       });
+    onLinkNav();
   }
 
   React.useEffect(() => {
@@ -69,6 +70,7 @@ export default function Guides({ clickOnCard }) {
         <p className="section-title lead__text">Памятка новичка&nbsp;&mdash; наши материалы, где сможете найти всю базовую информацию, рассказанную на вводном тренинге. Если вы захотите освежить свои знания, и&nbsp;напомнить себе о&nbsp;чем-то.</p>
 
         <section className="page__section">
+          { isLoading && <div className="guides-preloader"><Preloader /></div>}
           {blocks.map((block) => (
             <>
               <div className="rights">

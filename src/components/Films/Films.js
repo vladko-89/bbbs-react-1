@@ -7,14 +7,13 @@ import FilmCard from './FilmCard/FilmCard';
 import Preloader from '../Preloader/Preloader';
 import PopupVideo from './PopupVideo/PopupVideo';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-
-import { toggleTag } from '../../utils/utils';
+import { toggleTag, onLinkNav } from '../../utils/utils';
 import api from '../../utils/Api';
 
 import './Films.scss';
 
-const requestDelay = 1000;
-const filterDelay = 2000;
+const requestDelay = 500;
+const filterDelay = 500;
 
 const breakpoints = {
   desktopHigh: 1920,
@@ -59,7 +58,7 @@ export default function Films() {
   function onPageChange(page, delay = requestDelay) {
     clearTimeout(paginationTimer.current);
     setIsLoading(true);
-
+    onLinkNav();
     const params = new URLSearchParams({ limit: getLimit(), offset: getLimit() * page.selected });
     selectedTags.current.forEach((item) => {
       params.append('tag', item.slug);

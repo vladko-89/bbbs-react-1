@@ -7,12 +7,12 @@ import Preloader from '../Preloader/Preloader';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 import api from '../../utils/Api';
-import { toggleTag } from '../../utils/utils';
+import { toggleTag, onLinkNav } from '../../utils/utils';
 
 import './Books.scss';
 
-const requestDelay = 1000;
-const filterDelay = 2000;
+const requestDelay = 500;
+const filterDelay = 500;
 
 const breakpoints = {
   desktopHigh: 1920,
@@ -53,7 +53,7 @@ export default function Books() {
   function onPageChange(page, delay = requestDelay) {
     clearTimeout(paginationTimer.current);
     setIsLoading(true);
-
+    onLinkNav();
     const params = new URLSearchParams({ limit: getLimit(), offset: getLimit() * page.selected });
     selectedTags.current.forEach((item) => {
       params.append('tag', item.slug);

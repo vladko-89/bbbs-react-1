@@ -28,7 +28,7 @@ import RightArticle from '../RightArticle/RightArticle';
 import GuideArticle from '../GuideArticle/GuideArticle';
 import PopupCities from '../PopupCities/PopupCities';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { useAuth, getAccessToken } from '../../utils/utils';
+import { useAuth, getAccessToken, onLinkNav } from '../../utils/utils';
 import api from '../../utils/Api';
 import { eventsPerPage } from '../../utils/constants';
 
@@ -76,6 +76,7 @@ function App() {
         months: activeRubrics,
       })
       .then((res) => { setCalendarData(res); });
+    onLinkNav();
   }
 
   React.useEffect(() => {

@@ -8,12 +8,12 @@ import ArticleCard from './ArticleCard/ArticleCard';
 import Article from './Article/Article';
 import Preloader from '../Preloader/Preloader';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-
+import { onLinkNav } from '../../utils/utils';
 import api from '../../utils/Api';
 
 import './Articles.scss';
 
-const requestDelay = 1000;
+const requestDelay = 500;
 
 const breakpoints = {
   desktopHigh: 1920,
@@ -53,7 +53,7 @@ export default function Articles() {
   function onPageChange(page, delay = requestDelay) {
     clearTimeout(paginationTimer.current);
     setIsLoading(true);
-
+    onLinkNav();
     const params = new URLSearchParams({ limit: getLimit(), offset: getLimit() * page.selected });
 
     paginationTimer.current = setTimeout(() => {
