@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
@@ -21,6 +22,7 @@ export default function ArticleCard({ article }) {
         <div className="card__content">
           <div className="card__annotation">
             <p className="paragraph card__paragraph article-card__text">{article.text}</p>
+            {/* <p className="paragraph card__paragraph article-card__text" dangerouslySetInnerHTML={{ __html: article.text }} /> */}
           </div>
         </div>
       </div>

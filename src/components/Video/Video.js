@@ -7,6 +7,7 @@ import MainVideoPreview from '../MainVideoPreview/MainVideoPreview';
 import Pagination from '../Pagination/Pagination';
 import Preloader from '../Preloader/Preloader';
 import { cardsPerPage } from '../../utils/constants';
+import { onLinkNav } from '../../utils/utils';
 
 import api from '../../utils/Api';
 
@@ -28,6 +29,7 @@ function Video({
         tags: activeRubrics,
       })
       .then((res) => setMovies(res));
+    onLinkNav();
   }
 
   React.useEffect(() => {

@@ -11,7 +11,7 @@ import { toggleTag } from '../../utils/utils';
 
 import styles from './Questions.module.scss';
 
-const requestDelay = 2000;
+const requestDelay = 500;
 const limit = 4;
 
 export default function Questions({ loggedIn }) {
