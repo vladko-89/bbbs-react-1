@@ -9,12 +9,17 @@ import Preloader from '../Preloader/Preloader';
 function RightArticle() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [content, setContent] = React.useState({});
+  const [isNext, setIsNext] = React.useState(true);
   const { id } = useParams();
+  // console.log(setIsNext);
 
   React.useEffect(() => {
-    api.getRightArticle(id)
-      .then((res) => setContent(res))
-      .catch((error) => console.log(error))
+    setIsLoading(true);
+    Promise.all([api.getRightArticle(id), api.getRightArticle(parseInt(id, 10) + 1)])
+      .then(([resArticle, resNext]) => {
+        setContent(resArticle);
+        if (resNext !== 404) { setIsNext(true); } else { setIsNext(false); }
+      }).catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
   }, [id]);
   return isLoading ? <Preloader /> : (
@@ -30,10 +35,13 @@ function RightArticle() {
         <div className="container">
           <div className="next-page">
             <div className="next-page__img" />
+            {isNext && (
             <Link to={`/rights/${parseInt(id, 10) + 1}`} className="next-page__link" target="_self">
               <h2 className="section-title next-page__title">Следующая статья</h2>
               <img src={arrow} alt="Стрелка" className="next-page__arrow-icon" />
             </Link>
+            ) }
+
           </div>
         </div>
       </section>
