@@ -11,16 +11,8 @@ function Navigation({
   onLoginPopup,
   onLogOutClick,
   onChangeCityClick,
-  userInfo,
 }) {
-  // const [city, setCity] = React.useState('');
-  // const [isOpenPopupCities, setIsOpenPopupCities] = React.useState(false);
   const currentUser = React.useContext(CurrentUserContext);
-
-  React.useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(currentUser);
-  }, [userInfo]);
 
   return (
     <nav className="menu">
