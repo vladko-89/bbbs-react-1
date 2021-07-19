@@ -144,6 +144,5 @@ export function formingCards(cardsArr, formsArr) {
   }
   const NewArr = cardsArr.map((card, index) => ({ ...card, form: getForm(index, formsArr) }));
 
-  console.log('NewArr', NewArr);
   return NewArr;
 }

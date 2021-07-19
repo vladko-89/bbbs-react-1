@@ -13,7 +13,7 @@ export default function GuideArticle() {
     api.getGuideArticle(id)
       .then((res) => setArticle(res))
       .finally(() => setIsLoading(false));
-  });
+  }, []);
   return isLoading ? <Preloader /> : (
     <main className="main">
       <section className="article page__section">

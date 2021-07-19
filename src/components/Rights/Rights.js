@@ -37,8 +37,8 @@ function Rights({
   React.useEffect(() => {
     function checkRes() {
       switch (true) {
-        case (window.innerWidth < 1200 && window.innerWidth >= 768): {
-          setCardsInBlock(3); break;
+        case (window.innerWidth <= 1450 && window.innerWidth >= 768): {
+          setCardsInBlock(2); break;
         }
         case (window.innerWidth < 768): {
           setCardsInBlock(1); break;
