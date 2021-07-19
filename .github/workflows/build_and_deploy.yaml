@@ -25,7 +25,7 @@ jobs:
         with:
           file: ./Dockerfile
           build-args: |
-            REACT_APP_API_URL=http://bbbs.fun/api/v1
+            REACT_APP_API_URL=https://bbbs.fun/api/v1
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bbbs-frontend:latest  
   deploy:
