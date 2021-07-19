@@ -37,7 +37,6 @@ function Places({
   const [isLoading, setIsLoading] = React.useState(true);
   const [tags, setTags] = React.useState([]);
   const [places, setPlaces] = React.useState([]);
-
   function onPageChange(page) {
     const offset = page !== 1 ? page * PLACES_PER_PAGE - PLACES_PER_PAGE : 0;
     api
@@ -70,6 +69,11 @@ function Places({
             name: 'Все',
             slug: 'all',
           },
+          {
+            id: -1,
+            name: 'Выбор наставников',
+            slug: 'true',
+          },
           ...resTags.results,
         ]);
         setPlaces(resPlaces);
@@ -98,7 +102,6 @@ function Places({
       // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   }, [activeRubrics]);
-
   return isLoading ? (
     <Preloader />
   ) : (

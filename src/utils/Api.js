@@ -81,7 +81,10 @@ class Api {
       params.append('limit', limit);
       params.append('offset', offset);
     }
-    if (tags) tags.forEach((tag) => params.append('tag', tag));
+    if (tags) {
+      tags.filter((t) => t !== 'true').forEach((tag) => params.append('tag', tag));
+      params.append('chosen', tags.find((t) => t === 'true'));
+    }
     return axios
       .get(`${this._baseUrl}/places/`,
         token ? {
