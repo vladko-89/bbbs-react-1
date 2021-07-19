@@ -175,8 +175,14 @@ export default function ReadAndWatch({ activeRubrics, clickOnCard }) {
             }}
           >
             {
-              // eslint-disable-next-line max-len
-              articlesToShow.map((article) => <SwiperSlide><ArticleCard key={article.id} article={article} /></SwiperSlide>)
+              articlesToShow.map((article) => (
+                <SwiperSlide>
+                  <ArticleCard
+                    key={article.id}
+                    article={article}
+                  />
+                </SwiperSlide>
+              ))
             }
           </Swiper>
         </div>

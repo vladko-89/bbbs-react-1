@@ -12,7 +12,7 @@ import PopupRecommendSuccess from '../PopupRecommendSuccess/PopupRecommendSucces
 
 import api from '../../utils/Api';
 import CurrentUserContext from '../../contexts/CurrentUser';
-import { getAccessToken } from '../../utils/utils';
+import { getAccessToken, onLinkNav } from '../../utils/utils';
 import { PLACES_PER_PAGE } from '../../utils/constants';
 import './Places.scss';
 
@@ -49,6 +49,7 @@ function Places({
         tags: activeRubrics,
       })
       .then((res) => setPlaces(res));
+    onLinkNav();
   }
 
   React.useEffect(() => {
