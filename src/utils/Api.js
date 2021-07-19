@@ -401,7 +401,7 @@ class Api {
   // Получаю карточки прав
   getRights({ tags, limit, offset }) {
     const params = new URLSearchParams();
-    if (tags.length > 0) tags.forEach((tag) => params.append('tag', tag));
+    if (tags?.length > 0) { tags.forEach((tag) => params.append('tag', tag)); }
     if (limit) {
       params.append('limit', limit);
       params.append('offset', offset);
@@ -423,9 +423,12 @@ class Api {
   }
 
   getRightArticle(_id) {
-    return axios
-      .get(`${this._baseUrl}/rights/${_id}/`)
-      .then((res) => res.data)
+    return fetch(`${this._baseUrl}/rights/${_id}/`)
+      .then((res) => {
+        if (res.ok) { return res.json(); }
+        if (res.status === 404) { return res.status; }
+        throw new Error('Error in request ');
+      })
       .catch((error) => console.log(error));
   }
 
