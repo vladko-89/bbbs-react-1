@@ -1,4 +1,4 @@
-const baseUrl = `${process.env.REACT_APP_API_URL || 'https://bbbs.fun/api/v1'}`; // проект бэка запускается на 8000 порту
+const baseUrl = `${process.env.REACT_APP_API_URL || 'https://localhost:8000/api/v1'}`; // проект бэка запускается на 8000 порту
 const delayResponse = 500;
 export const SCROLL_DELAY = 100;
 const cardsPerPage = 16;
