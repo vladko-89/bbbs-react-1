@@ -6,7 +6,7 @@ import RightsCard from '../RightsCard/RightsCard';
 import Preloader from '../Preloader/Preloader';
 import Pagination from '../Pagination/Pagination';
 import api from '../../utils/Api';
-import { formingCards, splitOnBlocks } from '../../utils/utils';
+import { formingCards, splitOnBlocks, onLinkNav } from '../../utils/utils';
 import { figures, RIGHTS_PER_PAGE } from '../../utils/constants';
 
 function Rights({
@@ -32,6 +32,7 @@ function Rights({
         const result = formingCards(res.results, figures);
         setRights({ ...res, results: result });
       });
+    onLinkNav();
   }
 
   React.useEffect(() => {
