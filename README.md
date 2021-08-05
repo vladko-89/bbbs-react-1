@@ -6,3 +6,8 @@
 * Александр Тыманов.
 * Алексей Ковалев
 * Александр Сударев
+
+## Деплой проекта:
+https://bbbs.fun/
+
+![bbbs](https://user-images.githubusercontent.com/61430193/128406658-fd47fe91-aac6-4e51-9246-27b811d9d7eb.png)
