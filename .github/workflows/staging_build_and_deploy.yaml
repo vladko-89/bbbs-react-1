@@ -1,14 +1,14 @@
-name: build and deploy
+name: staging CI/CD
 
 on:
   push:
     branches:
-      - dev
+      - staging
 jobs:
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    environment: production_environment
+    environment: staging_environment
     steps:
       -
         name: Set up Docker Buildx
@@ -25,13 +25,13 @@ jobs:
         with:
           file: ./Dockerfile
           build-args: |
-            REACT_APP_API_URL=https://bbbs.fun/api/v1
+            REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/bbbs-frontend:latest  
+          tags: ${{ secrets.DOCKER_USERNAME }}/staging-bbbs-frontend:latest  
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
-    environment: production_environment
+    environment: staging_environment
     steps:
       -
         name: execute remote ssh commands to deploy
@@ -42,7 +42,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ${{ secrets.SERVER_FOLDER }}
+            git checkout ${{ secrets.BRANCH }}
             export COMPOSE_FILE=${{ secrets.COMPOSE_FILE }}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/bbbs-frontend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/staging-bbbs-frontend:latest
             docker-compose down
             docker-compose up -d --build
